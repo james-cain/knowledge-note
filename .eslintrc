@@ -1,0 +1,21 @@
+{
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "extends": "standard",
+    "env": {
+        "browser": true
+    },
+    "plugins": [
+        "vue"
+    ],
+    "settings": {
+        "import/extensions": [".js", ".vue", ".less"]
+    },
+    "rules": {
+        "semi": 0,
+        "eol-last": 0
+    }
+}
