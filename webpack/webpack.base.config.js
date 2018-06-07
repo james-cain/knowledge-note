@@ -118,6 +118,7 @@ module.exports = {
         new VueLoaderPlugin(),
         createHappyPlugin('happy-babel-js', ['babel-loader']),
         createHappyPlugin('happy-md', ['vue-markdown-loader']),
+        // eslint-loader seem to try to access this.options which was removed.
         new webpack.LoaderOptionsPlugin({ options: {} })
     ],
     resolve: {

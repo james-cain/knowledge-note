@@ -4,7 +4,8 @@
   "description": "A personal blog station",
   "main": "index.js",
   "scripts": {
-    "dev": "node_modules/.bin/webpack-dev-server --config webpack/dev.js --open"
+    "dev": "node_modules/.bin/webpack-dev-server --config webpack/dev.js --open",
+    "build": "node_modules/.bin/webpack --config webpack/build.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "chalk": "^2.4.1",
     "chokidar": "^2.0.3",
+    "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^0.28.11",
     "eslint": "^3.14.0",
     "eslint-config-standard": "^6.2.1",
@@ -59,7 +61,8 @@
     "webpack": "^4.11.1",
     "webpack-cli": "^3.0.2",
     "webpack-dev-server": "^3.1.4",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "webpack-parallel-uglify-plugin": "^1.1.0"
   },
   "dependencies": {
     "vue": "^2.5.16",
