@@ -296,3 +296,15 @@ plugins: [
 
 ![webpack-version1](images/webpack-version1.png)
 
+同时，由于是第一次搭webpack配置，还是碰到几个问题，顺带记录下
+
+1. ![webpack-configuration-problem1](images/webpack-configuration-problem1.png)
+
+   原因：[webpack升级到4.0后，已经将全局变量全部局部化，获取需要通过LoaderOptionsPlugin的方式定义全局变量才行，而eslint-loader还是采用原来的方式获取全局中的options，因此获取不到](https://github.com/webpack/webpack/issues/6556)
+
+2. ![webpack-configuration-problem2](images/webpack-configuration-problem2.png)
+
+   原因：eslint升级到4.0.0以上后，eslint-plugin-html和eslint之间会有冲突，总之我是降版本解决，附上版本号
+
+   ![webpack-configuration-solve2](images/webpack-configuration-solve2.png)
+
