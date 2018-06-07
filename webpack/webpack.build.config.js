@@ -6,7 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const resolve = dir => join(__dirname, '..', dir)
 
@@ -27,6 +26,15 @@ module.exports = merge(basicConfig, {
         filename: 'js/[name].[chunkhash:8].js',
         chunkFilename: 'js/[id].[chunhash:8].js'
     },
+    // optimization: {
+    //     minimizer: [
+    //         new ParallelUglifyPlugin({
+    //             cache: true,
+    //             sourceMap: true
+    //         }),
+    //         new OptimizeCSSAssetsPlugin({})
+    //     ]
+    // },
     plugins: [
         // scope hoisting(作用域提升)
         new webpack.optimize.ModuleConcatenationPlugin(),

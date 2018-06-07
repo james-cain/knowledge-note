@@ -17,6 +17,14 @@ blog的webpack版本为：`4.11.1`
 配置`webpack.base.config.js`
 
 ```
+const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
+const createHappyPlugin = (id, loaders) => {
+    return new Happypack({
+        id,
+        loaders,
+        threadPool: happyThreadPool
+    })
+}
 module: {
     rules: [
     {
@@ -170,6 +178,16 @@ output: {
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[id].[chunhash:8].js'
 },
+// 用以下配置也行
+// optimization: {
+//     minimizer: [
+//         new ParallelUglifyPlugin({
+//             cache: true,
+//             sourceMap: true
+//         }),
+//         new OptimizeCSSAssetsPlugin({})
+//     ]
+// },
 plugins: [
     // scope hoisting(作用域提升)
     new webpack.optimize.ModuleConcatenationPlugin(),
@@ -212,4 +230,69 @@ plugins: [
     })
 ]
 ```
+
+这个版本中，使用到`happypack`、`mini-css-extract-plugin`、`optimize-css-assets-plugin`、`webpack-parallel-uglify-plugin`、`ModuleConcatenationPlugin`
+
+- happypack：定义happypack/loader?id=xx和创建Happypack({id}) plugin，用id关联。将原来的单进程loader执行，扩展为多进程模式，提高编译速度
+
+- mini-css-extract-plugin：与extract-text-webpack-plugin相比，官方文档描述：
+
+  1. Async loading
+  2. No duplicate compilation(performance)
+  3. Easier to use
+  4. Specific to CSS
+  5. support HMR in the future
+
+  标配using preloaded or inlined CSS, Extracting all CSS in a single file, 还可以 extracting CSS based on entry, prevent the CSS duplication issue one  had with the ExtractTextPlugin(以后会试试)
+
+  ```
+  function recursiveIssuer(m) {
+      if (m.issuer) {
+          return recursiveIssuer(m.issuer)
+      } else if (m.name) {
+          return m.name
+      } else {
+          return false
+      }
+  }
+  ...
+  entry: {
+      foo: resolve('src/foo'),
+      bar: resolve('src/bar')
+  },
+  optimization: {
+      splitChunks: {
+          cacheGroups: {
+              fooStyles: {
+                  name: 'foo',
+                  test: (m, c, entry='foo') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
+                  chunks: 'all',
+                  enforce: true
+              },
+              barStyles: {
+                  name: 'bar',
+                  test: (m, c, entry='bar') => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
+                  chunks: 'all',
+                  enforce: true
+              }
+          }
+      }
+  }
+  ```
+
+- optimize-css-assets-webpack-plugin：optimize/minimize the CSS，solve duplicate CSS.
+
+- webpack-parallel-uglify-plugin：顾名思义，就是提升编译速度的升级版的webpack-uglify-plugin，功能一致。
+
+- ModuleConcatenationPlugin：原先每个bundle都独立在一个闭包中，处理速度会减弱。webpack结合了rollup和closure Compiler将所有模块通过定义变量的方式提到一个闭包中，提升了代码的执行速度，俗称作用域提升(scope hoisting)。**注意：**使用作用域提升，必须要用ECMAScript模块语法（es6）。
+
+#### 总结
+
+在第一版中，使用了变量提升了编译后文件运行速度；使用了happypack、mini-css-extract-plugin、optimize-css-assets-webpack-plugin、webpack-parallel-uglify-plugin提升了编译速度。
+
+存在很大的问题，因为实际整个真实的代码就只有短短的几行，却打包出了vendor(122kb),app(96kb)。这是觉得不能忍的，缺少Dllplugin、DllReferencePlugin、Tree shaking、split chunks，接下来要一一加上。
+
+上打包后的体积图
+
+![webpack-version1](images/webpack-version1.png)
 
