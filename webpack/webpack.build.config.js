@@ -22,8 +22,8 @@ module.exports = merge(basicConfig, {
         ]
     },
     output: {
-        path: resolve('docs'),
-        publicPath: '/blog/',
+        path: resolve('my-blog'),
+        publicPath: '/my-blog/',
         filename: 'js/[name].[chunkhash:8].js',
         chunkFilename: 'js/[id].[chunhash:8].js'
     },
@@ -78,9 +78,6 @@ module.exports = merge(basicConfig, {
             },
             chunks: ['vendor', 'app'],
             chunksSortMode: 'dependency'
-        }),
-        new CleanWebpackPlugin(['dosc'], {
-            root: resolve('/')
         })
     ]
 })
