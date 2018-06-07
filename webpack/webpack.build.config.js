@@ -76,7 +76,7 @@ module.exports = merge(basicConfig, {
                 collapseWhitespace: true,
                 removeAttributeQuotes: true
             },
-            chunks: ['js/vendor', 'js/app'],
+            chunks: ['vendor', 'app'],
             chunksSortMode: 'dependency'
         }),
         new CleanWebpackPlugin(['dosc'], {
