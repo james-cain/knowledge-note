@@ -11,6 +11,8 @@
 
 [从零搭建自己的blog站点之webpack配置踩坑篇](articles/webpack-perf.md) -- 2018-06-06
 
+[如同打怪一般学习之路--webpack源码学习心得记录](articles/webpack-source-learning.md) -- 2018-06-08
+
 #### 相关文章视频
 
 [细说 webpack 之流程篇](http://taobaofed.org/blog/2016/09/09/webpack-flow/)
