@@ -1,5 +1,5 @@
 # My-blog
-受到某知名大厂的挫伤后，打算从今开始学习一个新知识点，就记录下自己的学习过程。将会有五花八门的学习笔记出现，愿给那些有着同样梦想的程序猿们带来帮助。
+“基础不OK”---受到某大厂大佬的挫伤后，打算从今开始学习一个新知识点，就记录下自己的学习过程。将会有五花八门的学习笔记出现，愿给那些有着同样梦想的程序猿们带来帮助。
 
 ### Javascript
 
@@ -173,7 +173,7 @@
 
 [google developers](https://developers.google.com/web/tools/chrome-devtools/)
 
-[app developers](https://developer.apple.com/documentation/webkitjs#topics)
+[apple developers](https://developer.apple.com/documentation/webkitjs#topics)
 
 [mozilla developers - Web API](https://developer.mozilla.org/zh-CN/docs/Web/API)
 

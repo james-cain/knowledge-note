@@ -9,16 +9,16 @@ const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 
 const resolve = dir => join(__dirname, '..', dir)
 
-module.exports = merge(basicConfig, {
+const webpackConfig = merge(basicConfig, {
     mode: 'production',
     // v1.0 vendor include vue/vue-router/vuex
     entry: {
         'app': './src/main.js',
-        'vendor': [
-            'vue',
-            'vue-router',
-            'vuex'
-        ]
+        'vue': [
+            'vue'
+        ],
+        'vuerouter': ['vue-router'],
+        'vuex': ['vuex']
     },
     output: {
         path: resolve('my-blog'),
@@ -84,8 +84,15 @@ module.exports = merge(basicConfig, {
                 collapseWhitespace: true,
                 removeAttributeQuotes: true
             },
-            chunks: ['vendor', 'app'],
+            chunks: ['vue', 'vuerouter', 'vuex', 'app'],
             chunksSortMode: 'dependency'
         })
     ]
 })
+
+if (process.env.npm_config_report) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+    webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+}
+
+module.exports = webpackConfig

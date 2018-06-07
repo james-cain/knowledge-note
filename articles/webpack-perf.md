@@ -290,7 +290,7 @@ plugins: [
 
 在第一版中，使用了变量提升了编译后文件运行速度；使用了happypack、mini-css-extract-plugin、optimize-css-assets-webpack-plugin、webpack-parallel-uglify-plugin提升了编译速度。
 
-存在很大的问题，因为实际整个真实的代码就只有短短的几行，却打包出了vendor(122kb),app(96kb)。这是觉得不能忍的，缺少Dllplugin、DllReferencePlugin、Tree shaking、split chunks，接下来要一一加上。
+存在很大的问题，因为实际整个真实的代码就只有短短的几行，却打包出了vendor(122kb),app(96kb)。这是觉得不能忍的，缺少`externals`、`Dllplugin`、`DllReferencePlugin`、`Tree shaking`、`split chunks`，接下来要一一加上。
 
 上打包后的体积图
 
@@ -307,4 +307,12 @@ plugins: [
    原因：eslint升级到4.0.0以上后，eslint-plugin-html和eslint之间会有冲突，总之我是降版本解决，附上版本号
 
    ![webpack-configuration-solve2](images/webpack-configuration-solve2.png)
+
+### 优化之analyz
+
+优化第一步，先用webpack-bundle-analyzer或者别的类似的功能插件做分析，第一版的分析结果如下
+
+![webpack-performance-anlyz1](images/webpack-performance-anlyz1.png)
+
+WTF，vue居然两边都打包了！先处理这个问题
 
