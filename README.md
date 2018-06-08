@@ -1,5 +1,5 @@
 # My-blog
-“基础不OK”---受到某大厂大佬的挫伤后，打算从今开始学习一个新知识点，就记录下自己的学习过程。将会有五花八门的学习笔记出现，愿给那些有着同样梦想的程序猿们带来帮助。
+“基础不OK”，打算从今开始学习一个新知识点，就记录下自己的学习过程。将会有五花八门的学习笔记出现，愿给那些有着同样梦想的程序猿们带来帮助。
 
 ### Javascript
 
@@ -44,6 +44,8 @@
 [The Evolution of React and GraphQL at Facebook and Beyond](https://developers.facebook.com/videos/f8-2017/the-evolution-of-react-and-graphql-at-facebook-and-beyond/)
 
 [getDerivedStateFromState -- making complex things simpler](https://itnext.io/getderivedstatefromstate-making-complex-things-simpler-4450115e49d6)
+
+[You Probably Don't Need Derived State](https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)
 
 [React`s new Context API](https://medium.com/dailyjs/reacts-%EF%B8%8F-new-context-api-70c9fe01596b)
 

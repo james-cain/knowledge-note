@@ -14,9 +14,7 @@ const webpackConfig = merge(basicConfig, {
     // v1.0 vendor include vue/vue-router/vuex
     entry: {
         'app': './src/main.js',
-        'vue': [
-            'vue'
-        ],
+        // 'vue': ['vue'],
         'vuerouter': ['vue-router'],
         'vuex': ['vuex']
     },
@@ -24,7 +22,7 @@ const webpackConfig = merge(basicConfig, {
         path: resolve('my-blog'),
         publicPath: '/my-blog/',
         filename: 'js/[name].[chunkhash:8].js',
-        chunkFilename: 'js/[id].[chunhash:8].js'
+        chunkFilename: 'js/[id].[chunkhash:8].js'
     },
     // optimization: {
     //     minimizer: [
@@ -63,18 +61,19 @@ const webpackConfig = merge(basicConfig, {
                 }
             }
         }),
-        // new webpack.optimize.SplitChunksPlugin({
-        //     // initial/async/all:初始块/按需块/所有块
-        //     chunks: 'all',
-        //     minSize: 30000,
-        //     minChunks: 1,
-        //     maxAsyncRequest: 5,
-        //     maxInitialRequest: 3,
-        //     name: true
-        // }),
+        new webpack.optimize.SplitChunksPlugin({
+            // initial/async/all:初始块/按需块/所有块
+            chunks: 'all',
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequest: 5,
+            maxInitialRequest: 3,
+            name: true
+        }),
         // v1.0 直接分成两个chunk
         // 优化项：scope hoisting，
         // chunks: app/vendor
+        // v1.1 将vue、vuerouter、vuex拆分成三个chunk
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html',
@@ -84,7 +83,8 @@ const webpackConfig = merge(basicConfig, {
                 collapseWhitespace: true,
                 removeAttributeQuotes: true
             },
-            chunks: ['vue', 'vuerouter', 'vuex', 'app'],
+            // chunks: ['vue', 'vuerouter', 'vuex', 'app'],
+            chunks: ['vuerouter', 'vuex', 'app'],
             chunksSortMode: 'dependency'
         })
     ]
