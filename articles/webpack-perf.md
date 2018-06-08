@@ -10,9 +10,9 @@ blog的webpack版本为：`4.11.1`
 
 配置中引用的包如图
 
-![webpack-configuration](images/webpack-configuration.png)
+![webpack-configuration](https://coracain.top/assets/webpack-configuration.png)
 
-![webpack-configuration2](images/webpack-configuration2.png)
+![webpack-configuration2](https://coracain.top/assets/webpack-configuration2.png)
 
 配置`webpack.base.config.js`
 
@@ -294,29 +294,97 @@ plugins: [
 
 上打包后的体积图
 
-![webpack-version1](images/webpack-version1.png)
+![webpack-version1](https://coracain.top/assets/webpack-version1.png)
 
 同时，由于是第一次搭webpack配置，还是碰到几个问题，顺带记录下
 
-1. ![webpack-configuration-problem1](images/webpack-configuration-problem1.png)
+1. ![webpack-configuration-problem1](https://coracain.top/assets/webpack-configuration-problem1.png)
 
    原因：[webpack升级到4.0后，已经将全局变量全部局部化，获取需要通过LoaderOptionsPlugin的方式定义全局变量才行，而eslint-loader还是采用原来的方式获取全局中的options，因此获取不到](https://github.com/webpack/webpack/issues/6556)
 
-2. ![webpack-configuration-problem2](images/webpack-configuration-problem2.png)
+2. ![webpack-configuration-problem2](https://coracain.top/assets/webpack-configuration-problem2.png)
 
    原因：eslint升级到4.0.0以上后，eslint-plugin-html和eslint之间会有冲突，总之我是降版本解决，附上版本号
 
-   ![webpack-configuration-solve2](images/webpack-configuration-solve2.png)
+   ![webpack-configuration-solve2](https://coracain.top/assets/webpack-configuration-solve2.png)
 
 ### 优化之analyz
 
 优化第一步，先用webpack-bundle-analyzer或者别的类似的功能插件做分析，第一版的分析结果如下
 
-![webpack-performance-anlyz1](images/webpack-performance-anlyz1.png)
+![webpack-performance-anlyz1](https://coracain.top/assets/webpack-performance-anlyz1.png)
 
 WTF，vue居然两边都打包了！先处理这个问题
 
-第一步，先把vendor中的vue、vue-router、vuex单独拆开，只是修改了entry的vendor和html-webpack-plugin中的引入模块
+先把vendor中的vue、vue-router、vuex单独拆开，只是修改了entry的vendor和html-webpack-plugin中的引入模块
 
+![webpack-performance-anlyz2](images/webpack-performance-anlyz2.png)
 
+### 优化之Dllplugin
+
+自webpack升级到v4以后，`CommonsChunkPlugin`被移除，官网推荐使用DllPlugin。DllPlugin就是升级版的CommonsChunkPlugin，但是解决了CommonsChunkPlugin带来的很多问题，例如，在打包时，都会给每个打包文件后缀加上hash，以至于每次那些基本不会发生变得的文件，一样会改变hash，这是发布中无法接受的。DllPlugin将vendor提取出来，通过单独打包，生成对应的manifest.json和vendor.dll.js。manifest.json用于在打build包时，检索bundle会和它的内部id比对，成功即不创建新的bundle，引用vendor.dll.js中的。下面列下配置：
+
+Webpack.dll.config.js
+
+```
+mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+entry: {
+    vendor: [
+        'vue/dist/vue.min.js',
+        'vue-router',
+        'vuex'
+    ]
+},
+output: {
+    path: resolve('static/js'),
+    filename: '[name].dll.js',
+    library: '[name]_library'
+},
+module: {
+    rules: [
+        {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+        },
+        {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            exclude: /node_modules/
+        }
+    ]
+},
+optimization: {
+    minimizer: [
+        new ParallelUglifyPlugin({
+            cache: true,
+            sourceMap: true
+        }),
+        new OptimizeCssAssetsPlugin({})
+    ]
+},
+plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.DllPlugin({
+        path: resolve('webpack/[name]-manifest.json'),
+        name: '[name]_library'
+    })
+]
+```
+
+Webpack.build.config.js
+
+```
+new webpack.DllReferencePlugin({
+    context: resolve(''),
+    manifest: require('./vendor-manifest.json')
+}),
+```
+
+打包结果：
+
+![webpack-version1-3](images/webpack-version1-3.png)
+
+分析结果
+
+![webpack-performance-anlyz3](images/webpack-performance-anlyz3.png)
 

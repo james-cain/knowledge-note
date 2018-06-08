@@ -39,6 +39,7 @@ const webpackConfig = merge(basicConfig, {
     //     ]
     // },
     plugins: [
+        // v1.2 增加了DllReferencePlugin配置
         new webpack.DllReferencePlugin({
             context: resolve(''),
             manifest: require('./vendor-manifest.json')
