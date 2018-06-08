@@ -114,6 +114,10 @@ module.exports = {
         new ProgressBarPlugin({
             format: '  build [:bar]' + chalk.green.bold(':percent') + ':elapsed seconds'
         }),
+        new webpack.DllReferencePlugin({
+            context: resolve(''),
+            manifest: require('./vendor-manifest.json')
+        }),
         // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
         createHappyPlugin('happy-babel-js', ['babel-loader']),
@@ -128,7 +132,7 @@ module.exports = {
             'node_modules'
         ],
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
+            'vue$': env !== 'production' ? 'vue/dist/vue.esm.js' : 'vue/dist/vue.min.js',
             '@': resolve('src')
         }
     }

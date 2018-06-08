@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node_modules/.bin/webpack-dev-server --config webpack/dev.js --open",
     "build": "node_modules/.bin/webpack --config webpack/build.js --profile --colors",
+    "build:dll": "node_modules/.bin/webpack --config webpack/dll.js",
     "analyz": "npm_config_report=true npm run build"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "chalk": "^2.4.1",
     "chokidar": "^2.0.3",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "eslint": "^3.14.0",
     "eslint-config-standard": "^6.2.1",
@@ -68,6 +70,7 @@
     "webpack-parallel-uglify-plugin": "^1.1.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

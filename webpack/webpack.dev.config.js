@@ -1,14 +1,12 @@
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'development'
+}
+
 const { join } = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const basicConfig = require('./webpack.base.config')
-
-if (!process.env.NODE_ENV) {
-    process.env.NODE_ENV = 'development'
-}
-
-console.log(process.env.NODE_ENV)
 
 const resolve = dir => join(__dirname, '..', dir)
 

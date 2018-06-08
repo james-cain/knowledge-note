@@ -1,28 +1,33 @@
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production'
+}
+
 const { join } = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const basicConfig = require('./webpack.base.config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const resolve = dir => join(__dirname, '..', dir)
 
 const webpackConfig = merge(basicConfig, {
     mode: 'production',
     // v1.0 vendor include vue/vue-router/vuex
+    // v1.1 将vue、vuerouter、vuex拆分成三个chunk
+    // v1.2 删除vue，vuerouter，vuex入口，改用Dll抽离
     entry: {
-        'app': './src/main.js',
-        // 'vue': ['vue'],
-        'vuerouter': ['vue-router'],
-        'vuex': ['vuex']
+        'app': './src/main.js'
     },
     output: {
         path: resolve('my-blog'),
         publicPath: '/my-blog/',
-        filename: 'js/[name].[chunkhash:8].js',
-        chunkFilename: 'js/[id].[chunkhash:8].js'
+        filename: 'static/js/[name].[chunkhash:8].js',
+        chunkFilename: 'static/js/[id].[chunkhash:8].js'
     },
     // optimization: {
     //     minimizer: [
@@ -38,7 +43,7 @@ const webpackConfig = merge(basicConfig, {
         new webpack.optimize.ModuleConcatenationPlugin(),
         // extract css into its own file
         new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash:8].css'
+            filename: 'static/css/[name].[contenthash:8].css'
         }),
         // compress extracted css.
         new OptimizeCSSAssetsPlugin({}),
@@ -76,7 +81,7 @@ const webpackConfig = merge(basicConfig, {
         // v1.1 将vue、vuerouter、vuex拆分成三个chunk
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'index.html',
+            template: 'index.ejs',
             inject: true,
             minify: {
                 removeComments: true,
@@ -84,8 +89,17 @@ const webpackConfig = merge(basicConfig, {
                 removeAttributeQuotes: true
             },
             // chunks: ['vue', 'vuerouter', 'vuex', 'app'],
-            chunks: ['vuerouter', 'vuex', 'app'],
             chunksSortMode: 'dependency'
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: resolve('static'),
+                to: resolve('my-blog/static'),
+                ignore: ['.*']
+            }
+        ]),
+        new CleanWebpackPlugin(['my-blog'], {
+            root: resolve('./')
         })
     ]
 })

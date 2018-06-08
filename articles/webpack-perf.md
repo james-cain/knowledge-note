@@ -290,7 +290,7 @@ plugins: [
 
 在第一版中，使用了变量提升了编译后文件运行速度；使用了happypack、mini-css-extract-plugin、optimize-css-assets-webpack-plugin、webpack-parallel-uglify-plugin提升了编译速度。
 
-存在很大的问题，因为实际整个真实的代码就只有短短的几行，却打包出了vendor(122kb),app(96kb)。这是觉得不能忍的，缺少`externals`、`Dllplugin`、`DllReferencePlugin`、`Tree shaking`、`split chunks`，接下来要一一加上。
+存在很大的问题，因为实际整个真实的代码就只有短短的几行，却打包出了vendor(122kb),app(96kb)。这是觉得不能忍的，缺少`externals`、`Dllplugin`、`DllReferencePlugin`、`Tree shaking`、`split chunks`、`dynamic import`，接下来要一一加上。
 
 上打包后的体积图
 
@@ -315,4 +315,8 @@ plugins: [
 ![webpack-performance-anlyz1](images/webpack-performance-anlyz1.png)
 
 WTF，vue居然两边都打包了！先处理这个问题
+
+第一步，先把vendor中的vue、vue-router、vuex单独拆开，只是修改了entry的vendor和html-webpack-plugin中的引入模块
+
+
 
