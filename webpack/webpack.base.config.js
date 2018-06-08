@@ -114,10 +114,6 @@ module.exports = {
         new ProgressBarPlugin({
             format: '  build [:bar]' + chalk.green.bold(':percent') + ':elapsed seconds'
         }),
-        new webpack.DllReferencePlugin({
-            context: resolve(''),
-            manifest: require('./vendor-manifest.json')
-        }),
         // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
         createHappyPlugin('happy-babel-js', ['babel-loader']),

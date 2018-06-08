@@ -39,6 +39,10 @@ const webpackConfig = merge(basicConfig, {
     //     ]
     // },
     plugins: [
+        new webpack.DllReferencePlugin({
+            context: resolve(''),
+            manifest: require('./vendor-manifest.json')
+        }),
         // scope hoisting(作用域提升)
         new webpack.optimize.ModuleConcatenationPlugin(),
         // extract css into its own file
