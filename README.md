@@ -165,7 +165,9 @@
 
 [mqyqingfeng/Blog(6k stars)](https://github.com/mqyqingfeng/Blog)
 
-[CyC2018/Interview-Notebook(24.3k)](https://github.com/CyC2018/Interview-Notebook)
+[CyC2018/Interview-Notebook(24.3k stars)](https://github.com/CyC2018/Interview-Notebook)
+
+[the-front-end-knowledge-you-may-not-know(1.3k stars)](https://github.com/justjavac/the-front-end-knowledge-you-may-not-know)
 
 ### 算法与数据结构
 
