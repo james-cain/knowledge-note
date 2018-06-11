@@ -39,7 +39,7 @@ node-nightly --inspect-brk ./node_modules/webpack/bin/webpack.js
 
 #### Webpack 4源码中的代码段理解图
 
-#####compiler、compilation、hook
+##### compiler、compilation、hook
 
 ![webpack执行过程1](images/webpack执行过程1.png)
 
@@ -84,7 +84,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 			)
 ```
 
-######hook执行顺序
+###### hook执行顺序
 
 ![hooks](images/hooks.png)
 
@@ -92,7 +92,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 >
 > hook执行顺序，make开始执行compilation 入口addEntry接口
 
-######compilation.js方法执行顺序
+###### compilation.js方法执行顺序
 
 ![compilation.js](images/compilation.js.png)
 
