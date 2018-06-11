@@ -60,3 +60,43 @@ Hook总共有10种类型，分为异步和同步两大类；异步包括并发�
 ![webpack执行过程5](images/webpack执行过程5.png)
 
 create的返回值为函数方法，this.call(params)的执行方法
+
+##### module.rules加载
+
+```
+// webpack.js compiler创建后都做了以下的事情 
+// 创建compiler实例
+compiler = new Compiler()
+// 创建WebpackOptionsApply实例，挂在默认plugin hook
+compiler.options = new WebpackOptionsApply().process(options, compiler)
+	// WebpackOptionsApply.js 挂在各种plugin
+    new EntryOptionPlugin().apply(compiler)
+    	// EntryOptionPlugin.js 判断entry参数类型 挂不同类型plugin
+        const SingleEntryPlugin = require()
+        const MultiEntryPlugin = require()
+        const DynamicEntryPlugin = require()
+        	// 以SingleEntryPlugin.js为例
+            compiler.hooks.make.tapAsync(
+            	"SingleEntryPlugin", (compilation, callback) => {
+                	…
+                    compilation.addEntry(context, dep, name, callback)
+                }
+			)
+```
+
+######hook执行顺序
+
+![hooks](images/hooks.png)
+
+> environment->afterEnvironment->beforeRun->run->beforeCompile->compile->make->...->buildModule（`compilation`）->failModule or successModule(`compilation`)->finishModules（`compilation`）->seal（`compilation`）->afterCompile
+>
+> hook执行顺序，make开始执行compilation 入口addEntry接口
+
+######compilation.js方法执行顺序
+
+![compilation.js](images/compilation.js.png)
+
+> addEntry->_addModuleChain->addModule[判断moduleResult.build === true]->buildModule->（`NormalModule.js`）build->（`NormalModule.js`）doBuild->（`loader-runner.js`）runLoaders（该方法会把上一个loader的结果或资源文件传入进去，并且该函数内还有一些方法，可以是loader改变为异步调用方式，或者获取query参数）->iteratePitchingLoaders(loader-runner.js)->processModuleDependencies->addModuleDependencies->addModule[判断moduleResult.build === true]->回到执行buildModule
+>
+> _addModuleChain和addModuleDependencies方法中 都调用了addModule函数生成新的moduleResult，若moduleResult.build === true,则会执行buildModule
+
