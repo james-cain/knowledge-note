@@ -13,7 +13,33 @@
 11. 动手写几个插件，loader
 12. webpack更新速度惊人，跟着作者的步伐，尽量也能在源码中找到你的代码段
 
+#### Webpack 源码调试
+
+全局安装node-nightly
+
+```
+npm install --global node-nightly
+```
+
+安装完成后，执行
+
+```
+node-nightly
+```
+
+此时会下载nightly cli包，安装完成后才可以使用
+
+接下来运行以下命令，Chrome Devtools会在chrome://inspect内产生可以断点调试的inspect链接
+
+```
+node-nightly --inspect-brk ./node_modules/webpack/bin/webpack.js
+```
+
+--inspect-brk 标记会自动给脚本第一句打断点，可以在源代码中设置断点调试
+
 #### Webpack 4源码中的代码段理解图
+
+#####compiler、compilation、hook
 
 ![webpack执行过程1](images/webpack执行过程1.png)
 
