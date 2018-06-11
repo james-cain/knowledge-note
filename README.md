@@ -85,6 +85,10 @@
 
 [answershuto/learnVue(3.6k stars)](https://github.com/answershuto/learnVue)
 
+[HcySunYang/vue-design (0.7k stars)](https://github.com/HcySunYang/vue-design)
+
+[ustbhuangyi/vue-analysis(0.9k stars)](https://github.com/ustbhuangyi/vue-analysis)
+
 ### PWA
 
 #### 相关文章视频
