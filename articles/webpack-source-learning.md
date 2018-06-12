@@ -100,3 +100,31 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 >
 > _addModuleChain和addModuleDependencies方法中 都调用了addModule函数生成新的moduleResult，若moduleResult.build === true,则会执行buildModule
 
+###### addModule(module, cacheGroup)
+
+*每次module的变化是怎么发生的？*
+
+*执行style-loader，css-loader 为什么要遍历5遍？*
+
+第一次module.request /Users/admin/repo/resourcecode/learning-webpack/src
+
+第二次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/style-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/src/index.css
+
+第三次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/src/index.css
+
+第四次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/lib/css-base.js
+
+第五次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/style-loader/lib/urls.js
+
+```
+build(options, compilation, resolver, fs, callback_build)
+初始化_source _ast _buildHash为null
+	doBuild(options, compilation, resolver, fs, callback_doBuild)
+	执行runLoaders 返回	result{resourceBuffer,result.result[0] => source,sourceMap,extraInfo}
+			执行createSource(source, resourceBuffer, sourceMap) 返回this._source
+			赋值this._ast = extraInfo.webpackAST or null
+			执行callback_doBuild
+				this.parser.parse(this._ast || this._source.source(), …)
+				执行callback_build
+```
+
