@@ -86,7 +86,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### hook执行顺序
 
-![hooks](images/hooks.png)
+![hooks](images/hooks-chain.png)
 
 > environment->afterEnvironment->beforeRun->run->beforeCompile->compile->make->...->buildModule（`compilation`）->failModule or successModule(`compilation`)->finishModules（`compilation`）->seal（`compilation`）->afterCompile
 >
@@ -94,7 +94,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### compilation.js方法执行顺序
 
-![compilation.js](images/compilation.js.png)
+![compilation.js](images/compilation-run.js.png)
 
 > addEntry->_addModuleChain->addModule[判断moduleResult.build === true]->buildModule->（`NormalModule.js`）build->（`NormalModule.js`）doBuild->（`loader-runner.js`）runLoaders（该方法会把上一个loader的结果或资源文件传入进去，并且该函数内还有一些方法，可以是loader改变为异步调用方式，或者获取query参数）->iteratePitchingLoaders(loader-runner.js)->processModuleDependencies->addModuleDependencies->addModule[判断moduleResult.build === true]->回到执行buildModule
 >
@@ -103,6 +103,8 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 ###### addModule(module, cacheGroup)
 
 *每次module的变化是怎么发生的？*
+
+> 执行addModule后，返回的对象中的module会作为processModuleDependencies的参数传入，进行遍历
 
 *执行style-loader，css-loader 为什么要遍历5遍？*
 
