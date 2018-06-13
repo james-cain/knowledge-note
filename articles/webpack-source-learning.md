@@ -94,7 +94,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### compilation.js方法执行顺序
 
-![compilation.js](images/compilation-run.js.png)
+![compilation.js](images/compilation-run.png)
 
 > addEntry->_addModuleChain->addModule[判断moduleResult.build === true]->buildModule->（`NormalModule.js`）build->（`NormalModule.js`）doBuild->（`loader-runner.js`）runLoaders（该方法会把上一个loader的结果或资源文件传入进去，并且该函数内还有一些方法，可以是loader改变为异步调用方式，或者获取query参数）->iteratePitchingLoaders(loader-runner.js)->processModuleDependencies->addModuleDependencies->addModule[判断moduleResult.build === true]->回到执行buildModule
 >
@@ -104,7 +104,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 *每次module的变化是怎么发生的？*
 
-> 执行addModule后，返回的对象中的module会作为processModuleDependencies的参数传入，进行遍历
+> entry进入，通过create创建module，先去查找ruleSet规则是否有匹配，有则拼接链接，没有则不变；传入到runLoaders中获取处理后的_source、_ast，parser.parse处理_source、_ast返回还存在依赖的dependencies数组，将dependencies数组传入addModuleDependencies遍历，创建新的module。直到没有依赖的module，停止遍历，生成最终的bundle对象
 
 *执行style-loader，css-loader 为什么要遍历5遍？*
 
@@ -117,6 +117,64 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 第四次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/lib/css-base.js
 
 第五次module.request /Users/admin/repo/resourcecode/learning-webpack/node_modules/style-loader/lib/urls.js
+
+图解(只包含前两次)
+
+![webpack-run1](images/webpack-run1.png)
+
+执行第一次create，此时dependencies[0].request = './src/index.js'
+
+![webpack-run2](images/webpack-run2.png)
+
+ruleSet.exec() 解析路径是否有loader拦截
+
+![webpack-run3](images/webpack-run3.png)
+
+第一次解析只有返回默认的result
+
+![webpack-run4](images/webpack-run4.png)
+
+![webpack-run5](images/webpack-run5.png)
+
+![webpack-run6](images/webpack-run6.png)
+
+runLoaders解析index.js内容
+
+![webpack-run7](images/webpack-run7.png)
+
+parser.parse 生成ast树，解析树，将依赖对象存储在dependencies中
+
+![webpack-run8](images/webpack-run8.png)
+
+processModuleDependencies将dependencies中的依赖模块传入addModuleDependencies中，执行下一次的create
+
+![webpack-run9](images/webpack-run9.png)
+
+第二次create，传入的dependencies已经变为index.css
+
+![webpack-run10](images/webpack-run10.png)
+
+index.css被loader拦截，存在style-loader，css-loader两个拦截loader
+
+![webpack-run11](images/webpack-run11.png)
+
+此时request已经改为/Users/admin/repo/resourcecode/learning-webpack/node_modules/style-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/src/index.css
+
+![webpack-run12](images/webpack-run12.png)
+
+runLoaders执行返回style-loader的代码段，赋给_source
+
+![webpack-run13](images/webpack-run13.png)
+
+经过parser.parse解析后，又多了好几个依赖
+
+![webpack-run14](images/webpack-run14.png)
+
+将依赖传给addModuleDependencies，进行接下来的create
+
+> 经过图解，可以明白，第一次执行index.js，当解析源码遇到import 'index.css'，loader拦截，有两个style-loader和css-loader两个拦截加载器，接下来就是这两个拦截器的处理，但都是返回js代码，并解析；直到没有依赖结束，生成最终bundle。
+
+###### build->doBuild->runLoaders执行函数
 
 ```
 build(options, compilation, resolver, fs, callback_build)
