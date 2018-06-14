@@ -7,11 +7,12 @@
 5. 学习HMR原理
 6. 理解bundle，如何生成chunks，需要理解AST、acorn  - (get)
 7. 理解plugin执行原理  - (get)
-8. 理解loader执行原理
-9. 理解resolver是如何实现的，即如何查找对应文件所在的全路径
-10. 对感兴趣的插件，loader学习源码
-11. 动手写几个插件，loader
-12. webpack更新速度惊人，跟着作者的步伐，尽量也能在源码中找到你的代码段
+8. 理解loader执行原理 - (get)
+9. loader-runner运行机制
+10. 理解resolver是如何实现的，即如何查找对应文件所在的全路径
+11. 对感兴趣的插件，loader学习源码
+12. 动手写几个插件，loader
+13. webpack更新速度惊人，跟着作者的步伐，尽量也能在源码中找到你的代码段
 
 #### Webpack 源码调试
 
@@ -86,7 +87,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### hook执行顺序
 
-![hooks](images/hooks-chain.png)
+![hooks](images/hooks-chain-tip.png)
 
 > environment->afterEnvironment->beforeRun->run->beforeCompile->compile->make->...->buildModule（`compilation`）->failModule or successModule(`compilation`)->finishModules（`compilation`）->seal（`compilation`）->afterCompile
 >
@@ -94,7 +95,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### compilation.js方法执行顺序
 
-![compilation.js](images/compilation-run.png)
+![compilation.js](images/compilation-run-tip.png)
 
 > addEntry->_addModuleChain->addModule[判断moduleResult.build === true]->buildModule->（`NormalModule.js`）build->（`NormalModule.js`）doBuild->（`loader-runner.js`）runLoaders（该方法会把上一个loader的结果或资源文件传入进去，并且该函数内还有一些方法，可以是loader改变为异步调用方式，或者获取query参数）->iteratePitchingLoaders(loader-runner.js)->processModuleDependencies->addModuleDependencies->addModule[判断moduleResult.build === true]->回到执行buildModule
 >
@@ -186,5 +187,66 @@ build(options, compilation, resolver, fs, callback_build)
 			执行callback_doBuild
 				this.parser.parse(this._ast || this._source.source(), …)
 				执行callback_build
+```
+
+###### 理解 loader-runner
+
+> 传入resource，context，loaders，readResource，实现同步/异步loader解析
+>
+> 在loader中设置raw(true/false[default])，可以实现资源以Buffer or String形式传递
+>
+> 在loader中设置pitch，并在pitch中return返回值，可以跳过接下来会调用的loader，pitch调用方式从左到右，loader实际执行方式从右到左
+
+同步loader
+
+异步loader
+
+Raw loader处理结果方式String or Buffer
+
+pitch
+
+```
+loader总是从右到左被调用，如果前一个loader的结果不关注，想忽略该结果。可以使用pitch方法，该方法从左往右调用
+要在你的loader中实现pitch接口，如style-loader
+
+module.exports.pitch = function (request) {
+	if (this.cacheable) this.cacheable();
+
+	var options = loaderUtils.getOptions(this) || {};
+
+	validateOptions(require('./options.json'), options, 'Style Loader')
+	...
+}
+
+若在pitch中return结果，将提前终止loader的遍历
+例如
+use: [
+  'a-loader',
+  'b-loader',
+  'c-loader'
+]
+
+正常情况
+|- a-loader `pitch`
+  |- b-loader `pitch`
+    |- c-loader `pitch`
+      |- requested module is picked up as a dependency
+    |- c-loader normal execution
+  |- b-loader normal execution
+|- a-loader normal execution
+
+若a-loader在pitch中return
+|- a-loader `pitch`
+  |- b-loader `pitch` returns a module
+|- a-loader normal execution
+```
+
+!!、！含义
+
+```
+所有普通 loader 可以通过在请求中加上 ! 前缀来忽略（覆盖）。
+所有普通和前置 loader 可以通过在请求中加上 -! 前缀来忽略（覆盖）。
+所有普通，后置和前置 loader 可以通过在请求中加上 !! 前缀来忽略（覆盖）。
+不应该使用行内 loader 和 ! 前缀，因为它们是非标准的。它们可在由 loader 生成的代码中使用。
 ```
 
