@@ -175,6 +175,8 @@
 
 [the-front-end-knowledge-you-may-not-know(1.3k stars)](https://github.com/justjavac/the-front-end-knowledge-you-may-not-know)
 
+[front-end-handbook-2018](https://github.com/xitu/front-end-handbook-2018)
+
 ### 算法与数据结构
 
 [trekhleb/javascript-algorithms](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
