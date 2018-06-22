@@ -31,6 +31,16 @@
 
 [aooy/aoy](https://github.com/aooy/aoy)
 
+### 混合开发(包括vue、react、react-native、小程序、快应用)
+
+[NervJS/taro](https://github.com/NervJS/taro)
+
+[o2team/athena2](https://github.com/o2team/athena2)
+
+[Meituan-Dianping/mpvue](https://github.com/Meituan-Dianping/mpvue)
+
+[Tencent/wepy](https://github.com/Tencent/wepy)
+
 ### React
 
 #### 相关文章视频
