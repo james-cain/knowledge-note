@@ -187,6 +187,8 @@
 
 [front-end-handbook-2018](https://github.com/xitu/front-end-handbook-2018)
 
+[getify/You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)
+
 ### 算法与数据结构
 
 [trekhleb/javascript-algorithms](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
