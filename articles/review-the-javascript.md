@@ -2,7 +2,86 @@
 
 ### 箭头函数与this（Arrows and Lexical This）
 
-箭头函数与包裹它的代码共享相同的this对象，如果箭头函数在其他函数的内部，它将共享该函数的arguments变量。
+**所有的箭头函数都没有自己的this，都指向外层**，**箭头函数与包裹它的代码共享相同的this对象**，如果箭头函数在其他函数的内部，它将共享该函数的arguments变量。
+
+“箭头函数”的`this`，**总是指向定义时所在的对象**，而不是运行时所在的对象。还有一种描述**总是指向所在函数运行时的this**
+
+```
+// demo1
+var a = {
+    name: 'A',
+    fn: function () {
+        console.log(this)
+    },
+    fnArrow: () => console.log(this)
+}
+a.fn()  // {name: "A", fn: ƒ, fnArrow: ƒ}
+a.fnArrow() // Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …} 因为箭头函数指向定义时的对象，此时定义在window，指向window
+a.fn.call({name: 'B'})  // {name: "B"}
+a.fnArrow.call({name: 'B'}) // Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …} 因为箭头函数指向定义时的对象，此时定义在window，指向window
+var fn1 = a.fn
+fn1()  // Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+var fn2 = a.fnArrow
+fn2() // Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …} 因为箭头函数指向定义时的对象，此时定义在window，指向window
+
+// demo2
+function fn() {
+    console.log('real', this)
+    var arr = [1, 2, 3]
+    // 普通 JS
+    arr.map(function (item) {
+        console.log('js', this)
+        return item + 1
+    })
+    // 箭头函数
+    arr.map(item => {
+        console.log('es6', this)
+        return item + 1
+    })
+}
+fn.call({a: 100})
+输出如下：
+    real {a: 100}
+    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+    es6 {a: 100}
+    es6 {a: 100}
+    es6 {a: 100}
+fn()
+输出如下：
+	real Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+因为 fn函数只有运行后，箭头函数才会按照定义生成this指向，因此此时箭头函数定义时的所在对象恰好是fn运行时所在的对象。上例中的两个输出，第一个输出，因为fn运行时所指向的对象是{a: 100},因此箭头函数的定义时指向也为{a: 100};第二个输出，因为fn运行时所指向的对象是window，因此箭头函数的定义时指向也为window
+
+// demo3
+function foo() {
+  return () => {
+    return () => {
+      return () => {
+        console.log("id:", this.id);
+      };
+    };
+  };
+}
+
+var f = foo.call({id: 1});
+
+var t1 = f.call({id: 2})()();
+var t2 = f().call({id: 3})();
+var t3 = f()().call({id: 4});
+
+输出：
+id: 1
+id: 1
+id: 1
+原因很简单 因为f在运行时已经确定了此时的箭头函数的定义时指向，接下来的运行时的变化将不会影响this的指向
+```
 
 ```
 // this 对象
