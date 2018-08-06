@@ -18,11 +18,5 @@ transform要加上-ms-前缀，建议使用post的autoprefixer 自动添加前�
 
 如果不是，可以参考jquery的方式，或者同上方式另外写polyfill
 
-### localstorage不能使用
-
-https://github.com/mortzdk/localStorage
-
-https://github.com/machao/localStorage/blob/master/storage.js
-
 ### tab切换要点击两次才能切换--没有方案
 
