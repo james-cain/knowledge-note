@@ -21,3 +21,80 @@
 - https://www.cnblogs.com/-simon/p/5883336.html
 - https://www.cnblogs.com/callmeguxi/p/6846447.html
 
+
+
+1. DNS预解析,可以通过预解析的方式来预先获得域名所对应的IP
+
+   ```
+   <link rel="dns-prefetch" href="//xxx.com">
+   ```
+
+2. 缓存：强缓存（Expires、Cache-Control）和协商缓存（Last-Modified、If-Modified-Since和Etag、If-None-Match）
+
+   在一些特殊的地方可能需要选择特殊的缓存策略
+
+   - 对于不需要缓存的资源，可以使用Cache-Control: no-store，表示资源不需要缓存
+   - 对于频繁变动的资源，可以使用Cache-Control: no-cache并配合Etag使用，表示资源已被缓存，但是每次都会发送请求询问资源是否更新
+   - 对于代码文件来说，通常使用Cache-Control:  max-age=31536000并配合策略缓存使用，然后对文件进行指纹处理，一旦文件名变动就会立刻下载新的文件
+
+3. HTTP2.0
+
+   HTTP/1.1每个请求都会建立和断开，消耗好几个RTT时间，并且由于TCP慢启动，加载体积大的文件需要更多的时间。
+
+   HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加快了网页的加载速度。并且还支持Header压缩，进一步减少请求的数据大小
+
+4. 预加载，是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件
+
+   ```
+   <link rel="preload" href="https://example.com">
+   ```
+
+   预加载在一定程度上降低首屏的加载时间，但兼容性不好
+
+5. 预渲染，可以通过预渲染将下载的文件先放在后台渲染
+
+   ```
+   <link rel="prerender" href="https://example.com">
+   ```
+
+6. 懒执行，将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，懒执行需要唤醒，一般可以通过定时器或者事件的调用来唤醒
+
+7. 懒加载，将不关键的资源延后加载。原理是只加载自定义区域（通常是可视区域，也可以是即将进入可视区域）内需要加载的东西。懒加载不仅可以用于图片，也可以使用在别的资源上，比如进入可视区域才开始播放视频等等。
+
+8. 如何渲染几万条数据并不卡住界面
+
+   ```
+   可以通过requestAnimationFrame来每16ms刷新一次
+   
+   setTimeout(() => {
+       // 插入10万条数据
+       const total = 100000;
+       // 一次插入20条，如果觉得性能不好就减少
+       const once = 20;
+       // 渲染数据总共需要几次
+       const loopCount = total / once;
+       let countOfRender = 0;
+       let ul = document.querySelector("ul");
+       function add() {
+           //优化性能，插入不会造成回流
+           const fragment = document.createDocumentFragment();
+           for(let i = 0; i < once; i++) {
+               const li = document.createElement("li");
+               li.innerText = Math.floor(Math.random() * total);
+               fragment.appendChild(li);
+           }
+           ul.appendChild(fragment);
+           countOfRender += 1;
+           loop();
+       }
+       function loop() {
+           if (countOfRender < loopCount) {
+               window.requestAnimationFrame(add);
+           }
+       }
+       loop();
+   }, 0);
+   ```
+
+   
+
