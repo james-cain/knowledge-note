@@ -381,4 +381,256 @@ Cache-Control: public, max-age=31536000
     Clear-Site-Data: "cookies"
     ```
 
+19. Connection：决定当前的事务完成后，是否会关闭网络连接。如果该值是“keep-alive”，网络连接就是持久不会关闭的。keep-alive不是必须填的
+
+20. Content-Disposition：指示回复的内容该以何种形式展示，以内联（**inline**）即网页或者页面的一部分，还是附件（attachment）的形式下载并保存到本地，大多数浏览器会呈现一个“保存为”的对话框，将filename的值预填为下载后的文件名
+
+    Content-Disposition: inline
+
+    Content-Disposition: attachment
+
+    Content-Disposition: attachment; filename="filename.jpg"
+
+21. Content-Encoding：实体消息首部，用于对特定媒体类型的数据进行压缩。对于特定类型的文件，比如jpeg图片文件，已经进行压缩过的，就不需要继续压缩
+
+22. Content-Language：用来说明访问者希望采用的语言或语言组合，这样的话用户就可以根据自己偏好的语言来定制不同的内容
+
+23. Content-Length：用来指名发送给接收方的消息主体的大小，用十进制数字表示
+
+24. Content-Location：首部指定的是要返回的数据的地址选项。最主要的用途是用来指定要访问的资源经过内容协商后的结果的URL
+
+    **Location**-指定的是一个重定向请求的目的地址（或者新创建的文件的URL）-对应的是响应
+
+    Content-Location-指向的是可供访问的资源的直接地址，不需要进行进一步的内容协商-对应的是要返回的实体
+
+25. Content-Range：显示的是一个数据片段在整个文件中的位置
+
+    Content-Range: <**unit**>  <**range-start**>-<**range-end**>/<**size**>
+
+    Content-Range: <**unit**>  <**range-start**>-<**range-end**>/*
+
+    Content-Range: <**unit**>  */<**size**>
+
+    unit-数据区间所采用的单位。通常是字节（byte）
+
+    range-start-区间起始值
+
+    range-end-区间的结束值
+
+    size-整个文件的大小
+
+26. Content-Security-Policy：允许站点管理者在指定的页面控制用户代理的资源。主要以白名单的形式配置可信任的内容来源，在网页中，能够使用白名单中的内容正常执行（包含JS、CSS、Image等），而非白名单的内容无法正常执行，这条策略将极大的指定服务源以及脚本端点。减少**跨站点脚本攻击（XSS）**，也能减少**运营商劫持的内容注入攻击**
+
+    Head中添加Meta标签示例
+
+    ```
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+    ```
+
+    不支持CSP的浏览器将会自动忽略CSP的信息，不会有什么影响
+
+    当定义多个策略的时候，浏览器会优先采用最先定义的。
+
+    | 指令            | 取值示例                  | 说明                                                         |
+    | --------------- | ------------------------- | ------------------------------------------------------------ |
+    | default-src     | 'self' cdn.example.com    | 定义针对所有类型（js/image/css/web font/ajax/iframe/多媒体等）资源的默认加载策略，某类型资源如果没有单独定义策略，就使用默认。 |
+    | script-src      | 'self' js.example.com     | 定义针对JavaScript的加载策略                                 |
+    | object-src      | 'self'                    | 针对,, 等标签的加载策略                                      |
+    | style-src       | 'self' css.example.com    | 定义针对样式的加载策略                                       |
+    | img-src         | 'self' image.example.com  | 定义针对图片的加载策略                                       |
+    | media-src       | 'media.example.com'       | 针对或者引入的html多媒体等标签的加载策略                     |
+    | frame-src       | 'self'                    | 针对iframe的加载策略                                         |
+    | connect-src     | 'self'                    | 针对Ajax、WebSocket等请求的加载策略。不允许的情况下，浏览器会模拟一个状态为400的响应 |
+    | font-src        | font.qq.com               | 针对Web Font的加载策略                                       |
+    | sandbox         | allow-forms allow-scripts | 对请求的资源启用sandbox                                      |
+    | report-uri      | /some-report-uri          | 告诉浏览器如果请求的资源不被策略允许时，往哪个地址提交日志信息。不阻止任何内容，可以改用Content-Security-Policy-Report-Only头 |
+    | base-uri        | 'self'                    | 限制当前页面的url（CSP2）                                    |
+    | child-src       | 'self'                    | 限制子窗口的源(iframe、弹窗等),取代frame-src（CSP2）         |
+    | form-action     | 'self'                    | 限制表单能够提交到的源（CSP2）                               |
+    | frame-ancestors | 'none'                    | 限制了当前页面可以被哪些页面以iframe,frame,object等方式加载（CSP2） |
+    | plugin-types    | application/pdf           | 限制插件的类型（CSP2）                                       |
+    | manitest-src    |                           | 限制application manifest文件源                               |
+    | worker-src      |                           | 限制Worker，SharedWorker或者ServiceWorker脚本源              |
+    | disown-opener   |                           | 确保资源在操作的时候能够脱离父页面                           |
+    | navigation-to   |                           | 限制文档可以通过以下任何方式访问URL（a，form，window.location，window.open，etc） |
+    | report-to       |                           | Fires a `SecurityPolicyViolationEvent`                       |
+
+    指令值示例及说明
+
+    | 指令值                              | 示例                                        | 说明                                                         |
+    | ----------------------------------- | ------------------------------------------- | ------------------------------------------------------------ |
+    | *                                   | img-src *                                   | 允许任何内容                                                 |
+    | none'                               | img-src 'none'                              | 不允许任何内容                                               |
+    | 'self'                              | img-src 'self'                              | 允许同源内容                                                 |
+    | data:                               | img-src data:                               | 允许data:协议（如base64编码的图片）                          |
+    | [www.a.com](http://www.a.com/)      | img-src [www.a.com](http://www.a.com/)      | 允许加载指定域名的资源                                       |
+    | *.a.com                             | img-src *.a.com                             | 允许加载a.com任何子域的资源                                  |
+    | [https://img.com](https://img.com/) | img-src [https://img.com](https://img.com/) | 允许加载img.com的https资源                                   |
+    | https:                              | img-src https:                              | 允许加载https资源                                            |
+    | 'unsafe-inline'                     | script-src 'unsafe-inline'                  | 允许加载inline资源（style属性，onclick，inline js和inline css等等） |
+    | 'unsafe-eval'                       | script-src 'unsafe-eval'                    | 允许加载动态js代码，例如eval()                               |
+
+    CSP使用方式
+
+    HTML Meta标签
+
+    Meta标签主要含有两部分的key-value：
+
+    - http-equiv
+    - content
+
+    ```
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+    ```
+
+    HTTP Header
+
+    通过HTTP header带上CSP的指令，可以支持所有请求
+
+    ```
+    Content-Security-Policy: script-src 'self' *.qq.com *.url.cn
+    ```
+
+27. Content-Security-Policy-Report-Only：响应头允许通过监测策略，生成JSON文档，通过POST请求发送到指定的URI，该策略只会返回报告，不会阻止运行，这是和Content-Security-Policy的却别
+
+28. Content-Type：用于指示资源的MIME类型media type。在响应中，Content-Type标头告诉客户端实际返回的内容的内容类型。浏览器会在某些情况下进行MIME查找，并不一定遵循此标题的值；为了防止这种行为，可以将标题**X-Content-Type-Options**设置为**nosniff**
+
+29. Cookie：存放由服务端通过Set-Cookie设置的HTTP cookies
+
+30. DNT（Do Not Track）：表明用户对于网站追踪的偏好。DNT: 0/1
+
+    0-表示用户愿意目标站点追踪用户个人信息
+
+    1-表示用户不愿意目标站点追踪用户个人信息
+
+31. Date：包含了消息生成的日期和时间
+
+32. Etag：资源的特定版本的标识符。让缓存更高效，并节省带宽，如果内容没有改变，Web服务器不需要发送完整的响应。Etag可以防止资源的同时更新相互覆盖（“空中碰撞”）
+
+    如果给定URL中的资源更改，则一定要生成新的Etag值。比较etags能快速确定此资源是否变化，但也可能被跟踪服务器永久存留。
+
+    指令
+
+    - 'W/'表示使用弱验证器。弱验证器很容易生成，但不利于比较
+    - "<**etag-value**>"实体标签唯一表示所请求的资源。没有明确的算法实现，通常可以使用内容的散列，最后修改时间戳的哈希值，或简单的使用版本号方式
+
+    **避免“空中碰撞”**- 使用Etag和If-Match头部实现
+
+    **缓存未更改的资源**-通过Etag和If-None-Match比较实现。1.用户再次访问给定的URL（设有ETag字段），显示资源过期了且不可用，客户端就发送值为ETag的IF-None-Match header字段 2.服务端将客户端的ETag与其当前版本的资源的ETag进行比较，如果两个值匹配，服务器将返回不带任何内容的304未修改状态，告诉客户端缓存版本可用
+
+33. Expect：是一个请求消息头，包含一个期望条件，表示服务器只有在满足此期望条件的情况下才能妥善处理请求。
+
+34. Expires：响应头包含日期/时间，即在此时候之后，响应过期（http1.1）
+
+    如果在Cache-Control响应头中设置了"max-age"或者"s-max-age"指令，那么Expires头会被忽略
+
+35. Forwarded：包含了代理服务器的客户端的信息，即由于代理服务在请求路径中的接入而被修改或丢失的信息。可以用X-Forwarded-For、X-Forwarded-Host、X-Forwarded-Proto替换。会暴露一定的隐私和敏感信息，比如客户端的IP地址。
+
+    ```
+    Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>
+    ```
+
+    Identifier - 显示在使用代理的过程中被修改或者丢失的信息。
+
+    - 一个IP地址（V4或V6，ipv6地址需要包含在方括号里面，同时用括号括起来）
+    - 语意不明的标识符（比如“_ hidden”或“_ secret”）
+    - "unknown"，当前信息实体不可知
+
+    by - 请求进入到代理服务器的接口
+
+    for - 发起请求的客户端以及代理链中的一系列的代理服务器
+
+    host - 代理接收到的Host首部的信息
+
+    proto - 发起请求时采用的何种协议，通常是"http"或者"https"
+
+    ```
+    # 大小写不敏感
+    Forwarded: For="[2001:db8:cafe::17]:4711"
     
+    # for proto by 之间可用分号分隔
+    Forwarded: for=192.0.2.60; proto=http; by=203.0.113.43
+    
+    # 多值可用逗号分隔
+    Forwarded: for=192.0.2.43, for=198.51.100.17
+    ```
+
+36. Host：指名了服务器的域名，以及（可选的）服务器监听的TCP端口号。如果没有给定端口号，会自动使用被请求服务的默认端口（一般为80）HTTP1.1的所有请求报文中**必须包含**一个Host头字段。如果一个HTTP1.1请求缺少Host头字段或者设置了超过一个的Host头字段，会返回400状态码
+
+37. If-Match：表示是一个条件请求。在请求方法为GET和HEAD的情况下，服务器仅在请求的资源满足此首部列出的ETag之一时才会返回资源。而对于PUT或其他非安全方法来说，只有在满足条件的情况下才可以将资源上传
+
+38. If-Modified-Since：条件式请求首部，服务器只在所请求的资源在给定的日期时间之后对内容进行过修改的情况下才会将资源返回，状态码为200。如果请求的资源从那时未修改，那么返回一个不带有消息主体的304响应，而在**Last-Modified**首部中会带有上次修改时间。该**请求参数只会在GET或者HEAD请求中使用**
+
+    当与If-None-Match一同出现时，会被忽略掉，除非服务器不支持If-None-Match
+
+39. If-None-Match：表示是一个条件请求。对于GET和HEAD请求方法，当且仅当服务器上没有任何资源的ETag属性值与这个首部中列出的相匹配的时候，服务器端才会返回请求的资源，响应码200。对于其他方法来说，当且仅当最终确认没有已存在的资源的  [`ETag`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/ETag) 属性值与这个首部中所列出的相匹配的时候，才会对请求进行相应的处理。
+
+40. If-Range：HTTP请求头字段用来使得Range头字段在一定条件下起作用：当字段值中的条件得到满足时，Range头字段才会起作用，同时服务器回复**206**部分内容状态码，以及Range头字段请求的响应部分；如果字段值中的条件没有得到满足，服务器将会返回200状态码，将返回完整的请求资源
+
+    If-Range头字段通常用于断点续传的下载过程中，用来自从上次中断后，确保下载的资源没有发生改变
+
+    ```
+    If-Range: <星期>, <日> <月> <年> <时>:<分>:<秒> GMT
+    If-Range: <etag>
+    ```
+
+41. If-Unmodified-Since：用于请求中，使得当前请求称为条件式请求：只有当资源在指定的时间之后没有进行过修改的情况下，服务器才会返回请求的资源，或是接受POST或其他non-safe方法的请求。如果所请求的资源在指定的时间之后发生了修改，那么会返回412错误
+
+    应用场景：
+
+    - 与non-safe方式如POST搭配使用，可以用来优化并发控制
+    - 与含有If-Range消息头的范围请求搭配使用，用来确保新的请求片段来自于未经修改的文档
+
+42. Keep-Alive（非标准）：允许消息发送者暗示连接的状态，还可以用来设置超时时长和最大请求数
+
+43. Large-Allocation(非标准)：用来告诉浏览器加载该页面可能需要申请大内存。当前只有Firefox实现。WebAssembly或者asm.js会使用比较大的连续内存空间。Large-Allocation告诉浏览器将要加载的页面可能需要申请一个大的连续内存空间，浏览器依据该头部可能会单独启动一个专有的进程用于处理该页面
+
+    指令：0- 是一个特殊值，代表分配的大小不确定（动态允许） <**megabytes**>- 预期需要申请的内存大小，以M为单位
+
+44. Last-Modified：响应首部，包含源头服务器认定的资源作出修改的日期及时间。
+
+45. Location：首部指定的是需要将页面重新定向至的地址（状态码为303、307、308、301、302）或者新创建的文件的URL（状态为201）。一般在响应码为3XX的响应中才会有意义
+
+46. Origin：请求首部，指示请求来自于哪个站点。该字段指示服务器名称，并不包含任何路径信息。该首部用于**POST**或者**CORS**请求
+
+47. Proxy-Authenticate：响应首部，指定了获取proxy server（代理服务器）上的资源访问权限而采用的身份验证方式。代理服务器对请求进行验证，以便进一步传递请求。
+
+48. Proxy-Authentization：请求首部，其中包含了用户代理提供给代理服务器的用于身份验证的凭证
+
+49. Range：请求首部，告知服务器返回文件的哪一部分。在一个Range首部中，可以一次性请求多个部分，服务器会以multipart文件的形式将其返回。如果服务器返回的是范围响应，需要使用206状态码。
+
+    ```
+    Range: <unit>=<range-start>-
+    Range: <unit>=<range-start>-<range-end>
+    Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>
+    Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>, <range-start>-<range-end>
+    ```
+
+50. Referer：包含了当前请求页面的来源页面的地址，即表示当前页面是通过此来源页面里的链接进入的。服务端一般用该首部识别访问来源。
+
+    ```
+    Referer首部可能暴露用户的浏览历史，涉及到用户的隐私问题
+    ```
+
+    在以下两种情况下，Referer不会被发送：
+
+    - 来源页面采用的协议为表示本地文件的 "file" 或者 "data" URI；
+    - 当前请求页面采用的是非安全协议，而来源页面采用的是安全协议（HTTPS）
+
+51. Referrer-Policy：用来监管哪些访问来源信息—会在Referer中发送—应该被包含在生成的请求当中
+
+    指令：
+
+    - no-referrer- 整个referer首部会被移除
+    - no-referrer-when-downgrade（默认值）- 在没有指定任何策略的情况下用户代理的默认行为。在同等安全级别的情况下，引用页面的地址会被发送（HTTPS -> HTTPS），但是在降级的情况下不会被发送（HTTPS->HTTP）
+    - origin- 在任何情况下，仅发送**文件的源**作为引用地址
+    - origin-when-cross-origin- 对于**同源的请求**，会发送**完整的URL**作为引用地址，但是对于**非同源请求**仅发送**文件的源**
+    - same-origin- 对于同源的请求会发送引用地址，非同源不会发送
+    - strict-origin- 在同等安全级别的情况下，发送文件的源作为引用地址，降级的情况不会发送
+    - strict-origin-when-cross-origin- 对于同源的请求，会发送完整的URL作为引用地址；在同等安全级别的情况下，发送文件的源作为引用地址；在降级的情况下不发送此首部
+    - unsafe-url- 无论是同源请求还是非同源请求，都发送完整的URL作为引用地址
+
+    例子[https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referrer-Policy](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referrer-Policy)
+
+52. Retry-After：响应首部，表示用户代理需要等待多长时间之后才能继续发送请求
+
