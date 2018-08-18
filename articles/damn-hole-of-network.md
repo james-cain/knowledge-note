@@ -634,3 +634,46 @@ Cache-Control: public, max-age=31536000
 
 52. Retry-After：响应首部，表示用户代理需要等待多长时间之后才能继续发送请求
 
+    - 当与503（当前服务不存在）响应一起发送的时候，表示服务下线的预期时长
+    - 当与重定向响应一起发送的时候，如301（永久迁移），表示用户代理在发送重定向请求之前需要等待的最短时间
+
+53. Set-Cookie：响应首部，被用来由服务器向客户端发送cookie
+
+    指令：
+
+    **Expires**=<**date**> cookie的最长有效时间，形式为符合HTTP-date规范的时间戳。如果没有设置这个属性，表示是一个**会话期cookie**
+
+    **Max-Age**=<**non-zero-digit**> 在cookie失效之前需要经过的秒数。老的浏览器（ie6 7 8）不支持这个属性。Expires和Max-Age同时存在，Max-Age优先级更高
+
+    **Domain**=<**domain-value** > 指定cookie可以送达的主机名
+
+    **Path**=<**path-value**> 指定一个URL路径，这个路径必须出现在要请求的资源的路径中才可以发送Cookie首部。如果path=/docs，那么"/docs"，"/docs/Web/"或者"/docs/Web/HTTP"都满足匹配的条件
+
+    **Secure** 只有在请求使用SSL和HTTPS协议的时候才会被发送到服务器
+
+    **HttpOnly** 设置了HttpOnly属性的cookie不能使用Javascript经由Document.cookie属性、XMLHttpRequest和Request API上进行访问，防范跨站脚本攻击（XSS）
+
+    **SameSite**=**Strict/Lax** 设置后cookie不随跨域请求一起发送，一定程度上防范跨站请求伪造攻击（CSRF）
+
+54. SourceMap HTTP响应头连接生成的代码到一个source map，使浏览器能够重建原始的资源然后显示在调试器里
+
+55. User-Agent 首部包含了一个特征字符串，用来让网络协议的对端来识别发起请求的用户代理软件的应用类型、操作系统、软件开发商以及版本号
+
+    ```
+    User-Agent: <product> / <product-version> <comment>
+    ```
+
+    ```
+    Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0
+    Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0
+    ```
+
+56. Vary 响应头，决定了对于未来的一个请求头，应该用一个缓存的回复（response）还是向源服务器请求一个新的回复
+
+#### Post和Get区别
+
+- Get请求能缓存，Post不能
+- Post相对Get安全一点，因为Get请求都包含在URL里，且会被浏览器保存历史记录，Post不会，但是抓包还是一样
+- Post可以通过request body来传输比Get更多的数据
+- URL有长度限制，会影响Get请求，但是这个长度限制是浏览器规定的，不是RFC规定的
+- Post支持更多的编码类型且不对数据类型限制
