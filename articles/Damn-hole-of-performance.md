@@ -96,5 +96,86 @@
    }, 0);
    ```
 
+9. 防抖（debounce）
+
+   原理：尽管触发事件，但是一定在事件触发n秒后才执行，如果在事件触发的n秒内又触发了这个事件，就以新的事件的时间为准，n秒后才执行，总之，就是要等触发完事件n秒内不再触发事件，才执行。
+
+   例子
+
+   ```
+   <!DOCTYPE html>
+   <html lang="zh-cmn-Hans">
    
+   <head>
+       <meta charset="utf-8">
+       <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+       <title>debounce</title>
+       <style>
+           #container{
+               width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+           }
+       </style>
+   </head>
+   
+   <body>
+       <div id="container"></div>
+       <script src="debounce.js"></script>
+   </body>
+   	<script>
+   		var count = 1;
+           var container = document.getElementById('container');
+   
+           function getUserAction(e) {
+               container.innerHTML = count++;
+           };
+   
+           var setUseAction = debounce(getUserAction, 10000, true);
+   
+           container.onmousemove = setUseAction;
+   
+           document.getElementById("button").addEventListener('click', function(){
+               setUseAction.cancel();
+           })
+   	</script>
+   </html>
+   ```
+
+   Debounce.js
+
+   ```
+   function debounce(func, wait, immediate) {
+   
+       var timeout, result;
+   
+       var debounced = function () {
+           var context = this;
+           var args = arguments;
+   
+           if (timeout) clearTimeout(timeout);
+           if (immediate) {
+               // 如果已经执行过，不再执行
+               var callNow = !timeout;
+               timeout = setTimeout(function(){
+                   timeout = null;
+               }, wait)
+               if (callNow) result = func.apply(context, args)
+           }
+           else {
+               timeout = setTimeout(function(){
+                   func.apply(context, args)
+               }, wait);
+           }
+           return result;
+       };
+   
+       debounced.cancel = function() {
+           clearTimeout(timeout);
+           timeout = null;
+       };
+   
+       return debounced;
+   }
+   ```
+
+   注意：当涉及函数有返回值时，debounce中同样要返回函数的执行结果，但是当immediate为false的时候，因为使用功能了setTimeout，将func.apply(context, args)的返回值赋给变量，最后再return的时候，值将会一直是undefined，所以只在immediate为true的时候返回函数的执行结果
 
