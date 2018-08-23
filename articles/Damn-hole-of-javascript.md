@@ -177,14 +177,17 @@ unique(array);
 
 **最常见使用的是typeof**
 
-| 类型      | typeof     |
-| --------- | ---------- |
-| Undefined | undefined  |
-| **Null**  | **object** |
-| Boolean   | boolean    |
-| Number    | number     |
-| String    | string     |
-| Object    | object     |
+| 类型                     | typeof                   |
+| ------------------------ | ------------------------ |
+| Undefined                | undefined                |
+| **Null**                 | **object**               |
+| Boolean                  | boolean                  |
+| Number                   | number                   |
+| String                   | string                   |
+| Symbol                   | symbol                   |
+| 宿主对象（由JS环境提供） | Implementation-dependent |
+| 函数对象                 | function                 |
+| Object(任何其他对象)     | object                   |
 
 显然，typeof对object的检测是不精确的，Object还有很多细分类型，如Date，Function，Array，RegExp，Error等，对于这些返回的都是object
 
@@ -805,17 +808,380 @@ console.log(Object.getPrototypeOf(person) === Person.prototype) // true es5获�
 console.log(Object.prototype.__proto__ === null) // true
 ```
 
-17. 变量对象
+17. 参数按值传递
 
-变量是与执行上下文相关的数据作用域，存储了在上下文中定义的变量和函数声明
+ECMAScript中规定，所有函数的参数都是按值传递，可以理解为把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。
 
-**全局上下文**
+但是，同样存在困惑，如下例子
 
-**全局对象**？是预定义的对象，作为Javascript的全局函数和全局属性的占位符。通过使用全局对象，可以访问所有其他预定义的对象、函数和属性。在顶层Javascript中，可以用关键字this引用全局对象。因为全局对象是作用域链的头，意味着所有非限定性的变量和函数名都会作为该对象的属性。
+```
+var obj = {
+    value: 1
+};
+function foo (o) {
+    o.value = 2;
+    console.log(o.value); // 2
+}
+foo(obj);
+console.log(obj.value); // 2
+```
 
-在客户端Javascript中，全局对象就是Window对象
+不是说是按值传递吗？为什么这里看着就像引用传递呢？同样在看一个例子
 
-**函数上下文**
+```
+var obj = {
+    value: 1
+};
+function foo(o) {
+    o = 2;
+    console.log(o); // 2
+}
+foo(obj);
+console.log(obj.value); // 1
+```
 
-用活动对象（activation object，AO）来表示变量对象
+怎么上例中又不发生改变呢？
+
+> 其实，在传递方式，还有一种叫做共享传递。即在传递对象的时候，传递对象的引用的副本，其实还是按值传递
+
+**注意：按引用传递传递对象的引用，而按共享传递是传递对象的引用的副本**
+
+所以，不难理解，当修改o.value，可以通过引用找到原值，但是直接修改o，并不会修改原值。
+
+18. 创建对象的多种方式及优缺点
+
+**工厂模式**
+
+```
+function createPerson(name) {
+    var o = new Object();
+    o.name = name;
+    o.getName = function() {
+        console.log(this.name);
+    }
+    return o;
+}
+var person1 = createPerson('xx');
+console.log(person1 instanceof createPerson); // false
+console.log(person1 instanceof Object); // true
+```
+
+缺点：对象无法识别，因为所有的实例都指向一个原型
+
+**构造函数模式**
+
+```
+function Person(name) {
+    this.name = name;
+    this.getName = function () {
+        console.log(this.name);
+    }
+}
+
+var person2 = new Person('xx');
+console.log(person2 instanceof Person); // true
+console.log(person2 instanceof Object); // true
+```
+
+优点：实例可以识别为一个特定的类型
+
+缺点：每次创建实例时，每个方法都要被创建一次
+
+**构造函数模式优化**
+
+```
+function Person(name) {
+    this.name = name;
+    this.getName = getName;
+}
+function getName () {
+    console.log(this.name);
+}
+
+var person3 = new Person('xx');
+```
+
+优点：解决了每个方法都要被重新创建的问题
+
+缺点：这个不算是封装
+
+**原型模式**
+
+```
+function Person(name) {}
+Person.prototype.name = 'xx';
+Person.prototype.getName = function () {
+    console.log(this.name);
+}
+
+var person4 = new Person();
+```
+
+优点：解决方法不会重新创建
+
+缺点：1.所有的属性和方法都共享 2.不能初始化参数
+
+**组合模式**
+
+构造函数模式与原型模式双剑合璧
+
+```
+function Person(name) {
+    this.name = name;
+}
+Person.prototype = {
+    constructor: Person,
+    getName: function () {
+        console.log(this.name);
+    }
+}
+
+var person5 = new Person();
+```
+
+优点：该共享的共享，该私有的私有
+
+缺点：希望全都都写在一起，即更好的封装性
+
+**动态原型模式**
+
+```
+function Person(name) {
+    this.name = name;
+    if (typeof this.getName != "function") {
+        Person.prototype.getName = function () {
+            console.log(this.name);
+        }
+    }
+}
+
+var person6 = new Person('xx');
+```
+
+但是用这个方式时，**不能用对象字面量重新原型**
+
+如下解释：
+
+```
+function Person(name) {
+    this.name = name;
+    if (typeof this.getName != "function") {
+        Person.prototype = {
+            constructor: Person,
+            getName: function () {
+                console.log(this.name);
+            }
+        }
+    }
+}
+
+var person1 = new Person('kevin');
+var person2 = new Person('daisy');
+
+// 报错 并没有该方法
+person1.getName();
+
+// 注释掉上面的代码，这句是可以执行的。
+person2.getName();
+```
+
+原因很简单，new的具体实现步骤为：
+
+- 首先创建一个对象
+- 然后将对象的原型指向Person.prototype
+- 然后Person.apply(obj)
+- 返回这个对象
+
+在执行obj.Person方法时，person1的prototype属性指向了员原来实例的原型，这里使用字面量方式直接覆盖Person.prototype，并不会更改实例的原型的值，person1依然指向原来的原型，而不是Person.prototype，而之前的原型是没有getName方法的，所以就报错了。
+
+**寄生构造函数模式**
+
+```
+function Person (name) {
+    var o = new Object();
+    o.name = name;
+    o.getName = function () {
+        console.log(this.name);
+    }
+    return o;
+}
+
+var person7 = new Person('xx')
+console.log(person7 instanceof Person); // false
+console.log(person7 instanceof Object); // true
+```
+
+这种写法有一个好处，比如想给特殊数组创建方法，又不想直接修改Array构造函数，可以这样写：
+
+```
+function SpecialArray() {
+    var values = new Array();
+    for (var i = 0, len = arguments.length; i < len; i++) {
+        values.push(arguments[i]);
+    }
+
+    values.toPipedString = function () {
+        return this.join("|");
+    };
+    return values;
+}
+
+var colors = new SpecialArray('red', 'blue', 'green');
+var colors2 = SpecialArray('red', 'blue', 'green');
+
+console.log(colors);
+console.log(colors.toPipedString); // red|blue|green
+
+console.log(colors2);
+console.log(colors2.toPipedString); // red|blue|green
+```
+
+其实，寄生构造函数模式和工厂模式在创建对象的时候，就多使用了new，实际两者的结果是一样的
+
+**稳妥构造函数模式**
+
+```
+function person(name) {
+	var o = new Object();
+	o.sayName = function () {
+        console.log(name);
+	};
+	return o;
+}
+
+var person9 = person('xx');
+person9.sayName(); // xx
+person9.name = 'xx2';
+person9.sayName(); // xx
+console.log(person9.name); //xx2
+```
+
+19. 继承的多种方式和优缺点
+
+**原型链继承**
+
+```
+function Parent () {
+    this.name = 'xx';
+}
+Parent.prototype.getName = function () {
+    console.log(this.name);
+}
+function Child() {}
+Child.prototype = new Parent();
+var child1 = new Child();
+console.log(child1.getName()); // xx
+```
+
+问题：
+
+1. 引用类型的属性被所有实例共享
+2. 在创建Child的实例时，不能向Parent传参
+
+**借用构造函数(经典继承)**
+
+```
+function Parent() {
+    this.names = ['xl', 'cora'];
+}
+function Child() {
+    Parent.call(this);
+}
+var child1 = new Child();
+child1.names.push('cain');
+console.log(child1.names); // ['xl', 'cora', 'cain']
+var child2 = new Child();
+console.log(child2.names); // ['xl', 'cora']
+```
+
+优点：
+
+1. 避免了引用类型的属性被所有实例共享
+
+2. 可以在Child中向Parent传参
+
+   举个例子
+
+   ```
+   function Parent (name) {
+       this.name = name;
+   }
+   
+   function Child (name) {
+       Parent.call(this, name);
+   }
+   
+   var child1 = new Child('kevin');
+   
+   console.log(child1.name); // kevin
+   
+   var child2 = new Child('daisy');
+   
+   console.log(child2.name); // daisy
+   ```
+
+缺点：
+
+方法都在构造函数中定义，每次创建实例都会创建一遍方法。
+
+**组合继承**
+
+原型链继承和经典继承双剑合璧
+
+```
+function Parent(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+Parent.prototype.getName = function (){
+    console.log(this.name);
+}
+function Child(name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+
+var child1 = new Child('kevin', '18');
+
+child1.colors.push('black');
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // ["red", "blue", "green", "black"]
+
+var child2 = new Child('daisy', '20');
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // ["red", "blue", "green"]
+```
+
+优点： 融合原型链继承和构造函数的优点，是Javacript中最常用的继承模式。
+
+**原型式继承**
+
+```
+function createObj(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+```
+
+Object.create的模拟实现，将传入的对象作为创建的对象的原型
+
+缺点：包含引用类型的属性值始终都会共享响应的值跟原型链继承一样
+
+```
+var person = {
+    name: 'xl',
+    friends: ['cora'],
+}
+var person1 = createObj(person);
+var person2 = createObj(person);
+person1.name = 'person1';
+console.log(person2.name); // 
+```
 
