@@ -71,7 +71,7 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 ##### 建立连接三次握手
 
-![三次握手](https://coracain.top/assets/三次握手.png)
+![三次握手](https://coracain.top/assets/3timeshandshake.png)
 
 主动发起端称为客户端，被动连接端称为服务端。不管是客户端还是服务端，TCP连接建立后都能发送和接受数据，所以TCP是一个**全双工**的协议
 
@@ -95,7 +95,7 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 ##### 断开连接四次握手
 
-![四次握手](https://coracain.top/assets/四次握手.png)
+![四次握手](https://coracain.top/assets/4timeshandshake.png)
 
 在断开连接时两端都需要发送FIN和ACK
 
@@ -137,11 +137,11 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 发送端窗口是由接收端窗口剩余大小决定的。接收方会把当前接收窗口的剩余大小写入应答报文，发送端收到应答后根据该值和网络拥塞情况设置发送窗口的大小，所以发送窗口的大小是不断变化的
 
-![滑动窗口1](https://coracain.top/assets/滑动窗口1.png)
+![滑动窗口1](https://coracain.top/assets/sliderwindow1.png)
 
 当发送端接收到应答报文后，会将窗口进行滑动
 
-![滑动窗口2](https://coracain.top/assets/滑动窗口2.png)
+![滑动窗口2](https://coracain.top/assets/sliderwindow2.png)
 
 **滑动窗口实现了流量控制**。接收方通过报文告知发送方还可以发送多少数据，从而保证接收方能够来得及接收数据
 

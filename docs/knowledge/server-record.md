@@ -107,7 +107,7 @@ echo "comtop       ALL=(ALL)       NOPASSWD: ALL" >>/etc/sudoers  该命令将�
 
 
 
-![ssh没有显示用户名](https://coracain.top/assets/ssh没有显示用户名.png)
+![ssh没有显示用户名](https://coracain.top/assets/sshnoshowusername.png)
 
 原因是  创建用户的时候，手动把目录给删了  重新添加了目录，导致默认配置信息被修改后，显示不了
 
@@ -337,27 +337,27 @@ yum install -y openssl openssl-devel
 
 > ./configure
 
-![nginx配置过程1](https://coracain.top/assets/nginx配置过程1.png)
+![nginx配置过程1](https://coracain.top/assets/nginxconfig1.png)
 
-![nginx配置过程2](https://coracain.top/assets/nginx配置过程2.png)
+![nginx配置过程2](https://coracain.top/assets/nginxconfig2.png)
 
 第二步
 
 > make
 
-![nginx安装make](https://coracain.top/assets/nginx安装make.png)
+![nginx安装make](https://coracain.top/assets/nginxinstallmake.png)
 
 第三步
 
 > make install
 
-![nginx安装make_install](https://coracain.top/assets/nginx安装make_install.png)
+![nginx安装make_install](https://coracain.top/assets/nginxinstallmake_install.png)
 
 第四步，检查安装路径
 
 > whereis nginx
 
-![nginx安装检查](https://coracain.top/assets/nginx安装检查.png)
+![nginx安装检查](https://coracain.top/assets/nginxinstallcheck.png)
 
 ##### 启动、停止nginx
 
@@ -409,7 +409,7 @@ vi /etc/rc.local
 chmod 755 rc.local
 ```
 
-![nginx开机自启动](https://coracain.top/assets/nginx开机自启动.png)
+![nginx开机自启动](https://coracain.top/assets/nginxautostart.png)
 
 #### 测试nginx启动时问题
 
@@ -421,7 +421,7 @@ chmod 755 rc.local
 
 开启后解决问题
 
-![0端口访问一直不](https://coracain.top/assets/80端口访问一直不通.png)
+![0端口访问一直不](https://coracain.top/assets/80portnotwork.png)
 
 #### https配置
 
@@ -435,7 +435,7 @@ chmod 755 rc.local
 
 第一步 建立服务器秘钥：
 
-![http服务器上配置mod_ssl](https://coracain.top/assets/http服务器上配置mod_ssl.png)
+![http服务器上配置mod_ssl](https://coracain.top/assets/httpconfmod_ssl.png)
 
 ```
 [root@test ~]#  cd /etc/pki/tls/certs/　 ← 进入HTTP服务器配置文件所在目录
@@ -450,7 +450,7 @@ Enter pass phrase:　                     ← ![http服务器上配置mod_ssl-�
 Verifying - Enter pass phrase:　  ← 确认口令，再次输入
 ```
 
-![http服务器上配置mod_ssl-删除秘钥中的密码](https://coracain.top/assets/http服务器上配置mod_ssl-删除秘钥中的密码.png)
+![http服务器上配置mod_ssl-删除秘钥中的密码](https://coracain.top/assets/httpconfmod_ssl-delete.png)
 
 ```
 [root@test certs]#  openssl rsa -in server.key -out server.key　 ← 从密钥中删除密码（以避免系统启动后被询问口令）
@@ -460,7 +460,7 @@ writing RSA key
 
 第二步 建立服务器公钥
 
-![http服务器上配置公钥](https://coracain.top/assets/http服务器上配置公钥.png)
+![http服务器上配置公钥](https://coracain.top/assets/httpconfigpublickey.png)
 
 ```
 [root@test certs]#  make server.csr　 ← 建立服务器密钥
@@ -488,7 +488,7 @@ An optional company name []: 　 ← 不输入，直接回车
 
 第三步 建立服务器证书
 
-![http服务器上建立服务器证书](https://coracain.top/assets/http服务器上建立服务器证书.png)
+![http服务器上建立服务器证书](https://coracain.top/assets/httpsetupcert.png)
 
 ```
 [root@test certs]#  openssl x509 -in server.csr -out server.pem -req -signkey server.key -days 365　 ← 建立服务器证书
@@ -633,23 +633,23 @@ try `pip install --upgrade --force-reinstall 'requests==2.6.0'`
 
 又报了一个错误。。
 
-![cerbot报错1](https://coracain.top/assets/cerbot报错1.png)
+![cerbot报错1](https://coracain.top/assets/cerboterror1.png)
 
 解决办法
 
-![cerbot报错1-解决方案](https://coracain.top/assets/cerbot报错1-解决方案.png)
+![cerbot报错1-解决方案](https://coracain.top/assets/cerboterror1-solve.png)
 
 增加一个只对主域名做解析的dns配置
 
 接下来成功了
 
-![cerbot 成功](https://coracain.top/assets/cerbot 成功.png)
+![cerbot 成功](https://coracain.top/assets/cerbot-success.png)
 
 但在启动nginx时又报了异常
 
-![https nginx 配置报错](https://coracain.top/assets/https nginx 配置报错.png)
+![https nginx 配置报错](https://coracain.top/assets/httpsnginxconfigerror.png)
 
-![https nginx 配置报错-异常信息](https://coracain.top/assets/https nginx 配置报错-异常信息.png)
+![https nginx 配置报错-异常信息](https://coracain.top/assets/httpsnginxconfigerror-catch.png)
 
 原因是：nginx缺少http_ssl_module模块，编译安装的时候带上--with-http_ssl_module配置就行了，但是现在的情况是nginx已经安装，需要添加模块
 
@@ -657,7 +657,7 @@ try `pip install --upgrade --force-reinstall 'requests==2.6.0'`
 
 ​	源码包在/home/cain/nginx-1.12.2
 
-![解决安装的nginx不支持https的问题](https://coracain.top/assets/解决安装的nginx不支持https的问题.png)
+![解决安装的nginx不支持https的问题](https://coracain.top/assets/solvenginxnotsupporthttps.png)
 
 切换到源码包
 
@@ -683,7 +683,7 @@ try `pip install --upgrade --force-reinstall 'requests==2.6.0'`
 
 这里不要进行make install，否则就是覆盖安装
 
-![解决安装的nginx不支持https的问题-过程](https://coracain.top/assets/解决安装的nginx不支持https的问题-过程.png)
+![解决安装的nginx不支持https的问题-过程](https://coracain.top/assets/solvenginxnotsupporthttps-process.png)
 
 然后备份原有已安装好的nginx
 

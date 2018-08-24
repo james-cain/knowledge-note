@@ -42,23 +42,23 @@ node-nightly --inspect-brk ./node_modules/webpack/bin/webpack.js
 
 ##### compiler、compilation、hook
 
-![webpack执行过程1](https://coracain.top/assets/webpack执行过程1.png)
+![webpack执行过程1](https://coracain.top/assets/webpackprocess1.png)
 
 webpack.js 在最开始会new Compiler实例，创建compiler实例的hook，理解后面参数的含义，参数为hook执行call/callAsync/promise时，绑定的钩子的执行函数的参数，一一对应。也就是这里定义了几个变量，tap绑定的函数就可以传入几个参数
 
-![webpack执行过程2](https://coracain.top/assets/webpack执行过程2.png)
+![webpack执行过程2](https://coracain.top/assets/webpackprocess2.png)
 
 this.hooks.compilation.call(compilation, params)中的两个参数即为传入钩子函数的参数值
 
-![webpack执行过程3](https://coracain.top/assets/webpack执行过程3.png)
+![webpack执行过程3](https://coracain.top/assets/webpackprocess3.png)
 
 该代码段为Tapable的Hook.js，实际无论是compiler，compilation，resolver都是继承于Tapable，也就是都会执行这些方法，this.hooks.compilation.call即调用的就是`this.call = this._call = this.createCompileDelegate("call", "sync")`
 
-![webpack执行过程4](https://coracain.top/assets/webpack执行过程4.png)
+![webpack执行过程4](https://coracain.top/assets/webpackprocess4.png)
 
 Hook总共有10种类型，分为异步和同步两大类；异步包括并发执行和串行执行
 
-![webpack执行过程5](https://coracain.top/assets/webpack执行过程5.png)
+![webpack执行过程5](https://coracain.top/assets/webpackprocess5.png)
 
 create的返回值为函数方法，this.call(params)的执行方法
 
