@@ -1,4 +1,4 @@
-## 如何用sonatype3搭建npm私服
+# 用sonatype3搭建npm私服
 
 #### 先安利几个不同方案的私服方案
 

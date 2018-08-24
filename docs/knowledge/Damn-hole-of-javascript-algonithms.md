@@ -1,2 +1,2 @@
-## Damn hole of javascript algonithms
+# JavaScript算法
 

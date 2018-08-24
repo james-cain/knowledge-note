@@ -1,4 +1,4 @@
-## Damn hole of performance
+# 性能优化
 
 - google devtools https://developers.google.com/web/tools/chrome-devtools/
 - navigation timing performance resource 一个页面的渲染完成耗时

@@ -1,4 +1,4 @@
-## webpack学习源码记录
+# webpack源码
 
 1. 从核心入手，Tapable - (get)
 2. 接下来详细阅读compiler，compilation两个继承类 - (get)
@@ -42,23 +42,23 @@ node-nightly --inspect-brk ./node_modules/webpack/bin/webpack.js
 
 ##### compiler、compilation、hook
 
-![webpack执行过程1](images/webpack执行过程1.png)
+![webpack执行过程1](https://coracain.top/assets/webpack执行过程1.png)
 
 webpack.js 在最开始会new Compiler实例，创建compiler实例的hook，理解后面参数的含义，参数为hook执行call/callAsync/promise时，绑定的钩子的执行函数的参数，一一对应。也就是这里定义了几个变量，tap绑定的函数就可以传入几个参数
 
-![webpack执行过程2](images/webpack执行过程2.png)
+![webpack执行过程2](https://coracain.top/assets/webpack执行过程2.png)
 
 this.hooks.compilation.call(compilation, params)中的两个参数即为传入钩子函数的参数值
 
-![webpack执行过程3](images/webpack执行过程3.png)
+![webpack执行过程3](https://coracain.top/assets/webpack执行过程3.png)
 
 该代码段为Tapable的Hook.js，实际无论是compiler，compilation，resolver都是继承于Tapable，也就是都会执行这些方法，this.hooks.compilation.call即调用的就是`this.call = this._call = this.createCompileDelegate("call", "sync")`
 
-![webpack执行过程4](images/webpack执行过程4.png)
+![webpack执行过程4](https://coracain.top/assets/webpack执行过程4.png)
 
 Hook总共有10种类型，分为异步和同步两大类；异步包括并发执行和串行执行
 
-![webpack执行过程5](images/webpack执行过程5.png)
+![webpack执行过程5](https://coracain.top/assets/webpack执行过程5.png)
 
 create的返回值为函数方法，this.call(params)的执行方法
 
@@ -87,7 +87,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### hook执行顺序
 
-![hooks](images/hooks-chain-tip.png)
+![hooks](https://coracain.top/assets/hooks-chain-tip.png)
 
 > environment->afterEnvironment->beforeRun->run->beforeCompile->compile->make->...->buildModule（`compilation`）->failModule or successModule(`compilation`)->finishModules（`compilation`）->seal（`compilation`）->afterCompile
 >
@@ -95,7 +95,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 ###### compilation.js方法执行顺序
 
-![compilation.js](images/compilation-run-tip.png)
+![compilation.js](https://coracain.top/assets/compilation-run-tip.png)
 
 > addEntry->_addModuleChain->addModule[判断moduleResult.build === true]->buildModule->（`NormalModule.js`）build->（`NormalModule.js`）doBuild->（`loader-runner.js`）runLoaders（该方法会把上一个loader的结果或资源文件传入进去，并且该函数内还有一些方法，可以是loader改变为异步调用方式，或者获取query参数）->iteratePitchingLoaders(loader-runner.js)->processModuleDependencies->addModuleDependencies->addModule[判断moduleResult.build === true]->回到执行buildModule
 >
@@ -121,55 +121,55 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 
 图解(只包含前两次)
 
-![webpack-run1](images/webpack-run1.png)
+![webpack-run1](https://coracain.top/assets/webpack-run1.png)
 
 执行第一次create，此时dependencies[0].request = './src/index.js'
 
-![webpack-run2](images/webpack-run2.png)
+![webpack-run2](https://coracain.top/assets/webpack-run2.png)
 
 ruleSet.exec() 解析路径是否有loader拦截
 
-![webpack-run3](images/webpack-run3.png)
+![webpack-run3](https://coracain.top/assets/webpack-run3.png)
 
 第一次解析只有返回默认的result
 
-![webpack-run4](images/webpack-run4.png)
+![webpack-run4](https://coracain.top/assets/webpack-run4.png)
 
-![webpack-run5](images/webpack-run5.png)
+![webpack-run5](https://coracain.top/assets/webpack-run5.png)
 
-![webpack-run6](images/webpack-run6.png)
+![webpack-run6](https://coracain.top/assets/webpack-run6.png)
 
 runLoaders解析index.js内容
 
-![webpack-run7](images/webpack-run7.png)
+![webpack-run7](https://coracain.top/assets/webpack-run7.png)
 
 parser.parse 生成ast树，解析树，将依赖对象存储在dependencies中
 
-![webpack-run8](images/webpack-run8.png)
+![webpack-run8](https://coracain.top/assets/webpack-run8.png)
 
 processModuleDependencies将dependencies中的依赖模块传入addModuleDependencies中，执行下一次的create
 
-![webpack-run9](images/webpack-run9.png)
+![webpack-run9](https://coracain.top/assets/webpack-run9.png)
 
 第二次create，传入的dependencies已经变为index.css
 
-![webpack-run10](images/webpack-run10.png)
+![webpack-run10](https://coracain.top/assets/webpack-run10.png)
 
 index.css被loader拦截，存在style-loader，css-loader两个拦截loader
 
-![webpack-run11](images/webpack-run11.png)
+![webpack-run11](https://coracain.top/assets/webpack-run11.png)
 
 此时request已经改为/Users/admin/repo/resourcecode/learning-webpack/node_modules/style-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/node_modules/css-loader/index.js!/Users/admin/repo/resourcecode/learning-webpack/src/index.css
 
-![webpack-run12](images/webpack-run12.png)
+![webpack-run12](https://coracain.top/assets/webpack-run12.png)
 
 runLoaders执行返回style-loader的代码段，赋给_source
 
-![webpack-run13](images/webpack-run13.png)
+![webpack-run13](https://coracain.top/assets/webpack-run13.png)
 
 经过parser.parse解析后，又多了好几个依赖
 
-![webpack-run14](images/webpack-run14.png)
+![webpack-run14](https://coracain.top/assets/webpack-run14.png)
 
 将依赖传给addModuleDependencies，进行接下来的create
 

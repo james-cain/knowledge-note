@@ -1,4 +1,4 @@
-## 什么是PWA
+# PWA
 
 Progressive Web App，简称PWA，是提升Web App的体验的一种新方法，能给用户原生应用的体验。
 
@@ -207,7 +207,7 @@ Service Worker基本步骤：
 - 开始激活 Service Worker，必须要在 Service Worker 安装成功之后，才能开始激活步骤，当 Service Worker 安装完成后，会接收到一个激活事件（activate event）。激活事件的处理函数中，主要操作是清理旧版本的 Service Worker 脚本中使用资源。
 - 激活成功后 Service Worker 可以控制页面了，但是只针对在成功注册了 Service Worker 后打开的页面。也就是说，页面打开时有没有 Service Worker，决定了接下来页面的生命周期内受不受 Service Worker 控制。所以，只有当页面刷新后，之前不受 Service Worker 控制的页面才有可能被控制起来。
 
-![sw-lifecycle](images/sw-lifecycle.png)
+![sw-lifecycle](https://coracain.top/assets/sw-lifecycle.png)
 
 - **安装( installing )**：这个状态发生在 Service Worker 注册之后，表示开始安装，触发 install 事件回调指定一些静态资源进行离线缓存。
 
@@ -244,7 +244,7 @@ Service Worker基本步骤：
 
 使用 Chrome 浏览器，可以通过进入控制台 `Application -> Service Workers` 面板查看和调试。
 
-![chrome_debug](images/chrome_debug.png)
+![chrome_debug](https://coracain.top/assets/chrome_debug.png)
 
 选项含义：
 
@@ -674,13 +674,13 @@ scope应遵循如下规则：
    >
    > 第一次访问时的效果：
    >
-   > ![gs1](images/gs1.png)
+   > ![gs1](https://coracain.top/assets/gs1.png)
    >
    > fetch事件无法在这次访问被捕获
    >
    > 刷新页面的效果：
    >
-   > ![gs2](images/gs2.png)
+   > ![gs2](https://coracain.top/assets/gs2.png)
    >
    > - 全部的css、png、js文件均被ServiceWorker拦截
    > - workbox-core在拦截后重新发起了fetch请求并返回页面，fetch后服务端**返回304依然使用浏览器本地缓存策略**
@@ -688,7 +688,7 @@ scope应遵循如下规则：
    >
    > 更新css、js和png的内容，然后重新访问页面：
    >
-   > ![gs4](images/gs4.png)
+   > ![gs4](https://coracain.top/assets/gs4.png)
    >
    > - 由于png是cache first，所以直接从service worker的cache返回，没有真正的网络请求发出
    > - js是network first，会产生fetch，且运行成功
@@ -696,7 +696,7 @@ scope应遵循如下规则：
    >
    > 不做修改，再刷新页面：
    >
-   > ![gs5](images/gs5.png)
+   > ![gs5](https://coracain.top/assets/gs5.png)
    >
    > - 新的css生效
    > - **css、js请求返回304，使用浏览器缓存**
@@ -717,7 +717,7 @@ scope应遵循如下规则：
    >
    > 缓存成功后，即便断网，页面依旧可以访问及使用：
    >
-   > ![ol1](images/ol1.png)
+   > ![ol1](https://coracain.top/assets/ol1.png)
    >
    > **跨域请求**
    >
@@ -757,7 +757,7 @@ scope应遵循如下规则：
    >
    > 此时就可以看到https://developers.google.com/域名下的资源也缓存了：
    >
-   > ![co1](images/co1.png)
+   > ![co1](https://coracain.top/assets/co1.png)
    >
    > **不难看出**，以上的routing需要**第三次访问才能真正从cache中将缓存返回（或者支持离线）**。如果要提前至第二次，那么就要使用precache，使用precache后，会在第一次就将资源全部cache下来了。
    >

@@ -1,4 +1,4 @@
-## Damn hole of safe and hacker
+# 网络安全
 
 #### XSS(Cross site scripting)跨站点指令码
 

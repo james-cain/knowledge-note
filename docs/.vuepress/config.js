@@ -38,7 +38,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-javascript.md',
             '/knowledge/review-the-javascript.md',
             '/knowledge/Damn-hole-of-http.md',
-            '/knowledge/Damn-hole-of-interview.md',
+            '/knowledge/Damn-hole-of-Interview.md'
           ]
         },
         {
@@ -51,7 +51,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-network.md',
             '/knowledge/Damn-hole-of-safe-and-hacker.md',
             '/knowledge/Damn-hole-of-javascript-algonithms.md',
-            '/knowledge/Damn-hole-of-perfomance.md',
+            '/knowledge/Damn-hole-of-performance.md',
             '/knowledge/parameters-of-package.md'
           ]
         },
@@ -62,7 +62,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-babel.md',
             '/knowledge/webpack-perf.md',
             '/knowledge/webpack-source-learning.md',
-            '/knowledge/how-to-use-npm-sonatype.md',
+            '/knowledge/how-to-use-npm-sonatype.md'
           ]
         },
         {
@@ -71,7 +71,7 @@ module.exports = {
           children: [
             '/knowledge/Damn-hole-of-electron.md',
             '/knowledge/Damn-hole-of-pwa.md',
-            '/knowledge/Damn-hole-of-ionic.md'
+            '/knowledge/how-to-learn-ionic.md'
           ]
         },
         {
@@ -80,14 +80,14 @@ module.exports = {
           children: [
             '/knowledge/Damn-hole-of-mvvm.md',
             '/knowledge/Damn-hole-of-React.md',
-            '/knowledge/Damn-hole-of-Vue.md',
+            '/knowledge/Damn-hole-of-Vue.md'
           ]
         },
         {
           title: '其他',
           collapsable: false,
           children: [
-            '/knowledge/server-record.md',
+            '/knowledge/server-record.md'
           ]
         }
       ]

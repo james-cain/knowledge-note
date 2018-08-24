@@ -1,4 +1,4 @@
-## package.json?
+# 详解package.json
 
 ### essentials
 

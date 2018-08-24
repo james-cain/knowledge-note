@@ -1,4 +1,4 @@
-## damn hole of network
+# 网络
 
 ### OSI七层协议
 
@@ -29,7 +29,7 @@ UDP是一个面向报文的协议。即只是报文的搬运工，不会对报�
 
 **高效**
 
-![UDP](images/UDP.png)
+![UDP](https://coracain.top/assets/UDP.png)
 
 UDP没有TCP复杂，不需要保证数据不丢失且有序到达。所以UDP的头部开销小，只有八个字节，在传输数据报文时是高效的
 
@@ -45,7 +45,7 @@ UDP没有TCP复杂，不需要保证数据不丢失且有序到达。所以UDP�
 
 ### TCP
 
-![TCP](images/TCP.png)
+![TCP](https://coracain.top/assets/TCP.png)
 
 - Sequence number，保证TCP传输的报文都是有序的，对端可以通过序号顺序的拼接报文
 
@@ -71,7 +71,7 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 ##### 建立连接三次握手
 
-![三次握手](images/三次握手.png)
+![三次握手](https://coracain.top/assets/三次握手.png)
 
 主动发起端称为客户端，被动连接端称为服务端。不管是客户端还是服务端，TCP连接建立后都能发送和接受数据，所以TCP是一个**全双工**的协议
 
@@ -95,7 +95,7 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 ##### 断开连接四次握手
 
-![四次握手](images/四次握手.png)
+![四次握手](https://coracain.top/assets/四次握手.png)
 
 在断开连接时两端都需要发送FIN和ACK
 
@@ -137,11 +137,11 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 发送端窗口是由接收端窗口剩余大小决定的。接收方会把当前接收窗口的剩余大小写入应答报文，发送端收到应答后根据该值和网络拥塞情况设置发送窗口的大小，所以发送窗口的大小是不断变化的
 
-![滑动窗口1](images/滑动窗口1.png)
+![滑动窗口1](https://coracain.top/assets/滑动窗口1.png)
 
 当发送端接收到应答报文后，会将窗口进行滑动
 
-![滑动窗口2](images/滑动窗口2.png)
+![滑动窗口2](https://coracain.top/assets/滑动窗口2.png)
 
 **滑动窗口实现了流量控制**。接收方通过报文告知发送方还可以发送多少数据，从而保证接收方能够来得及接收数据
 
@@ -211,9 +211,9 @@ HTTP是无连接，所以下层的TCP也是无连接的，只是两端共同维�
 
 1. <u>Accept</u>：用来告知客户端可以处理的内容类型，这种内容类型用MIME类型来表示。借助内容协商机制，服务器可以从诸多备选项中选择一项进行应用，并使用**Content-Type**应答头通知客户端它的选择。
 
-<MIME_type>/<MIME_subtype>
+< MIME_type >/< MIME_subtype >
 
-<MIME_type>/*
+< MIME_type >/*
 
 */ * 任意类型的MIME类型
 

@@ -1,4 +1,4 @@
-## Damn hole of Vue
+# Vue
 
 ### NextTick
 

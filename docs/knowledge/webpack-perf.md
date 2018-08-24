@@ -1,4 +1,4 @@
-## Webpack打包优化—以blog站点开发为例
+# Webpack打包优化
 
 前段花了时间阅读了部分的webpack的源码，意识到webpack对于前端开发的重要性，于是下定决心，以开发一个blog为例，记录我学习webpack打包优化的心得。
 
@@ -318,7 +318,7 @@ WTF，vue居然两边都打包了！先处理这个问题
 
 先把vendor中的vue、vue-router、vuex单独拆开，只是修改了entry的vendor和html-webpack-plugin中的引入模块
 
-![webpack-performance-anlyz2](images/webpack-performance-anlyz2.png)
+![webpack-performance-anlyz2](https://coracain.top/assets/webpack-performance-anlyz2.png)
 
 ### 优化之Dllplugin
 
@@ -382,9 +382,9 @@ new webpack.DllReferencePlugin({
 
 打包结果：
 
-![webpack-version1-3](images/webpack-version1-3.png)
+![webpack-version1-3](https://coracain.top/assets/webpack-version1-3.png)
 
 分析结果
 
-![webpack-performance-anlyz3](images/webpack-performance-anlyz3.png)
+![webpack-performance-anlyz3](https://coracain.top/assets/webpack-performance-anlyz3.png)
 

@@ -1,4 +1,4 @@
-## Damn hole of javascript
+# JavaScript
 
 1. async和await
 

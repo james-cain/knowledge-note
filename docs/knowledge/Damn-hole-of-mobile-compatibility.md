@@ -1,2 +1,2 @@
-## Damn hole of mobile compatibility
+# mobile 兼容性
 

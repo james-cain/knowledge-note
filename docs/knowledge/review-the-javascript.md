@@ -1,4 +1,4 @@
-## review the javascript
+# ES6
 
 ### 箭头函数与this（Arrows and Lexical This）
 
