@@ -2,7 +2,7 @@
 
 在写这篇文章之前，其实有过一些服务端的基础知识，但是从来没有从零开始搭建服务器，趁着那天阿里云服务器相当之便宜，抱着玩的心态买了三年，感觉收获还是很多的，自己搭了python、mysql、nginx、node、http2、https、域名、域名认证，还是蛮有意思的~接下来记录下搭建的笔记
 
-### 文件夹的含义
+## 文件夹的含义
 
 /root
 
@@ -72,16 +72,16 @@ useradd 主要参数：
 
 　　-u：指定用户ID号。该值在系统中必须是唯一的。0~499默认是保留给系统用户账号使用的，所以该值必须大于499。
 
-### rpm和yum的解释
+## rpm和yum的解释
 
 > rpm是系统的软件管理程序，可以安装、卸载、查询已经下载的rpm包  rpm只能安装本地已经下载好的包
 > yum是专用的在线安装软件，会联网查询，下载对应的包，然后安装（安装过程应该也是调用rpm装的，具体没了解过）
 
-### 创建新用户密码
+## 创建新用户密码
 
 >sudo passwd cain
 
-### 赋予新用户sudo权限
+## 赋予新用户sudo权限
 
 在centos中可能会出现
 
@@ -101,7 +101,7 @@ echo "comtop       ALL=(ALL)       NOPASSWD: ALL" >>/etc/sudoers  该命令将�
 
 **注** 当在非root管理员下 要执行普通用户不能做的事时，要用sudo -i命令切换为管理员，此时才能执行，如修改系统配置的时候
 
-### ssh中新增加用户没有显示用户名
+## ssh中新增加用户没有显示用户名
 
 
 
@@ -111,44 +111,44 @@ echo "comtop       ALL=(ALL)       NOPASSWD: ALL" >>/etc/sudoers  该命令将�
 
 原因是  创建用户的时候，手动把目录给删了  重新添加了目录，导致默认配置信息被修改后，显示不了
 
-### 安装nodejs
+## 安装nodejs
 
-#### 首先安装wget
+### 首先安装wget
 
 > yum install -y wget
 
-#### 下载最新的nodejs的bin包
+### 下载最新的nodejs的bin包
 
 > wget https://nodejs.org/dist/v9.11.1/node-v9.11.1-linux-x64.tar.xz
 
-#### 解压包
+### 解压包
 
 依次执行
 
 >xz -d node-v9.11.1-linux-x64.tar.xz
 >tar -xf node-v9.11.1-linux-x64.tar
 
-##### xz压缩文件方法或命令
+#### xz压缩文件方法或命令
 
 xz -z 要压缩的文件
 
 如果要保留被压缩的文件加上参数 -k ，如果要设置压缩率加入参数 -0 到 -9调节压缩率。如果不设置，默认压缩等级是6.
 
-##### xz解压文件方法或命令
+#### xz解压文件方法或命令
 
 xz -d 要解压的文件
 
 同样使用 -k 参数来保留被解压缩的文件
 
-##### 创建tar.xz文件
+#### 创建tar.xz文件
 
 先tar cvf xxx.tar xxx/这样创建xxx.tar文件先，然后使用xz -z xxx.tar 将xxx.tar压缩成为xxx.tar.xz
 
-##### 解压tar.xz文件
+#### 解压tar.xz文件
 
 先xz -d xxx.tar.xz 将xxx.tar.xz解压成xxx.tar 然后，再用tar xvf xxx.tar解包
 
-###### tar命令参数
+##### tar命令参数
 
 > 打包： tar -cf soft.tar soft
 >
@@ -176,7 +176,7 @@ xz -d 要解压的文件
 >
 >f= --file：后面指定包的文件名
 
-#### 部署bin文件
+### 部署bin文件
 
 依次执行
 
@@ -186,25 +186,25 @@ xz -d 要解压的文件
 
 ln指令用于创建关联（类似于windows的快捷方式）必须给全路径，否则可能关联错误
 
-### 安装mysql
+## 安装mysql
 
-#### 下载mysql的repo源
+### 下载mysql的repo源
 
 > wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
 
-##### rpm
+#### rpm
 
-###### 安装rpm
+##### 安装rpm
 
 > rpm -ivh ***.rpm 
 >
 > 其中i表示安装，v表示显示安装过程，h表示显示进度
 
-###### 升级rpm包
+##### 升级rpm包
 
 > rpm -Uvh ***.rpm
 
-###### 删除软件包
+##### 删除软件包
 
 > rpm -e PACKAGE_NAME
 >
@@ -212,21 +212,21 @@ ln指令用于创建关联（类似于windows的快捷方式）必须给全路�
 >
 > rpm -e -allmatches PACKAGE_NAME # 删除所有跟PACKAGE_NAME匹配的所有版本的包
 
-#### 安装mysql-community-release-el7-5.noarch.rpm包
+### 安装mysql-community-release-el7-5.noarch.rpm包
 
 > sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
 
 安装这个包后，会获得两个mysql的yum repo源：/etc/yum.repos.d/mysql-community.repo，/etc/yum.repos.d/mysql-community-source.repo。
 
-#### 安装mysql
+### 安装mysql
 
 > sudo yum install mysql-server
 
-##### 如何查看mysql安装目录？
+#### 如何查看mysql安装目录？
 
 方法一：通过rpm查看
 
-###### 查看软件是否安装
+##### 查看软件是否安装
 
 > rpm -qa | grep mysql
 
@@ -234,7 +234,7 @@ ln指令用于创建关联（类似于windows的快捷方式）必须给全路�
 
 > rpm -ql mysql-community-client-5.6.39-2.el7.x86_64
 
-###### 综合上述命令，可以直接使用以下命令查看存储位置
+##### 综合上述命令，可以直接使用以下命令查看存储位置
 
 > rpm -qal | grep mysql
 
@@ -258,7 +258,7 @@ whereis命令 该命令和find类似
 
 注：whereis是通过本地架构好的数据库索引查找会比较快。如果没有更新到数据库里面的文件或命令则无法查找到信息
 
-##### 重置mysql密码
+#### 重置mysql密码
 
 > mysql -u root
 
@@ -266,26 +266,26 @@ whereis命令 该命令和find类似
 
 > sudo chown -R root:root /var/lib/mysql
 
-##### 重启mysql服务
+#### 重启mysql服务
 
 > service mysqld restart
 
-##### 登陆重置密码
+#### 登陆重置密码
 
 >mysql -u root  //直接回车进入mysql控制台
 >mysql > use mysql;
 >mysql > update user set password=password('123456') where user='root';
 >mysql > exit;
 
-##### 远程链接服务器Mysql
+#### 远程链接服务器Mysql
 
-###### 配置文件的修改
+##### 配置文件的修改
 
 
 
-#### 安装nginx
+### 安装nginx
 
-##### gcc安装
+#### gcc安装
 
 安装 nginx 需要先将官网下载的源码进行编译，编译依赖 gcc 环境，如果没有 gcc 环境，则需要安装：
 
@@ -293,7 +293,7 @@ whereis命令 该命令和find类似
 yum install gcc-c++
 ```
 
-##### PCRE pcre-devel安装
+#### PCRE pcre-devel安装
 
 PCRE(Perl Compatible Regular Expressions) 是一个Perl库，包括 perl 兼容的正则表达式库。nginx 的 http 模块使用 pcre 来解析正则表达式，所以需要在 linux 上安装 pcre 库，pcre-devel 是使用 pcre 开发的一个二次开发库。nginx也需要此库。命令：
 
@@ -301,7 +301,7 @@ PCRE(Perl Compatible Regular Expressions) 是一个Perl库，包括 perl 兼容�
 yum install -y pcre pcre-devel
 ```
 
-##### zlib安装
+#### zlib安装
 
 zlib 库提供了很多种压缩和解压缩的方式， nginx 使用 zlib 对 http 包的内容进行 gzip ，所以需要在 Centos 上安装 zlib 库。
 
@@ -309,7 +309,7 @@ zlib 库提供了很多种压缩和解压缩的方式， nginx 使用 zlib 对 h
 yum install -y zlib zlib-devel
 ```
 
-##### OpenSSL安装
+#### OpenSSL安装
 
 OpenSSL 是一个强大的安全套接字层密码库，囊括主要的密码算法、常用的密钥和证书封装管理功能及 SSL 协议，并提供丰富的应用程序供测试或其它目的使用。
 nginx 不仅支持 http 协议，还支持 https（即在ssl协议上传输http），所以需要在 Centos 安装 OpenSSL 库。
@@ -318,20 +318,20 @@ nginx 不仅支持 http 协议，还支持 https（即在ssl协议上传输http�
 yum install -y openssl openssl-devel
 ```
 
-##### 下载nginx
+#### 下载nginx
 
 >```
 >wget -c https://nginx.org/download/nginx-1.12.2.tar.gz
 >```
 
-##### 解压nginx
+#### 解压nginx
 
 > ```
 > tar -zxvf nginx-1.10.1.tar.gz
 > cd nginx-1.10.1
 > ```
 
-##### 配置
+#### 配置
 
 使用默认配置
 
@@ -359,7 +359,7 @@ yum install -y openssl openssl-devel
 
 ![nginx安装检查](https://coracain.top/assets/nginxinstallcheck.png)
 
-##### 启动、停止nginx
+#### 启动、停止nginx
 
 ```
 cd /usr/local/nginx/sbin/
@@ -378,7 +378,7 @@ cd /usr/local/nginx/sbin/
 ps aux|grep nginx
 ```
 
-##### 重启nginx
+#### 重启nginx
 
 1.先停止再启动（推荐）：
 对 nginx 进行重启相当于先停止再启动，即先执行停止命令再执行启动命令。如下：
@@ -394,7 +394,7 @@ ps aux|grep nginx
 
 启动成功后，在浏览器可以看到这样的页面：
 
-##### 开机自启动
+#### 开机自启动
 
 即在`rc.local`增加启动代码就可以了。
 
@@ -411,7 +411,7 @@ chmod 755 rc.local
 
 ![nginx开机自启动](https://coracain.top/assets/nginxautostart.png)
 
-#### 测试nginx启动时问题
+### 测试nginx启动时问题
 
 在服务器内用curl x.x.x.x 80是可以访问的
 
@@ -423,15 +423,15 @@ chmod 755 rc.local
 
 ![0端口访问一直不](https://coracain.top/assets/80portnotwork.png)
 
-#### https配置
+### https配置
 
-##### 安装mod_ssl
+#### 安装mod_ssl
 
 通过yum安装mod_ssl
 
 > yum -y install mod_ssl
 
-##### http服务器上配置mod_ssl
+#### http服务器上配置mod_ssl
 
 第一步 建立服务器秘钥：
 
@@ -585,16 +585,16 @@ make distcheck --生成发布软件包并对其进行测试检查，以确定发
 make distclean --类似make clean,但同时也将configure生成的文件全部删除掉，包括Makefile文件
 ```
 
-#### certbot 免费安全证书
+### certbot 免费安全证书
 
-##### 安装CertBot
+#### 安装CertBot
 
 ```
 sudo yum install epel-release
 sudo yum install certbot
 ```
 
-##### 配置nginx
+#### 配置nginx
 
 使用webroot配置模式
 
@@ -699,7 +699,7 @@ try `pip install --upgrade --force-reinstall 'requests==2.6.0'`
 
 > /usr/local/nginx/sbin/nginx -V
 
-##### certbot证书更新
+#### certbot证书更新
 
 由于certbot所使用的letsencrypt证书只有90天的有效期，所以我们需要对它定期自动更新。
 
@@ -733,7 +733,7 @@ sudo crontab -e
 
 []()
 
-### nginx添加http/2支持
+## nginx添加http/2支持
 
 参照以上添加https http_ssl_module模块方式，添加http_v2_module模块，由于该模块同时需要ssl的支持，如果在没有添加http_ssl_module模块，要一并添加。
 

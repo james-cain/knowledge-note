@@ -1,37 +1,37 @@
 # Jamescain Blog
 “基础不OK”，打算从今开始学习一个新知识点，就记录下自己的学习过程。将会有五花八门的学习笔记出现，愿给那些有着同样梦想的程序猿们带来帮助。
 
-### Javascript
+## Javascript
 
-#### 相关文章视频
+### 相关文章视频
 
 [JavaScript “Prototype Chains”](https://medium.com/@hyejunglim/javascript-prototype-chains-cff594f35431)
 
-### Webpack
+## Webpack
 
 [从零搭建自己的blog站点之webpack配置踩坑篇](articles/webpack-perf.md) -- 2018-06-06
 
 [如同打怪一般学习之路--webpack源码学习心得记录](articles/webpack-source-learning.md) -- 2018-06-08
 
-#### 相关文章视频
+### 相关文章视频
 
 [细说 webpack 之流程篇](http://taobaofed.org/blog/2016/09/09/webpack-flow/)
 
-#### 源码学习
+### 源码学习
 
 [ronami/minipack(0.8k stars)](https://github.com/ronami/minipack/blob/master/src/minipack.js)
 
-#### 相关文章视频
+### 相关文章视频
 
 [Beginner’s guide to Webpack](https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460)
 
-### MVVM
+## MVVM
 
-#### 源码学习
+### 源码学习
 
 [aooy/aoy](https://github.com/aooy/aoy)
 
-### 混合开发(包括vue、react、react-native、小程序、快应用)
+## 混合开发(包括vue、react、react-native、小程序、快应用)
 
 [NervJS/taro](https://github.com/NervJS/taro)
 
@@ -41,9 +41,9 @@
 
 [Tencent/wepy](https://github.com/Tencent/wepy)
 
-### React
+## React
 
-#### 相关文章视频
+### 相关文章视频
 
 [Sneak Peek:Beyond React 16](https://reactjs.org/blog/2018/03/01/sneak-peek-beyond-react-16.html)
 
@@ -77,7 +77,7 @@
 
 [React源码解析](https://juejin.im/post/5983dfbcf265da3e2f7f32de)
 
-#### 源码学习
+### 源码学习
 
 [sweetpalma/gooact](https://github.com/sweetpalma/gooact)
 
@@ -87,13 +87,13 @@
 
 [snabbdom/snabbdom](https://github.com/snabbdom/snabbdom)
 
-### Vue
+## Vue
 
-#### 相关文章视频
+### 相关文章视频
 
 [A deep dive in the Vue.js source code](https://medium.com/@oneminutejs/a-deep-dive-in-the-vue-js-source-code-fd9638c05c05)
 
-#### 源码学习
+### 源码学习
 
 [answershuto/learnVue(3.6k stars)](https://github.com/answershuto/learnVue)
 
@@ -101,9 +101,9 @@
 
 [ustbhuangyi/vue-analysis(0.9k stars)](https://github.com/ustbhuangyi/vue-analysis)
 
-### PWA
+## PWA
 
-#### 相关文章视频
+### 相关文章视频
 
 [A progressive Web application with Vue JS, Webpack & Material Design](https://blog.sicara.com/a-progressive-web-application-with-vue-js-webpack-material-design-part-1-c243e2e6e402)
 
@@ -127,35 +127,35 @@
 
 [so-pwa](https://so-pwa.firebaseapp.com/)
 
-### performance
+## performance
 
-#### 相关仓库站点
+### 相关仓库站点
 
 [AMP](https://www.ampproject.org/zh_cn/)
 
-### React Native
+## React Native
 
-#### 相关文章视频
+### 相关文章视频
 
 [React Native vs Real Native Apps](https://codeburst.io/react-native-vs-real-native-apps-ad890986f1f)
 
-### Puppeteer
+## Puppeteer
 
-#### 相关文章视频
+### 相关文章视频
 
 [A Guide to Automating & Scraping the Web with JavaScript (Chrome + Puppeteer + Node JS)](https://codeburst.io/a-guide-to-automating-scraping-the-web-with-javascript-chrome-puppeteer-node-js-b18efb9e9921)
 
-### Chrome
+## Chrome
 
-#### 相关文章视频
+### 相关文章视频
 
 [Debugging Node.js with Chrome DevTools](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27)
 
 [Preload, Prefetch And Priorities in Chrome](https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf)
 
-### HTTP
+## HTTP
 
-### Great station
+## Great station
 
 [30 seconds of code](https://30secondsofcode.org/index)
 
@@ -189,11 +189,11 @@
 
 [getify/You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)
 
-### 算法与数据结构
+## 算法与数据结构
 
 [trekhleb/javascript-algorithms](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
 
-### 硬着头皮都要看
+## 硬着头皮都要看
 
 [google developers](https://developers.google.com/web/tools/chrome-devtools/)
 
@@ -203,10 +203,10 @@
 
 [mozilla developers - HTTP](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)
 
-### 服务器
+## 服务器
 
 [部署一台属于自己的服务器-踩坑篇](articles/server-record.md) -- 2018-06-06
 
-### 小程序
+## 小程序
 
 

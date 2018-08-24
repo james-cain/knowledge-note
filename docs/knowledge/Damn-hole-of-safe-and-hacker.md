@@ -1,10 +1,10 @@
 # 网络安全
 
-#### XSS(Cross site scripting)跨站点指令码
+## XSS(Cross site scripting)跨站点指令码
 
 分为三种类型：反射型，存储型，DOM-based
 
-##### 如何防御
+### 如何防御
 
 转义输入输出的内容，对于引号，尖括号，斜杠转义
 
@@ -46,11 +46,11 @@ CSP本质是建立白名单，规定浏览器只能执行特定来源的代码
   Content-Security-Policy: child-src 'none'
   ```
 
-#### CSRF/XSRF(Cross-site request forgery)跨站请求伪造
+## CSRF/XSRF(Cross-site request forgery)跨站请求伪造
 
 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方式。其实就是利用用户的登录态发起的恶意请求
 
-##### 如何防御
+### 如何防御
 
 遵循几种规则：
 
@@ -69,9 +69,9 @@ SameSite
 
 Token
 
-#### 密码安全
+## 密码安全
 
-##### 加盐
+### 加盐
 
 通常需要对密码加盐，再进行几次不同加密算法的加密
 

@@ -14,7 +14,7 @@
 12. 动手写几个插件，loader
 13. webpack更新速度惊人，跟着作者的步伐，尽量也能在源码中找到你的代码段
 
-#### Webpack 源码调试
+## Webpack 源码调试
 
 全局安装node-nightly
 
@@ -38,9 +38,9 @@ node-nightly --inspect-brk ./node_modules/webpack/bin/webpack.js
 
 --inspect-brk 标记会自动给脚本第一句打断点，可以在源代码中设置断点调试
 
-#### Webpack 4源码中的代码段理解图
+## Webpack 4源码中的代码段理解图
 
-##### compiler、compilation、hook
+### compiler、compilation、hook
 
 ![webpack执行过程1](https://coracain.top/assets/webpackprocess1.png)
 
@@ -62,7 +62,7 @@ Hook总共有10种类型，分为异步和同步两大类；异步包括并发�
 
 create的返回值为函数方法，this.call(params)的执行方法
 
-##### module.rules加载
+### module.rules加载
 
 ```
 // webpack.js compiler创建后都做了以下的事情 
@@ -85,7 +85,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 			)
 ```
 
-###### hook执行顺序
+#### hook执行顺序
 
 ![hooks](https://coracain.top/assets/hooks-chain-tip.png)
 
@@ -93,7 +93,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 >
 > hook执行顺序，make开始执行compilation 入口addEntry接口
 
-###### compilation.js方法执行顺序
+#### compilation.js方法执行顺序
 
 ![compilation.js](https://coracain.top/assets/compilation-run-tip.png)
 
@@ -101,7 +101,7 @@ compiler.options = new WebpackOptionsApply().process(options, compiler)
 >
 > _addModuleChain和addModuleDependencies方法中 都调用了addModule函数生成新的moduleResult，若moduleResult.build === true,则会执行buildModule
 
-###### addModule(module, cacheGroup)
+#### addModule(module, cacheGroup)
 
 *每次module的变化是怎么发生的？*
 
@@ -175,7 +175,7 @@ runLoaders执行返回style-loader的代码段，赋给_source
 
 > 经过图解，可以明白，第一次执行index.js，当解析源码遇到import 'index.css'，loader拦截，有两个style-loader和css-loader两个拦截加载器，接下来就是这两个拦截器的处理，但都是返回js代码，并解析；直到没有依赖结束，生成最终bundle。
 
-###### build->doBuild->runLoaders执行函数
+#### build->doBuild->runLoaders执行函数
 
 ```
 build(options, compilation, resolver, fs, callback_build)
@@ -189,7 +189,7 @@ build(options, compilation, resolver, fs, callback_build)
 				执行callback_build
 ```
 
-###### 理解 loader-runner
+#### 理解 loader-runner
 
 > 传入resource，context，loaders，readResource，实现同步/异步loader解析
 >

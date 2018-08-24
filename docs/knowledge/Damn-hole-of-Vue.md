@@ -1,8 +1,8 @@
 # Vue
 
-### NextTick
+## NextTick
 
-#### 前提
+### 前提
 
 在vue2.4之前都是使用microtasks，但由于microtasks的优先级过高，在某些情况下会出现比事件冒泡更快的情况，但如果都使用macrotasks又可能出现渲染的性能问题。所以在新版本中，会默认使用microtasks，但是在特殊情况下会用macrotasks，如v-on
 

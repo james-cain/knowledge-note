@@ -1,6 +1,6 @@
 # ES6
 
-### 箭头函数与this（Arrows and Lexical This）
+## 箭头函数与this（Arrows and Lexical This）
 
 **所有的箭头函数都没有自己的this，都指向外层**，**箭头函数与包裹它的代码共享相同的this对象**，如果箭头函数在其他函数的内部，它将共享该函数的arguments变量。
 
@@ -108,11 +108,11 @@ function square() {
 square(2, 4, 7.5, 8); // returns: [4, 16, 56,25, 64]
 ```
 
-### 类（Classes）
+## 类（Classes）
 
 语法糖。类支持基于原型的继承，调用父类的构造函数，生成实例，静态方法和构造函数
 
-### 增强的对象字面量（Enhanced Object Literials）
+## 增强的对象字面量（Enhanced Object Literials）
 
 允许在结构中设置原型，简化foo: foo 这样的赋值，定义方法和调用父级。
 
@@ -134,15 +134,15 @@ var obj = {
 }
 ```
 
-### 模板字符串（Template Strings）
+## 模板字符串（Template Strings）
 
-### 解构（Destructuring）
+## 解构（Destructuring）
 
 解构允许使用模式匹配的方式进行绑定，并支持匹配数组和对象。解构具有一定的容错机制，就像查找普通对象foo['foo']，当没有找到时会返回undefined（而不会直接报错）
 
 > 注：当上层结构都不存在时，解构会报错，如const [{id: id}] = [],解构数组为空，导致整个obj为undefined，此时再去找obj.id就会报错
 
-### 默认参数（Default）+不定参数（Rest）+扩展运算符（Spread）
+## 默认参数（Default）+不定参数（Rest）+扩展运算符（Spread）
 
 默认参数（default）的功能是在函数被调用时对参数做自动估值
 
@@ -169,9 +169,9 @@ function (x, y, z) {
 f(...[1, 2, 3]) == 6
 ```
 
-### 定义变量（Let）+定义常量（Const）
+## 定义变量（Let）+定义常量（Const）
 
-### 迭代器（Iterators）+For...Of循环
+## 迭代器（Iterators）+For...Of循环
 
 > 注：使用迭代器要引入Babel的polyfill
 
@@ -195,7 +195,7 @@ for (var n of fibonacci) {
 }
 ```
 
-### Generators
+## Generators
 
 通过使用function* 和yield关键字简化了迭代器的编写
 
@@ -221,7 +221,7 @@ for (var n of fibonacci) {
 
 > 注：需要在项目中包含Babel的polyfill
 
-### 模块（Modules）
+## 模块（Modules）
 
 由宿主环境的默认加载器定义模块运行时的行为，采取隐式异步模式—在模块可以被获取和加载前不会有代码执行
 
@@ -234,7 +234,7 @@ import * as math from 'xx'
 import {sum, pi} from 'xx'
 ```
 
-### Map+Set+WeakMap+WeakSet
+## Map+Set+WeakMap+WeakSet
 
 WeakMap和WeakSet的理解？
 
@@ -242,7 +242,7 @@ weakMaps提供了对对象的弱引用（不会被垃圾回收计数）
 
 > 注：需要使用Babel的polyfill
 
-### 代理对象（Proxies）
+## 代理对象（Proxies）
 
 需理解。。
 
@@ -308,7 +308,7 @@ var handler =
 
 > 注：由于ES5的局限性，Proxies无法被转换或者通过polyfill兼容
 
-### Symbols
+## Symbols
 
 需理解。。
 
@@ -318,8 +318,8 @@ Symbol对对象的状态进行访问控制
 >
 > 部分功能不能转换或通过polyfill兼容
 
-### Promises
+## Promises
 
-### Reflect API
+## Reflect API
 
 需理解。。

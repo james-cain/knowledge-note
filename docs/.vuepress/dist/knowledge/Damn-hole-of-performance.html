@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>性能优化 | Jamescain Blog</title>
+    <meta name="description" content="A knowledge blog">
+    <link rel="icon" href="/favicon.ico">
+    
+    <link rel="preload" href="/assets/css/0.styles.4568b041.css" as="style"><link rel="preload" href="/assets/js/app.5d2cc566.js" as="script"><link rel="preload" href="/assets/js/19.73ad76f8.js" as="script"><link rel="prefetch" href="/assets/js/14.ca3d092a.js"><link rel="prefetch" href="/assets/js/2.cda51ec0.js"><link rel="prefetch" href="/assets/js/3.e313a01f.js"><link rel="prefetch" href="/assets/js/4.7372a5ca.js"><link rel="prefetch" href="/assets/js/5.9bf77266.js"><link rel="prefetch" href="/assets/js/6.b95fd7bb.js"><link rel="prefetch" href="/assets/js/7.135aa519.js"><link rel="prefetch" href="/assets/js/8.315a8f31.js"><link rel="prefetch" href="/assets/js/9.2df7844a.js"><link rel="prefetch" href="/assets/js/10.e39e989b.js"><link rel="prefetch" href="/assets/js/11.6630158e.js"><link rel="prefetch" href="/assets/js/12.a1e4d468.js"><link rel="prefetch" href="/assets/js/13.0ec2c5fe.js"><link rel="prefetch" href="/assets/js/15.0e6986e2.js"><link rel="prefetch" href="/assets/js/16.34be30e9.js"><link rel="prefetch" href="/assets/js/17.a15bebf3.js"><link rel="prefetch" href="/assets/js/18.088a3a0c.js"><link rel="prefetch" href="/assets/js/20.8b802e9e.js"><link rel="prefetch" href="/assets/js/21.f56eab97.js"><link rel="prefetch" href="/assets/js/22.552cbb91.js"><link rel="prefetch" href="/assets/js/23.91308add.js"><link rel="prefetch" href="/assets/js/24.7b0c00df.js"><link rel="prefetch" href="/assets/js/25.df2d596b.js"><link rel="prefetch" href="/assets/js/26.a2ef4836.js"><link rel="prefetch" href="/assets/js/27.11580100.js"><link rel="prefetch" href="/assets/js/28.4d3d36bb.js"><link rel="prefetch" href="/assets/js/29.1f560433.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.4568b041.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Jamescain Blog</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/knowledge/" class="nav-link router-link-active">知识库</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">其他</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/Jamescain_lll" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  作者twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <a href="https://github.com/james-cain/My-lab" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/knowledge/" class="nav-link router-link-active">知识库</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">其他</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/Jamescain_lll" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  作者twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <a href="https://github.com/james-cain/My-lab" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first"><p class="sidebar-heading"><span>基础</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-html5.html" class="sidebar-link">html5</a></li><li><a href="/knowledge/Damn-hole-of-javascript.html" class="sidebar-link">JavaScript</a></li><li><a href="/knowledge/review-the-javascript.html" class="sidebar-link">ES6</a></li><li><a href="/knowledge/Damn-hole-of-http.html" class="sidebar-link">http/http2/https</a></li><li><a href="/knowledge/Damn-hole-of-Interview.html" class="sidebar-link">Interview</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading open"><span>进阶</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-Browser.html" class="sidebar-link">Browser</a></li><li><a href="/knowledge/Damn-hole-of-IE9.html" class="sidebar-link">IE9 兼容性</a></li><li><a href="/knowledge/Damn-hole-of-mobile-compatibility.html" class="sidebar-link">mobile 兼容性</a></li><li><a href="/knowledge/Damn-hole-of-network.html" class="sidebar-link">网络</a></li><li><a href="/knowledge/Damn-hole-of-safe-and-hacker.html" class="sidebar-link">网络安全</a></li><li><a href="/knowledge/Damn-hole-of-javascript-algonithms.html" class="sidebar-link">JavaScript算法</a></li><li><a href="/knowledge/Damn-hole-of-performance.html" class="active sidebar-link">性能优化</a></li><li><a href="/knowledge/parameters-of-package.html" class="sidebar-link">详解package.json</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>工具</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-babel.html" class="sidebar-link">babel7</a></li><li><a href="/knowledge/webpack-perf.html" class="sidebar-link">Webpack打包优化</a></li><li><a href="/knowledge/webpack-source-learning.html" class="sidebar-link">webpack源码</a></li><li><a href="/knowledge/how-to-use-npm-sonatype.html" class="sidebar-link">用sonatype3搭建npm私服</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>使用心得</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-electron.html" class="sidebar-link">electron</a></li><li><a href="/knowledge/Damn-hole-of-pwa.html" class="sidebar-link">PWA</a></li><li><a href="/knowledge/how-to-learn-ionic.html" class="sidebar-link">ionic</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>源码分析</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-mvvm.html" class="sidebar-link">MVVM</a></li><li><a href="/knowledge/Damn-hole-of-React.html" class="sidebar-link">React</a></li><li><a href="/knowledge/Damn-hole-of-Vue.html" class="sidebar-link">Vue</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>其他</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/server-record.html" class="sidebar-link">部署一台属于自己的服务器</a></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="性能优化"><a href="#性能优化" aria-hidden="true" class="header-anchor">#</a> 性能优化</h1> <ul><li>google devtools https://developers.google.com/web/tools/chrome-devtools/</li> <li>navigation timing performance resource 一个页面的渲染完成耗时</li> <li>http2.0</li> <li>1000000长列表性能，用户无感知渲染</li> <li>http://taobaofed.org/blog/2016/04/25/performance-composite/</li> <li>pwa</li> <li>https://github.com/barretlee/performance-column/issues</li> <li>https://github.com/fouber/blog/issues/3</li> <li>https://developer.yahoo.com/performance/rules.html?guccounter=1</li> <li>http://velocity.oreilly.com.cn/2010/ppts/VelocityChina2010Dec7StaticResource.pdf</li> <li>http://velocity.oreilly.com.cn/2011/ppts/MobilePerformanceVelocity2011_DavidWei.pdf</li> <li>https://developers.google.com/speed/docs/insights/rules?csw=1</li> <li>https://developers.google.com/speed/docs/insights/mobile</li> <li>https://developers.google.com/web/fundamentals/performance/rendering/?hl=zh-cn</li> <li>https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/?hl=zh-cn</li> <li>https://developers.google.com/web/fundamentals/performance/critical-rendering-path/</li> <li>《<a href="http://book.douban.com/subject/3132277/" target="_blank" rel="noopener noreferrer">高性能网站建设指南<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>》《<a href="http://book.douban.com/subject/4719162/" target="_blank" rel="noopener noreferrer">高性能网站建设进阶指南<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>》《<a href="http://book.douban.com/subject/25856314/" target="_blank" rel="noopener noreferrer">Web性能权威指南<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>》</li> <li>https://www.cnblogs.com/CraryPrimitiveMan/p/3795086.html</li> <li>https://www.cnblogs.com/-simon/p/5883336.html</li> <li>https://www.cnblogs.com/callmeguxi/p/6846447.html</li></ul> <ol><li><p>DNS预解析,可以通过预解析的方式来预先获得域名所对应的IP</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//xxx.com&quot;&gt;
+</code></pre></div></li> <li><p>缓存：强缓存（Expires、Cache-Control）和协商缓存（Last-Modified、If-Modified-Since和Etag、If-None-Match）</p> <p>在一些特殊的地方可能需要选择特殊的缓存策略</p> <ul><li>对于不需要缓存的资源，可以使用Cache-Control: no-store，表示资源不需要缓存</li> <li>对于频繁变动的资源，可以使用Cache-Control: no-cache并配合Etag使用，表示资源已被缓存，但是每次都会发送请求询问资源是否更新</li> <li>对于代码文件来说，通常使用Cache-Control:  max-age=31536000并配合策略缓存使用，然后对文件进行指纹处理，一旦文件名变动就会立刻下载新的文件</li></ul></li> <li><p>HTTP2.0</p> <p>HTTP/1.1每个请求都会建立和断开，消耗好几个RTT时间，并且由于TCP慢启动，加载体积大的文件需要更多的时间。</p> <p>HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加快了网页的加载速度。并且还支持Header压缩，进一步减少请求的数据大小</p></li> <li><p>预加载，是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;link rel=&quot;preload&quot; href=&quot;https://example.com&quot;&gt;
+</code></pre></div><p>预加载在一定程度上降低首屏的加载时间，但兼容性不好</p></li> <li><p>预渲染，可以通过预渲染将下载的文件先放在后台渲染</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;link rel=&quot;prerender&quot; href=&quot;https://example.com&quot;&gt;
+</code></pre></div></li> <li><p>懒执行，将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，懒执行需要唤醒，一般可以通过定时器或者事件的调用来唤醒</p></li> <li><p>懒加载，将不关键的资源延后加载。原理是只加载自定义区域（通常是可视区域，也可以是即将进入可视区域）内需要加载的东西。懒加载不仅可以用于图片，也可以使用在别的资源上，比如进入可视区域才开始播放视频等等。</p></li> <li><p>如何渲染几万条数据并不卡住界面</p> <div class="language- extra-class"><pre class="language-text"><code>可以通过requestAnimationFrame来每16ms刷新一次
+
+setTimeout(() =&gt; {
+    // 插入10万条数据
+    const total = 100000;
+    // 一次插入20条，如果觉得性能不好就减少
+    const once = 20;
+    // 渲染数据总共需要几次
+    const loopCount = total / once;
+    let countOfRender = 0;
+    let ul = document.querySelector(&quot;ul&quot;);
+    function add() {
+        //优化性能，插入不会造成回流
+        const fragment = document.createDocumentFragment();
+        for(let i = 0; i &lt; once; i++) {
+            const li = document.createElement(&quot;li&quot;);
+            li.innerText = Math.floor(Math.random() * total);
+            fragment.appendChild(li);
+        }
+        ul.appendChild(fragment);
+        countOfRender += 1;
+        loop();
+    }
+    function loop() {
+        if (countOfRender &lt; loopCount) {
+            window.requestAnimationFrame(add);
+        }
+    }
+    loop();
+}, 0);
+</code></pre></div></li> <li><p>防抖（debounce）</p> <p>原理：尽管触发事件，但是一定在事件触发n秒后才执行，如果在事件触发的n秒内又触发了这个事件，就以新的事件的时间为准，n秒后才执行，总之，就是要等触发完事件n秒内不再触发事件，才执行。</p> <p>例子</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-cmn-Hans&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;x-ua-compatible&quot; content=&quot;IE=edge, chrome=1&quot;&gt;
+    &lt;title&gt;debounce&lt;/title&gt;
+    &lt;style&gt;
+        #container{
+            width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;container&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;debounce.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+	&lt;script&gt;
+		var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction(e) {
+            container.innerHTML = count++;
+        };
+
+        var setUseAction = debounce(getUserAction, 10000, true);
+
+        container.onmousemove = setUseAction;
+
+        document.getElementById(&quot;button&quot;).addEventListener('click', function(){
+            setUseAction.cancel();
+        })
+	&lt;/script&gt;
+&lt;/html&gt;
+</code></pre></div><p>Debounce.js</p> <div class="language- extra-class"><pre class="language-text"><code>function debounce(func, wait, immediate) {
+
+    var timeout, result;
+
+    var debounced = function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) result = func.apply(context, args)
+        }
+        else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+        return result;
+    };
+
+    debounced.cancel = function() {
+        clearTimeout(timeout);
+        timeout = null;
+    };
+
+    return debounced;
+}
+</code></pre></div><p>注意：当涉及函数有返回值时，debounce中同样要返回函数的执行结果，但是当immediate为false的时候，因为使用功能了setTimeout，将func.apply(context, args)的返回值赋给变量，最后再return的时候，值将会一直是undefined，所以只在immediate为true的时候返回函数的执行结果</p></li> <li><p>节流（throttle）</p></li></ol> <p>方法一：使用时间戳，当触发事件的时候，取出当前的时间戳，然后减去之前的时间戳（最一开始值设为0），如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行</p> <div class="language- extra-class"><pre class="language-text"><code>function throttle(func, wait) {
+    var context, args;
+    var previous = 0;
+
+    return function() {
+        var now = +new Date();
+        context = this;
+        args = arguments;
+        if (now - previous &gt; wait) {
+            func.apply(context, args);
+            previous = now;
+        }
+    }
+}
+</code></pre></div><p>方法二：使用定时器，当触发事件的时候，设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，设置下个定时器</p> <div class="language- extra-class"><pre class="language-text"><code>function throttle(func, wait) {
+    var timeout;
+    var previous = 0;
+
+    return function() {
+        context = this;
+        args = arguments;
+        if (!timeout) {
+            timeout = setTimeout(function(){
+                timeout = null;
+                func.apply(context, args)
+            }, wait)
+        }
+
+    }
+}
+</code></pre></div><p>方法三：结合以上两者的优势，做到鼠标移入立刻执行，停止触发的时候还能再执行一次。</p> <div class="language- extra-class"><pre class="language-text"><code>function throttle(func, wait) {
+    var timeout, context, args, result;
+    var previous = 0;
+
+    var later = function() {
+        previous = +new Date();
+        timeout = null;
+        func.apply(context, args)
+    };
+
+    var throttled = function() {
+        var now = +new Date();
+        //下次触发 func 剩余的时间
+        var remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+         // 如果没有剩余的时间了或者你改了系统时间
+        if (remaining &lt;= 0 || remaining &gt; wait) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            previous = now;
+            func.apply(context, args);
+        } else if (!timeout) {
+            timeout = setTimeout(later, remaining);
+        }
+    };
+    return throttled;
+}
+</code></pre></div><ol start="11"><li></li></ol></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/knowledge/Damn-hole-of-javascript-algonithms.html" class="prev">
+          JavaScript算法
+        </a></span> <span class="next"><a href="/knowledge/parameters-of-package.html">
+          详解package.json
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/assets/js/19.73ad76f8.js" defer></script><script src="/assets/js/app.5d2cc566.js" defer></script>
+  </body>
+</html>

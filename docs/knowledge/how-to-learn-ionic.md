@@ -8,7 +8,7 @@
 
    没有开发者权限，获取不到唯一标识id，导致不能生成ipa
 
-### Running on android
+## Running on android
 
 Cordova 打包生成后编译遇到几个问题
 

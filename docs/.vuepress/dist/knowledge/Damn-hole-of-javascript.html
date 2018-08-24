@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>JavaScript | Jamescain Blog</title>
+    <meta name="description" content="A knowledge blog">
+    <link rel="icon" href="/favicon.ico">
+    
+    <link rel="preload" href="/assets/css/0.styles.4568b041.css" as="style"><link rel="preload" href="/assets/js/app.5d2cc566.js" as="script"><link rel="preload" href="/assets/js/15.0e6986e2.js" as="script"><link rel="prefetch" href="/assets/js/14.ca3d092a.js"><link rel="prefetch" href="/assets/js/2.cda51ec0.js"><link rel="prefetch" href="/assets/js/3.e313a01f.js"><link rel="prefetch" href="/assets/js/4.7372a5ca.js"><link rel="prefetch" href="/assets/js/5.9bf77266.js"><link rel="prefetch" href="/assets/js/6.b95fd7bb.js"><link rel="prefetch" href="/assets/js/7.135aa519.js"><link rel="prefetch" href="/assets/js/8.315a8f31.js"><link rel="prefetch" href="/assets/js/9.2df7844a.js"><link rel="prefetch" href="/assets/js/10.e39e989b.js"><link rel="prefetch" href="/assets/js/11.6630158e.js"><link rel="prefetch" href="/assets/js/12.a1e4d468.js"><link rel="prefetch" href="/assets/js/13.0ec2c5fe.js"><link rel="prefetch" href="/assets/js/16.34be30e9.js"><link rel="prefetch" href="/assets/js/17.a15bebf3.js"><link rel="prefetch" href="/assets/js/18.088a3a0c.js"><link rel="prefetch" href="/assets/js/19.73ad76f8.js"><link rel="prefetch" href="/assets/js/20.8b802e9e.js"><link rel="prefetch" href="/assets/js/21.f56eab97.js"><link rel="prefetch" href="/assets/js/22.552cbb91.js"><link rel="prefetch" href="/assets/js/23.91308add.js"><link rel="prefetch" href="/assets/js/24.7b0c00df.js"><link rel="prefetch" href="/assets/js/25.df2d596b.js"><link rel="prefetch" href="/assets/js/26.a2ef4836.js"><link rel="prefetch" href="/assets/js/27.11580100.js"><link rel="prefetch" href="/assets/js/28.4d3d36bb.js"><link rel="prefetch" href="/assets/js/29.1f560433.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.4568b041.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Jamescain Blog</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/knowledge/" class="nav-link router-link-active">知识库</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">其他</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/Jamescain_lll" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  作者twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <a href="https://github.com/james-cain/My-lab" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/knowledge/" class="nav-link router-link-active">知识库</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">其他</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://twitter.com/Jamescain_lll" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  作者twitter
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <a href="https://github.com/james-cain/My-lab" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first"><p class="sidebar-heading open"><span>基础</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-html5.html" class="sidebar-link">html5</a></li><li><a href="/knowledge/Damn-hole-of-javascript.html" class="active sidebar-link">JavaScript</a></li><li><a href="/knowledge/review-the-javascript.html" class="sidebar-link">ES6</a></li><li><a href="/knowledge/Damn-hole-of-http.html" class="sidebar-link">http/http2/https</a></li><li><a href="/knowledge/Damn-hole-of-Interview.html" class="sidebar-link">Interview</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>进阶</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-Browser.html" class="sidebar-link">Browser</a></li><li><a href="/knowledge/Damn-hole-of-IE9.html" class="sidebar-link">IE9 兼容性</a></li><li><a href="/knowledge/Damn-hole-of-mobile-compatibility.html" class="sidebar-link">mobile 兼容性</a></li><li><a href="/knowledge/Damn-hole-of-network.html" class="sidebar-link">网络</a></li><li><a href="/knowledge/Damn-hole-of-safe-and-hacker.html" class="sidebar-link">网络安全</a></li><li><a href="/knowledge/Damn-hole-of-javascript-algonithms.html" class="sidebar-link">JavaScript算法</a></li><li><a href="/knowledge/Damn-hole-of-performance.html" class="sidebar-link">性能优化</a></li><li><a href="/knowledge/parameters-of-package.html" class="sidebar-link">详解package.json</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>工具</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-babel.html" class="sidebar-link">babel7</a></li><li><a href="/knowledge/webpack-perf.html" class="sidebar-link">Webpack打包优化</a></li><li><a href="/knowledge/webpack-source-learning.html" class="sidebar-link">webpack源码</a></li><li><a href="/knowledge/how-to-use-npm-sonatype.html" class="sidebar-link">用sonatype3搭建npm私服</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>使用心得</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-electron.html" class="sidebar-link">electron</a></li><li><a href="/knowledge/Damn-hole-of-pwa.html" class="sidebar-link">PWA</a></li><li><a href="/knowledge/how-to-learn-ionic.html" class="sidebar-link">ionic</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>源码分析</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/Damn-hole-of-mvvm.html" class="sidebar-link">MVVM</a></li><li><a href="/knowledge/Damn-hole-of-React.html" class="sidebar-link">React</a></li><li><a href="/knowledge/Damn-hole-of-Vue.html" class="sidebar-link">Vue</a></li></ul></div></li><li><div class="sidebar-group"><p class="sidebar-heading"><span>其他</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/knowledge/server-record.html" class="sidebar-link">部署一台属于自己的服务器</a></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="javascript"><a href="#javascript" aria-hidden="true" class="header-anchor">#</a> JavaScript</h1> <ol><li><p>async和await</p> <div class="language- extra-class"><pre class="language-text"><code>var a = 0
+var b = async () =&gt; {
+  a = a + await 10
+  console.log('2', a) // -&gt; '2' 10
+  a = (await 10) + a
+  console.log('3', a) // -&gt; '3' 20
+}
+b()
+a++
+console.log('1', a) // -&gt; '1' 1
+</code></pre></div><p>对于以上代码你可能会有疑惑，这里说明下原理</p> <ul><li>首先函数 <code>b</code> 先执行，在执行到 <code>await 10</code> 之前变量 <code>a</code> 还是 0，因为在 <code>await</code> 内部实现了 <code>generators</code> ，<code>generators</code> 会保留堆栈中东西，所以这时候 <code>a = 0</code> 被保存了下来</li> <li>因为 <code>await</code> 是异步操作，所以会先执行 <code>console.log('1', a)</code></li> <li>这时候同步代码执行完毕，开始执行异步代码，将保存下来的值拿出来使用，这时候 <code>a = 10</code></li> <li>然后后面就是常规执行代码了</li></ul></li> <li><p>Proxy</p> <div class="language- extra-class"><pre class="language-text"><code>// 用proxy实现数据绑定和监听
+let onWatch = (obj, setBind, getLogger) =&gt; {
+    let handler = {
+        get(target, property, receiver) {
+            getLogger(target, property);
+            return Reflect.get(target, property, receiver);
+        },
+        set(target, property, value, receiver) {
+            setBind(value);
+            return Reflect.set(target, property, value);
+        }
+    }
+    return new Proxy(obj, handler);
+}
+let obj = { a: 1 };
+let value;
+let p = onWatch(obj, (v) =&gt; {
+    value = v;
+}, (target, property) =&gt; {
+    console.log(`Get '${property}' = ${target[property]}`);
+});
+p.a = 2; // bind 'value' to '2'
+p.a // -&gt; Get 'a' = 2
+</code></pre></div></li> <li><p>0.1 +  0.2 != 0.3 的处理</p> <div class="language- extra-class"><pre class="language-text"><code>parseFloat((0.1 + 0.2).toFixed(10))
+</code></pre></div></li> <li><p>正则表达式</p> <ul><li>元字符</li></ul> <p>. 匹配任意字符除了换行符和回车符</p> <p>[] 匹配方括号内的任意字符，比如[0-9]可以用来匹配任意数字</p> <p>^ ^9 这样使用匹配以9开头。[**^**9]这样使用代表匹配方括号内除了9的字符</p> <p>{1, 2} 匹配1到2位字符</p> <p>(yck) 只匹配和yck相同字符串</p> <p>| 匹配|前后任意字符</p> <p>\ 转义</p> <p>***** 只匹配出现-1次以上* 前的字符</p> <p><strong>+</strong> 只匹配出现0次以上+前的字符</p> <p>? ？之前字符可选</p> <ul><li>修饰符</li></ul> <p>i 忽略大小写</p> <p>g 全局搜索</p> <p>m 多行</p> <ul><li>字符简写</li></ul> <p>\w 匹配字母数字或下划线</p> <p>\W 和上面相反</p> <p>\s 匹配任意的空白符</p> <p>\S 和上面相反</p> <p>\d 匹配数字</p> <p>\D 和上面相反</p> <p>\b 匹配单词的开始或结束</p> <p>\B 和上面相反</p></li> <li><p>数组去重</p></li></ol> <p>方法一：排序后去重，支持自定义规则如何视为相同元素，如字母大小写视为一致</p> <div class="language- extra-class"><pre class="language-text"><code>var array = [1, 1, '1'];
+
+function unique(array, iteratee) {
+    var res = [];
+    var sortedArray = array.concat().sort();
+    var seen;
+    for (var i = 0, len = sortedArray.length; i &lt; len; i++) {
+    	var value = sortedArray[i];
+    	var computed = iteratee ? iteratee(value);
+        // 如果是第一个元素或者相邻的元素不相同
+        if (!i || seen !== computed) {
+            res.push(value);
+        }
+        seen = value;
+    }
+    return res;
+}
+
+console.log(unique(array, function(item) {
+    return typeof item == 'string' ? item.toLowerCase() : item;
+}));
+</code></pre></div><p>方法二：用filter简化外层循环</p> <div class="language- extra-class"><pre class="language-text"><code>var array = [1, 2, 1, 1, '1'];
+
+function unique(array) {
+    return array.concat().sort().filter(function (item, index, array) {
+		return !index || item !== array[index - 1];
+	});
+}
+
+console.log(unique(array));
+</code></pre></div><p>方法三：用Object键值对实现</p> <div class="language- extra-class"><pre class="language-text"><code>var array = [1, 2, 1, 1, '1'];
+
+function unique(array) {
+    var obj = {};
+    return array.filter(function (item, index, array) {
+        return obj.hasOwnProperty(typeof item + JSON.stringify(item)) ? false : (obj[typeof item + JSON.stringify(item)] = true);
+    });
+}
+
+console.log(unique(array));
+</code></pre></div><p>方法四：es6 set</p> <div class="language- extra-class"><pre class="language-text"><code>var array = [1, 2, 1];
+
+var unique = (array) =&gt; [...new Set(array)];
+
+unique(array);
+</code></pre></div><ol start="6"><li>类型判断</li></ol> <p><strong>最常见使用的是typeof</strong></p> <table><thead><tr><th>类型</th> <th>typeof</th></tr></thead> <tbody><tr><td>Undefined</td> <td>undefined</td></tr> <tr><td><strong>Null</strong></td> <td><strong>object</strong></td></tr> <tr><td>Boolean</td> <td>boolean</td></tr> <tr><td>Number</td> <td>number</td></tr> <tr><td>String</td> <td>string</td></tr> <tr><td>Symbol</td> <td>symbol</td></tr> <tr><td>宿主对象（由JS环境提供）</td> <td>Implementation-dependent</td></tr> <tr><td>函数对象</td> <td>function</td></tr> <tr><td>Object(任何其他对象)</td> <td>object</td></tr></tbody></table> <p>显然，typeof对object的检测是不精确的，Object还有很多细分类型，如Date，Function，Array，RegExp，Error等，对于这些返回的都是object</p> <p>为了解决上面的问题，可以采用<strong>Object.propotype.toString</strong>，toString方法被调用的时候，会执行下面的步骤：</p> <ol><li>如果this值是undefined，就返回[object Undefined]</li> <li>如果this值是null，就返回[object Null]</li> <li>让O成为ToObject(this)的结果</li> <li>让class成为O的内部属性[[class]]的值</li> <li>最后返回由&quot;[object&quot; 和class和&quot;]&quot;三部分组成的字符串</li></ol> <div class="language- extra-class"><pre class="language-text"><code>// 写个demo
+console.log(Object.prototype.toString.call(undefined)) // [object Undefined]
+console.log(Object.prototype.toString.call(null)) // [object Null]
+
+var date = new Date()
+console.log(Object.prototype.toString.call(date)) // [object Date]
+</code></pre></div><p>除了以上例子之外，Object.prototype.toString实际可以判断至少12中类型（14种）</p> <div class="language- extra-class"><pre class="language-text"><code>var number = 1; // [object Number]
+var string = '123'; // [object String]
+var boolean = true; // [object Boolean]
+var und = undefined; // [object Undefined]
+var nul = null; // [object Null]
+var obj = { a: 1 }; // [object Object]
+var array = [1, 2, 3]; // [object Array]
+var date = new Date(); // [object Date]
+var error = new Error(); // [object Error]
+var reg = new RegExp(); // [object RegExp]
+var func = function a(){} // [object Function]
+Object.prototype.toString.call(Math) // [object Math]
+Object.prototype.toString.call(JSON) // [object JSON]
+Object.prototype.toString.call(arguments) // [object Arguments]
+</code></pre></div><p>基于上述typeof 和 Object.prototype.toString可以封装一个判断类型函数，当为基础类型，使用typeof，引用类型使用toString，同时，在es6中，null和undefined会被Object.prototype.toString 识别为[object Object]，需要兼容这种情况</p> <div class="language- extra-class"><pre class="language-text"><code>var class2type = {};
+
+// 生成class2type映射
+&quot;Boolean Number String Function Array Date RegExp Object Error&quot;.split(&quot; &quot;).map((item, index) =&gt; {
+    class2type[&quot;[object &quot; + item + &quot;]&quot;] = item.toLowerCase();
+});
+
+function type(obj) {
+    if (obj == null) {
+        return obj + '';
+    }
+    return typeof obj === 'object' || typeof obj === 'function' ? class2type[Object.prototype.toString.call(obj)] || 'object' : typeof obj;
+}
+</code></pre></div><p><strong>plainObject</strong>：翻译成中文，称为“纯粹的对象”，就是该对象是通过&quot;{}&quot;或&quot;new Object&quot;创建的，该对象含有零个或者多个键值对。plainObject的目的使用来区别别的js对象如null，数组，宿主对象（documents）等。以jquery为例</p> <div class="language- extra-class"><pre class="language-text"><code>$.isPlainObject({}) // true
+$.isPlainObject(new Object) // true
+$.isPlainObject(Object.create(null)) // true
+$.isPlainObject(Object.assign({ a: 1 }, { b: 2 })) // true
+$.isPlainObject(new Person('xx')) // false
+$.isPlainObject(Object.create({})) // false
+</code></pre></div><p>因此除了{}和new Object创建的对象外，没有原型的对象也是一个纯粹的对象</p> <p>jquery3.0中的源码</p> <div class="language- extra-class"><pre class="language-text"><code>var class2type = {};
+
+// 相当于 Object.prototype.toString
+var toString = class2type.toString;
+
+// 相当于 Object.prototype.hasOwnProperty
+var hasOwn = class2type.hasOwnProperty;
+
+function isPlainObject(obj) {
+    var proto, Ctor;
+
+    // 排除掉明显不是obj的以及一些宿主对象如Window
+    if (!obj || toString.call(obj) !== &quot;[object Object]&quot;) {
+        return false;
+    }
+
+    /**
+     * getPrototypeOf es5 方法，获取 obj 的原型
+     * 以 new Object 创建的对象为例的话
+     * obj.__proto__ === Object.prototype
+     */
+    proto = Object.getPrototypeOf(obj);
+
+    // 没有原型的对象是纯粹的，Object.create(null) 就在这里返回 true
+    if (!proto) {
+        return true;
+    }
+
+    /**
+     * 以下判断通过 new Object 方式创建的对象
+     * 判断 proto 是否有 constructor 属性，如果有就让 Ctor 的值为 proto.constructor
+     * 如果是 Object 函数创建的对象，Ctor 在这里就等于 Object 构造函数
+     */
+    Ctor = hasOwn.call(proto, &quot;constructor&quot;) &amp;&amp; proto.constructor;
+
+    // 在这里判断 Ctor 构造函数是不是 Object 构造函数，用于区分自定义构造函数和 Object 构造函数
+    return typeof Ctor === &quot;function&quot; &amp;&amp; hasOwn.toString.call(Ctor) === hasOwn.toString.call(Object);
+}
+</code></pre></div><p>注意：判断Ctor构造函数是不是Object构造函数，用的是hasOwn.toString.call(Ctor)，并不是Object.prototype.toString，可测试</p> <div class="language- extra-class"><pre class="language-text"><code>console.log(hasOwn.toString.call(Ctor)); // function Object() { [native code] }
+console.log(Object.prototype.toString.call(Ctor)); // [object Function]
+</code></pre></div><p>发现返回值并不一样，因为hasOwn.toString调用的其实是Function.prototype.toString，已经覆盖了Object继承来的toString。该方法返回的包括function关键字，形参列表，大括号，以及函数体中的内容</p> <p><strong>EmptyObject</strong>：判断对象是否是空对象，只要遍历对象，有属性，即为非空</p> <div class="language- extra-class"><pre class="language-text"><code>function isEmptyObject(obj) {
+    var name;
+    
+    for (name in obj) {
+        return false;
+    }
+    
+    return true;
+}
+</code></pre></div><p><strong>Window对象</strong>：判断window对象，只需判断该对象中是否有指向自身的window属性</p> <div class="language- extra-class"><pre class="language-text"><code>function isWindow(obj) {
+    return obj != null &amp;&amp; obj === obj.window;
+}
+</code></pre></div><p><strong>isArrayLike</strong>：该函数判断类数组对象和数组，都会返回true</p> <div class="language- extra-class"><pre class="language-text"><code>function isArrayLike(obj) {
+    // obj 必须有length属性
+    var length = !!obj &amp;&amp; &quot;length&quot; in obj &amp;&amp; obj.length;
+    var typeRes = type(obj); // 返回类型
+    
+    // 排除函数和window对象
+    if (typeRes === 'function' || isWindow(obj)) return false;
+    
+    return typeRes === 'array' || length === 0 || type length === 'number' &amp;&amp; length &gt; 0 &amp;&amp; (length - 1) in obj;
+}
+</code></pre></div><p>看最后的return，可以看出需要满足的情况包括：</p> <ol><li>是数组</li> <li>长度为0，以arguments为例</li> <li>length属性大于0的数字类型，并且obj[length -1]必须存在</li></ol> <p><strong>isElement</strong>：判断是不是DOM元素</p> <div class="language- extra-class"><pre class="language-text"><code>function isElement(obj) {
+    return !!(obj &amp;&amp; obj.nodeType === 1);
+}
+</code></pre></div><ol start="7"><li>数组的浅拷贝</li></ol> <p>concat和slice是浅拷贝</p> <div class="language- extra-class"><pre class="language-text"><code>var shallowCopy = function(obj) {
+    if (typeof obj !== 'object') return;
+    // 根据obj的类型判断是新建一个数组还是对象
+    var newObj = obj instanceof Array ? [] : {};
+    // 遍历obj，并且判断是obj的属性才拷贝
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+}
+</code></pre></div><ol start="8"><li>数组的深拷贝</li></ol> <p>简单粗暴的方式</p> <div class="language- extra-class"><pre class="language-text"><code>var new_arr = JSON.parse(JSON.stringify(arr));
+console.log(new_arr);
+</code></pre></div><p>但是该方法不能拷贝函数</p> <p>实现深拷贝，只需在浅拷贝的基础上，如果是对象，就递归调用深拷贝函数就可以</p> <div class="language- extra-class"><pre class="language-text"><code>var deepClone = function (obj) {
+    if (typeof obj !== 'object') return;
+    var newObj = obj instanceof Array ? [] : {};
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = typeof obj[key] === 'object' ? deepClone(obj[key]) : obj[key];
+        }
+    }
+    return newObj;
+}
+</code></pre></div><ol start="9"><li>数组扁平化</li></ol> <p>用reduce实现</p> <div class="language- extra-class"><pre class="language-text"><code>var arr = [1, [2, [3, 4]]];
+
+function flatten(arr) {
+    return arr.reduce(function(prev, next) {
+        return prev.concat(Array.isArray(next) ? flatten(next) : next);
+    });
+}
+
+console.log(flatten(arr));
+</code></pre></div><ol start="10"><li>判断两个对象相等</li></ol> <p>这里相等的范畴，不仅包括===的形式，还包括：</p> <ol><li>NaN 和NaN相等</li> <li>[1]和[1]相等</li> <li>{value: 1}和{value: 1}相等</li> <li>1和new Number(1)相等</li> <li>'xx'和new String('xx')相等</li> <li>true和new Boolean(true)相等</li></ol> <p><strong>判断NaN相等</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function eq(a, b) {
+    if (a !== a) return b !== b;
+}
+
+console.log(eq(NaN, NaN));
+</code></pre></div><p><strong>String对象</strong></p> <p>Object.prototype.toString方法判断结果却是一致的，如下</p> <div class="language- extra-class"><pre class="language-text"><code>var toString = Object.prototype.toString;
+toString.call('xx'); // &quot;[object String]&quot;
+toString.call(new String('xx')); // &quot;[object String]&quot;
+</code></pre></div><p>但是同样还是不能比较字符串和字符串包装对象是相等的，可以利用隐式类型转换</p> <div class="language- extra-class"><pre class="language-text"><code>console.log('xx' + '' === new String('xx') + ''); // true
+</code></pre></div><p>因此，先比较a和b的Object.prototype.toString的结果是否一致，如果都是&quot;[object String]&quot;，再使用'' + a === ' ' + b进行判断</p> <p><strong>更多对象</strong></p> <p>通过String对象的比较抛砖引玉，相同的思路，利用隐式类型转换，可以比较Boolean、Date、RegExp对象</p> <p><strong>Boolean</strong></p> <div class="language- extra-class"><pre class="language-text"><code>var a = true;
+var b = new Boolean(true);
+
+console.log(+a === +b); // true
+</code></pre></div><p><strong>Date</strong></p> <div class="language- extra-class"><pre class="language-text"><code>var a = new Date(2018, 7, 21);
+var b = new Date(2018, 7, 21);
+
+console.log(+a === +b); // true
+</code></pre></div><p><strong>RegExp</strong></p> <div class="language- extra-class"><pre class="language-text"><code>var a = /a/i;
+var b = new RegExp(/a/i);
+
+console.log(+a === +b); // true
+</code></pre></div><p>Number 会比较特殊些，存在Number(NaN)，永远和NaN都不等，需要加上之前的NaN相等的比较方式</p> <div class="language- extra-class"><pre class="language-text"><code>var a = Number(NaN);
+var b = Number(NaN);
+
+function eq() {
+	// 判断Number(NaN) Object(NaN)等情况
+	if (+a !== +a) return +b !== !b;
+	
+	// 排除NaN情况的正常比较
+	...
+}
+
+console.log(eq(a, b)); // true
+</code></pre></div><p><strong>简版deepEq函数</strong></p> <div class="language- extra-class"><pre class="language-text"><code>var toString = Object.prototype.toString;
+
+function deepEq(a, b) {
+    var className = toString.call(a);
+    if (className !== toString.call(b)) return false;
+    
+    switch(className) {
+        case '[object RegExp]':
+        case '[object String]':
+        	return '' + a === '' + b;
+        case '[object Number]':
+        	if (+a !== +a) return +b !== +b;
+        	return +a === 0 ? 1 / +a === 1 / +b : +a === +b; // 判断+0 和-0，规定二者不等
+        case '[object Date]':
+        case '[object Boolean]':
+        	return +a === +b;
+    }
+    
+    // 其他判断
+}
+</code></pre></div><ol start="11"><li>函数柯里化</li></ol> <p>第一版</p> <div class="language- extra-class"><pre class="language-text"><code>var curry = function (fn) {
+    var args = [].slice.call(arguments, 1);
+    return function () {
+        var newArgs = args.concat([].slice.call(arguments));
+        return fn.apply(this, newArgs);
+    }
+}
+
+// 使用
+function add(a, b) {
+    return a + b;
+}
+
+var addCurry = curry(add, 1, 2);
+addCurry() // 3
+// 或者
+var addCurry = curry(add, 1);
+addCurry(2) // 3
+// 或者
+var addCurry = curry(add);
+addCurry(1, 2); // 3
+</code></pre></div><p>第二版，实现合并数组</p> <div class="language- extra-class"><pre class="language-text"><code>function sub_curry(fn) {
+    var args = [].slice.call(arguments, 1);
+    return function () {
+        return fn.apply(this, args.concat([].slice.call(arguments)));
+    };
+}
+function curry(fn, length) {
+	length = length || fn.length;
+	var slice = Array.prototype.slice;
+	return function () {
+        if (arguments.length &lt; length) {
+            var combined = [fn].concat(slice.call(arguments));
+            return curry(sub_curry.apply(this, combined), length - arguments.length);
+        } else {
+            return fn.apply(this, arguments);
+        }
+	}
+}
+
+// 测试
+var fn = curry(function (a, b, c) {
+    return [a, b, c];
+});
+
+fn(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+fn(&quot;a&quot;)(&quot;b&quot;)(&quot;c&quot;) // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+</code></pre></div><ol start="12"><li>偏函数/局部应用（Partial application）</li></ol> <p>与柯里化联系</p> <p>柯里化是将一个多参数函数转换成多个单参数函数，也就是将一个n元函数转换成n个一元函数</p> <p>局部应用是固定一个函数的一个或者多个参数，也就是将一个n元函数转换成一个n-x元函数</p> <p><strong>简单的局部应用</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function partial(fn) {
+    var args = [].slice.call(arguments, 1);
+    return function () {
+        var newArgs = args.concat([].slice.call(arguments));
+        return fn.apply(this, newArgs);
+    }
+}
+
+// demo
+function add(a, b) {
+    return a + b + this.value;
+}
+
+// var addOne = add.bind(null, 1);
+var addOne = partial(add, 1);
+var value = 1;
+var obj = {
+    value: 2,
+    addOne: addOne
+}
+obj.addOne(2);
+// 使用bind时，结果为4
+// 使用partial时，结果为5
+</code></pre></div><ol start="13"><li>函数组合</li></ol> <div class="language- extra-class"><pre class="language-text"><code>function compose() {
+    var args = arguments;
+    var start = args.length - 1;
+    return function () {
+        var i = start;
+        var result = args[start].apply(this, arguments);
+        while (i--) result = args[i].call(this, result);
+        return result;
+    }
+}
+</code></pre></div><p>结合柯里化（curry）和函数组合（compose）：</p> <p><strong>pointfree</strong>指的是函数无须提及将要操作的数据是什么样的。</p> <div class="language- extra-class"><pre class="language-text"><code>// 需求：输入 'kevin daisy kelly'，返回'K.D.K'
+// 非pointfree，因为提到了数据name
+var initials = function (name) {
+    return name.split(' ').map(compose(toUpperCase, head)).join('. ');
+}
+
+// pointfree
+// 先定义基本运算
+var split = curry(function(separator, str) { return str.split(separator) })
+var head = function (str) { return str.slice(0, 1) }
+var toUpperCase = function (str) { return str.toUpperCase() }
+var join = curry(function(separator, arr) { return arr.join(separator) })
+var map = curry(function(fn, arr) { return arr.map(fn) })
+
+var initials = compose(join('.'), map(compose(toUpperCase, head)), split(' '));
+initials(&quot;kevin daisy kelly&quot;);
+</code></pre></div><blockquote><p>pointfree的本质就是使用一些通用的函数，组合出各种复杂运算。上层运算不要直接操作数据，而是通过底层函数去处理。即不使用所要处理的值，只合成运算过程。</p></blockquote> <ol start="14"><li>函数记忆</li></ol> <p>实现原理只用把参数和对应的结果数据存到一个对象中，调用时，判断参数对应的数据是否存在，存在就返回对应的结果数据</p> <p>第一版，来自《Javascript权威指南》</p> <div class="language- extra-class"><pre class="language-text"><code>function memorize(f) {
+    var cache = {};
+    return function () {
+        var key = arguments.length + Array.prototype.join.call(arguments, &quot;,&quot;);
+        if (key in cache) {
+            return cache[key];
+        } else {
+            return cache[key] = f.apply(this, arguments);
+        }
+    }
+}
+
+// demo
+var add = function(a, b, c) {
+    return a + b + c;
+}
+var memorizeAdd = memorize(add);
+console.time('use memorize');
+for(var i = 0; i &lt; 100000; i++) {
+    memorizeAdd(1, 2, 3)
+}
+console.timeEnd('use memorize');
+
+console.time('not use memorize')
+for(var i = 0; i &lt; 100000; i++) {
+    add(1, 2, 3)
+}
+console.timeEnd('not use memorize')
+</code></pre></div><p>很不幸上面的方法，有函数记忆消耗60ms，没有才1.3ms左右！</p> <p>但是以上的方法是有问题的，当参数是对象的时候，就会自动调用toString方法转换成[Object object]，再拼接字符串作为key值，因此，以下</p> <div class="language- extra-class"><pre class="language-text"><code>var propValue = function(obj){
+    return obj.value
+}
+
+var memoizedAdd = memoize(propValue)
+
+console.log(memoizedAdd({value: 1})) // 1
+console.log(memoizedAdd({value: 2})) // 1
+</code></pre></div><p>返回的值是一致的。</p> <p>第二版，来自underscore实现</p> <div class="language- extra-class"><pre class="language-text"><code>var memorize = function (func, hasher) {
+    var memorize = function (key) {
+        var cache = memorize.cache;
+        var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+        if (!cache[address]) {
+            cache[address] = func.apply(this, arguments);
+        }
+        return cache[address];
+    }
+    memorize.cache = {};
+    return memorize;
+}
+</code></pre></div><p>如果该函数是单参数，不传入hasher也是可以的，因为address只取了第一个实参。若要支持多参数，就必须要传入hasher函数，具体实现可以使用JSON.stringify，demo如下</p> <div class="language- extra-class"><pre class="language-text"><code>var memorizeAdd = memorize(add, function() {
+    var args = Array.prototype.slice.call(arguments);
+    return JSON.stringify(args);
+});
+
+console.log(memorizeAdd(1, 2, 3)) // 6
+console.log(memorizeAdd(1, 2, 4)) // 7
+</code></pre></div><ol start="15"><li>递归</li></ol> <p>当执行一个函数的时候，就会创建一个执行上下文，并且压入执行上下文栈，当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出。对于阶乘函数执行来说，js会不断的创建执行上下文压入执行上下文栈，这就必须要用<strong>尾调用</strong>。尾调用是指函数内部的最后一个动作是函数调用。该调用的返回值，直接返回给函数。</p> <p><strong>对于为什么必须要用尾调用，可以这么理解</strong>。如果函数最后执行的单纯的一个函数调用，相当于对于本函数来说已经完成了自己的任务了，就可以释放了。那个函数想怎么样就怎样，不关我的事。但是如果还有别的操作，就必须等待对方的返回值，计算完后，才能释放，只有若干个的递归还吃得消，若是成千的递归，那性能可想而知。</p> <ol start="16"><li>构造函数（constructor）、实例原型（prototype）、实例之间的关系</li></ol> <p>例如</p> <div class="language- extra-class"><pre class="language-text"><code>function Person() {}
+var person = new Person();
+person.name = 'xx';
+console.log(person.name);
+</code></pre></div><p>Person就是<strong>构造函数</strong>，使用new创建了一个实例对象person</p> <p><strong>__ proto __</strong>：每一个js对象（除了null）都具有这个属性，指向该对象的原型</p> <div class="language- extra-class"><pre class="language-text"><code>function Person() {}
+var person = new Person();
+console.log(person.__proto__ === Person.prototype); // true
+</code></pre></div><p><strong>constructor</strong>：每个原型都有一个constructor属性指向关联的构造函数</p> <div class="language- extra-class"><pre class="language-text"><code>function Person() {}
+
+var person = new Person();
+console.log(Person === Person.prototype.constructor); // true
+console.log(person.constructor === Person) // true
+
+// 这里需要注意的，当获取person.constructor时，其实person中并没有constructor属性，当不能读取到constructor属性时，会从person的原型也就是Person.prototype中获取，正好原型中有该属性
+</code></pre></div><p>综上描述，可以得出</p> <div class="language- extra-class"><pre class="language-text"><code>function Person() {}
+var person = new Person();
+
+console.log(person.__proto__ === Person.prototype) // true
+console.log(Person.prototype.constructor === Person) // true
+console.log(Object.getPrototypeOf(person) === Person.prototype) // true es5获取对象的原型
+</code></pre></div><p><strong>Object.prototype的原型是什么？</strong></p> <div class="language- extra-class"><pre class="language-text"><code>console.log(Object.prototype.__proto__ === null) // true
+</code></pre></div><ol start="17"><li>参数按值传递</li></ol> <p>ECMAScript中规定，所有函数的参数都是按值传递，可以理解为把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。</p> <p>但是，同样存在困惑，如下例子</p> <div class="language- extra-class"><pre class="language-text"><code>var obj = {
+    value: 1
+};
+function foo (o) {
+    o.value = 2;
+    console.log(o.value); // 2
+}
+foo(obj);
+console.log(obj.value); // 2
+</code></pre></div><p>不是说是按值传递吗？为什么这里看着就像引用传递呢？同样在看一个例子</p> <div class="language- extra-class"><pre class="language-text"><code>var obj = {
+    value: 1
+};
+function foo(o) {
+    o = 2;
+    console.log(o); // 2
+}
+foo(obj);
+console.log(obj.value); // 1
+</code></pre></div><p>怎么上例中又不发生改变呢？</p> <blockquote><p>其实，在传递方式，还有一种叫做共享传递。即在传递对象的时候，传递对象的引用的副本，其实还是按值传递</p></blockquote> <p><strong>注意：按引用传递传递对象的引用，而按共享传递是传递对象的引用的副本</strong></p> <p>所以，不难理解，当修改o.value，可以通过引用找到原值，但是直接修改o，并不会修改原值。</p> <ol start="18"><li>创建对象的多种方式及优缺点</li></ol> <p><strong>工厂模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function createPerson(name) {
+    var o = new Object();
+    o.name = name;
+    o.getName = function() {
+        console.log(this.name);
+    }
+    return o;
+}
+var person1 = createPerson('xx');
+console.log(person1 instanceof createPerson); // false
+console.log(person1 instanceof Object); // true
+</code></pre></div><p>缺点：对象无法识别，因为所有的实例都指向一个原型</p> <p><strong>构造函数模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {
+    this.name = name;
+    this.getName = function () {
+        console.log(this.name);
+    }
+}
+
+var person2 = new Person('xx');
+console.log(person2 instanceof Person); // true
+console.log(person2 instanceof Object); // true
+</code></pre></div><p>优点：实例可以识别为一个特定的类型</p> <p>缺点：每次创建实例时，每个方法都要被创建一次</p> <p><strong>构造函数模式优化</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {
+    this.name = name;
+    this.getName = getName;
+}
+function getName () {
+    console.log(this.name);
+}
+
+var person3 = new Person('xx');
+</code></pre></div><p>优点：解决了每个方法都要被重新创建的问题</p> <p>缺点：这个不算是封装</p> <p><strong>原型模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {}
+Person.prototype.name = 'xx';
+Person.prototype.getName = function () {
+    console.log(this.name);
+}
+
+var person4 = new Person();
+</code></pre></div><p>优点：解决方法不会重新创建</p> <p>缺点：1.所有的属性和方法都共享 2.不能初始化参数</p> <p><strong>组合模式</strong></p> <p>构造函数模式与原型模式双剑合璧</p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {
+    this.name = name;
+}
+Person.prototype = {
+    constructor: Person,
+    getName: function () {
+        console.log(this.name);
+    }
+}
+
+var person5 = new Person();
+</code></pre></div><p>优点：该共享的共享，该私有的私有</p> <p>缺点：希望全都都写在一起，即更好的封装性</p> <p><strong>动态原型模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {
+    this.name = name;
+    if (typeof this.getName != &quot;function&quot;) {
+        Person.prototype.getName = function () {
+            console.log(this.name);
+        }
+    }
+}
+
+var person6 = new Person('xx');
+</code></pre></div><p>但是用这个方式时，<strong>不能用对象字面量重新原型</strong></p> <p>如下解释：</p> <div class="language- extra-class"><pre class="language-text"><code>function Person(name) {
+    this.name = name;
+    if (typeof this.getName != &quot;function&quot;) {
+        Person.prototype = {
+            constructor: Person,
+            getName: function () {
+                console.log(this.name);
+            }
+        }
+    }
+}
+
+var person1 = new Person('kevin');
+var person2 = new Person('daisy');
+
+// 报错 并没有该方法
+person1.getName();
+
+// 注释掉上面的代码，这句是可以执行的。
+person2.getName();
+</code></pre></div><p>原因很简单，new的具体实现步骤为：</p> <ul><li>首先创建一个对象</li> <li>然后将对象的原型指向Person.prototype</li> <li>然后Person.apply(obj)</li> <li>返回这个对象</li></ul> <p>在执行obj.Person方法时，person1的prototype属性指向了员原来实例的原型，这里使用字面量方式直接覆盖Person.prototype，并不会更改实例的原型的值，person1依然指向原来的原型，而不是Person.prototype，而之前的原型是没有getName方法的，所以就报错了。</p> <p><strong>寄生构造函数模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Person (name) {
+    var o = new Object();
+    o.name = name;
+    o.getName = function () {
+        console.log(this.name);
+    }
+    return o;
+}
+
+var person7 = new Person('xx')
+console.log(person7 instanceof Person); // false
+console.log(person7 instanceof Object); // true
+</code></pre></div><p>这种写法有一个好处，比如想给特殊数组创建方法，又不想直接修改Array构造函数，可以这样写：</p> <div class="language- extra-class"><pre class="language-text"><code>function SpecialArray() {
+    var values = new Array();
+    for (var i = 0, len = arguments.length; i &lt; len; i++) {
+        values.push(arguments[i]);
+    }
+
+    values.toPipedString = function () {
+        return this.join(&quot;|&quot;);
+    };
+    return values;
+}
+
+var colors = new SpecialArray('red', 'blue', 'green');
+var colors2 = SpecialArray('red', 'blue', 'green');
+
+console.log(colors);
+console.log(colors.toPipedString); // red|blue|green
+
+console.log(colors2);
+console.log(colors2.toPipedString); // red|blue|green
+</code></pre></div><p>其实，寄生构造函数模式和工厂模式在创建对象的时候，就多使用了new，实际两者的结果是一样的</p> <p><strong>稳妥构造函数模式</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function person(name) {
+	var o = new Object();
+	o.sayName = function () {
+        console.log(name);
+	};
+	return o;
+}
+
+var person9 = person('xx');
+person9.sayName(); // xx
+person9.name = 'xx2';
+person9.sayName(); // xx
+console.log(person9.name); //xx2
+</code></pre></div><ol start="19"><li>继承的多种方式和优缺点</li></ol> <p><strong>原型链继承</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Parent () {
+    this.name = 'xx';
+}
+Parent.prototype.getName = function () {
+    console.log(this.name);
+}
+function Child() {}
+Child.prototype = new Parent();
+var child1 = new Child();
+console.log(child1.getName()); // xx
+</code></pre></div><p>问题：</p> <ol><li>引用类型的属性被所有实例共享</li> <li>在创建Child的实例时，不能向Parent传参</li></ol> <p><strong>借用构造函数(经典继承)</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function Parent() {
+    this.names = ['xl', 'cora'];
+}
+function Child() {
+    Parent.call(this);
+}
+var child1 = new Child();
+child1.names.push('cain');
+console.log(child1.names); // ['xl', 'cora', 'cain']
+var child2 = new Child();
+console.log(child2.names); // ['xl', 'cora']
+</code></pre></div><p>优点：</p> <ol><li><p>避免了引用类型的属性被所有实例共享</p></li> <li><p>可以在Child中向Parent传参</p> <p>举个例子</p> <div class="language- extra-class"><pre class="language-text"><code>function Parent (name) {
+    this.name = name;
+}
+
+function Child (name) {
+    Parent.call(this, name);
+}
+
+var child1 = new Child('kevin');
+
+console.log(child1.name); // kevin
+
+var child2 = new Child('daisy');
+
+console.log(child2.name); // daisy
+</code></pre></div></li></ol> <p>缺点：</p> <p>方法都在构造函数中定义，每次创建实例都会创建一遍方法。</p> <p><strong>组合继承</strong></p> <p>原型链继承和经典继承双剑合璧</p> <div class="language- extra-class"><pre class="language-text"><code>function Parent(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+Parent.prototype.getName = function (){
+    console.log(this.name);
+}
+function Child(name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+
+var child1 = new Child('kevin', '18');
+
+child1.colors.push('black');
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;, &quot;black&quot;]
+
+var child2 = new Child('daisy', '20');
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;]
+</code></pre></div><p>优点： 融合原型链继承和构造函数的优点，是Javacript中最常用的继承模式。</p> <p><strong>原型式继承</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function createObj(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+</code></pre></div><p>Object.create的模拟实现，将传入的对象作为创建的对象的原型</p> <p>缺点：包含引用类型的属性值始终都会共享响应的值跟原型链继承一样</p> <div class="language- extra-class"><pre class="language-text"><code>var person = {
+    name: 'xl',
+    friends: ['cora'],
+}
+var person1 = createObj(person);
+var person2 = createObj(person);
+person1.name = 'person1';
+console.log(person2.name); // 
+</code></pre></div></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/knowledge/Damn-hole-of-html5.html" class="prev">
+          html5
+        </a></span> <span class="next"><a href="/knowledge/review-the-javascript.html">
+          ES6
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/assets/js/15.0e6986e2.js" defer></script><script src="/assets/js/app.5d2cc566.js" defer></script>
+  </body>
+</html>

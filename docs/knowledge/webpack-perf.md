@@ -6,7 +6,7 @@
 
 blog的webpack版本为：`4.11.1`
 
-### 初构webpack配置
+## 初构webpack配置
 
 配置中引用的包如图
 
@@ -286,7 +286,7 @@ plugins: [
 
 - ModuleConcatenationPlugin：原先每个bundle都独立在一个闭包中，处理速度会减弱。webpack结合了rollup和closure Compiler将所有模块通过定义变量的方式提到一个闭包中，提升了代码的执行速度，俗称作用域提升(scope hoisting)。**注意：**使用作用域提升，必须要用ECMAScript模块语法（es6）。
 
-#### 总结
+### 总结
 
 在第一版中，使用了变量提升了编译后文件运行速度；使用了happypack、mini-css-extract-plugin、optimize-css-assets-webpack-plugin、webpack-parallel-uglify-plugin提升了编译速度。
 
@@ -308,7 +308,7 @@ plugins: [
 
    ![webpack-configuration-solve2](https://coracain.top/assets/webpack-configuration-solve2.png)
 
-### 优化之analyz
+## 优化之analyz
 
 优化第一步，先用webpack-bundle-analyzer或者别的类似的功能插件做分析，第一版的分析结果如下
 
@@ -320,7 +320,7 @@ WTF，vue居然两边都打包了！先处理这个问题
 
 ![webpack-performance-anlyz2](https://coracain.top/assets/webpack-performance-anlyz2.png)
 
-### 优化之Dllplugin
+## 优化之Dllplugin
 
 自webpack升级到v4以后，`CommonsChunkPlugin`被移除，官网推荐使用DllPlugin。DllPlugin就是升级版的CommonsChunkPlugin，但是解决了CommonsChunkPlugin带来的很多问题，例如，在打包时，都会给每个打包文件后缀加上hash，以至于每次那些基本不会发生变得的文件，一样会改变hash，这是发布中无法接受的。DllPlugin将vendor提取出来，通过单独打包，生成对应的manifest.json和vendor.dll.js。manifest.json用于在打build包时，检索bundle会和它的内部id比对，成功即不创建新的bundle，引用vendor.dll.js中的。下面列下配置：
 

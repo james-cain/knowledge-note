@@ -1,8 +1,8 @@
 # React
 
-### 生命周期
+## 生命周期
 
-#### V16生命周期用法和建议
+### V16生命周期用法和建议
 
 ```
 class ExampleComponent extends React.Component {
@@ -35,7 +35,7 @@ class ExampleComponent extends React.Component {
 }
 ```
 
-### setState
+## setState
 
 该API是异步的
 

@@ -10,18 +10,18 @@ PWA能做到原生应用的体验不是靠特指某一项技术，而是经过�
 - **体验**-快速响应了，并且有平滑的动画响应用户的操作
 - **粘性**-像设备上的原生应用，具有沉浸式的用户体验，用户可以添加到桌面
 
-### 离线和缓存
+## 离线和缓存
 
-#### Service Worker
+### Service Worker
 
-##### 前提条件
+#### 前提条件
 
 - Service Worker**要求HTTPS的环境**，通常可以借助github page进行学习调试。或者用**localhost、127.0.0.1**浏览器也允许调试Service Worker
 - Service Worker的**缓存机制**依赖于**Cache API**实现
 - 依赖HTML5 **fetch API**
 - 依赖**Promise**实现
 
-##### 注册
+#### 注册
 
 要安装Service Worker，需要通过在js主线程（常规的页面里的js）注册Service Worker来启动安装，这个过程会通知浏览器Service Worker线程的javaScript文件在什么地方呆着
 
@@ -50,19 +50,19 @@ if ('serviceWorker' in navigation) {
 
 代码执行完成之后，就注册了一个Service Worker，它工作在worker context，所以**没有访问DOM的权限**。在正常的页面之外运行Service Worker的代码来控制他们的加载。
 
-##### 查看是否注册成功
+#### 查看是否注册成功
 
 可以用[service-worker-inspect](chrome://inspect/#service-workers)
 
 还可以通过[service-worker-internals](chrome://serviceworker-internals)来查看服务工作线程详情。如果只是很想了解服务工作线程的生命周期，这很有用，但很有可能被上者取代
 
-##### 注册失败的原因
+#### 注册失败的原因
 
 - 不是HTTPS环境，不是localhost或127.0.0.1
 - Service Worker文件的地址没有写对，需要相对于origin
 - Service Worker文件在不同的origin下而不是你的APP的，是不被允许的
 
-##### 安装
+#### 安装
 
 注册成功后，就已经有了属于web app的worker context了。接下来浏览器会不停的尝试在站点里的页面安装并激活它，并且在这里可以把静态资源的缓存给办了
 
@@ -96,7 +96,7 @@ this.addEventListener('install', function(event) {
 
 ExtendableEvent.waitUtil()方法—确保Service Worker不会再waitUtil()里面的代码执行之前安装完成
 
-##### 自定义请求响应
+#### 自定义请求响应
 
 每次任何被Service Worker控制的资源被请求时，都会触发fetch事件，这些资源包括了指定的scope内的html文档，和这些html文档内引用的其他任何资源。
 
@@ -140,13 +140,13 @@ this.addEventListener('fetch', function (event) {
 - on install 的优点是第二次访问即可离线，缺点是需要将需要缓存的 URL 在编译时插入到脚本中，增加代码量和降低可维护性；
 - on fetch 的优点是无需更改编译过程，也不会产生额外的流量，缺点是需要多一次访问才能离线可用。
 
-##### service worker版本更新
+#### service worker版本更新
 
 若/sw.js缓存策略要更新该怎么处理？
 
 如果/sw.js内容有更新，当访问网站页面时浏览器获取了新的文件，逐字节比对/sw.js文件发现不同时会认为有更新启动更新算法，于是会安装新的文件并触发install事件。但是此时已经处于激活状态的旧的Service Worker还在运行，新的Service Worker完成安装后会进入waiting状态。直到所有已打开的页面都关闭，旧的Service Worker自动停止，新的Service Worker才会在接下来重新打开的页面里生效。
 
-##### 自动更新所有页面
+#### 自动更新所有页面
 
 可以在install事件中执行**self.skipWaiting()**方法跳过waiting状态，然后会直接进入activate阶段。接着在activate事件发生时，通过执行**self.clients.claim()**方法，更新所有客户端上的Service Worker。
 
@@ -180,7 +180,7 @@ self.addEventListener('activate', function (event) {
 
 另外要注意一点，**/sw.js文件可能会因为浏览器缓存问题，当文件有了变化时，浏览器里还是旧的文件**。这会导致更新得不到响应。因此，**在Web Server上添加对该文件的过滤规则，不缓存或设置较短的有效期**。
 
-##### 手动更新Service Worker
+#### 手动更新Service Worker
 
 在**页面**中，可以借助**Registration.update()更新**。
 
@@ -195,7 +195,7 @@ navigator.serviceWorker.register('/sw.js').then(function(reg) {
 });
 ```
 
-##### 生命周期
+#### 生命周期
 
 在页面脚本中注册Service Worker文件所在的URL。Worker就可以开始激活了，激活后的Service Worker可以监听当前域下的功能性事件，比如资源请求（fetch）、推送通知（push）、后台同步（sync）。
 
@@ -231,7 +231,7 @@ Service Worker基本步骤：
 - 激活 (activating) 失败
 - 新版本的 Service Worker 替换了它并成为激活状态
 
-##### 支持的事件
+#### 支持的事件
 
 - **install**：Service Worker 安装成功后被触发的事件，在事件处理函数中可以添加需要缓存的文件
 - **activate**：当 Service Worker 安装完成后并进入激活状态，会触发 activate 事件。通过监听 activate 事件你可以做一些预处理，如对旧版本的更新、对无用缓存的清理等。
@@ -240,7 +240,7 @@ Service Worker基本步骤：
 - **push (推送)**：push 事件是为推送准备的。不过首先需要了解一下 [Notification API](https://developer.mozilla.org/zh-CN/docs/Web/API/notification) 和 [PUSH API](https://developer.mozilla.org/zh-CN/docs/Web/API/Push_API)。通过 PUSH API，当订阅了推送服务后，可以使用推送方式唤醒 Service Worker 以响应来自系统消息传递服务的消息，即使用户已经关闭了页面。
 - **sync (后台同步)**：sync 事件由 background sync (后台同步)发出。background sync 配合 Service Worker 推出的 API，用于为 Service Worker 提供一个可以实现注册和监听同步处理的方法。但它还不在 W3C Web API 标准中。在 Chrome 中这也只是一个实验性功能，需要访问 `chrome://flags/#enable-experimental-web-platform-features` ，开启该功能，然后重启生效。
 
-#### chrome浏览器debug
+### chrome浏览器debug
 
 使用 Chrome 浏览器，可以通过进入控制台 `Application -> Service Workers` 面板查看和调试。
 
@@ -259,20 +259,20 @@ Service Worker基本步骤：
 - **Status**：告诉您 Service Worker 线程的状态。此行上的数字（上方屏幕截图中的 #1）指示 Service Worker 线程已被更新的次数。如果启用 `update on reload`复选框，您会注意到每次页面加载时此数字都会增大。在状态旁边，您将看到 `start` 按钮（如果 Service Worker 线程已停止）或 `stop` 按钮（如果 Service Worker 线程正在运行）。 Service Worker 线程设计为可由浏览器随时停止和启动。 使用 stop 按钮明确停止 Service Worker 线程可以模拟这一点。停止 Service Worker 线程是测试 Service Worker 线程再次重新启动时的代码行为方式的绝佳方法。它通常可以揭示由于对持续全局状态的不完善假设而引发的错误。
 - **Clients**：告诉您 Service Worker 线程作用域的原点。 如果您已启用 `show all`复选框，`focus` 按钮将非常实用。 在此复选框启用时，系统会列出所有注册的 Service Worker 线程。 如果您点击正在不同标签中运行的 Service Worker 线程旁的 `focus` 按钮，Chrome 会聚焦到该标签。
 
-##### 查看Service worker缓存内容
+#### 查看Service worker缓存内容
 
 Service Worker 使用 Cache API 缓存只读资源，我们同样可以在 Chrome DevTools 上查看缓存的资源列表。
 
 Cache Storage 选项卡提供了一个已使用（Service Worker 线程）Cache API 缓存的只读资源列表。
 
-##### 网络跟踪
+#### 网络跟踪
 
 经过 Service Worker 的 `fetch` 请求 Chrome 都会在 Chrome DevTools Network 标签页里标注出来，其中：
 
 - 来自 Service Worker 的内容会在 Size 字段中标注为 `from ServiceWorker`
 - Service Worker 发出的请求会在 Name 字段中添加 ⚙ 图标。
 
-### PWA的离线存储
+## PWA的离线存储
 
 对于网址可寻址的资源，使用[Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache)（服务工作线程的一部分）。
 
@@ -280,7 +280,7 @@ Cache Storage 选项卡提供了一个已使用（Service Worker 线程）Cache 
 
 以上两个API都是异步的（IndexedDB基于事件，CacheAPI基于Promise）。它们使用**网页工作线程**、**窗口**和**服务工作线程**。IndexedDB在每个位置都可用。服务工作线程（和CacheAPI）目前在Chrome、Firefox、Opera中可用，并正在针对Edge进行开发。IndexedDB的Promise包装器隐藏了IndexedDB库自带的一些强大但同时也非常复杂的machinery（如事务处理、架构版本）。IndexedDB将支持observers，可以轻松实现标签之间的同步。
 
-##### 其他存储机制怎样？
+#### 其他存储机制怎样？
 
 Web Storage（如LocalStorage和SessionStorage）是同步的，**不支持网页工作线程**，并对大小和类型（仅限字符串）进行限制。
 
@@ -290,7 +290,7 @@ WebSQL不具有广泛的浏览器支持，不建议使用。
 
 File System API在Chrome以外的任意浏览器上都不受支持。
 
-##### 能存储多少数据？
+#### 能存储多少数据？
 
 | 浏览器  | 限制                                                         |
 | ------- | ------------------------------------------------------------ |
@@ -299,11 +299,11 @@ File System API在Chrome以外的任意浏览器上都不受支持。
 | Safari  | <50MB                                                        |
 | IE10    | <250MB（并在存储10MB后提示用户）                             |
 
-##### 了解应用使用功能了多少存储空间？
+#### 了解应用使用功能了多少存储空间？
 
 在chrome中，可以使用[Quota Management API ](https://www.w3.org/TR/quota-api/)查询目前使用的存储空间大小
 
-##### 缓存逐出是如何工作的？
+#### 缓存逐出是如何工作的？
 
 | 浏览器  | 逐出政策                          |
 | ------- | --------------------------------- |
@@ -312,7 +312,7 @@ File System API在Chrome以外的任意浏览器上都不受支持。
 | Safari  | 无逐出                            |
 | Edge    | 无逐出                            |
 
-### 添加到主屏幕
+## 添加到主屏幕
 
 PWA提供了manifest.json配置文件，可以让开发者自定义添加至桌面时的图标、显示名称、启动方式等信息，并提供API方便开发者管理网络应用安装横幅，让用户可以方便快捷地将站点添加到主屏幕。
 
@@ -332,14 +332,14 @@ PWA提供了manifest.json配置文件，可以让开发者自定义添加至桌�
   - 引导用户添加应用
   - 引导用户安装原生应用
 
-##### 自定义名称
+#### 自定义名称
 
 - name：{string} 应用名称，用于安装横幅、启动画面显示
 - short_name: {string} 应用短名称，用于主屏幕显示
 
 > 目前如果修改了manifest.json的应用名称，已添加到主屏幕的名称并不会改变，只有当用户重新添加到桌面时，更改后的名称才会显示出来。但在未来版本的Chrome浏览器将支持名称自动更新
 
-##### 自定义图标
+#### 自定义图标
 
 - icons：{Array.< ImageObject >} 应用图标列表
 
@@ -356,13 +356,13 @@ PWA提供了manifest.json配置文件，可以让开发者自定义添加至桌�
 > 1. 在启动应用时，启动动画图像会从图标列表中提取最接近128dp的图标进行显示
 > 2. 当PWA添加到主屏幕时，浏览器会根据有效图标的 sizes 字段进行选择。首先寻找与显示密度相匹配并且尺寸调整到 48dp 屏幕密度的图标；如果未找到任何图标，则会查找与设备特性匹配度最高的图标；如果匹配到的图标路径错误，将会显示浏览器默认 icon。
 
-##### 设置启动网址
+#### 设置启动网址
 
 - start_url: {string} 应用启动地址
 
 如果为空，则默认使用当前页面。如果start_url配置的相对地址，则基地址与manifest.json相同。
 
-##### 设置作用域
+#### 设置作用域
 
 有时仅仅对站点的某些模块进行PWA改造，其余部分还是普通的网页。因此超出范围的部分会以浏览器的方式显示。
 
@@ -376,7 +376,7 @@ scope应遵循如下规则：
 - 如果 `start_url` 为相对地址，其根路径受 scope 所影响；
 - 如果 `start_url` 为绝对地址（以 `/` 开头），则该地址将永远以 `/` 作为根地址；
 
-##### 设置显示类型
+#### 设置显示类型
 
 可以设置display属性去指定PWA从主屏幕点击启动后的显示类型
 
@@ -419,7 +419,7 @@ scope应遵循如下规则：
 }
 ```
 
-##### 指定页面显示方向
+#### 指定页面显示方向
 
 - orientation: {string} 应用显示方向
 
@@ -434,7 +434,7 @@ scope应遵循如下规则：
 - natural
 - any
 
-##### 设置主题颜色
+#### 设置主题颜色
 
 控住浏览器UI的颜色。如PWA启动画面上状态栏、内容页中状态栏、地址栏的颜色，会被theme_color所影响
 
@@ -448,7 +448,7 @@ scope应遵循如下规则：
 >
 > 这个标签的色值会覆盖manifest.json里设置的，
 
-##### 引导用户添加应用至主屏幕
+#### 引导用户添加应用至主屏幕
 
 浏览器在PWA站点满足以下条件时会自动显示横幅：
 
@@ -462,7 +462,7 @@ scope应遵循如下规则：
 - 站点支持HTTPS访问
 - 站点在**同一浏览器中被访问至少两次**，**两次访问间隔至少为5分钟**
 
-##### 引导用户安装原生应用
+#### 引导用户安装原生应用
 
 浏览器在PWA站点满足以下条件时会自动显示横幅：
 
@@ -486,13 +486,13 @@ scope应遵循如下规则：
 
 如果只希望用户安装原生应用，不需要弹出横幅引导用户安装，可以设置："prefer_related_applications": true
 
-### 网络推送通知
+## 网络推送通知
 
 即使浏览器关闭的情况下，网络推送通知也可以像原生APP那样进行消息推送，并将推送的消息显示在通知栏里。
 
 
 
-### 疑惑
+## 疑惑
 
 1. 内容发生改变时，重新注册安装即Service Worker更新的最佳方案？
 
@@ -786,11 +786,11 @@ scope应遵循如下规则：
    这里注册的sw.update事件是在/components/UpdateToast.vue组件进行监听，并在更新时弹出提示，引导用户刷新页面。
    ```
 
-### IOS pwa
+## IOS pwa
 
 ios11版本已经全面兼容pwa，研究研究~
 
-#### 配置index.html文件
+### 配置index.html文件
 
 配置app的挑战在于理解ios和android的metas标签和web app manifest的不同，先要理解每个配置的作用。
 
@@ -904,7 +904,7 @@ ios11版本已经全面兼容pwa，研究研究~
 </html>
 ```
 
-#### 设计一致性
+### 设计一致性
 
 可以在安装的pwas中使用css media queries
 

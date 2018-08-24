@@ -1,6 +1,6 @@
 # 用sonatype3搭建npm私服
 
-#### 先安利几个不同方案的私服方案
+## 先安利几个不同方案的私服方案
 
 Nexus:<https://help.sonatype.com/repomanager3> 
 
@@ -10,7 +10,7 @@ Cnpm:<https://github.com/cnpm/cnpmjs.org>
 
 Sinopia:[https://github.com/rlidwka/sinopia](https://github.com/cnpm/cnpmjs.org) 
 
-#### 接下来介绍Nexus方式搭建私服
+## 接下来介绍Nexus方式搭建私服
 
 > Nexus是一个私服创建系统，支持跨平台，可以创建maven、docker、npm、gradle等多种私服库。目前有version 2和3两个版本，3版本自带支持npm库创建。
 
@@ -22,7 +22,7 @@ Nexus具有三种代理方式：
 
 混合式（Grouping npm Registries）
 
-##### Nexus安装（以macos为例）
+### Nexus安装（以macos为例）
 
 1. 下载tar包： <https://help.sonatype.com/repomanager3/download>
 
@@ -31,7 +31,7 @@ Nexus具有三种代理方式：
 4. 浏览器访问 <http://localhost:8081/>
 5. 登录以及改密码
 
-##### 私服使用
+### 私服使用
 
 1. Nexus服务器上，创建三种仓库
 
@@ -60,7 +60,7 @@ Nexus具有三种代理方式：
    },
    ```
 
-##### 更多复杂的功能可以看官网
+### 更多复杂的功能可以看官网
 
 除了install、publish、deprecate等功能外，可以自己创建权限，用户统一管理
 

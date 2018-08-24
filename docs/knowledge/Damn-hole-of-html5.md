@@ -1,12 +1,12 @@
 # html5
 
-### web通信
+## web通信
 
 web通信，实际有两个略不同的系统，**跨文档通信(cross-document messaging)**和**通道通信(channel messaging)**。
 
 无论是跨文档通信（cross-document messaging）、通道通信（channel messaging）、服务器发送事件（server-sent events）或是网络套接字（web sockets）都要执行**message事件**
 
-### Message事件
+## Message事件
 
 包含5个只读属性
 
@@ -24,7 +24,7 @@ web通信，实际有两个略不同的系统，**跨文档通信(cross-document
 
 MessageEvent继承DOM事件接口，且属性共享。然而，**通信事件并没有冒泡，不能取消，也没有默认行为**
 
-### 跨文档通信
+## 跨文档通信
 
 IE8+浏览器支持
 
@@ -53,11 +53,11 @@ window.postMessage('发送消息', 'http://example.com');
 window.postMessage('发送消息', 'http://example.com/');
 ```
 
-### 通道通信
+## 通道通信
 
 消息通道提供了一个直接，双向浏览上下文之间的通信手段。管道每端为端口，数据从一个端口发送，另一个变成输入
 
-####MessageChannel和MessagePort对象
+##MessageChannel和MessagePort对象
 
 创建一个MessageChannel对象，实际上创造了两个相互关联的端口。一个端口保持开放，为发送端。另外一个被转发到其他浏览上下文
 
@@ -71,7 +71,7 @@ MessagePort，包含三个可用方法
 
 MessagePort对象还有onmessage事件属性，可被用来定义事件句柄而不是事件监听
 
-##### 实例
+### 实例
 
 ```
 // 本例组成由 主页面+内部嵌套两个iframe页面(iframe1和iframe2)
