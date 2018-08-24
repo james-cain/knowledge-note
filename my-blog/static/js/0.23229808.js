@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{6:function(n,e,t){"use strict";t.r(e);var l={components:{page:function(){return t.e(1).then(t.bind(null,7))}}},u=t(0),c=Object(u.a)(l,function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",[n._v("\n    test2\n    child: "),t("page")],1)},[],!1,null,null,null);e.default=c.exports}}]);
