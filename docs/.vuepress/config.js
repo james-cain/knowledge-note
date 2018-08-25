@@ -1,6 +1,7 @@
 module.exports = {
   title: 'Jamescain Blog',
   description: 'A knowledge blog',
+  base: '/My-lab/',
   head: [
     [
       'link',
