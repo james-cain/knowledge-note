@@ -7,6 +7,12 @@
 
 [JavaScript “Prototype Chains”](https://medium.com/@hyejunglim/javascript-prototype-chains-cff594f35431)
 
+[mqyqingfeng blog](https://github.com/mqyqingfeng/Blog)
+
+[You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)
+
+[interviewMap](https://yuchengkai.cn/docs/zh/)
+
 ## Webpack
 
 [从零搭建自己的blog站点之webpack配置踩坑篇](articles/webpack-perf.md) -- 2018-06-06
@@ -147,6 +153,16 @@
 
 [AMP](https://www.ampproject.org/zh_cn/)
 
+[tabaofed](http://taobaofed.org/blog/2016/04/25/performance-composite/)
+
+[performance-column](https://github.com/barretlee/performance-column/issues)
+
+### 相关书籍
+
+《高性能网站建设进阶指南》
+
+《高性能网站见识指南》
+
 ## React Native
 
 ### 相关文章视频
@@ -228,4 +244,16 @@
 ## 服务器
 
 [部署一台属于自己的服务器-踩坑篇](articles/server-record.md) -- 2018-06-06
+
+## Javacript 算法
+
+[CS-Notes](https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md)
+
+## Interview
+
+[web前端面试指南小册](https://juejin.im/book/5a8f9ddcf265da4e9f6fb959/section/5a8f9ddc6fb9a06340522253)
+
+[FE-interview](https://github.com/qiu-deqing/FE-interview)
+
+[front-end-interview-handbook](https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md)
 
