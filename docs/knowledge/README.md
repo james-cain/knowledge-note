@@ -243,7 +243,7 @@
 
 ## 服务器
 
-[部署一台属于自己的服务器-踩坑篇](articles/server-record.md) -- 2018-06-06
+[部署一台属于自己的服务器-踩坑篇](articles/server-record.md)
 
 ## Javacript 算法
 
