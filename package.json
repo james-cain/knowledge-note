@@ -26,10 +26,5 @@
   "homepage": "https://github.com/james-cain/My-blog#readme",
   "dependencies": {
     "vuepress": "^0.14.2"
-  },
-  "devDependencies": {
-    "findup": "^0.1.5",
-    "ghooks": "^2.0.4",
-    "semver-regex": "^2.0.0"
   }
 }
