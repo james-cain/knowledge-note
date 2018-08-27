@@ -1,5 +1,7 @@
 # 性能优化
 
+##网站及性能优化点
+
 - google devtools https://developers.google.com/web/tools/chrome-devtools/
 - navigation timing performance resource 一个页面的渲染完成耗时
 - http2.0
@@ -21,239 +23,480 @@
 - https://www.cnblogs.com/-simon/p/5883336.html
 - https://www.cnblogs.com/callmeguxi/p/6846447.html
 
+## 网络加载类
+
+### 首屏数据请求提前，避免Javascript文件加载后才请求数据
+
+为了进一步提升页面加载速度，可以考虑将页面的数据请求尽可能提前，避免在JavaScript加载完成后才去请求数据。通常数据请求是页面内容渲染中关键路径最长的部分，而且不能并行，所以如果能将数据请求提前，可以极大程度上缩短页面内容的渲染完成时间。
+
+### 懒执行，首屏加载和按需加载，非首屏内容滚屏加载，保证首屏内容最小化
+
+将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，懒执行需要唤醒，一般可以通过定时器或者事件的调用来唤醒
+
+推荐移动端页面首屏数据展示延时不能超过3秒。推荐首屏所有资源大小不应超过1014kb，即大约不超过1MB
+
+### 模块化资源并行下载
+
+在移动端资源加载中，尽量保证JS资源并行加载，主要指的是模块化js资源异步加载
+
+### inline首屏必备的css和js
+
+避免页面HTML载入完成到页面内容展示这段过程中页面出现空白
+
+```
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>样例</title>
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+
+    <style>
+
+    /* 必备的首屏CSS */
+
+    html, body{
+
+        margin: 0;
+
+        padding: 0;
+
+        background-color: #ccc;
+
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+</body>
+```
+
+### meta dns prefetch设置DNS预解析
+
+让浏览器提前解析获取静态资源的主机IP，避免等到请求时才发起DNS解析请求。通常移动端HTML采用如下方式
+
+```
+<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="//cdn.domain.com">
+```
+
+### 资源预加载
+
+预加载，是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件
+
+对于移动端首屏加载后，提前加载可能会被使用的资源，保证用户需要浏览时已经加载完成
+
+```
+<link rel="preload" href="https://example.com">
+```
+
+预加载在一定程度上降低首屏的加载时间，但兼容性不好
+
+### 预渲染
+
+预渲染，可以通过预渲染将下载的文件先放在后台渲染
+
+```
+<link rel="prerender" href="https://example.com">
+```
+
+### 合理利用MTU策略
+
+通常情况下，TCP网络传输的最大传输单元（Maximum Transmission Unit,MTU）为1500B，即网络一个RTT（Round-Trip Time，网络请求往返时间）时间内可以传输的数据量最大为1500字节。因此，在前后端分离的开发模式中，尽量保证页面的HTML内容在1KB以内，这样整个HTML的内容请求就可以在一个RTT时间内请求完成，最大限度地提高HTML载入速度。
+
+## 缓存类
+
+### 强缓存和协商缓存
+
+强缓存（Expires、Cache-Control）和协商缓存（Last-Modified、If-Modified-Since和Etag、If-None-Match）
+
+在一些特殊的地方可能需要选择特殊的缓存策略
+
+- 对于不需要缓存的资源，可以使用Cache-Control: no-store，表示资源不需要缓存
+- 对于频繁变动的资源，可以使用Cache-Control: no-cache并配合Etag使用，表示资源已被缓存，但是每次都会发送请求询问资源是否更新
+- 对于代码文件来说，通常使用Cache-Control:  max-age=31536000并配合策略缓存使用，然后对文件进行指纹处理，一旦文件名变动就会立刻下载新的文件
+
+### 合理利用浏览器缓存
+
+在移动端还可以使用localStorage等来保存AJAX返回的数据，或者使用localStorage保存CSS或JavaScript静态资源内容，实现移动端的离线应用，尽可能减少网络请求，保证静态资源内容的快速加载。
+
+### 静态资源离线方案
+
+对于移动端或Hybrid应用，可以设置离线文件或离线包机制让静态资源请求从本地读取，加快资源载入速度，并实现离线更新。
+
+### 尝试使用AMP HTML
+
+AMP HTML可以作为优化前端页面性能的一个解决方案，使用AMP Component中的元素来代替原始的页面元素进行直接渲染。
+
+```
+<!-- 不推荐 -->
+
+<video width="400" height="300" src="http://www.domain.com/videos/myvideo.mp4" poster="path/poster.jpg">
+
+    <div fallback>
+
+        <p>Your browser doesn’t support HTML5 video</p>
+
+    </div>
+
+    <source type="video/mp4" src="foo.mp4">
+
+    <source type="video/webm" src="foo.webm">
+
+</video>
 
 
-1. DNS预解析,可以通过预解析的方式来预先获得域名所对应的IP
 
-   ```
-   <link rel="dns-prefetch" href="//xxx.com">
-   ```
 
-2. 缓存：强缓存（Expires、Cache-Control）和协商缓存（Last-Modified、If-Modified-Since和Etag、If-None-Match）
 
-   在一些特殊的地方可能需要选择特殊的缓存策略
+<!-- 推荐 -->
 
-   - 对于不需要缓存的资源，可以使用Cache-Control: no-store，表示资源不需要缓存
-   - 对于频繁变动的资源，可以使用Cache-Control: no-cache并配合Etag使用，表示资源已被缓存，但是每次都会发送请求询问资源是否更新
-   - 对于代码文件来说，通常使用Cache-Control:  max-age=31536000并配合策略缓存使用，然后对文件进行指纹处理，一旦文件名变动就会立刻下载新的文件
+<amp-video width="400" height="300" src="http://www.domain.com/videos/myvideo.mp4" poster= "path/poster.jpg">
 
-3. HTTP2.0
+    <div fallback>
 
-   HTTP/1.1每个请求都会建立和断开，消耗好几个RTT时间，并且由于TCP慢启动，加载体积大的文件需要更多的时间。
+        <p>Your browser doesn’t support HTML5 video</p>
 
-   HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加快了网页的加载速度。并且还支持Header压缩，进一步减少请求的数据大小
+    </div>
 
-4. 预加载，是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件
+    <source type="video/mp4" src="foo.mp4">
 
-   ```
-   <link rel="preload" href="https://example.com">
-   ```
+    <source type="video/webm" src="foo.webm">
 
-   预加载在一定程度上降低首屏的加载时间，但兼容性不好
+</amp-video>
+```
 
-5. 预渲染，可以通过预渲染将下载的文件先放在后台渲染
+## 图片类
 
-   ```
-   <link rel="prerender" href="https://example.com">
-   ```
+### 图片压缩处理
 
-6. 懒执行，将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，懒执行需要唤醒，一般可以通过定时器或者事件的调用来唤醒
+### 使用较小的图片，合理使用base64内嵌图片
 
-7. 懒加载，将不关键的资源延后加载。原理是只加载自定义区域（通常是可视区域，也可以是即将进入可视区域）内需要加载的东西。懒加载不仅可以用于图片，也可以使用在别的资源上，比如进入可视区域才开始播放视频等等。
+在页面使用的背景图片不多且较小的情况下，可以将图片转化成base64编码嵌入到HTML页面或CSS文件中，这样可以减少页面的HTTP请求数。需要注意的是，要保证图片较小，一般图片大小超过2KB就不推荐使用base64嵌入显示
 
-8. 如何渲染几万条数据并不卡住界面
+### 使用更高压缩比格式的图片，如webp
 
-   ```
-   可以通过requestAnimationFrame来每16ms刷新一次
-   
-   setTimeout(() => {
-       // 插入10万条数据
-       const total = 100000;
-       // 一次插入20条，如果觉得性能不好就减少
-       const once = 20;
-       // 渲染数据总共需要几次
-       const loopCount = total / once;
-       let countOfRender = 0;
-       let ul = document.querySelector("ul");
-       function add() {
-           //优化性能，插入不会造成回流
-           const fragment = document.createDocumentFragment();
-           for(let i = 0; i < once; i++) {
-               const li = document.createElement("li");
-               li.innerText = Math.floor(Math.random() * total);
-               fragment.appendChild(li);
-           }
-           ul.appendChild(fragment);
-           countOfRender += 1;
-           loop();
-       }
-       function loop() {
-           if (countOfRender < loopCount) {
-               window.requestAnimationFrame(add);
-           }
-       }
-       loop();
-   }, 0);
-   ```
+### 懒加载
 
-9. 防抖（debounce）
+将不关键的资源延后加载。原理是只加载自定义区域（通常是可视区域，也可以是即将进入可视区域）内需要加载的东西。懒加载不仅可以用于图片，也可以使用在别的资源上，比如进入可视区域才开始播放视频等等。
 
-   原理：尽管触发事件，但是一定在事件触发n秒后才执行，如果在事件触发的n秒内又触发了这个事件，就以新的事件的时间为准，n秒后才执行，总之，就是要等触发完事件n秒内不再触发事件，才执行。
+```
+<img data-src="//cdn.domain.com/path/photo.jpg" alt="懒加载图片">
+```
 
-   例子
+### 使用Media Query或srcset根据不同屏幕加载不同大小的图片
 
-   ```
-   <!DOCTYPE html>
-   <html lang="zh-cmn-Hans">
-   
-   <head>
-       <meta charset="utf-8">
-       <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
-       <title>debounce</title>
-       <style>
-           #container{
-               width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
-           }
-       </style>
-   </head>
-   
-   <body>
-       <div id="container"></div>
-       <script src="debounce.js"></script>
-   </body>
-   	<script>
-   		var count = 1;
-           var container = document.getElementById('container');
-   
-           function getUserAction(e) {
-               container.innerHTML = count++;
-           };
-   
-           var setUseAction = debounce(getUserAction, 10000, true);
-   
-           container.onmousemove = setUseAction;
-   
-           document.getElementById("button").addEventListener('click', function(){
-               setUseAction.cancel();
-           })
-   	</script>
-   </html>
-   ```
+针对不同的移动端屏幕尺寸和分辨率，输出不同大小的图片或背景图能保证在用户体验不降低的前提下节省网络流量，加快部分机型的图片加载速度
 
-   Debounce.js
+### 使用iconfont代替图片图标
 
-   ```
-   function debounce(func, wait, immediate) {
-   
-       var timeout, result;
-   
-       var debounced = function () {
-           var context = this;
-           var args = arguments;
-   
-           if (timeout) clearTimeout(timeout);
-           if (immediate) {
-               // 如果已经执行过，不再执行
-               var callNow = !timeout;
-               timeout = setTimeout(function(){
-                   timeout = null;
-               }, wait)
-               if (callNow) result = func.apply(context, args)
-           }
-           else {
-               timeout = setTimeout(function(){
-                   func.apply(context, args)
-               }, wait);
-           }
-           return result;
-       };
-   
-       debounced.cancel = function() {
-           clearTimeout(timeout);
-           timeout = null;
-       };
-   
-       return debounced;
-   }
-   ```
+### 定义图片大小限制
 
-   注意：当涉及函数有返回值时，debounce中同样要返回函数的执行结果，但是当immediate为false的时候，因为使用功能了setTimeout，将func.apply(context, args)的返回值赋给变量，最后再return的时候，值将会一直是undefined，所以只在immediate为true的时候返回函数的执行结果
+加载的单张图片一般不建议超过30KB，避免大图片加载时间长而阻塞页面其他资源的下载，推荐在10KB以内。
 
-10. 节流（throttle）
+## 脚本类
 
-   方法一：使用时间戳，当触发事件的时候，取出当前的时间戳，然后减去之前的时间戳（最一开始值设为0），如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行
+### 尽量使用id选择器
 
-   ```
-   function throttle(func, wait) {
-       var context, args;
-       var previous = 0;
-   
-       return function() {
-           var now = +new Date();
-           context = this;
-           args = arguments;
-           if (now - previous > wait) {
-               func.apply(context, args);
-               previous = now;
-           }
-       }
-   }
-   ```
+选择页面DOM元素时尽量使用id选择器，因为id选择器速度最快。
 
-   方法二：使用定时器，当触发事件的时候，设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，设置下个定时器
+### 合理缓存DOM对象
 
-   ```
-   function throttle(func, wait) {
-       var timeout;
-       var previous = 0;
-   
-       return function() {
-           context = this;
-           args = arguments;
-           if (!timeout) {
-               timeout = setTimeout(function(){
-                   timeout = null;
-                   func.apply(context, args)
-               }, wait)
-           }
-   
-       }
-   }
-   ```
+对于需要重复使用的DOM对象，要优先设置缓存变量，避免每次使用时都要从整个DOM树中重新查找。
 
-   方法三：结合以上两者的优势，做到鼠标移入立刻执行，停止触发的时候还能再执行一次。
+### 页面元素尽量使用事件代理，避免直接事件绑定
 
-   ```
-   function throttle(func, wait) {
-       var timeout, context, args, result;
-       var previous = 0;
-   
-       var later = function() {
-           previous = +new Date();
-           timeout = null;
-           func.apply(context, args)
-       };
-   
-       var throttled = function() {
-           var now = +new Date();
-           //下次触发 func 剩余的时间
-           var remaining = wait - (now - previous);
-           context = this;
-           args = arguments;
-            // 如果没有剩余的时间了或者你改了系统时间
-           if (remaining <= 0 || remaining > wait) {
-               if (timeout) {
-                   clearTimeout(timeout);
-                   timeout = null;
-               }
-               previous = now;
-               func.apply(context, args);
-           } else if (!timeout) {
-               timeout = setTimeout(later, remaining);
-           }
-       };
-       return throttled;
-   }
-   ```
+使用事件代理可以避免对每个元素都进行绑定，并且可以避免出现内存泄露及需要动态添加元素的事件绑定问题，所以尽量不要直接使用事件绑定。
 
-11. 
+```
+// 不推荐
+$('.btn').on('click', function(e){
+    console.log(this);
+});
+// 推荐
+$('body').on('click', '.btn', function(e){
+    console.log(this);
+});
+```
+
+### 使用touchstart代替click
+
+由于移动端屏幕的设计，touchstart事件和click事件触发时间之间存在300毫秒的延时，所以在页面中没有实现touchmove滚动处理的情况下，可以使用touchstart事件来代替元素的click事件，加快页面点击的响应速度，提高用户体验。但同时我们也要注意页面重叠元素touch动作的点击穿透问题。
+
+### 避免touchmove、scroll连续事件处理
+
+需要对touchmove、scroll这类可能连续触发回调的事件设置事件节流，例如设置每隔16ms（60帧的帧间隔为16.7ms，因此可以合理地设置为16ms）才进行一次事件处理，避免频繁的事件调用导致移动端页面卡顿。
+
+```
+// 推荐
+$('.scroller').on('touchmove', '.btn', function(e){
+    let self = this;
+    setTimeout(function(){
+        console.log(self);
+    }, 16);
+});
+```
+
+### 避免使用eval、with，使用join代理连接符+，推荐使用ECMAscript 6的字符串模板
+
+### 尽量使用ECMAScript 6+的特性来编程
+
+### 防抖(debounce)
+
+原理：尽管触发事件，但是一定在事件触发n秒后才执行，如果在事件触发的n秒内又触发了这个事件，就以新的事件的时间为准，n秒后才执行，总之，就是要等触发完事件n秒内不再触发事件，才执行。
+
+例子
+
+```
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>debounce</title>
+    <style>
+        #container{
+            width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="debounce.js"></script>
+</body>
+	<script>
+		var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction(e) {
+            container.innerHTML = count++;
+        };
+
+        var setUseAction = debounce(getUserAction, 10000, true);
+
+        container.onmousemove = setUseAction;
+
+        document.getElementById("button").addEventListener('click', function(){
+            setUseAction.cancel();
+        })
+	</script>
+</html>
+```
+
+Debounce.js
+
+```
+function debounce(func, wait, immediate) {
+
+    var timeout, result;
+
+    var debounced = function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) result = func.apply(context, args)
+        }
+        else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+        return result;
+    };
+
+    debounced.cancel = function() {
+        clearTimeout(timeout);
+        timeout = null;
+    };
+
+    return debounced;
+}
+```
+
+注意：当涉及函数有返回值时，debounce中同样要返回函数的执行结果，但是当immediate为false的时候，因为使用功能了setTimeout，将func.apply(context, args)的返回值赋给变量，最后再return的时候，值将会一直是undefined，所以只在immediate为true的时候返回函数的执行结果
+
+### 节流(throttle)
+
+方法一：使用时间戳，当触发事件的时候，取出当前的时间戳，然后减去之前的时间戳（最一开始值设为0），如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行
+
+```
+function throttle(func, wait) {
+    var context, args;
+    var previous = 0;
+
+    return function() {
+        var now = +new Date();
+        context = this;
+        args = arguments;
+        if (now - previous > wait) {
+            func.apply(context, args);
+            previous = now;
+        }
+    }
+}
+```
+
+方法二：使用定时器，当触发事件的时候，设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，设置下个定时器
+
+```
+function throttle(func, wait) {
+    var timeout;
+    var previous = 0;
+
+    return function() {
+        context = this;
+        args = arguments;
+        if (!timeout) {
+            timeout = setTimeout(function(){
+                timeout = null;
+                func.apply(context, args)
+            }, wait)
+        }
+
+    }
+}
+```
+
+方法三：结合以上两者的优势，做到鼠标移入立刻执行，停止触发的时候还能再执行一次。
+
+```
+function throttle(func, wait) {
+    var timeout, context, args, result;
+    var previous = 0;
+
+    var later = function() {
+        previous = +new Date();
+        timeout = null;
+        func.apply(context, args)
+    };
+
+    var throttled = function() {
+        var now = +new Date();
+        //下次触发 func 剩余的时间
+        var remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+         // 如果没有剩余的时间了或者你改了系统时间
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            previous = now;
+            func.apply(context, args);
+        } else if (!timeout) {
+            timeout = setTimeout(later, remaining);
+        }
+    };
+    return throttled;
+}
+```
+
+## 渲染类
+
+### 使用viewport固定屏幕渲染，可以加速页面渲染内容
+
+一般认为，在移动端设置Viewport可以加速页面的渲染，同时可以避免缩放导致页面重排重绘。在移动端固定Viewport设置的方法如下。
+
+```
+<!-- 设置viewport不缩放 -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+
+### 避免各种形式重排重绘
+
+页面的重排重绘很耗性能，所以一定要尽可能减少页面的重排重绘，例如页面图片大小变化、元素位置变化等这些情况都会导致重排重绘。
+
+### 使用CSS3动画，开启GPU加速
+
+使用CSS3动画时可以设置transform: translateZ(0)来开启移动设备浏览器的GPU图形处理加速，让动画过程更加流畅。
+
+```
+-webkit-transform: translateZ(0);
+-ms-transform: translateZ(0);
+-o-transform: translateZ(0);
+transform: translateZ(0);
+```
+
+### 合理使用Canvas和requestAnimationFrame
+
+### SVG代替图片
+
+部分情况下可以考虑使用SVG代替图片实现动画，因为使用SVG格式内容更小，而且SVG DOM结构方便调整。
+
+### 不滥用float
+
+在DOM渲染树生成后的布局渲染阶段，使用float的元素布局计算比较耗性能，所以尽量减少float的使用，推荐使用固定布局或flex-box弹性布局的方式来实现页面元素布局。
+
+### 不滥用web字体或过多font-size声明
+
+过多的font-size声明会增加字体的大小计算，而且也没有必要的。
+
+### 渲染几万条数据不卡住页面
+
+```
+可以通过requestAnimationFrame来每16ms刷新一次
+
+setTimeout(() => {
+    // 插入10万条数据
+    const total = 100000;
+    // 一次插入20条，如果觉得性能不好就减少
+    const once = 20;
+    // 渲染数据总共需要几次
+    const loopCount = total / once;
+    let countOfRender = 0;
+    let ul = document.querySelector("ul");
+    function add() {
+        //优化性能，插入不会造成回流
+        const fragment = document.createDocumentFragment();
+        for(let i = 0; i < once; i++) {
+            const li = document.createElement("li");
+            li.innerText = Math.floor(Math.random() * total);
+            fragment.appendChild(li);
+        }
+        ul.appendChild(fragment);
+        countOfRender += 1;
+        loop();
+    }
+    function loop() {
+        if (countOfRender < loopCount) {
+            window.requestAnimationFrame(add);
+        }
+    }
+    loop();
+}, 0);
+```
+
+## 架构协议类
+
+### 尝试使用SPDY和HTTP2
+
+在条件允许的情况下可以考虑使用SPDY协议来进行文件资源传输，利用连接复用加快传输过程，缩短资源加载时间。HTTP 2在未来也是可以考虑尝试的。
+
+HTTP/1.1每个请求都会建立和断开，消耗好几个RTT时间，并且由于TCP慢启动，加载体积大的文件需要更多的时间。
+
+HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加快了网页的加载速度。并且还支持Header压缩，进一步减少请求的数据大小
+
+### 使用后端数据渲染
+
+使用后端数据渲染的方式可以加快页面内容的渲染展示，避免空白页面的出现，同时可以解决移动端页面SEO的问题。如果条件允许，后端数据渲染是一个很不错的实践思路。
+
+### 使用native view代替dom的性能劣势
