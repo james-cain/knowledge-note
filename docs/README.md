@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: /home.png
-actionText: 快速上手 →
+actionText: 快速查看 →
 actionLink: /knowledge/
 features:
   - title: 网络前辈知识点
