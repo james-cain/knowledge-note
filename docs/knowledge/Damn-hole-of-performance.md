@@ -184,7 +184,7 @@ AMP HTML可以作为优化前端页面性能的一个解决方案，使用AMP Co
 
 ### 使用更高压缩比格式的图片，如webp
 
-### 懒加载
+### 图片懒加载
 
 将不关键的资源延后加载。原理是只加载自定义区域（通常是可视区域，也可以是即将进入可视区域）内需要加载的东西。懒加载不仅可以用于图片，也可以使用在别的资源上，比如进入可视区域才开始播放视频等等。
 
@@ -500,3 +500,202 @@ HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加�
 使用后端数据渲染的方式可以加快页面内容的渲染展示，避免空白页面的出现，同时可以解决移动端页面SEO的问题。如果条件允许，后端数据渲染是一个很不错的实践思路。
 
 ### 使用native view代替dom的性能劣势
+
+## 高性能网站建设指南
+
+### 规则1-减少HTTP请求
+
+通过一些技术，包括**图片地图、CSS spirites、内联图片和脚本、样式表的合并**等。在实际页面上估计响应时间可以**减少到50%**左右
+
+#### 图片地图(Image Map)
+
+使用图片地图，既能减少HTTP请求，又不需改变页面外观感受。允许你在一个图片上关联多个URL。目标URL取决于用户点击了图片的哪个位置
+
+例子
+
+[无图片地图](http://stevesouders.com/hpws/imagemap-no.php)
+
+[有图片地图](http://stevesouders.com/hpws/imagemap.php)
+
+图片地图有两种类型：
+
+- 服务器端图片地图(Server-side image maps)-将所有点击提交到同一个目标URL，向其传递用户点击的x、y坐标。服务器daunt将该x、y坐标映射为适当的操作
+- 客户端图片地图(Client-side image maps)-将用户的点击映射到一个操作，而无需向后端应用程序发送请求。映射通过HTML的**MAP标签**实现
+
+图片地图缺点：
+
+- 在定义图片地图上的区域坐标时，如果采取手工的方式很难完成且容易出错
+- 除了矩形之外几乎无法定义其他形状。
+
+一般使用场景：
+
+导航栏或者其他超链接中使用多个图片，将它们转换为地图是加速页面的最简单方式
+
+#### CSS Sprites
+
+"显灵板"(Ouija Board)是任何支持背景图片的HTML元素，如SPAN或DIV。使用CSS的background-position属性，可以将HTML元素放置到背景图片中期望的位置上。
+
+```
+<div style="background-image: url('a_lot_of_sprites.gif);
+			background-posiiton: -260px -90px;
+			width: 26px;
+			height: 24px;">
+</div>
+```
+
+例子
+
+[Sprites](http://stevesouders.com/examples/sprites.php?)
+
+优点：
+
+- 通过合并图片减少HTTP请求，并且比图片地图更灵活
+- 降低了下载量。合并后的图片会比分离的图片的总和要小，这是因为它降低了图片自身的开销（颜色表、格式信息，等）
+
+一般使用场景：
+
+在页面中为背景、按钮、导航栏、链接等提供大量图片时很适合
+
+#### 内联图片(Inline Images)
+
+```
+data:[<mediatype>][;base64],<data>
+```
+
+Base64编码会增加图片的大小，因此整体下载量会增加。
+
+例子
+
+[Inline-images](http://stevesouders.com/examples/inline-images.php?)
+
+**由于data:URL是内联在页面中的，在跨域不同页面时不会被缓存。**可以将CSS规则放在外部样式表中，这意味着数据可以**缓存在样式表内部**
+
+例子
+
+[Inline-css-images](http://stevesouders.com/examples/inline-css-images.php)
+
+缺点：
+
+- 将内联图片放置在外部样式表中增加了一个额外的HTTP请求，但被缓存后可以得到额外的收获
+
+#### 合并脚本和样式表(Combined Scripts and Stylesheets)
+
+在理想情况下，一个页面应该使用不多于一个的脚本和样式表
+
+例子
+
+[分离脚本示例](http://stevesouders.com/examples/combo-none.php)
+
+[合并脚本示例](http://stevesouders.com/examples/combo.php)
+
+### 规则2-使用内容发布网络(Content Delivery Network,CDN)
+
+内容发布网络（CDN）是一组分布在多个不同地理位置的Web服务器，用于更加有效地向用户发布内容。
+
+CDN用于发布静态内容，如图片、脚本、样式表和Flash。提供动态HTML页面会引入特殊的存储需求-数据库连接、状态管理、验证、硬件和OS优化等
+
+例子
+
+[CDN](http://stevesouders.com/hpws/ex-cdn.php?)
+
+[no-CDN](http://stevesouders.com/hpws/ex-nocdn.php)
+
+优点：
+
+- 缩短响应时间
+- 备份、扩展存储能力和进行缓存
+- 有助于缓和Web流量峰值压力，如在获取天气或股市新闻、浏览流行的体育或娱乐事件时
+
+缺点：
+
+- 响应时间可能会受到其他网站-甚至很可能是竞争对手流量的影响
+- 无法直接控制组件服务器所带来的特殊麻烦。例如，修改HTTP响应头必须通过服务提供商来完成，而不是有工作团队完成
+- 如果CDN服务的性能下降了，工作质量也随之下降
+
+### 规则3-添加Expires头
+
+通过使用一个长久的Expires头，可以使这些组件被缓存。长久的Expires头最常用于**图片**，但应该将其用在所有组件上，包括**脚本、样式表和Flash**。
+
+#### Max-Age和mod_expires
+
+Cache-Control使用max-age指令指定组件被缓存多久。以秒为单位一个更新窗。
+
+一个长久的max-age头可以将刷新窗设置为未来10年。Cache-Control: max-age=315360000
+
+对于Expires和Cache-Control max-age，如果两者同时出现，HTTP规范规定max-age指令将重写Expires头。
+
+#### 修改文件名
+
+当出现了Expires头时，直到过期日期为止一直会使用缓存的版本。浏览器不会检查任何更新，直到过了过期日期。这也是为什么使用Expires头能够显著地减少响应时间-浏览器直接从硬盘上读取组件而无需生成任何HTTP流量。
+
+最有效的解决方案是修改所有链接，全新的请求将从原始服务器下载最新的内容。
+
+例子
+
+[无Expires](http://stevesouders.com/hpws/expiresoff.php)
+
+[长久的 Expires](http://stevesouders.com/hpws/expireson.php)
+
+优点：
+
+- 具有长久Expires头的组件将会被缓存，在后续请求时浏览器直接从硬盘上读取它，避免了一个HTTP请求
+
+若不加Expires头，**仍然会存储在浏览器的缓存中**。为了提高效率，浏览器会向原始服务器发送一个条件GET请求。如果组件没有改变，原始服务器可以免于发送整个组件，而是**发送一个很小的头**，告诉浏览器可以使用其缓存的组件。
+
+### 规则4-压缩组件
+
+通过Accept-Encoding: gzip, deflate头，支持对文件的压缩。
+
+如果Web服务器看到请求中有这个头，就会使用客户端列出的方法中的一种来压缩响应。Web服务器通过响应中的Content-Encoding头来通知Web客户端。Content-Encoding: gzip
+
+其中gzip是最理想的压缩方法
+
+值得压缩的内容：XML、JSON在内的任何文本响应，脚本和样式表
+
+不值得压缩：图片和PDF，因为它们已经被压缩
+
+**压缩的成本**：服务端会花费额外的CPU周期来完成压缩，客户端要对压缩文件进行解压缩。
+
+通常对大于1KB或者2KB的文件进行压缩。mod_gzip_minimum_file_size指令控制希望压缩的文件的最小值，默认是500B。
+
+#### 节省
+
+压缩通常能将相应的数据量减少接近70%。
+
+#### 配置
+
+- Apache 1.3的gzip压缩由mod_gzip模块提供。最常用的指令
+
+mod_gzip_on
+
+	启用mod_gzip
+
+mod_gzip_item_include
+
+mod_gzip_item_exclude
+
+	基于文件类型、MIME类型、用户代理等定义哪些需要压缩、哪些不需要
+
+很多Web主机服务都**默认为text/html**打开了mod_gzip。最重要的配置修改就是需要明确压缩脚本和样式表。
+
+```
+mod_gzip_item_include	file	\.js$
+mod_gzip_item_include	mime	^application/x-javascript$
+mod_gzip_item_include	file	\.css$
+mod_gzip_item_include	mime	^text/css$
+```
+
+**gzip命令行工具提供了一个选项，用于控制压缩的程度，可以在CPU使用量和数据大小的变化之间进行取舍**，但mod_gzip中没有配置指令能够控制压缩级别。
+
+- Apache 2.x的gzip压缩由mod_deflate模块提供。
+
+上例中的配置可以在2.x中如下配置：
+
+```
+AddOutputFilterByType DEFLATE text/html text/css application/x-javascript
+```
+
+mod_gzip包含了一个用于控制压缩机别的指令-Deflate CompressionoLevel
+
+#### 代理缓存
+
