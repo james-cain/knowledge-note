@@ -1,112 +1,112 @@
 # JavaScript
 
-1. async和await
+##async和await
 
-   ```
-   var a = 0
-   var b = async () => {
-     a = a + await 10
-     console.log('2', a) // -> '2' 10
-     a = (await 10) + a
-     console.log('3', a) // -> '3' 20
-   }
-   b()
-   a++
-   console.log('1', a) // -> '1' 1
-   ```
+```
+var a = 0
+var b = async () => {
+  a = a + await 10
+  console.log('2', a) // -> '2' 10
+  a = (await 10) + a
+  console.log('3', a) // -> '3' 20
+}
+b()
+a++
+console.log('1', a) // -> '1' 1
+```
 
-   对于以上代码你可能会有疑惑，这里说明下原理
+对于以上代码你可能会有疑惑，这里说明下原理
 
-   - 首先函数 `b` 先执行，在执行到 `await 10` 之前变量 `a` 还是 0，因为在 `await` 内部实现了 `generators` ，`generators` 会保留堆栈中东西，所以这时候 `a = 0` 被保存了下来
-   - 因为 `await` 是异步操作，所以会先执行 `console.log('1', a)`
-   - 这时候同步代码执行完毕，开始执行异步代码，将保存下来的值拿出来使用，这时候 `a = 10`
-   - 然后后面就是常规执行代码了
+- 首先函数 `b` 先执行，在执行到 `await 10` 之前变量 `a` 还是 0，因为在 `await` 内部实现了 `generators` ，`generators` 会保留堆栈中东西，所以这时候 `a = 0` 被保存了下来
+- 因为 `await` 是异步操作，所以会先执行 `console.log('1', a)`
+- 这时候同步代码执行完毕，开始执行异步代码，将保存下来的值拿出来使用，这时候 `a = 10`
+- 然后后面就是常规执行代码了
 
-2. Proxy
+##Proxy
 
-   ```
-   // 用proxy实现数据绑定和监听
-   let onWatch = (obj, setBind, getLogger) => {
-       let handler = {
-           get(target, property, receiver) {
-               getLogger(target, property);
-               return Reflect.get(target, property, receiver);
-           },
-           set(target, property, value, receiver) {
-               setBind(value);
-               return Reflect.set(target, property, value);
-           }
-       }
-       return new Proxy(obj, handler);
-   }
-   let obj = { a: 1 };
-   let value;
-   let p = onWatch(obj, (v) => {
-       value = v;
-   }, (target, property) => {
-       console.log(`Get '${property}' = ${target[property]}`);
-   });
-   p.a = 2; // bind 'value' to '2'
-   p.a // -> Get 'a' = 2
-   ```
+```
+// 用proxy实现数据绑定和监听
+let onWatch = (obj, setBind, getLogger) => {
+    let handler = {
+        get(target, property, receiver) {
+            getLogger(target, property);
+            return Reflect.get(target, property, receiver);
+        },
+        set(target, property, value, receiver) {
+            setBind(value);
+            return Reflect.set(target, property, value);
+        }
+    }
+    return new Proxy(obj, handler);
+}
+let obj = { a: 1 };
+let value;
+let p = onWatch(obj, (v) => {
+    value = v;
+}, (target, property) => {
+    console.log(`Get '${property}' = ${target[property]}`);
+});
+p.a = 2; // bind 'value' to '2'
+p.a // -> Get 'a' = 2
+```
 
-3. 0.1 +  0.2 != 0.3 的处理
+##0.1 +  0.2 != 0.3 的处理
 
-   ```
-   parseFloat((0.1 + 0.2).toFixed(10))
-   ```
+```
+parseFloat((0.1 + 0.2).toFixed(10))
+```
 
-4. 正则表达式
+##正则表达式
 
-   - 元字符
+- 元字符
 
-   . 匹配任意字符除了换行符和回车符
+. 匹配任意字符除了换行符和回车符
 
-   [] 匹配方括号内的任意字符，比如[0-9]可以用来匹配任意数字
+[] 匹配方括号内的任意字符，比如[0-9]可以用来匹配任意数字
 
-   ^ ^9 这样使用匹配以9开头。[**^**9]这样使用代表匹配方括号内除了9的字符
+^ ^9 这样使用匹配以9开头。[**^**9]这样使用代表匹配方括号内除了9的字符
 
-   {1, 2} 匹配1到2位字符
+{1, 2} 匹配1到2位字符
 
-   (yck) 只匹配和yck相同字符串
+(yck) 只匹配和yck相同字符串
 
-   | 匹配|前后任意字符
+| 匹配|前后任意字符
 
-   \ 转义
+\ 转义
 
-   ***** 只匹配出现-1次以上* 前的字符
+***** 只匹配出现-1次以上* 前的字符
 
-   **+** 只匹配出现0次以上+前的字符
+**+** 只匹配出现0次以上+前的字符
 
-   ? ？之前字符可选
+? ？之前字符可选
 
-   - 修饰符
+- 修饰符
 
-   i 忽略大小写
+i 忽略大小写
 
-   g 全局搜索
+g 全局搜索
 
-   m 多行
+m 多行
 
-   - 字符简写
+- 字符简写
 
-   \w 匹配字母数字或下划线
+\w 匹配字母数字或下划线
 
-   \W 和上面相反
+\W 和上面相反
 
-   \s 匹配任意的空白符
+\s 匹配任意的空白符
 
-   \S 和上面相反
+\S 和上面相反
 
-   \d 匹配数字
+\d 匹配数字
 
-   \D 和上面相反
+\D 和上面相反
 
-   \b 匹配单词的开始或结束
+\b 匹配单词的开始或结束
 
-   \B 和上面相反
+\B 和上面相反
 
-5. 数组去重
+##数组去重
 
 方法一：排序后去重，支持自定义规则如何视为相同元素，如字母大小写视为一致
 
@@ -173,7 +173,7 @@ var unique = (array) => [...new Set(array)];
 unique(array);
 ```
 
-6. 类型判断
+##类型判断
 
 **最常见使用的是typeof**
 
@@ -361,7 +361,7 @@ function isElement(obj) {
 }
 ```
 
-7. 数组的浅拷贝
+##数组的浅拷贝
 
 concat和slice是浅拷贝
 
@@ -380,7 +380,7 @@ var shallowCopy = function(obj) {
 }
 ```
 
-8. 数组的深拷贝
+##数组的深拷贝
 
 简单粗暴的方式
 
@@ -406,7 +406,7 @@ var deepClone = function (obj) {
 }
 ```
 
-9. 数组扁平化
+##数组扁平化
 
 用reduce实现
 
@@ -422,7 +422,7 @@ function flatten(arr) {
 console.log(flatten(arr));
 ```
 
-10. 判断两个对象相等
+##判断两个对象相等
 
 这里相等的范畴，不仅包括===的形式，还包括：
 
@@ -534,7 +534,7 @@ function deepEq(a, b) {
 }
 ```
 
-11. 函数柯里化
+##函数柯里化
 
 第一版
 
@@ -593,7 +593,7 @@ fn("a", "b", "c") // ["a", "b", "c"]
 fn("a")("b")("c") // ["a", "b", "c"]
 ```
 
-12. 偏函数/局部应用（Partial application）
+##偏函数/局部应用（Partial application）
 
 与柯里化联系
 
@@ -629,7 +629,7 @@ obj.addOne(2);
 // 使用partial时，结果为5
 ```
 
-13. 函数组合
+##函数组合
 
 ```
 function compose() {
@@ -669,7 +669,7 @@ initials("kevin daisy kelly");
 
 > pointfree的本质就是使用一些通用的函数，组合出各种复杂运算。上层运算不要直接操作数据，而是通过底层函数去处理。即不使用所要处理的值，只合成运算过程。
 
-14. 函数记忆
+##函数记忆
 
 实现原理只用把参数和对应的结果数据存到一个对象中，调用时，判断参数对应的数据是否存在，存在就返回对应的结果数据
 
@@ -752,13 +752,13 @@ console.log(memorizeAdd(1, 2, 3)) // 6
 console.log(memorizeAdd(1, 2, 4)) // 7
 ```
 
-15. 递归
+##递归
 
 当执行一个函数的时候，就会创建一个执行上下文，并且压入执行上下文栈，当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出。对于阶乘函数执行来说，js会不断的创建执行上下文压入执行上下文栈，这就必须要用**尾调用**。尾调用是指函数内部的最后一个动作是函数调用。该调用的返回值，直接返回给函数。
 
 **对于为什么必须要用尾调用，可以这么理解**。如果函数最后执行的单纯的一个函数调用，相当于对于本函数来说已经完成了自己的任务了，就可以释放了。那个函数想怎么样就怎样，不关我的事。但是如果还有别的操作，就必须等待对方的返回值，计算完后，才能释放，只有若干个的递归还吃得消，若是成千的递归，那性能可想而知。
 
-16. 构造函数（constructor）、实例原型（prototype）、实例之间的关系
+##构造函数（constructor）、实例原型（prototype）、实例之间的关系
 
 例如
 
@@ -808,7 +808,7 @@ console.log(Object.getPrototypeOf(person) === Person.prototype) // true es5获�
 console.log(Object.prototype.__proto__ === null) // true
 ```
 
-17. 参数按值传递
+##参数按值传递
 
 ECMAScript中规定，所有函数的参数都是按值传递，可以理解为把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。
 
@@ -848,7 +848,7 @@ console.log(obj.value); // 1
 
 所以，不难理解，当修改o.value，可以通过引用找到原值，但是直接修改o，并不会修改原值。
 
-18. 创建对象的多种方式及优缺点
+##创建对象的多种方式及优缺点
 
 **工厂模式**
 
@@ -1056,7 +1056,7 @@ person9.sayName(); // xx
 console.log(person9.name); //xx2
 ```
 
-19. 继承的多种方式和优缺点
+##继承的多种方式和优缺点
 
 **原型链继承**
 

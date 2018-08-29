@@ -839,3 +839,5 @@ function altBgcolor(elem) {
 
 [加载后下载](http://stevesouders.com/hpws/post-onload.php)
 
+### 规则9-减少DNS查找
+
