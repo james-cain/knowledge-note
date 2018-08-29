@@ -706,3 +706,136 @@ Vary: Accept-Encoding
 ```
 
 因此，代理需要缓存响应的多个版本，为Accept-Encoding请求头的每个值缓存一份。通过Vary头，可以选择需要读取的是缓存还是不缓存的内容。
+
+例子
+
+[无压缩](http://stevesouders.com/hpws/nogzip.php)
+
+[压缩HTML](http://stevesouders.com/hpws/gzip-html.php)
+
+[压缩所有组件](http://stevesouders.com/hpws/gzip-all.php)
+
+### 规则5-将样式表放在顶部
+
+将样式表放在文档底部会导致在浏览器中阻止内容逐步呈现。为避免当样式变化时重绘页面中的元素，浏览器会阻塞内容逐步呈现。
+
+#### 白屏
+
+#####将CSS放在底部
+
+导致白屏问题的情形有以下几种：
+
+- 在新窗口中打开时
+- 重新加载时
+- 作为主页
+
+例子
+
+[将css放在底部](http://stevesouders.com/hpws/css-bottom.php)
+
+##### 将CSS放在顶部
+
+为了避免白屏，将样式表放在文档顶部的HEAD中。
+
+[将CSS放在顶部](http://stevesouders.com/hpws/css-top.php)
+
+引入样式表有两种方式：
+
+- 使用LINK标签
+
+  ```
+  <link rel="stylesheet" href="style.css">
+  ```
+
+- 使用@import规则
+
+  ```
+  <style>
+  	@import url("style.css");
+  </style>
+  ```
+
+LINK标签会比@import带来性能上的收益。@import规则有可能会导致白屏现象，即便把@import规则放在文档的HEAD标签中也是如此。
+
+#### 无样式内容的闪烁
+
+所谓无样式内容闪烁(Flash of Unstyled Content，Fouc)，就在在页面逐步加载时，文字首先显示，然后是图片。最后样式表正确地下载并解析之后，已经呈现的文字和图片要用新的样式重绘。
+
+例子
+
+[无样式内容的CSS闪烁](http://stevesouders.com/hpws/css-fouc.php)
+
+白屏是对FOUC问题的弥补。
+
+### 规则6-将脚本放在底部
+
+#### 并行下载
+
+使用**两个主机名**比使用1、4或10个主机名能带来更好的性能。
+
+#### 脚本阻塞下载
+
+在下载脚本时并行下载实际上是被**禁用**的-即使使用了不同的主机名，浏览器也不会启动其他的下载。
+
+原因：
+
+- 脚本可能使用document.write来修改页面内容，因此浏览器会等待，以确保页面能够恰当地布局
+- 为了保证脚本能够按照正确的顺序执行。
+
+例子
+
+[顶部脚本VS底部脚本](http://stevesouders.com/hpws/move-scripts.php)
+
+### 规则7-避免CSS表达式
+
+CSS表达式是动态设置CSS属性的一种强大(并且危险)的方式。
+
+在很多动态页面，可以使用CSS表达式将背景色设置为每小时变化一次。
+
+```
+background-color: expression((new Date()).getHours()%2 ? '#b8d4ff' : '#f08100');
+```
+
+expression方法接受一个Javascript表达式。
+
+####一次性表达式
+
+如果CSS表达式必须被求值一次，那么可以在这一次执行中重写自身。
+
+```
+<style>
+P {
+    background-color: expression(altBgcolor(this));
+}
+</style>
+<script type="text/javascript">
+function altBgcolor(elem) {
+    elem.style.backgroundColor = (new Date()).getHours() % 2 ? '#b8d4ff' : '#f08100';
+}
+</script>
+```
+
+### 规则8-使用外部Javascript和CSS
+
+就纯粹而言，内联快一些。
+
+外部文件所带来的收益-Javascript和CSS文件有机会被浏览器缓存起来。
+
+如何衡量内联和外部引用：
+
+- 页面浏览量
+
+  每个用户产生的页面浏览量越少，内联Javascript和CSS的越好
+
+- 组件重用
+
+  页面如果使用了相同的Javascript和CSS，使用外部文件可以提高这些组件的重用率
+
+#### 加载后下载
+
+对于作为多次页面浏览量中的第一次的主页，为主页内联Javascript和CSS，又能为所有后续页面浏览量提供外部文件。可以通过在主页加载完成后动态下载外部组件来实现（通过onload事件）。这能够将外部文件放到浏览器的缓存中以便用户接下来访问其他页面。
+
+例子
+
+[加载后下载](http://stevesouders.com/hpws/post-onload.php)
+
