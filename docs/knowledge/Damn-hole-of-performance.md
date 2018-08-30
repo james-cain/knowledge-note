@@ -887,3 +887,52 @@ TTL值建议设置为1天，但是一些拥有巨大数量用户的顶级网站�
 
 最佳解决方案是移除注释和空白，并进行 一些直观的优化，如使用缩写（用"#606"代替"#660066"）和移除不必要的字符串（用"0"代替"0px"）
 
+### 规则11-避免重定向
+
+重定向（Redirect）用于将用户从一个URL重新路由到另一个URL。常见的是301和302。重定向会使页面变慢。
+
+常见的3xx状态码：
+
+- 300 Multiple Choices（基于Content-type）
+- 301 Moved Permancently
+- 302 Moved Temporarily（亦称Found）
+- 303 See Other
+- 304 Not Modified（并不是真正的重定向，用来响应GET请求，避免下载已经存在于浏览器中的数据）
+- 305 Use Proxy
+- 307 Temporary Redirect
+
+301和302响应体通常是空的。并且在实际中都不会被缓存，除非有附加的头-如Expires和Cache-Control等。
+
+除了以上重定向，还有别的方式可以实现重定向：
+
+- 在HTML文档的头中包含meta refresh标签，在content属性指定的秒数后重定向
+
+  ```
+  <meta http-equiv="refresh" content="0; url=http://stevesouders.com/newuri">
+  ```
+
+- Javascript中，将document.location设置为期望的URL即可。
+
+如果必须进行重定向，最好使用标准的3XXHTTP状态码，主要是为了确保后退按钮能够正常工作。
+
+重定向是解决很多问题的简单方式，但最好使用其他不会减慢网页加载速度的解决方案：
+
+- 缺少结尾的斜线
+
+  当存在URL的结尾必须出现斜线(/)而没有出现时，这是最为浪费、发生得也很频繁的一种重定向。
+
+### 规则12-删除重复脚本
+
+重复脚本损伤性能的方式有两种-不必要的HTTP请求和执行Javascript所浪费的时间。
+
+### 规则13-配置ETag
+
+实体标签(Entity Tag，ETag)是Web服务器和浏览器用于确认缓存组件有效性的一种机制。
+
+Last-Modified和ETag都是用于检测浏览器缓存中的组件与原始服务器上的组件是否匹配。ETag是唯一标识了一个组件的一个特定版本的字符串。唯一的格式约束是该字符串必须用引号引起来。
+
+ETag会使用If-None-Match头将ETag传回原始服务器。如果ETag是匹配的，就会返回304状态码，使响应减少字节数。
+
+### 规则14-使Ajax可缓存
+
+在请求中可以增加Expires头，响应将被缓存并从磁盘上进行读取，从而得到更快的用户体验。

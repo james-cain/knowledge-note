@@ -53,6 +53,8 @@ module.exports = {
             '/knowledge/Damn-hole-of-safe-and-hacker.md',
             '/knowledge/Damn-hole-of-javascript-algonithms.md',
             '/knowledge/Damn-hole-of-performance.md',
+            '/knowledge/Damn-hole-of-the-EST.md',
+            '/knowledge/Damn-hole-of-the-web-worker.md',
             '/knowledge/parameters-of-package.md'
           ]
         },
@@ -67,11 +69,11 @@ module.exports = {
           ]
         },
         {
-          title: '使用心得',
+          title: '拓展',
           collapsable: false,
           children: [
-            '/knowledge/Damn-hole-of-electron.md',
             '/knowledge/Damn-hole-of-pwa.md',
+            '/knowledge/Damn-hole-of-electron.md',
             '/knowledge/how-to-learn-ionic.md'
           ]
         },
