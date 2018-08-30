@@ -38,8 +38,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-html5.md',
             '/knowledge/Damn-hole-of-javascript.md',
             '/knowledge/review-the-javascript.md',
-            '/knowledge/Damn-hole-of-http.md',
-            '/knowledge/Damn-hole-of-Interview.md'
+            '/knowledge/Damn-hole-of-http.md'
           ]
         },
         {
@@ -49,6 +48,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-Browser.md',
             '/knowledge/Damn-hole-of-IE9.md',
             '/knowledge/Damn-hole-of-mobile-compatibility.md',
+            '/knowledge/Damn-hole-of-google-devtools.md',
             '/knowledge/Damn-hole-of-network.md',
             '/knowledge/Damn-hole-of-safe-and-hacker.md',
             '/knowledge/Damn-hole-of-javascript-algonithms.md',
