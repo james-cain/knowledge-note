@@ -1039,3 +1039,99 @@ var nodeToDelete = document.getElementById("redundant");
 delete nodeToDelete.parent.removeChild(nodeToDelete);
 ```
 
+### 拆分初始化负载
+
+对于大多数Web应用程序来说，最好把在onload事件之前执行的Javascript代码拆分成一个单独的文件，下载完成之后剩下的Javascript采用**无阻塞下载技术**立即下载。
+
+### 无阻塞加载脚本
+
+通常，大多数浏览器是并行下载组件的，但对于外部脚本并非如此。**当浏览器开始下载外部脚本时，在脚本下载、解析并执行完毕之前，不会开始下载任何其他内容。**
+
+当脚本下载和执行时，浏览器阻塞了所有其他下载。**只有当脚本执行完成之后，图片、样式表和iframe才开始并行下载。**
+
+浏览器在下载和执行脚本时出现阻塞的原因：脚本可能会改变页面或Javascript的名字空间，他们会对后续内容造成影响。**脚本必须按顺序执行，但没有必要按顺序下载。**Internet Explorer 8是第一个支持脚本并行下载的浏览器。IE 8并行下载脚本的能力让页面加载更快，但并没有完全解决问题。虽然它实现了并行下载js脚本，但**仍在脚本下载并执行完毕之前阻塞图片和iframe的下载**。
+
+让脚本运行的更好有以下几种方式：
+
+- XHR Eval
+
+  通过XMLHttpRequest(XHR)从服务端获取脚本。当响应完成时通过eval命令执行内容。
+
+  该方法的缺陷是通过XMLHttpRequest获取的脚本必须部署在和主页面相同的域中。
+
+  ```
+  var xhrObj = getXHRObject();
+  xhrObj.onreadystatechange = function() {
+      if (xhrObj.readyState == 4 && xhrObj.status == 200) {
+          eval(xhrObj.responseText); // 该方式的核心部分
+      }
+  }
+  xhrObj.open('GET', 'A.js', true);
+  xhrObj.send('');
+  ```
+
+- XHR 注入
+
+  该方式也是通过XMLHttpRequest来获取Javascript的。但与eval不同的是，该机制是通过创建一个script的DOM元素，然后把XMLHttpRequest的响应注入script中来执行Javascript的。
+
+  ```
+  var xhrObj = getXHRObject();
+  xhrObj.onreadystatechange = function() {
+      if (xhrObj.readyState == 4 && xhrObj.status == 200) {
+          var scriptElem = document.createElement('script');
+          document.getElementByTagName('head')[0].appendChild(scriptElem);
+          scriptElem.text = xhrObj.responseText;
+      }
+  }
+  xhrObj.open('GET', 'A.js', true);
+  xhrObj.send('');
+  ```
+
+- Script DOM Element
+
+  该技术使用Javascript动态地创建script DOM元素并设置其src属性
+
+  ```
+  var scriptElem = document.createElement('script');
+  scriptElem.src = 'http://anydomain.com/A.js';
+  document.getElementsByTagName('head')[0].appendChild(scriptElem);
+  ```
+
+  下载过程中用这种方式创建脚本不会阻塞其他组件，并且**允许跨域获取脚本**。
+
+- Script Defer
+
+  IE支持script的defer属性，可以让浏览器不必立即加载脚本。当**IE**下载设置defer属性的脚本时，**允许其他资源并行下载。**
+
+  只在部分浏览器中实现了并行下载。
+
+  ```
+  <script defer src="A.js"></script>
+  ```
+
+  兼容性，IE 10+，chrome等主流浏览器都兼容
+
+- document.write Script Tag
+
+  使用document.write把HTML标签script写入页面中
+
+  同样和Script Defer一样，只在IE中是并行加载脚本的
+
+  不推荐使用该技术，因为它只在部分浏览器中实现并行下载，而且还阻塞脚本之外所有其他资源的下载。
+
+  ```
+  document.write("<script type='text/javascript' src='A.js'></script>");
+  ```
+
+以上这些高级的下载技术不能确保脚本按照在页面中排列的顺序下载和执行。因为脚本是并行下载的，所以他们会按照到达的顺序执行-最先到达的最先执行-而不是按照他们排列的顺序。但在IE浏览器中，script defer 和document.write Script Tag保证了脚本按照顺序执行而不管哪个先下载完成。
+
+#### 浏览器忙指示器
+
+浏览器提供忙指示器，让用户感知到页面还在加载。常用的浏览器忙指示器：状态栏、进度条、标签页面和光标。
+
+理解每种技术如何对浏览器忙指示器产生影响相当重要。在某些情况下为了得到更好的用户体验，需要忙指示器，让用户知道页面正在运行。
+
+### 整合异步脚本
+
+根据无阻塞页面脚本中理解异步加载脚本原理，脚本如果按常规方式加载（<script src="url"></script>），不仅会阻塞页面中其他内容的下载，还会阻塞脚本后面所有元素的渲染。异步加载脚本可以避免这种阻塞现象，从而提高页面加载速度。
+
