@@ -1135,3 +1135,80 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
 根据无阻塞页面脚本中理解异步加载脚本原理，脚本如果按常规方式加载（<script src="url"></script>），不仅会阻塞页面中其他内容的下载，还会阻塞脚本后面所有元素的渲染。异步加载脚本可以避免这种阻塞现象，从而提高页面加载速度。
 
+在IE8、safari 4和chrome 2实现了当采用常规script标签方式时并行下载，同时保持执行顺序。
+
+#### 异步加载脚本时保持执行顺序
+
+- 硬编码回调（Hardcoded Callback）
+
+  让外部脚本调用行内代码里的函数。如，将原本在行内脚本中执行的调用函数移到外部脚本中执行。但这种方法是不灵活-改变回调接口时需要调整外部脚本。
+
+- Window Onload
+
+  通过监听window的onload事件来触发行内代码的执行。只要确保外部脚本在window.onload之前下载执行就能保持执行顺序。
+
+- 定时器
+
+  使用轮询方法来保证在行内代码执行之前所依赖的外部脚本机已经加载。可以使用setTimeout方法。
+
+- Script Onload
+
+  整合异步加载外部脚本和行内脚本的首选。
+
+  ```
+  <script type="text/javascript">
+  var aExamples = [['couple-normal.php','Normal Script Src'],..];
+  
+  function init() {
+  	..初始加载方法
+  }
+  
+  var domscript = document.createElement('script');
+  domscript.src = "menu.js";
+  domscript.onloadDone = false;
+  domscript.onload = function () {
+      domscript.onloadDone = true;
+      init();
+  }
+  domscript.onreadystatechange = function () {
+  	if (("loaded" === domscript.readyState || "complete" === domscript.readyState) && !domscript.onloadDone) {
+          domscript.onloadDone = true;
+          init();
+  	}
+  }
+  document.getElementsByTagName('head')[0].appendChild(domscript);
+  </script>
+  ```
+
+- 降级使用script标签
+
+### 布置行内脚本
+
+行内脚本虽然不会产生额外的HTTP请求，但会阻塞页面上资源的并行下载，还会阻塞逐步渲染。
+
+若站点中使用了行内脚本，尽可能地避免这种行为非常重要，提供了几个有效的解决方案:
+
+- 把行内脚本移至底部
+
+  把行内脚本移至页面上所有资源的后面来实现并行下载和逐步渲染。**该技术避免了阻塞下载，但它依旧阻塞渲染**。如果行内脚本执行时间不是很长(少于300毫秒)，那么这种技术可以作为一个页面提速的简单方法。
+
+- 异步启动执行脚本
+
+  **可以让浏览器异步执行行内脚本**，使其有可能实现并行下载和逐步渲染。简单的异步调用就是**使用setTimeout**，例子：
+
+  ```
+  function longCode() {
+      var tStart = Number(new Date());
+      while((tStart + 5000) > Number(new Date())) {};
+  }
+  setTimeout(longCode, 0);
+  ```
+
+  例子的结果类似于把行内脚本移至底部，图片并行下载，页面花了5秒加载完成。但不同在于，使用setTimeout好处，那就是**在IE中实现了逐步渲染**。在行内脚本开始执行之前，IE有足够的时间渲染页面顶部的文本。但在**Firefox**中的渲染仍然是被阻塞的，需要增加到**250毫秒**来实现Firefox中的逐步渲染。
+
+  使用onload事件可以让文本和图片在一旦可用时立即被渲染，并在不阻塞下载和渲染前提下尽可能早地执行行内脚本。
+
+- 使用script的defer属性
+
+  只有在IE和Firefox 3.1+支持。通常把它用于下载外部脚本，其实defer属性也适用于行内脚本，它允许浏览器在继续解析和渲染页面的同时延迟执行行内脚本。
+
