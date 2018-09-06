@@ -1,5 +1,21 @@
 # Browser
 
+## 浏览器内核
+
+浏览器内核可以分成两部分：渲染引擎(layout engineer 或者 Rendering Engine)和JS引擎。主要负责取得网页内容(HTML，XML，图像等)、整理讯息(如加入CSS等)
+
+JS引擎是解析Javscript语言，执行Javascript语言来实现网页的动态效果。随着JS引起越来越独立，内核慢慢倾向于只指渲染引擎。
+
+常见的浏览器内核分为四种：Trident、Gecko、Blink、Webkit
+
+- IE：Trident内核，俗称IE内核
+- Opera：早期用Presto内核，之后转为Webkit内核，现在用Blink内核
+- Safari：Webkit内核
+- firefox：Gecko内核，俗称Firefox内核
+- Chrome：Chromium内核或者Chrome内核（fork自开源引擎Webkit内核）2013年后改为Blink内核
+- 360、猎豹：IE+Chrome双内核
+- 搜狗、遨游、QQ浏览器：Trident（兼容模式）+Webkit（高速模式）
+
 ## 事件机制
 
 ### 事件触发三阶段
