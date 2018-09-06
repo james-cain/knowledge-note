@@ -7,8 +7,7 @@
 - http2.0
 - 1000000长列表性能，用户无感知渲染
 - http://taobaofed.org/blog/2016/04/25/performance-composite/
-- pwa
-- https://github.com/barretlee/performance-column/issues
+- [pwa](https://developers.google.com/web/tools/workbox/guides/using-plugins)
 - https://github.com/fouber/blog/issues/3
 - https://developer.yahoo.com/performance/rules.html?guccounter=1
 - http://velocity.oreilly.com.cn/2010/ppts/VelocityChina2010Dec7StaticResource.pdf
@@ -1047,7 +1046,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
 通常，大多数浏览器是并行下载组件的，但对于外部脚本并非如此。**当浏览器开始下载外部脚本时，在脚本下载、解析并执行完毕之前，不会开始下载任何其他内容。**
 
-当脚本下载和执行时，浏览器阻塞了所有其他下载。**只有当脚本执行完成之后，图片、样式表和iframe才开始并行下载。**
+**当脚本下载和执行时，浏览器阻塞了所有其他下载。只有当脚本执行完成之后，图片、样式表和iframe才开始并行下载。**
 
 浏览器在下载和执行脚本时出现阻塞的原因：脚本可能会改变页面或Javascript的名字空间，他们会对后续内容造成影响。**脚本必须按顺序执行，但没有必要按顺序下载。**Internet Explorer 8是第一个支持脚本并行下载的浏览器。IE 8并行下载脚本的能力让页面加载更快，但并没有完全解决问题。虽然它实现了并行下载js脚本，但**仍在脚本下载并执行完毕之前阻塞图片和iframe的下载**。
 
@@ -1184,7 +1183,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
 ### 布置行内脚本
 
-行内脚本虽然不会产生额外的HTTP请求，但会阻塞页面上资源的并行下载，还会阻塞逐步渲染。
+行内脚本虽然不会产生额外的HTTP请求，但**会阻塞页面上资源的并行下载，还会阻塞逐步渲染**。
 
 若站点中使用了行内脚本，尽可能地避免这种行为非常重要，提供了几个有效的解决方案:
 
@@ -1218,13 +1217,35 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
 #### 大部分下载都不阻塞行内脚本
 
-#### 样式表阻塞行内脚本
+#### JS会阻塞后续DOM解析以及其它资源(如CSS、js或图片资源)的加载
+
+JS运行在浏览器中，是单线程的，且JS可能会修改DOM结构，给DOM添加样式等等，所以意味着在当前的JS加载执行完成前，后续资源的加载可能都是没有意义的。所以会影响他们的加载。
+
+其实，这里是**没有考虑prefetch、defer、async的情况的**。
+
+- 没有prefetch、defer、async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该script标签之下的文档元素之前，也就是不等待后续载入的文档元素，但是还是得等待前面的CSS文件渲染完
+
+- `<script async src="script.js"></script>`
+
+  有async，加载和渲染后续文档的过程将和script.js的加载与执行并行进行(下载异步，执行同步)。也就是当js加载完成后，会中断文档的解析，先执行脚本，脚本执行完后，再继续解析。
+
+- `<script defer src="script.js"></script>`
+
+  有defer，加载后续文档元素的过程将和script.js的加载并行进行（异步），但是script.js的执行要在所有元素解析完成之后，DOMContentLoaded事件触发之前完成。也就是当脚本下载完后，先解析DOM，解析完后再执行js
+
+![defer_async](http://coracain.top/assets/defer_async.jpg)
+
+但其实在现代浏览器中，用的最多的还是prefetch；defer和async都是异步加载脚本文件；慎用async，因为只要下载完成后就加载，不考虑页面样式先后的加载顺序，不过它对于那些可以不依赖任何脚本或不被任何脚本依赖的脚本来说是非常合适的，典型例子：Google Analytics；耗时较长的脚本代码可以使用defer来推迟执行。
+
+#### 样式表阻塞后面的行内脚本执行
+
+很好理解，在JS代码执行前，浏览器必须保证在JS之前的所有CSS样式都解析完成，否则前面的CSS样式可能会覆盖JS文件中定义的元素样式，这是CSS阻塞后续JS执行的根本原因。
 
 样式表和行内脚本之间的相互影响明显不同于其他资源，这是由于浏览器需保持CSS和Javascript的解析顺序所致。
 
 解决样式表阻塞行内脚本的问题，方案是调整行内脚本的位置，使其不出现在样式表和任何其他资源之间。**行内脚本应该放在样式表之前或者其他资源之后，如果其他资源是脚本，行内脚本和外部脚本之间可能会有代码依赖**。出于这个原因，通常建议把行内脚本放在样式表之前，即可避免所有的代码依赖问题。
 
-#### CSS加载会阻塞DOM树的渲染，不会阻塞DOM树的解析
+#### CSS加载会阻塞DOM树的渲染，不会阻塞DOM树的解析，不会阻塞其他资源（如图片）的加载
 
 当CSS还没加载出来的时候，页面显示的是白屏，直到CSS加载完成之后，才会显示出来。这是浏览器的一种优化机制。在加载CSS的时候，可能会修改下面DOM节点的样式，如果CSS加载不阻塞DOM树渲染的话，那么当CSS加载完之后，DOM树可能又得重新重绘或回流，造成不必要的损耗。
 
