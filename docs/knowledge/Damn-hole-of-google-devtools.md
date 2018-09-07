@@ -75,3 +75,10 @@ Source Maps默认处于启用状态（Chrome 39开始）
 
 ## lighthouse--Audits
 
+https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍了如何运用performance、Audits分析网站的耗时和如何提升性能，非常有用
+
+- Audits 从Performance、PWA、Accessibility、Best Practices、SEO五个维度分析性能
+- Coverage 用来分析在初始加载时每个脚本执行的覆盖度，可以分析出哪些脚本能用async或defer方式加载
+- Request Blocking 用来阻塞用户自己指定目录下的脚本，若还能正常运行，说明这些脚本压根没有在初始加载中执行
+- Performance 可以通过User Timing API分析出哪些方法是耗时的方法，做出性能上的优化；Bottom Up 中显示了选中的方法以下的时间占比，更好的看执行时间
+
