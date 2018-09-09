@@ -82,3 +82,4 @@ https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍
 - Request Blocking 用来阻塞用户自己指定目录下的脚本，若还能正常运行，说明这些脚本压根没有在初始加载中执行
 - Performance 可以通过User Timing API分析出哪些方法是耗时的方法，做出性能上的优化；Bottom Up 中显示了选中的方法以下的时间占比，更好的看执行时间
 
+https://developers.google.com/web/tools/chrome-devtools/accessibility/reference accessibility指标介绍
