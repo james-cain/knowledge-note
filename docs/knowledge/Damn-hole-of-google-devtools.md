@@ -58,7 +58,7 @@ Source Maps默认处于启用状态（Chrome 39开始）
 
 追加js代码段，devtools会将代码段保存在文件中。当需要执行时，右击Snippets名 -> run。就可以随时执行需要的代码。
 
-## Performance  Panel
+## 分析运行时性能
 
 ### 使用RAIL模型评估性能
 
@@ -122,8 +122,47 @@ https://googlechrome.github.io/devtools-samples/jank/  用无痕模式打开此�
 
    3). 在**Rendering tab**中，勾选**FPS Meter**，会在视口右上角出现一个实时分析图
 
-   ![fps2](http://reyshieh.com/assets/fps4.jpg)
+   ![fps4](http://reyshieh.com/assets/fps4.jpg)
 
+6. 关注Summary tab
+
+   - 网页花了大部分的时间在渲染上。因为性能是减少工作的艺术，所以目标是减少花在渲染工作上的时间
+
+   - 详述Main。Main展现的是主线程的所有活动的火焰图。x轴代表随着时间变化的记录，每一个条形图代表一个事件，长度代表耗时时长。y轴代表回调栈。上面的事件会调起下面的事件。
+
+     ![fps5](http://reyshieh.com/assets/fps5.jpg)
+
+   - 需要注意如果在Animation Frame Fired 事件的右上角有一个红色三角，代表该事件发生了错误警告
+
+### 分析运行时性能
+
+- 不要编写会强制浏览器重新计算布局的Javascript。将读取和写入功能分开，并首先执行读取
+
+  Javascript计算，特别是**会触发大量视觉变化的计算会降低应用性能**。不要让时机不当或长时间运行的Javascript影响用户交互
+
+- 不要让CSS过于复杂。减少使用CSS并保持CSS选择器简洁
+
+  [缩小样式计算的范围并降低其复杂性](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations)
+
+  在进行Timeline记录时，检查大型**Recalculate Style**事件的记录（以紫色显示）。点击Recalculate Style事件可以在Details窗格中查看更多相关信息。**如果样式更改需要较长时间**，对性能的影响会非常大。**如果样式计算会影响大量元素**，也需要改进。
+
+  ![fps6](http://reyshieh.com/assets/fps6.jpg)
+
+  降低Recalculate Style事件的影响，可以执行以下操作：
+
+  - 使用[CSS触发器](https://csstriggers.com/)了解哪些CSS属性会触发布局、绘制与合成。这些属性对渲染性能的影响最大
+  - 转换使用影响较小的属性。[坚持仅合成器属性和管理层计数](https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count)
+
+- 尽可能地避免布局。选择根本不会触发布局的CSS
+
+  - [避免布局抖动](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing)
+  - [诊断强制同步布局](https://developers.google.com/web/tools/chrome-devtools/rendering-tools/forced-synchronous-layouts)
+
+  布局抖动是指反复出现强制同步布局情况。会在Javascript从DOM反复地写入和读取时出现，将会强制浏览器反复重新计算布局。
+
+- 绘制比任何其他渲染活动花费的时间都要多
+
+  绘制是填充像素的过程，经常是渲染流程中开销最大的部分。坚持使用合成器属性并避免一起绘制，会极大的改进性能。
 
 ## Set up a Workspace
 
