@@ -92,6 +92,37 @@ Source Maps默认处于启用状态（Chrome 39开始）
 
 https://googlechrome.github.io/devtools-samples/jank/  用无痕模式打开此链接，打开控制台
 
+### 分析结果
+
+#### Analyse frames per second(FPS)
+
+测量动画的性能的主要依据是frames per second(FPS)。只有当动画运行在60FPS情况下用户才会觉得正常。
+
+1. 观察FPS柱状图。可以看出，每帧会显示为一段柱状，且每帧耗时越长，高度越低。
+
+   ![fps1](http://reyshieh.com/assets/fps1.jpg)
+
+2. 观察CPU图。其中CPU图的颜色和Summary中的颜色是一致的，当CPU饼图已经被除了白色填充蛮时，代表CPU已经达到了最大值。长时间达到最大值，会导致CPU只能做更少的工作。
+
+   ![fps2](http://reyshieh.com/assets/fps2.jpg)
+
+3. 将鼠标移到FPS、CPU或者NET图上时，会显示在这一时刻网页的屏幕快照。可以从左到右移动鼠标来重新播放记录。这种方式有利于人工分析动画的进程。
+
+4. 在**Frames**中，移动鼠标到绿色区域中。devTools会展示出每帧的FPS，每一帧可能都小于规定的60FPS（即16ms）。
+
+   ![fps2](http://reyshieh.com/assets/fps3.jpg)
+
+   当然，在这个例子中，这个网页很明显在执行上是不好的。但是在实际上，也并没有那么明显，因此使用工具做测量带来了很大的便利。
+
+5. **Open the FPS meter**，当运行网页时，该工具为FPS提供了实时评估。
+
+   1). 打开命令行菜单 Command+Shift+P(mac)和Control+Shift+P(Windows, Linux)
+
+   2). 输入**Rendering**，选择**Show Rendering**
+
+   3). 在**Rendering tab**中，勾选**FPS Meter**，会在视口右上角出现一个实时分析图
+
+   ![fps2](http://reyshieh.com/assets/fps4.jpg)
 
 
 ## Set up a Workspace
