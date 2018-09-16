@@ -189,6 +189,97 @@ https://googlechrome.github.io/devtools-samples/jank/  用无痕模式打开此�
 
   绘制是填充像素的过程，经常是渲染流程中开销最大的部分。坚持使用合成器属性并避免一起绘制，会极大的改进性能。
 
+## 分析网络性能
+
+打开分析网页https://googlechrome.github.io/devtools-samples/network/gs/v1.html
+
+优化点：
+
+- 移动脚本到body元素的后面，标记async阻止同步加载
+
+- 将logo改成svg减小体积
+
+优化后网页https://googlechrome.github.io/devtools-samples/network/gs/v2.html
+
+### Queued or stalled requests
+
+#### 导致原因可能包括
+
+太多的请求放在单个域名中。在HTTP1.0/1.1连接中，chrome浏览器允许每个域名下的TCP链接并行最大下载数为6个
+
+#### 解决方式
+
+- 在HTTP1.0/HTTP1.1，实现域名分片
+- 在HTTP2.0，不要使用域名分片
+- 移除或者defer不必要的请求，让必要的请求更快下载
+
+### Slow Time To First Byte(TTFB)
+
+一个请求要花很长的时间等待接受从服务器发送出来的第一个字节。
+
+在waterfall中用绿色bar表示等待请求的时间长度
+
+#### 导致原因可能包括
+
+- 在客户端和服务器之间的链接很慢
+- 服务器响应速度慢。可以通过在服务器本地请求，以确定是连接慢还是服务器本身慢。如果本地服务器还是得到slow TTFB，说明是服务慢。
+
+#### 解决方式
+
+- 如果是连接慢，可以将内容放在CDN或者改变主机服务商
+- 如果是服务慢，应当优化数据查询，实现数据缓存，或者修改服务配置
+
+### Slow content download
+
+在waterfall中用蓝色bar表示下载时长
+
+#### 导致原因可能包括
+
+- 在客户端和服务器之间的链接很慢
+- 有大量的内容要下载
+
+#### 解决方式
+
+- 可以将内容放在CDN或者改变主机服务商
+- 优化请求使发送的字节数减小
+
+### Network Panel
+
+#### Filter requests
+
+![network-filter](http://reyshieh.com/assets/network-filter.jpg)
+
+可以通过以空格分格每个属性，同时使用多个属性。例如：mime-type: image/gif larger-than: 1K。多个属性还可以用AND操作符，OR操作符还不支持。
+
+支持的属性包括以下几类：
+
+- domain 只展示来自特殊域名的资源。可以利用通配符(*)来包括多个域名。
+- has-response-header 展示包括特殊HTTP响应头的资源
+- is 用is: running查询WebSocket资源
+- larger-than 展示资源大小大于指定体积的资源
+- method 展示指定HTTP method type的资源
+- mime-type 展示特殊MIME type的资源
+- mixed-content 展示所有mixed content资源(mixed-content: all) 或(mixed-content:displayed)
+- scheme 展示http资源(scheme: http)或https资源(scheme: https)
+- set-cookie-domain 展示有匹配特殊值的Domain属性`Set-cookie`头部的资源
+- set-cookie-name 展示有匹配特殊性的name属性`Set-cookie`头部的资源
+- set-cookie-value 展示有匹配特殊性的value属性`Set-cookie`头部的资源
+- status-code 展示匹配了指定HTTP status code的资源
+
+#### view initiators and dependencies
+
+可以通过点击`Shift`，将鼠标移至request上。devtools 发起资源为绿色，依赖资源为红色
+
+![network-hover-1](http://reyshieh.com/assets/network-hover-1.jpg)
+
+![network-hover-2](http://reyshieh.com/assets/network-hover-2.jpg)
+
+## 分析内存问题
+
+影响页面性能的内存问题，包括**内存泄漏、内存膨胀和频繁的垃圾回收**
+
+
+
 ## Set up a Workspace
 
 在通常情况下，在Sources中编辑文件后，重新刷新页面所有的改变都会丢失。devtools的Workspaces可以保存所有的改变到文件系统中。
@@ -214,12 +305,6 @@ https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍
 - Performance 可以通过User Timing API分析出哪些方法是耗时的方法，做出性能上的优化；Bottom Up 中显示了选中的方法以下的时间占比，更好的看执行时间
 
 https://developers.google.com/web/tools/chrome-devtools/accessibility/reference accessibility指标介绍
-
-## 分析网络性能
-
-打开分析网页https://googlechrome.github.io/devtools-samples/network/gs/v1.html
-
-
 
 ## Console
 
