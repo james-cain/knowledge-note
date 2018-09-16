@@ -278,11 +278,203 @@ https://googlechrome.github.io/devtools-samples/jank/  用无痕模式打开此�
 
 影响页面性能的内存问题，包括**内存泄漏、内存膨胀和频繁的垃圾回收**
 
+Chrome工具：
 
+- 用任务管理器了解页面当前正在使用的内存使用
+- 使用Timeline记录可视化一段时间内的内存使用
+- 使用堆快照确定已分离的DOM数的内存泄漏(内存泄漏的常见原因)
+- 使用分配时间线记录了解新内存在JS堆中的分配时间
+
+用户可通过以下方式察觉内存问题：
+
+- 页面的性能随着时间的延长越来越差。这可能是**内存泄漏**的原因。内存泄漏是指页面中的错误导致页面随着时间的延长使用的内存越来越多
+- 页面的性能一直很糟糕。这可能是**内存膨胀**的原因。内存膨胀是指页面为达到最佳速度而使用的内存比本应使用功能的内存多。内存膨胀不存在硬性数字，不同设备和浏览器具有不同的能力。在高端智能手机上流畅运行的相同页面在低端智能手机上则可能崩溃
+- 页面出现延迟或者经常暂停。这可能是**频繁垃圾回收**的原因。垃圾回收是指浏览器收回内存。浏览器决定何时进行垃圾回收。回收期间，所有脚本执行都将暂停。所以，如果浏览器经常进行垃圾回收，脚本执行就会被频繁暂停
+
+### 用任务管理器了解页面当前正在使用的内存使用
+
+![memory](http://reyshieh.com/assets/memory.jpg)
+
+- 内存占用列 表示原生内存。DOM节点存储在原生内存中。如果此值正在增大，则说明正在创建DOM节点
+- Javascript使用的内存列 表示JS堆。此列包含两个值。括号中的数字表示实时数字，实时数字表示页面上的可到达对象正在使用的内存量。如果此数字在增大，要么是正在创建新对象，要么是现有对象正在增长
+
+### 使用Timeline记录可视化一段时间内的内存使用
+
+在Performance panel中，勾上Memory，即可看到内存使用情况
+
+![memory2](http://reyshieh.com/assets/memory2.jpg)
+
+要显示内存记录，可以使用下面的代码
+
+```
+var x = [];
+
+function grow() {
+  for (var i = 0; i < 10000; i++) {
+    document.body.appendChild(document.createElement('div'));
+  }
+  x.push(new Array(1000000).join('x'));
+}
+
+document.getElementById('grow').addEventListener('click', grow);
+
+```
+
+每次按代码中引用的按钮时，将向文档正文附加1万个`div`节点，并将一个由100万个`x`字符组成的字符串推送到`x`数组中。运行此代码会生成一个类似于以下Timeline记录：
+
+![memory3](http://reyshieh.com/assets/memory3.jpg)
+
+Overview窗格中的HEAP图表(NET下方)表示JS堆。Overview窗格下方是计数器窗格。内存使用按JS堆、文档、DOM节点、侦听器和GPU内存细分。
+
+节点计数以离散步长方式增大。 假定节点计数的每次增大都是对 `grow()` 的一次调用。 JS 堆图表（蓝色图表）的显示并不直接。为了符合最佳做法，第一次下降实际上是一次强制垃圾回收（通过按 **Collect garbage** 按钮实现）。随着记录的进行，会看到 JS 堆大小高低交错变化。每次点击按钮，JavaScript 代码都会创建 DOM 节点，在创建由 100 万个字符组成的字符串期间，代码会完成大量工作。这里的关键是，JS 堆在结束时会比开始时大（这里“开始”是指强制垃圾回收后的时间点）。**在实际使用过程中，如果看到这种 JS 堆大小或节点大小不断增大的模式，则可能存在内存泄漏。**
+
+### 使用堆快照确定已分离的DOM数的内存泄漏
+
+只有页面的DOM树或Javascript代码不再引用DOM节点时，DOM节点才会被作为垃圾进行回收。如果某个节点已从DOM树移除，但某些Javascript仍然引用它，称节点为“已分离”。**已分离的DOM节点时内存泄漏的常见原因**。
+
+已分离DOM节点的示例
+
+```
+var detachedNodes;
+
+function create() {
+  var ul = document.createElement('ul');
+  for (var i = 0; i < 10; i++) {
+    var li = document.createElement('li');
+    ul.appendChild(li);
+  }
+  detachedTree = ul;
+}
+
+document.getElementById('create').addEventListener('click', create);
+```
+
+点击代码中引用的按钮将创建一个包含10个li子级的ul节点。这些节点由代码引用，但不存在与DOM树中，因此已分离。
+
+**堆快照是确定已分离节点的一种方式**。堆快照可以显示拍摄快照时内存在页面的JS对象和DOM节点间的分配
+
+要创建快照，打开devtools转到Memory面板，选择Heap Snapshot单选按钮，然后按Take Snapshot按钮
+
+完成后，从左侧面板（名称为HEAP SNAPSHOTS）中选择该快照
+
+在Class filter文本框中键入`Detached`，搜索已分离的DOM树
+
+![profile](http://reyshieh.com/assets/profile.jpg)
+
+### 发现频繁的垃圾回收
+
+可以使用Chrome任务管理器或者Timeline内存记录发现频繁的垃圾回收。
+
+在任务管理器中，Memory或Javascript Memory值频繁上升和下降表示存在频繁的垃圾回收。
+
+在Timeline记录中，JS堆或节点计数图表频繁上升和下降指示存在频繁的垃圾回收。
 
 ## Set up a Workspace
 
 在通常情况下，在Sources中编辑文件后，重新刷新页面所有的改变都会丢失。devtools的Workspaces可以保存所有的改变到文件系统中。
+
+例子 https://glitch.com/edit/#!/smooth-bow?path=index.html:1:0
+
+打开该链接，在Advanced Options > Download Project中下载工程
+
+解压源码，移动解压的app到桌面
+
+![workspace](http://reyshieh.com/assets/workspace.jpg)
+
+点击show展示运行网站
+
+点击Sources > Filesystem > Add Folder To Workspace > 选择 ~/Desktop/app
+
+点击允许给Devtools读写完整路径。在Filesystem tab中，index.html,script.js,和styles.css有绿色的店。这些点以为着Devtools 为网络资源和文件资源建立了mapping
+
+![workspace2](http://reyshieh.com/assets/workspace2.jpg)
+
+### Save a CSS change to disk
+
+打开~/Desktop/app/styles.css。改变颜色为绿色。
+
+![workspace3](http://reyshieh.com/assets/workspace3.jpg)
+
+![workspace4](http://reyshieh.com/assets/workspace4.jpg)
+
+h1的样式显示路径为styles.css: 1意味着本地的style.css改变会使网页h1也发生变化
+
+### Save an HTML change to disk
+
+但是用同样的方式改变html元素，打开~/Desktop/app/index.html，这些改变将不会发生变化。原因：
+
+- 元素面板上的节点树代表页面的DOM
+- 展示页面，浏览器从网络中抓取到HTML，转换HTML为DOM节点树
+- 如果页面中有Javascript，Javascript可能添加，删除或者改变Dom节点。CSS一样可以改变DOM
+- 浏览器最终使用DOM确定它应该向浏览器用户显示什么内容
+- 因此，网页的最终状态可能和抓取下来的HTML是不同的
+- 这使得DevTools很难解决在元素面板中所做的更改应该保存在何处，因为DOM受HTML、JavaScript和CSS的影响。
+
+简而言之，DOM tree !== HTML
+
+如果还是要从Sources面板中改变HTML，可以
+
+- 点击Sources tab > Page
+- 代替要改变的元素
+- 点击保存
+- 重新加载网页，改变的元素将展示出来
+- 打开~/Desktop/app/index.html。改变的元素也保存
+
+### Save a Javascript change to disk
+
+- 打开 Elements tab 
+- 用Command Menu > 输入QS。展示Quick Source
+- 通过Quick Source添加代码到script.js中
+- 点击保存，重新加载页面，网页将发生变化
+
+## 调试Progressive Web App
+
+使用Application面板检查、修改和调试网络应用清单、服务工作线程和服务工作线程缓存
+
+- 使用Manifest窗格检查网络应用清单
+- 使用Service Worker窗格执行与服务工作线程相关的全部任务，例如注销或更新服务、模拟推送事件、切换为离线状态，或者停止服务工作线程
+- 从Cache Storage窗格查看服务工作线程缓存
+- 从Clear Storage窗格中点击一次按钮，注销服务工作线程并清除所有存储于缓存
+
+### 网络应用清单
+
+用户能够将应用添加到移动设备的主屏幕上，需要一个网络应用清单。清单定义应用在主屏幕上的外观、从主屏幕启动时将用户定向到何处、以及应用在启动时的外观
+
+- [通过网络应用清单改进用户体验](https://developers.google.com/web/fundamentals/web-app-manifest)
+- [使用应用安装横幅](https://developers.google.com/web/fundamentals/app-install-banners)
+
+设置好清单后，可以使用Application面板的Manifest窗格对其进行检查
+
+- 要查看清单来源，点击App Manifest标签下方的链接
+- 按Add to homescreen按钮模拟Add to Homescreen事件
+- Identity和Presentation部分以一种对用户更加友好的方式显示清单来源中的字段
+- Icons部分显示了已指定的每个图标
+
+### 服务工作线程
+
+浏览器独立于网页在后台运行的脚本。这些脚本可以访问不需要网页或用户交互的功能，例如推送通知、后台同步和离线体验。
+
+- [服务工作线程简介](https://developers.google.com/web/fundamentals/primers/service-worker)
+
+- [推送通知：及时、相关且精确](https://developers.google.com/web/fundamentals/push-notifications)
+
+窗格中的操作按钮
+
+- Offline复选框 切换至离线模式。等同于Network窗格中的离线模式
+- Update on reload 复选框 可以强制服务工作线程在每次页面加载时更新
+- Bypass for network 复选框 可以绕过服务工作线程并强制浏览器转至网络寻找请求的资源
+- Update 按钮 对指定的服务工作线程执行一次性更新
+- Push 按钮 在没有负载的情况下模拟推送通知
+- Sync 按钮 模拟后台同步事件
+- Unregister 按钮 注销指定的服务工作线程
+
+### 服务工作线程缓存
+
+Cache Storage窗格提供一个已使用（服务工作线程）Cache API花奴才能的只读资源列表
+
+### 清除存储
+
+只需点击一次按钮即可注销服务工作线程并清除所有缓存与存储
 
 ## 常见快捷键
 
