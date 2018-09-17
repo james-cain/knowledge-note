@@ -10,9 +10,9 @@ blog的webpack版本为：`4.11.1`
 
 配置中引用的包如图
 
-![webpack-configuration](https://coracain.top/assets/webpack-configuration.png)
+![webpack-configuration](http://reyshieh.com/assets/webpack-configuration.png)
 
-![webpack-configuration2](https://coracain.top/assets/webpack-configuration2.png)
+![webpack-configuration2](http://reyshieh.com/assets/webpack-configuration2.png)
 
 配置`webpack.base.config.js`
 
@@ -294,31 +294,31 @@ plugins: [
 
 上打包后的体积图
 
-![webpack-version1](https://coracain.top/assets/webpack-version1.png)
+![webpack-version1](http://reyshieh.com/assets/webpack-version1.png)
 
 同时，由于是第一次搭webpack配置，还是碰到几个问题，顺带记录下
 
-1. ![webpack-configuration-problem1](https://coracain.top/assets/webpack-configuration-problem1.png)
+1. ![webpack-configuration-problem1](http://reyshieh.com/assets/webpack-configuration-problem1.png)
 
    原因：[webpack升级到4.0后，已经将全局变量全部局部化，获取需要通过LoaderOptionsPlugin的方式定义全局变量才行，而eslint-loader还是采用原来的方式获取全局中的options，因此获取不到](https://github.com/webpack/webpack/issues/6556)
 
-2. ![webpack-configuration-problem2](https://coracain.top/assets/webpack-configuration-problem2.png)
+2. ![webpack-configuration-problem2](http://reyshieh.com/assets/webpack-configuration-problem2.png)
 
    原因：eslint升级到4.0.0以上后，eslint-plugin-html和eslint之间会有冲突，总之我是降版本解决，附上版本号
 
-   ![webpack-configuration-solve2](https://coracain.top/assets/webpack-configuration-solve2.png)
+   ![webpack-configuration-solve2](http://reyshieh.com/assets/webpack-configuration-solve2.png)
 
 ## 优化之analyz
 
 优化第一步，先用webpack-bundle-analyzer或者别的类似的功能插件做分析，第一版的分析结果如下
 
-![webpack-performance-anlyz1](https://coracain.top/assets/webpack-performance-anlyz1.png)
+![webpack-performance-anlyz1](http://reyshieh.com/assets/webpack-performance-anlyz1.png)
 
 WTF，vue居然两边都打包了！先处理这个问题
 
 先把vendor中的vue、vue-router、vuex单独拆开，只是修改了entry的vendor和html-webpack-plugin中的引入模块
 
-![webpack-performance-anlyz2](https://coracain.top/assets/webpack-performance-anlyz2.png)
+![webpack-performance-anlyz2](http://reyshieh.com/assets/webpack-performance-anlyz2.png)
 
 ## 优化之Dllplugin
 
@@ -382,9 +382,9 @@ new webpack.DllReferencePlugin({
 
 打包结果：
 
-![webpack-version1-3](https://coracain.top/assets/webpack-version1-3.png)
+![webpack-version1-3](http://reyshieh.com/assets/webpack-version1-3.png)
 
 分析结果
 
-![webpack-performance-anlyz3](https://coracain.top/assets/webpack-performance-anlyz3.png)
+![webpack-performance-anlyz3](http://reyshieh.com/assets/webpack-performance-anlyz3.png)
 
