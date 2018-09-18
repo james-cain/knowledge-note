@@ -45,6 +45,7 @@ module.exports = {
           title: '进阶',
           collapsable: false,
           children: [
+            '/knowledge/Damn-hole-of-common-plugin.md',
             '/knowledge/Damn-hole-of-Browser.md',
             '/knowledge/Damn-hole-of-IE9.md',
             '/knowledge/Damn-hole-of-mobile-compatibility.md',

@@ -692,6 +692,16 @@ https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍
 
 https://developers.google.com/web/tools/chrome-devtools/accessibility/reference accessibility指标介绍
 
+lighthouse从5各方面评估得分
+
+- Performance
+- Progressive Web App
+- Accessibility
+- Best Practices
+- SEO
+
+
+
 ## Console
 
 ### 写入控制台
