@@ -692,7 +692,7 @@ https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍
 
 https://developers.google.com/web/tools/chrome-devtools/accessibility/reference accessibility指标介绍
 
-lighthouse从5各方面评估得分
+lighthouse从5个方面评估得分
 
 - Performance
 - Progressive Web App
@@ -700,7 +700,116 @@ lighthouse从5各方面评估得分
 - Best Practices
 - SEO
 
+### Performance
 
+- Critical Request Chains (关键请求链) 概念来自于关键渲染路径(CRP)优化策略。CRP通过确定优先加载的资源以及加载顺序，允许浏览器尽可能快地加载页面
+
+  参照[critical-rendering-path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)
+
+  **优化关键渲染路径**指优先显示与当前用户操作有关的内容。
+
+  **如何通过此审查？**在Lighthouse的Chrome扩展程序中，报告将生成一个类似如下的图表：
+
+  ```
+  Initial navigation
+  |---lighthouse/ (developers.google.com)
+      |---/css (fonts.googleapis.com) - 1058.34ms, 72.80KB
+      |---css/devsite-googler-buttons.css (developers.google.com) - 1147.25ms, 70.77KB
+      |---jsi18n/ (developers.google.com) - 1155.12ms, 71.20KB
+      |---css/devsite-google-blue.css (developers.google.com) - 2034.57ms, 85.83KB
+      |---2.2.0/jquery.min.js (ajax.googleapis.com) - 2699.55ms, 99.92KB
+      |---contributors/kaycebasques.jpg (developers.google.com) - 2841.54ms, 84.74KB
+      |---MC30SXJEli4/photo.jpg (lh3.googleusercontent.com) - 3200.39ms, 73.59KB
+  ```
+
+  此图表表示页面的关键请求链。从lighthouse/到/css的路径形成一条链。从lighthouse/到css/devsite-googler-buttons.css的路径形成另一条链。上面的图表的“分数”为7分
+
+  可以根据以下方式**提升CRP**：
+
+  - 将关键资源数降至最低：消除关键资源、延迟关键资源的下载并将它们标记为不同步等
+  - 优化关键字节数以缩短下载时间（往返次数）
+  - 优化其余关键资源的加载顺序：今早下载所有关键资产，以缩短关键路径长度
+
+  优化以上任一因素都可提升页面加载速度
+
+- Defer unused CSS
+
+  在默认情况下，浏览器必须在展示、渲染任何内容到用户视图之前下载，解析和处理所有外部样式表。对于浏览器来说，视图在处理外部样式表之前展示内容是没有意义的，因为样式表可能包含一些影响页面样式的规则。
+
+  每个外部样式表都必须通过网络下载。毫无疑问过多的下载加大了用户看见内容的时间
+
+  无用的CSS也会减慢浏览器的渲染树的生成。因为在生成渲染树之前，要解析每一个DOM节点，并且给节点加上CSS规则。无用的CSS只会加大对计算样式的时间
+
+  推荐处理方式：
+
+  - 检测关键CSS。用来加载页面必备的CSS称为关键CSS，一个页面的加载只能被关键CSS阻塞。可以使用Chrome devtools的Coverage页签帮助检测关键CSS和非关键CSS
+
+    ![coverage](http://reyshieh.com/assets/coverage.png)
+
+  - 内联关键CSS。理论上，最高效的方式是内联关键CSS到HTML的head中。一旦HTML下载完成，浏览器就拥有了显示网页的一些条件。有以下工具可以帮助自动内联关键CSS
+
+    Node:
+
+    - [penthouse](https://github.com/pocketjoso/penthouse)
+    - [critical](https://github.com/addyosmani/critical)
+    - [inline-critical](https://github.com/bezoerb/inline-critical)
+
+    Apache:
+
+    - [mod_pagespeed](https://github.com/apache/incubator-pagespeed-mod)
+
+    Nginx:
+
+    - [ngx_pagespeed](https://github.com/pagespeed/ngx_pagespeed)
+
+    Webpack:
+
+    - [isomorphic-style-loader](https://github.com/kriasoft/isomorphic-style-loader/)
+
+    Rollup:
+
+    - [rollup-plugin-purgecss](https://github.com/FullHuman/rollup-plugin-purgecss)
+
+    Gulp:
+
+    - [gulp-inline-source](https://github.com/fmal/gulp-inline-source)
+
+    Grunt:
+
+    - [grunt-penthouse](https://github.com/fatso83/grunt-penthouse)
+    - [grunt-critical](https://github.com/bezoerb/grunt-critical)
+
+  - 推迟非关键CSS加载。非关键CSS可以按需加载。例如，将点击按钮后弹出的模态框，该模态框只有在点击按钮后出现，因此没有必要在首次加载中出现。有以下工具可以帮助推迟加载非关键CSS
+
+    - [loadCSS](https://github.com/filamentgroup/loadCSS)
+
+- Enable Text Compression（使文本压缩）
+
+  推荐处理方式：
+
+  lighthouse会列出所有发送没有文本压缩的请求。在服务于这些请求的服务器上使用文本压缩可以通过这个审查
+
+  - 浏览器和服务器如何协商文本压缩
+
+    当浏览器发出请求资源，它在accept-encoding请求头中列出了它支持的文本压缩编码。服务器从浏览器支持的格式中挑选一个响应，在content-encoding响应头中加以阐述
+
+  - 如何在服务器中使文本压缩
+
+    Brotli是新的压缩方式，但是不通用支持所有浏览器。可以通过"how to enable Brotli compression in <server>"搜索实现方式，其中server是服务器的名称
+
+    将GZIP作为Brotli的备选，GZIP适用于所有浏览器，但是没有Brotli高效
+
+  - 用Chrome Devtools检查响应是否压缩
+
+    可以通过Network>Headers页签>Response Headers>content-heading检查是否压缩
+
+- Estimated Input Latency(预计输入延迟时间)
+
+  根据RAIL模型测量，应用在100毫秒的时间响应用户输入不会被认为应用反应迟缓
+
+  推荐处理方式：
+
+  - 
 
 ## Console
 
