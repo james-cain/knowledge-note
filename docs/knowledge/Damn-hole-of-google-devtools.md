@@ -692,7 +692,7 @@ https://developers.google.com/web/tools/chrome-devtools/speed/get-started 介绍
 
 https://developers.google.com/web/tools/chrome-devtools/accessibility/reference accessibility指标介绍
 
-lighthouse从5个方面评估得分
+lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3版本）
 
 - Performance
 - Progressive Web App
@@ -700,9 +700,9 @@ lighthouse从5个方面评估得分
 - Best Practices
 - SEO
 
-### Performance
+### Performance（25）
 
-- Critical Request Chains (关键请求链) 概念来自于关键渲染路径(CRP)优化策略。CRP通过确定优先加载的资源以及加载顺序，允许浏览器尽可能快地加载页面
+- 1.Critical Request Chains (关键请求链) 概念来自于关键渲染路径(CRP)优化策略。CRP通过确定优先加载的资源以及加载顺序，允许浏览器尽可能快地加载页面
 
   参照[critical-rendering-path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)
 
@@ -732,7 +732,7 @@ lighthouse从5个方面评估得分
 
   优化以上任一因素都可提升页面加载速度
 
-- Defer unused CSS
+- 2.Defer unused CSS
 
   在默认情况下，浏览器必须在展示、渲染任何内容到用户视图之前下载，解析和处理所有外部样式表。对于浏览器来说，视图在处理外部样式表之前展示内容是没有意义的，因为样式表可能包含一些影响页面样式的规则。
 
@@ -783,7 +783,7 @@ lighthouse从5个方面评估得分
 
     - [loadCSS](https://github.com/filamentgroup/loadCSS)
 
-- Enable Text Compression（使文本压缩）
+- 3.Enable Text Compression（使文本压缩）
 
   推荐处理方式：
 
@@ -803,13 +803,109 @@ lighthouse从5个方面评估得分
 
     可以通过Network>Headers页签>Response Headers>content-heading检查是否压缩
 
-- Estimated Input Latency(预计输入延迟时间)
+- 4.Estimated Input Latency(预计输入延迟时间)
 
-  根据RAIL模型测量，应用在100毫秒的时间响应用户输入不会被认为应用反应迟缓
+  根据RAIL模型测量，应用在100毫秒的时间响应用户输入不会被认为应用反应迟缓。但是该审查规则的目标得分是50毫秒。原因是Lighthouse使用一个代理指标来测量应用在响应用户输入方面的表现：主线程的可用性。lighthouse假定应用需要50毫秒的时间来完全响应用户的输入（从实现任意Javascript执行到以物理方式将新像素绘制到屏幕）。如果主线程的不可用时间达50毫秒或更长，那么，应用将没有足够的时间完成响应
 
   推荐处理方式：
 
-  - 
+  - 优化代码在浏览器中的运行方式。
+
+    理解像素管道：
+
+    ![render-pipeline](http://reyshieh.com/assets/render-pipeline.jpg)
+
+    - Javascript。一般来说，会使用Javascript来实现一些视觉变化的效果。比如用jQuery的animate函数做一个动画、对一个数据集进行排序或者往页面里添加一些DOM元素等。当然，除了Javascript，还有其他一些常用方法可以实现视觉变化效果，比如：CSS Animation、Transitions和Web Animation API
+
+    - 样式计算。此过程是根据匹配选择器计算出哪些元素应用哪些CSS规则的过程。从中知道规则之后，将应用规则并计算每个元素的最终样式
+
+    - 布局。在知道对一个元素应用哪些规则之后，浏览器即可开始计算它要占据的空间大小及其在屏幕的位置。网页的布局模式意味着一个元素可能影响其他元素，如<body>元素的宽度一般会影响其子元素的宽度以及树中各处的节点
+
+    - 绘制。绘制是填充像素的过程。它涉及绘出文本、颜色、图像、边框和阴影，基本上包括元素的每个可视部分。绘制一般是在多个表面（通常称为层）上完成的。绘制实际上分为两个任务：1).创建绘图调用的列表 2).填充像素
+
+      不一定每帧都总是经过管道每个部分的处理。实际上，不管是使用Javascript、CSS还是网络动画，在实现视觉变化时，管道针对指定帧的运行通常有三种方式：
+
+      1. JS/CSS>样式>布局>绘制>合成
+
+         ![render-pipeline](http://reyshieh.com/assets/render-pipeline.jpg)
+
+         如果修改元素的"layout"属性，也就是改变元素的几何属性（如宽度、高度、左侧或顶部位置等），浏览器将必须检查所有其他元素，然后"自动重排"页面。任何受影响的部分都需要重新绘制，而且最终绘制的元素需进行合成
+
+      2. JS/CSS>样式>绘制>合成
+
+         ![render-pipeline2](http://reyshieh.com/assets/render-pipeline2.jpg)
+
+         如果修改"Paint only"属性（如背景图片、文字颜色或阴影等），即不会影响页面布局的属性，则浏览器会跳过布局，但仍将执行绘制
+
+      3. JS/CSS>样式>合成
+
+         ![render-pipeline3](http://reyshieh.com/assets/render-pipeline3.jpg)
+
+         如果更改一个既不要布局也不要绘制的属性，则浏览器将跳到只执行合成
+
+      版本3开销最小，最适合应用生命周期中的高压力点，例如动画或滚动
+
+      如果想知道更改任何指定CSS属性将触发上述三个版本中的哪一个，可查看[CSS触发器](https://csstriggers.com/)
+
+    - 合成。由于页面的各部分可能被绘制到多层，由此它们需要按正确顺序绘制到屏幕上，以便正确渲染页面。对于与另一元素重叠的元素来说，一个错误可能使一个元素错误地出现在另一个元素的上层
+
+    上面的描述，其实就是包括将计算转移到网络工作线程以腾出主线程、重构CSS选择器以执行较少的计算，以及使用CSS属性，其可将浏览器密集型的操作数将至最低
+
+    对于此审查，并不会测量应用真正花了多少时间来响应用户输入。换句话说，它不会测量应用对用户输入的响应在视觉上是否完整
+
+    要手动对此进行测量，可以使用Chrome Devtools Timeline录制。基本思路是启动一个录制、执行要测量的用户输入、停止录制，然后分析火焰图已确保像素管道的所有阶段都在50毫秒内完成
+
+- 5.First Contentful Paint（首次内容绘制，FCP）
+
+  推荐处理方式：
+
+  为了加速首次内容绘制，加速资源下载或减少在渲染DOM内容时发生的阻塞，可以做以下方式优化
+
+  - 减少渲染阻塞的外部样式和脚本的数量。
+
+    **CSS**：通过媒体类型和媒体查询将一些CSS资源标记为不阻塞渲染，但**无论是阻塞还是不阻塞，浏览器都会下载所有CSS资源，只是不阻塞渲染的资源优先级较低罢了**。例如：
+
+    ```
+    <link href="style.css" rel="stylesheet">
+    <link href="print.css" rel="stylesheet" media="print">
+    <link href="other.css" rel="stylesheet" media="(min-width: 40em)">
+    ```
+
+    第一个样式表声明未提供任何媒体类型或查询，因此适用于所有情况，始终会阻塞渲染；
+
+    第二个样式表只有在打印内容时适用，因此在网页首次加载时，该样式表不需要阻塞渲染；
+
+    最后一个样式表声明提供由浏览器执行的“媒体查询”，符合条件时，浏览器将阻塞渲染，直至样式表下载并处理完毕
+
+    **JS**：加载第三方Javascript
+
+    第三方脚本虽然可以方便开发者开发令人困扰的功能，但是同样是性能减慢的主要因素和发生一些超出控制的问题
+
+    可以借助一些第三方的web速度测试工具，如 [Chrome DevTools](https://developer.chrome.com/devtools), [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/) 和 [WebPageTest](https://www.webpagetest.org/)来测试性能。这些工具将展示丰富的诊断信息来告诉开发者引用了多少第三方的脚本和将花费多少的时间来执行
+
+    WebPage Test的[域分解,domain breakdown](https://www.google.com/url?q=https://www.webpagetest.org/result/180222_J4_8fee6855d6f45719e4f37d8d89ecbc20/1/domains/&sa=D&ust=1519325015196000&usg=AFQjCNGrRivilJS9yqqpombsUMQZQJx2nw)能可视化的分析内容来自哪些第三方域。它通过总字节和请求数量两种方式来分解
+
+    ![origin-breakdown](http://reyshieh.com/assets/origin-breakdown.jpg)
+
+    改善第三方脚本的工作流一般如下：
+
+    - 用Network 面板测量页面加载需要多长时间。最好采用模拟真实情况的方式，通过转换network throttling和CPU throttling。
+    - 阻塞一些你认为会有影响的第三方脚本的URLs和域名
+    - 重新加载页面，重新测量不加载这些第三方脚本的时长
+
+    **用WebPageTest测量第三方标签的影响**：WebPageTest支持阻塞加载请求来测量第三方脚本带来的影响。在"Advanced Settings"下有一个Block页签。可以标识需要阻塞的域名列表，模拟不加载它们将会如何
+
+    ![webpagetest](http://reyshieh.com/assets/webpagetest.jpg)
+
+    WebPageTest中还有一个页签 single-point of failure(SPOF)。这允许模拟超时或加载资源的完全失败。SPOF有助于测试第三方内容的网络弹性，以确定在服务负载过重或暂时不可用的情况下，页面能保持多好。
+
+### Progressive Web App（19）
+
+### Accessibility（9）
+
+### Best Practices（19）
+
+### SEO（10）
 
 ## Console
 
