@@ -899,6 +899,71 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
 
     WebPageTest中还有一个页签 single-point of failure(SPOF)。这允许模拟超时或加载资源的完全失败。SPOF有助于测试第三方内容的网络弹性，以确定在服务负载过重或暂时不可用的情况下，页面能保持多好。
 
+    **使用长任务检测昂贵的iframes：**当第三方iframes中的脚本需要花很长的时间运行时，将阻塞主线程延迟别的任务运行。这些长任务可能会导致负面的用户体验，导致事件处理程序迟缓或帧丢失
+
+    可以利用Javascript  [PerformanceObserver](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver)API 和 observe [longtask](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#long_tasks) entries。这些入口包含属性性质，我们可以跟踪负责这个任务的框架上下文
+
+    **如何有效的加载第三方脚本？**
+
+    - 利用async或defer属性加载脚本改善性能
+
+      async：浏览器异步下载脚本，同时解析HTML文档。**当脚本下载完成，中断解析转由执行脚本**
+
+      defer：浏览器异步下载脚本，同时解析HTML文档。**直到解析完成，才开始执行脚本**
+
+      ![defer-async](http://reyshieh.com/assets/defer-async.jpg)
+
+      总的来说，除非脚本在关键渲染路径(critical rendering path, CRP)中必须存在，否则，都应该使用async或者defer来加载第三方脚本
+
+      - 利用`async`加载在进程中需要更早执行的脚本，例如包括一些分析脚本(analytics scripts)
+      - 利用`defer`加载非关键资源，如video播放器
+
+    - 如果第三方服务很慢，可以考虑自托管脚本。例如，如果想减少DNS或传输次数，可以通过改善HTTP缓存都或者采用像HTTP/2服务端push技术。但采用自托管会带来一些问题。如：脚本会过时，如果不通过认为的更新，将会阻止获取到新的代码导致产生潜在问题
+
+      还有一个选择方案，采用[Service Workers](https://developers.google.com/web/fundamentals/primers/service-workers/)来缓存内容，该方案可以通过创建加载策略来控制不同的脚本的预加载等
+
+    - 如果脚本对站点并没有产生影响，考虑移除脚本
+
+    - 考虑资源提示(resource hints)如`<link rel=preconnect>`或`<link rel=dns-prefetch>`来为托管第三方脚本的域执行DNS查找
+
+      在慢网络等下，为第三方域建立连接会花费大量的时间。包括了很多步骤：DNS查询，重定向，可能需要多次往返于每个第三方服务器以处理请求。
+
+      使用托管第三方脚本的域，当最终请求发出时，由于DNS查询已经查找，将会节省这些时间
+
+      ```
+      <link rel="dns-prefetch" href="http://example.com">
+      ```
+
+      如果使用的相关域使用了HTTPS，就得考虑执行DNS查询，解决TCP传输和处理TLS协商。再加上SSL证书的认证，会使这些步骤都变得很慢，可以考虑使用资源提示减少建立连接的费时
+
+      ```
+      <link rel="preconnect" href="https://cdn.example.com">
+      ```
+
+    - 利用iframe构造"沙盒"脚本。在一些情况下，第三方脚本可以直接加在到iframe中。通过将这些脚本移至iframe中，它们将不会阻塞主页面的执行。[AMP](https://www.ampproject.org/learn/about-how/)采用了这种方式将Javascript移出关键路径。但是需要注意这种方式还是会则色onload事件，因此不要将关键方法放在onload中执行
+    - 懒加载第三方资源。懒加载有很多种方案，例如当用户滚动到当前页时，再进行请求对应的脚本，或在主页内容加载之后延迟加载内容，但是在用户可能与页面交互之前。
+      - [LazySizes](https://github.com/aFarkas/lazysizes)、[lazyload](https://github.com/verlok/lazyload)
+      - [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver)。通常检测元素是否在可视区域的方式为监听scroll或resize事件，然后利用诸如getBoundingClientRect()的DOM APIs来计算元素的相对于可视区的位置，这个方式是可以实施的，但并不是有效的。intersectionObserver是新的浏览器API，允许高效的检测出被观察元素进入和离开可视区域。
+
+    **应该避免使用第三方脚本的哪些模式？**
+
+    - 避免`document.write()`
+    - 明智地使用**标记管理器**。[Google Tag Manager](https://www.google.com/analytics/tag-manager/) (GTM)就是一个受欢迎的标记管理器。标记管理器可以通过减少对外部资源的调用来提高页面加载性能——只要没有引入大量标记。它们还允许标记在一个唯一的位置收集值。对于GTM，就是数据层[(Data Layer)](https://developers.google.com/tag-manager/devguide)。如果多个第三方希望触发转换跟踪数据，可以通过从数据层提取数据来实现
+    - 使用标记管理存在风险。当使用标记管理器时，要非常小心，以避免减慢页面加载的速度
+    - 避免脚本污染全局作用域
+
+    **缓解策略**
+
+    在页面中添加第三方脚本意味着对源的信任程度。有一些策略可以使他们对性能和安全影响最小化：
+
+    - 必要的HTTPS。尤其是当主域是HTTPS时，第三方脚本不能是HTTP。这样会带来混合内容的警告
+    - 考虑在iframes上使用"沙盒属性"。从安全的观点出发，这允许限制从iframe中可用的操作。可以通过设置`allow-scripts`来控制是否可以运行脚本
+    - 考虑Content Security Policy(CSP)。CSP可以检测和减小外来攻击的影响，如XSS
+
+  - 使用HTTP 缓存加速重复访问
+
+  - 
+
 ### Progressive Web App（19）
 
 ### Accessibility（9）
