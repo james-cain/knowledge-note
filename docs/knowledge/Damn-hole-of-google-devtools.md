@@ -962,7 +962,137 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
 
   - 使用HTTP 缓存加速重复访问
 
-  - 
+  - 压缩文本，加快下载时间
+
+  - 利用[tree shaking](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/tree-shaking/) 和 [code splitting](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/code-splitting/)优化Javascript启动和减少Javascript负载
+
+    - Tree shaking
+
+      HTTP Archive提供的移动设备上JavaScript的平均传输大小约为350 KB。但这只是传输大小。Javascript通常是在网络传输时被压缩，意味着Javascript的实际体积在浏览器解压后将变得更大。这点指出，就资源处理而言，压缩并无关紧要。900KB的压缩Javascript，在解析、编译和执行仍然是900KB，即使在传输被压缩到300KB
+
+      Javascript在执行中是昂贵的资源！它不像图像，一旦下载只需花费简单的解码时间即可。Javascript必须解析、编译然后执行。这些使得Javascript比别的类型的资源更加昂贵
+
+      ![javascript-vs-image](http://reyshieh.com/assets/javascript-vs-image.jpg)
+
+      Tree shaking是一种死代码消除的方式。这个方式在Rollup中受广大欢迎，同样在webpack中也有这个概念。树中的每个节点都代表一个依赖项，为应用程序提供不同的功能。在现代app中，这些依赖都是通过import的方式引入进来
+
+      可以在github中查看例子[webpack-tree-shaking-example](https://github.com/malchata/webpack-tree-shaking-example)结合文章[tree-shaking](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/tree-shaking/)理解如何用webpack使用tree-shaking瘦身生产代码~
+
+    - [code splitting](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/code-splitting/)
+
+- 6.First Interactive(首次交互)
+
+  推荐处理方式：
+
+  - 最小化页面加载之前必须下载或执行的必要或“关键”资源的数量
+  - 最小化每个关键资源的大小
+
+- 7.First Meaningful Paint(首次有效绘制)
+
+  首次有效绘制分数越低，页面显示其主要内容的速度就越快
+
+- 8.Avoids Enormous Network Payloads
+
+  推荐处理方式：
+
+  - 延迟加载没有必要的请求
+  - 尽可能减小优化请求，包括以下一些技术：
+    - 使文本压缩
+    - 缩小HTML，JS和CSS
+    - 利用WebP代替JPEG或PNG
+    - 设置JPEG的压缩级别到85
+  - 缓存请求，使页面不重新下载已经访问过的资源
+
+  Lighthouse将合计页面请求中所有资源的总字节数
+
+- 9.Has multiple page redirects
+
+  重定向将减慢页面加载速度
+
+- 10.JavaScript Bootup Time Is Too High
+
+  Javascript会在很多方面减慢页面：
+
+  - 网络花销
+  - 解析和编译花销。Javascript会在主线程中解析和编译。当主线程忙碌时，页面不会响应用户输入
+  - 执行花销。如果页面在真正需要之前运行了大量代码，那么这也会延迟您进行交互的时间，这是与用户如何感知页面速度相关的关键指标之一
+  - 内存花销
+
+  推荐处理方式：
+
+  传输规模对低端网络至关重要；解析时间对中央处理器受限设备(CPU-bound devices)非常重要
+
+  - 只传输对用户需要的代码
+  - 缩小代码
+  - 压缩代码
+  - 移除没必要的代码
+  - 缓存代码来减小网络传输
+
+- 11.Keep Server Response Times Low
+
+  推荐处理方式：
+
+  - 优化服务应用逻辑。如果利用服务框架，框架会有推荐处理怎么做
+  - 优化服务器查询数据库或迁移到更快的数据库系统的方式
+  - 更新服务硬件来提升内存和CPU
+
+- 12.Minify CSS
+
+  缩小CSS文件改善页面加载性能
+
+  ```
+  // bad
+  /* Header background should match brand colors. */
+  h1 {
+    background-color: #000000;
+  }
+  h2 {
+    background-color: #000000;
+  }
+  // good
+  h1, h2 { background-color: #000000; }
+  ```
+
+  更大的减少是通过移除空格，缩小表达方式，如#000000 -> #000  0px -> 0
+
+  ```
+  h1,h2{background-color:#000000;}
+  ```
+
+- 13.Offscreen Images
+
+  屏幕外的图片在加载页面时用户是看不见的，在初始化页面加载时没有必要下载这些图片。推迟加载这些图片可以加速页面加载和交互时间
+
+  推荐处理方式：
+
+  懒加载屏幕外图片，可以考虑使用[IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver)。但是在使用IntersectionObserver时，最好加入[polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)，原生浏览器支持有限
+
+- 14.Optimize Images
+
+  推荐处理方式：
+
+  设置每张图片压缩等级到85或更低
+
+- 15.Properly Size Images
+
+  推荐处理方式：
+
+  - 提供大小合适的图像的主要策略被称为“响应式图像”。通过产生多个版本的图片，可以在HTML或CSS中使用媒体查询，视窗尺寸等来区分版本
+  - 另一种方式可以使用基于矢量的图片格式，如SVG。SVG图片可以按比例放大任何大小
+
+  可以使用像[gulp-responsive](https://www.npmjs.com/package/gulp-responsive) 或 [responsive-images-generator](https://www.npmjs.com/package/responsive-images-generator)的工具可以帮助自动转换图片成多个格式
+
+- 16.Perceptual Speed Index（速度指标）
+
+  速度指标是一个页面加载性能指标，展示明显填充页面内容的速度。此指标的分数越低越好
+
+  要降低速度指标分数，需要优化页面以使加载速度从视觉上显得更快
+
+  - [优化内容效率](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/)
+  - [优化关键渲染路径](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)
+
+- 17.Preload key requests
+
 
 ### Progressive Web App（19）
 
