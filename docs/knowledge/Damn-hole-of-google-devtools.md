@@ -700,7 +700,7 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
 - Best Practices
 - SEO
 
-### Performance（25）
+### Performance（24）
 
 - 1.Critical Request Chains (关键请求链) 概念来自于关键渲染路径(CRP)优化策略。CRP通过确定优先加载的资源以及加载顺序，允许浏览器尽可能快地加载页面
 
@@ -1093,8 +1093,112 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
 
 - 17.Preload key requests
 
+  推荐处理方式：
+
+  - 声明preload链接指示尽可能早地下载关键资源
+
+    ```
+    <head>
+    	...
+    	<link rel="preload" href="styles.css" as="style" />
+    	<link rel="preload" href="ui.js" as="script" />
+    	...
+    </head>
+    ```
+
+- 18.Reduce Render-Blocking Scripts
+
+  通过内联首次绘制所需的链接和脚本，并延迟首次绘制不需要的链接和脚本，可以提升页面加载速度
+
+  lighthouse列出其检测到的所有阻塞渲染的链接或脚本，目标是减少这些链接或脚本的数量
+
+  lighthouse标记三种类型的阻塞渲染的脚本：脚本、样式表和HTML导入
+
+  推荐处理方式：
+
+  - 对于关键脚本，考虑在HTML中内联它们。对于非关键脚本，考虑使用async和defer属性标记它们
+  - 对于样式表，考虑将样式分成不同的文件，按媒体查询进行组织，然后向每个样式表链接添加一个media属性。在加载页面时，浏览器仅阻止首次绘制以检索与用户的设备匹配的样式表
+  - 对于非关键的HTML导入，使用async属性标记它们
+
+  Lighthouse可标识三种类型的阻塞资源
+
+  - `<script>`标记，具有以下特征：
+    - 位于文档的`<head>`中
+    - 没有defer属性
+    - 没有async属性
+  - `<link rel="stylesheet">`标记，具有以下特征:
+    - 没有disabled属性
+    - 没有雨用户的设备匹配的media属性
+  - `<link rel="import">`标记，具有以下特征：
+    - 没有async属性
+
+- 19.Serve Images in Next-Gen Formats
+
+  JPEG 2000，JPEG XR和WebP这些图片格式相比老的JPEG和PNG格式有更好的压缩和质量特征。用新的编码方式意味着加载更快和更少的下载流量
+
+  WebP支持Chrome和Opera浏览器
+
+  浏览器支持情况：
+
+  - [WebP](https://caniuse.com/#feat=webp)
+  - [JPEG 2000](https://caniuse.com/#feat=jpeg2000)
+  - [JPEG XR](https://caniuse.com/#feat=jpegxr)
+
+- 20.Time to Interactive
+
+  Lighthouse中该指标的分数越低越好
+
+  可交互时间指的是布局已趋于稳定、关键的网络字体可见且主要线程足以处理用户输入的时间点
+
+- 21.Unoptimized Images
+
+  存在两种类型的图片：矢量和栅格
+
+  对于简单的几何图形，如logo，可以用矢量图，如SVG
+
+  对于复杂的图片，如照片，尽可能的使用WebP。但是浏览器支持不普遍，因此决定如何编码图片，也就是何时使用PNG和JPEG
+
+  Lighthouse会优化每张图片，然后对比原来的版本和优化后的版本。当审查遇到以下的条件之一，就会失败：
+
+  - JPEG的质量设置到80，移除metadata，如果图片缩小至少10KB
+  - 如果编码成WebP，图片缩小至少100KB
+  - 所有图片编码成WebP，节省了1MB
+
+- 22.User Timing Marks and Measures
+
+  可以通过User Timing API测量应用的Javascript性能。
+
+  这个审查不采用"通过"或"不通过"测试这种结构。
+
+- 23.Uses An Excessive DOM Size
+
+  大量的DOM树会损毁页面性能：
+
+  - 网络效率和负载性能
+  - 运行时性能
+  - 内存性能
+
+  推荐处理方式：
+
+  - 总节点少于1500节点
+  - 最大深度为32个节点
+  - 没有包含超过60个子节点的父节点
+
+  总的来说，最好在需要的时候再创建节点，在不需要的时候就销毁
+
+- 24.Uses inefficient cache policy on static assets
+
+  推荐处理方式：
+
+  配置`Cache-Control`HTTP响应头
+
+  ```
+  Cache-Control: max-age=86400
+  ```
 
 ### Progressive Web App（19）
+
+
 
 ### Accessibility（9）
 
