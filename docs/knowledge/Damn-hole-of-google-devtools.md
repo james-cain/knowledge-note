@@ -1202,7 +1202,76 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
 
 ### Accessibility（9）
 
-### Best Practices（19）
+### Best Practices(最佳实践)（19）
+
+- 1.Avoids Application Cache
+
+  应用缓存（也称为 AppCache）已[弃用](https://html.spec.whatwg.org/multipage/browsers.html#offline)
+
+  如果未检测到 AppCache 清单，则表示通过了审查
+
+  推荐处理方式：
+
+  用服务工作线程[Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache)
+
+- 2.Avoids console.time()
+
+  相对于`console.time()`测试页面性能，`User Timing API`更具有优势：
+
+  - 高分辨率时间戳
+  - 可导出的计时数据
+  - 与Chrome Devtools Timeline相集成。在Timeline录制期间调用User Timing 函数`performance.measure()`时，Devtools自动将测量结果添加到Timeline的结果中
+
+  Lighthouse列出在URLs下找到的console.time()的每个实例。将每个调用替换为`performance.mark()`。如果要测量在两个标记之间经过的时间，则使用`performance.measure()`
+
+- 3.Avoids Date.now()
+
+  考虑使用`performance.now()`。该函数可提供较高的时间戳分辨率，并始终以恒定的速率增加，它不受系统时钟的影响
+
+- 4.Avoids Deprecated APIs
+
+  [Chrome Platform Status](https://www.chromestatus.com/features#deprecated)记录版本更新，会列出废弃的APIs，替换这些APIs
+
+- 5.Avoids document.write()
+
+  对于网速较慢(如2G、3G或较慢的WLAN)的用户，外部脚本通过`document.write()`动态注入会使主要页面内容的显示延迟数十秒
+
+- 6.Avoids Mutation Events In Its Own Scripts（网站在其自身的脚本中不使用突变事件）
+
+  在URLs下，Lighthouse报告它在代码中发现的每个突变事件侦听器。将每个突变事件替换为 [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+
+- 7.Avoids Old CSS Flexbox
+
+  在URLs下，Lighthouse列出它在页面样式表中找到的`display: box`的每个实例。将每个实例替换为新语法，`display: flex`
+
+  简而言之，以`box`开头的每个属性(如`box-flex`)已弃用并且应予以替换
+
+- 8.Avoids Requesting The Geolocation Permission On Page Load
+
+  页面在加载时自动请求用户位置会使用户不信任页面或感到困惑。应将此请求与用户的手势进行关联，而不是在页面加载时自动请求用户的位置
+
+  在URLs下，Lighthouse报告它在代码中的行号和列号。删除这些调用，将此请求与用户手势进行关联
+
+- 9.Avoids Requesting The Notification Permission On Page Load
+
+  如果页面在加载时要求权限以发送通知，这些通知可能与用户无关或者不是他们的精准需求。为提高用户体验，最好是向用户发送特定类型的通知，并在他们选择加入后显示权限请求
+
+  在URLs下，Lighthouse报告它在代码中的行号和列号。删除这些调用，将此请求与用户手势进行关联
+
+- 10.Avoids Web SQL
+
+  Web SQL已弃用，考虑替换为一个可替代的现代数据库(如[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API))
+
+- 11.Displays Images With Incorrect Aspect Ratio
+
+  如果呈现的图像与源文件中的高宽比(“自然”高宽比)明显不同，那么呈现的图像可能会看起来失真，可能会造成不愉快的用户体验
+
+  推荐处理方式：
+
+  - 避免将元素的宽度或高度设置为不同大小容器的百分比
+  - 避免设置与源图像尺寸不同的显式宽度或高度值
+  - 考虑使用[css-aspect-ratio](https://www.npmjs.com/package/css-aspect-ratio)或[Aspect Ratio Boxes](https://css-tricks.com/aspect-ratio-boxes/)有助于保持高宽比
+  - 在可能的情况下，最好在HTML中指定图像的宽度和高度，这样浏览器就可以为图像分配空间，从而防止它在页面加载时跳来跳去。在HTML中指定宽度和高度比CSS更理想，因为浏览器在解析CSS之前会分配空间。在实践中，如果您使用的是响应式图像，这种方法可能会很困难，因为在知道视口尺寸之前，无法指定宽度和高度
 
 ### SEO（10）
 
