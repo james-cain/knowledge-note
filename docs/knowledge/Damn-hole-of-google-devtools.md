@@ -1273,6 +1273,84 @@ lighthouse从5个方面评估得分，目前总共有72个指标（lighthouse V3
   - 考虑使用[css-aspect-ratio](https://www.npmjs.com/package/css-aspect-ratio)或[Aspect Ratio Boxes](https://css-tricks.com/aspect-ratio-boxes/)有助于保持高宽比
   - 在可能的情况下，最好在HTML中指定图像的宽度和高度，这样浏览器就可以为图像分配空间，从而防止它在页面加载时跳来跳去。在HTML中指定宽度和高度比CSS更理想，因为浏览器在解析CSS之前会分配空间。在实践中，如果您使用的是响应式图像，这种方法可能会很困难，因为在知道视口尺寸之前，无法指定宽度和高度
 
+- 12.Includes Front-End Javascript Libraries With Known Security Vulnerabilities
+
+  [Snyk's Vulnerability DB](https://snyk.io/vuln?packageManager=all)中成列每个库的漏洞，避免使用这些漏洞，除非新版本更新了这些问题
+
+  检测漏洞库，可以通过以下方式：
+
+  - 运行[Library Detector For Chrome](https://www.npmjs.com/package/js-library-detector)
+  - 检测依赖库是否在[Snyk's Vulnerability DB](https://snyk.io/vuln?packageManager=all)列表中
+
+- 13.Manifest's short_Name Won't Be Truncated When Displayed On Homescreen
+
+  在用户将网络应用功能添加到主屏幕时，`short_name`属性作为标签显示在应用的图标旁。如果`short_name`超过12个字符，则在主屏幕上显示会被截断
+
+  如果`short_name`不存在，Chrome可以回退到`name`属性
+
+  Lighthouse会提取清单并验证`short_name`属性是否少于12个字符。如果清单中没有天剑`short_name`，但是`name`少于12个字符，审查将会通过
+
+- 14.Opens External Anchors Using rel="noopener"
+
+  当页面链接至使用`target="_blank"`的另一个页面时，新页面将与原来页面在同一个进程上运行，如果新页面正在执行开销极大的Javascript，此时页面的性能可能会受到影响
+
+  此外，`target="_blank"`也是一个安全漏洞。新的页面可以通过`window.opener`访问窗口对象，并且可以使用`window.opener.location = newURL`将页面导航至不同的网址
+
+  [rel=noopener 的性能优势](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/)
+
+  将`rel="noopener"`添加至Lighthouse报告中识别的每个链接上。一般情况下，当在新窗口或标签中打开一个外部链接时，始终添加`rel="noopener"`
+
+  ```
+  <a href="https://examplepetstore.com" target="_blank" rel="noopener">...</a>
+  ```
+
+- 15.Prevents Users From Pasting Into Password Fields
+
+  密码粘贴提高了安全性，因为它允许用户使用密码管理器。密码管理器通常为用户生成强大的密码，安全地存储它们，然后在用户需要登录时自动将它们粘贴到密码字段中。
+
+  推荐处理方式：
+
+  删除阻止用户粘贴到密码字段的代码。其中通过监听`paste`事件，调用`preventDefault()`可以阻止password输入元素的粘贴行为
+
+  ```
+  let input = document.querySelector('input');
+  input.addEventListener('paste', (e) => {
+      e.preventDefault();
+  });
+  ```
+
+- 16.Some Insecure Resources Can Be Upgraded To HTTPS
+
+  当HTTPS站点请求不安全(HTTP)资源时，被称为混合内容([mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content))错误。一些浏览器默认阻止不安全资源请求。
+
+- 17.Uses HTTPS
+
+  所有网站均应使用HTTPS进行保护。HTTPS可防止入侵者篡改或被动地侦听网站和用户之间的通信
+
+  一个应用如果不在HTTPS上运行，那么它就不符合成为Progressive Web App的条件
+
+- 18.Uses HTTP/2 For Its Own Resources
+
+  HTTP/2可更快地提供页面的资源，并且可减少通过网络传输的数据
+
+  在URLs下，Lighthouse列出不是通过HTTP/2提供的每个资源。要通过此审查，需要通过HTTP/2提供其中的每个资源
+
+- 19.Uses Passive Event Listeners To Improve Scrolling Performance
+
+  在触摸和滚轮事件侦听器上设置`passive`选项可提升滚动性能
+
+  将`passive`标志添加到Lighthouse已识别的所有事件侦听器。一般情况下，将`passive`标志添加到每个没有调用`preventDefault()`的`wheel`、`mousewheel`、`touchstart`、`touchmove`事件侦听器
+
+  在支持被动事件侦听器的浏览器中，将侦听器标记为`passive`与设置标志一样简单:
+
+  ```
+  document.addEventListener('touchstart', onTouchStart, {passive: true});
+  ```
+
+  不过，在不支持被动事件侦听器的浏览器中，第三个参数是一个布尔值，以表明此事件是应触发还是采集。因此，使用上面的语法可能会导致意外后果
+
+  如何安全地实现被动事件侦听器，参阅[功能检测](https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection)中的 polyfill
+
 ### SEO（10）
 
 ## Console
