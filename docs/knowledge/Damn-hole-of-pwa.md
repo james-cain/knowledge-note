@@ -207,7 +207,7 @@ Service Worker基本步骤：
 - 开始激活 Service Worker，必须要在 Service Worker 安装成功之后，才能开始激活步骤，当 Service Worker 安装完成后，会接收到一个激活事件（activate event）。激活事件的处理函数中，主要操作是清理旧版本的 Service Worker 脚本中使用资源。
 - 激活成功后 Service Worker 可以控制页面了，但是只针对在成功注册了 Service Worker 后打开的页面。也就是说，页面打开时有没有 Service Worker，决定了接下来页面的生命周期内受不受 Service Worker 控制。所以，只有当页面刷新后，之前不受 Service Worker 控制的页面才有可能被控制起来。
 
-![sw-lifecycle](https://coracain.top/assets/sw-lifecycle.png)
+![sw-lifecycle](http://reyshieh.com/assets/sw-lifecycle.png)
 
 - **安装( installing )**：这个状态发生在 Service Worker 注册之后，表示开始安装，触发 install 事件回调指定一些静态资源进行离线缓存。
 
@@ -244,7 +244,7 @@ Service Worker基本步骤：
 
 使用 Chrome 浏览器，可以通过进入控制台 `Application -> Service Workers` 面板查看和调试。
 
-![chrome_debug](https://coracain.top/assets/chrome_debug.png)
+![chrome_debug](http://reyshieh.com/assets/chrome_debug.png)
 
 选项含义：
 
@@ -674,13 +674,13 @@ scope应遵循如下规则：
    >
    > 第一次访问时的效果：
    >
-   > ![gs1](https://coracain.top/assets/gs1.png)
+   > ![gs1](http://reyshieh.com/assets/gs1.png)
    >
    > fetch事件无法在这次访问被捕获
    >
    > 刷新页面的效果：
    >
-   > ![gs2](https://coracain.top/assets/gs2.png)
+   > ![gs2](http://reyshieh.com/assets/gs2.png)
    >
    > - 全部的css、png、js文件均被ServiceWorker拦截
    > - workbox-core在拦截后重新发起了fetch请求并返回页面，fetch后服务端**返回304依然使用浏览器本地缓存策略**
@@ -688,7 +688,7 @@ scope应遵循如下规则：
    >
    > 更新css、js和png的内容，然后重新访问页面：
    >
-   > ![gs4](https://coracain.top/assets/gs4.png)
+   > ![gs4](http://reyshieh.com/assets/gs4.png)
    >
    > - 由于png是cache first，所以直接从service worker的cache返回，没有真正的网络请求发出
    > - js是network first，会产生fetch，且运行成功
@@ -696,7 +696,7 @@ scope应遵循如下规则：
    >
    > 不做修改，再刷新页面：
    >
-   > ![gs5](https://coracain.top/assets/gs5.png)
+   > ![gs5](http://reyshieh.com/assets/gs5.png)
    >
    > - 新的css生效
    > - **css、js请求返回304，使用浏览器缓存**
@@ -717,7 +717,7 @@ scope应遵循如下规则：
    >
    > 缓存成功后，即便断网，页面依旧可以访问及使用：
    >
-   > ![ol1](https://coracain.top/assets/ol1.png)
+   > ![ol1](http://reyshieh.com/assets/ol1.png)
    >
    > **跨域请求**
    >
@@ -757,7 +757,7 @@ scope应遵循如下规则：
    >
    > 此时就可以看到https://developers.google.com/域名下的资源也缓存了：
    >
-   > ![co1](https://coracain.top/assets/co1.png)
+   > ![co1](http://reyshieh.com/assets/co1.png)
    >
    > **不难看出**，以上的routing需要**第三次访问才能真正从cache中将缓存返回（或者支持离线）**。如果要提前至第二次，那么就要使用precache，使用precache后，会在第一次就将资源全部cache下来了。
    >
@@ -938,5 +938,122 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 if (window.matchMedia('(display-mode: fullscreen)').matches) {
   // Is installed in fullscreen display mode
 }
+```
+
+## workbox
+
+###定义动态路由前
+
+在定义动态路由之前可以做一些配置，如
+
+```
+// first
+workbox.core.setCacheNameDetails({
+    prefix: 'reyshieh-cache',
+    suffix: 'v1',
+    precache: 'install-time',
+    runtime: 'run-time',
+    googleAnalytics: 'ga'
+});
+// second
+workbox.skipWaiting();
+workbox.clientClaim();
+// third
+workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
+```
+
+####FIRST：
+
+设置一些缓存名称的配置项。
+
+- perfix - 指定应用的缓存前缀，同时应用于预缓存和动态缓存的名称，拼接在最前面
+- suffix - 指定应用的缓存后缀，同时应用于预缓存和动态缓存的名称，拼接在最后面
+- precache - 指明预缓存使用的缓存名称
+- runtime - 指定预缓存使用的缓存名称
+- googleAnalytics - `workbox-google-analytics`使用的缓存名称
+
+####SECOND：
+
+`workbox.skipWaiting()`和`workbox.clientsClaim()`一般共同使用，使得Service Worker可以在activate阶段让所有没被控制的页面受控，让Service Worker在下载完成后立即生效
+
+####THIRD：
+
+`workbox.precaching.precacheAndRoute(self.__precacheManifest || [])`使用到的`self.__precacheManifest`是定义在单独的一个预缓存文件列表中。
+
+###设置动态缓存规则：
+
+```
+workbox.routing.registerRoute(/^https:\/\/query\.yahooapis\.com\/v1\/public\/yql/, workbox.strategies.networkFirst());
+```
+
+> Workbox提供的`registerRoute`方法接受两个参数，第一个是匹配请求URL的正则表达式，第二个是内置的缓存策略。除了networkFirst，workbox还提供了networkOnly、cacheFirst、cacheOnly、staleWhileRevalidate等
+>
+> 经过这条配置，每次请求的URL如果匹配这个正则（其实是雅虎天气获取接口），在返回数据时会将数据进行缓存。如果网络连接故障，则返回缓存内容。配合预缓存了所有静态文件，站点就拥有了离线访问能力。
+
+#### 缓存策略的参数
+
+实际上，除了直接使用`networkFirst()`没带参数，还可以做一些个性化的配置，对策略进行更精细化的控制。例如
+
+1. 使用一个特定的缓存（指定一个不一样的缓存名称）
+2. 设置缓存失效时间或者个数上限
+
+这些都可以通过缓存的参数来实现。主要有两种：
+
+1. `cacheName`：指定新的缓存名称，使得符合这条正则的请求的缓存全都存在一起
+2. `plugins`：指定插件的数组。插件可以实现缓存失效时间或者个数上限，也包括其他的功能，甚至可以自定义
+
+### 注册Service Worker技巧
+
+以下为lavas中的实现方式：
+
+Service worker编写完生效，必须要进行注册。但是在注册时，更新问题是需要考虑的，因为存在浏览器缓存，导致service-worker.js可能会存在因为缓存原因而没有更新的情况，解决这个问题又要最大化利用浏览器缓存，可以通过：
+
+1. 将注册代码单独放置在`sw-register.js`中
+2. `sw-register.js`中实际注册`service-worker.js`的部分，在后面添加`?=xxx`，取值为编译时间。因此一次编译后不会修改，`service-worker.js`可以被浏览器缓存
+3. 在HTML中引用`sw-register.js`，同样在后面添加`?=xxx`，但这里取值为当前时间，因此每次请求都在变化，避免浏览器对`sw-register.js`进行缓存
+
+以下是sw-register.js的实现代码
+
+```
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js?v=xxx').then(function(reg) {
+        reg.onupdatefound = function() {
+            var installingWorker = reg.installing;
+            installingWorker.onstatechange = function() {
+                switch (installingWorker.state) {
+                    case 'installed':
+                    	if (navigator.serviceWorker.controller) {
+                            var event = document.createEvent('Event');
+                            event.initEvent('sw.update', true, true);
+                            window.dispatchEvent(event);
+                    	}
+                    break;
+                }
+            };
+        };
+    }).catch(function(e) {
+        console.error('Error during service worker registration:' + e);
+    });
+}
+```
+
+主要工作包括：
+
+1. 调用`navigator.serviceWorker.register`注册Service Worker
+2. 注册`updatefound`事件并监听Service Worker的更新，并在更新时分发`sw.update`事件
+
+插入HTML文件的代码如下：
+
+```
+<script>
+window.onload = function() {
+    var script = document.createElement('script');
+    var firstScript = document.getElementByTagName('script')[0];
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = '/sw-register.js?v=' + Date.now();
+    firstScript.parentNode.insertBefore(script, firstScript);
+}
+</script>
 ```
 
