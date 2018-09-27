@@ -1057,3 +1057,196 @@ window.onload = function() {
 </script>
 ```
 
+### Libraries
+
+- workbox
+
+  `workbox-sw`模块提供了一个极简单的方式运行Workbox模块，简化Workbox模块的加载，并提供一些简单方法
+
+  - CDN
+
+    ```
+    importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+    ```
+
+    通过CDN调用后，您的service worker将拥有`workbox`命名空间，该空间将提供对所有Workbox模块的调用，如
+
+    ```
+    workbox.precaching.*
+    workbox.routing.*
+    etc
+    ```
+
+    当首次引用一个模块时，`workbox-sw`将检测到并在使其生效之前加载该模块。可以在Devtools的network页签下看见变化
+
+  - Local Workbox
+
+    可以通过[`workbox-cli`'s `copyLibraries` command](https://developers.google.com/web/tools/workbox/modules/workbox-cli#copylibraries) 或者从 [GitHub Release](https://github.com/GoogleChrome/workbox/releases)中下载，然后通过`modulePathPrefix`配置属性查找文件
+
+    ```
+    importScripts('/third_party/workbox/workbox-sw.js');
+    
+    workbox.setConfig({
+        modulePathPrefix: '/third_party/workbox/'
+    });
+    ```
+
+  **避免Async Imports**
+
+  在底层，首次加载新模块涉及到调用`importScripts()`路径到相应的JavaScript文件(或托管在CDN上，或通过本地URL)。无论哪种情况，都有一个重要的限制：`importScripts()`的隐式调用只能发生在service worker的`install`处理器或在service worker脚本的同步、初始执行期间。
+
+  为了避免违背约束，最佳实践是在任何处理器或者异步方法外部引用`workbox.*`命名空间
+
+  例如，如果你没有引入`workbox.strategies`，代码将发生问题:
+
+  ```
+  importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+  
+  self.addEventListener('fetch', (event) => {
+    if (event.request.url.endsWith('.png')) {
+      // Oops! This causes workbox-strategies.js to be imported inside a fetch handler,
+      // outside of the initial, synchronous service worker execution.
+      const cacheFirst = workbox.strategies.cacheFirst();
+      event.respondWith(cacheFirst.makeRequest({request: event.request}));
+    }
+  });
+  ```
+
+  如果你需要编写与此限制冲突的代码，可以使用`workbox.loadModule()`方法在事件处理程序之外显式地触发`importScripts()`调用:
+
+  ```
+  importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+  
+  // This will trigger the importScripts() for workbox.strategies and its dependencies:
+  workbox.loadModule('workbox-strategies');
+  
+  self.addEventListener('fetch', (event) => {
+    if (event.request.url.endsWith('.png')) {
+      // Referencing workbox.strategies will now work as expected.
+      const cacheFirst = workbox.strategies.cacheFirst();
+      event.respondWith(cacheFirst.makeRequest({request: event.request}));
+    }
+  });
+  ```
+
+  或者，可以在事件处理程序之外创建对相关名称空间的引用，然后稍后使用该引用:
+
+  ```
+  importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+  
+  // This will trigger the importScripts() for workbox.strategies and its dependencies:
+  const {strategies} = workbox;
+  
+  self.addEventListener('fetch', (event) => {
+    if (event.request.url.endsWith('.png')) {
+      // Using the previously-initialized strategies will work as expected.
+      const cacheFirst = strategies.cacheFirst();
+      event.respondWith(cacheFirst.makeRequest({request: event.request}));
+    }
+  });
+  ```
+
+  **方法**
+
+  - clientsClaim()，skipWaiting()
+  - loadModule(moduleName)
+  - setConfig(options)
+
+- workbox.core
+
+  workbox是模块化构建的，允许开发者选择他们想要使用的部分
+
+  为了避免每个模块实现相同逻辑，`workbox-core`包含每个模块依赖的通用代码
+
+  这个模块确实为开发人员提供了一些功能，但是除了日志级别和缓存之外，`workbox-core`为每个模块提供了内部逻辑，而不是终端开发人员
+
+  - Log Level
+
+    ```
+    // The most verbose - displays all logs.
+    workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
+    
+    // Shows logs, warnings and errors.
+    workbox.core.setLogLevel(workbox.core.LOG_LEVELS.log);
+    
+    // Show warnings and errors.
+    workbox.core.setLogLevel(workbox.core.LOG_LEVELS.warn);
+    
+    // Show *just* errors
+    workbox.core.setLogLevel(workbox.core.LOG_LEVELS.error);
+    
+    // Silence all of the Workbox logs.
+    workbox.core.setLogLevel(workbox.core.LOG_LEVELS.silent);
+    ```
+
+    可以通过以下方式查看当前log level:
+
+    ```
+    console.log(workbox.core.logLevel);
+    ```
+
+    默认log level改变依靠构建类型：
+
+    - debug build，`workbox-core.dev.js`，log level将设置`LOG_LEVELS.log`
+    - production build，`workbox-core.prod.js`，log level将设置`LOG_LEVELS.warn`，意味着只能使用warnings和errors
+
+  - 查看和改变默认Cache名称
+
+    Workbox定义caches通过`workbox.core.cacheNames`：
+
+    ```
+    console.log(workbox.core.cacheNames.precache);
+    
+    console.log(workbox.core.cacheNames.runtime);
+    
+    console.log(workbox.core.cacheNames.googleAnalytics);
+    ```
+
+    这些缓存名称通过prefix,name,suffix的格式构建
+
+    ```
+    <prefix>-<cache id (precache | runtime | googleAnalytics)>-<suffix>
+    ```
+
+    可以通过`setCacheNameDetails()`修改值
+
+    ```
+    workbox.core.setCacheNameDetails({
+      prefix: 'my-app',
+      suffix: 'v1',
+      precache: 'install-time',
+      runtime: 'run-time',
+      googleAnalytics: 'ga',
+    });
+    
+    // Will print 'my-app-install-time-v1'
+    console.log(workbox.core.cacheNames.precache);
+    
+    // Will print 'my-app-run-time-v1'
+    console.log(workbox.core.cacheNames.runtime);
+    
+    // Will print 'my-app-ga-v1'
+    console.log(workbox.core.cacheNames.googleAnalytics);
+    ```
+
+- workbox.precaching
+
+- workbox.routing
+
+- workbox.strategies
+
+- workbox.expiration
+
+- workbox.backgroundSync
+
+- workbox.googleAnalytics
+
+- workbox.cacheableResponse
+
+- workbox.broadcastUpdate
+
+- workbox.rangeRequest
+
+- workbox.streams
+
+- workbox.navigationPreload

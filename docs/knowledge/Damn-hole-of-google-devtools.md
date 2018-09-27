@@ -1573,4 +1573,3 @@ window.onerror = function(message, url, line) {
     console.log("window.onerror was invoked with message = " + message + ", url = " + url + ", line = " + line);
 }
 ```
-
