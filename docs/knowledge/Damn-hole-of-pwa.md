@@ -1194,7 +1194,7 @@ window.onload = function() {
 
     Workbox定义caches通过`workbox.core.cacheNames`：
 
-    ```
+    ```js
     console.log(workbox.core.cacheNames.precache);
     
     console.log(workbox.core.cacheNames.runtime);
@@ -1210,7 +1210,7 @@ window.onload = function() {
 
     可以通过`setCacheNameDetails()`修改值
 
-    ```
+    ```js
     workbox.core.setCacheNameDetails({
       prefix: 'my-app',
       suffix: 'v1',
@@ -1231,7 +1231,181 @@ window.onload = function() {
 
 - workbox.precaching
 
+  Service worker正在installing时，会缓存文件。通常被提及的就是"precaching"。
+
+  当web应用第一次加载，workbox-precaching将查看你想要下载的所有assets，移除副本，并连接相关的service worker事件以下载和存储assets，保存有关indexedDB中asset的修订的信息
+
+  **workbox-precaching只会在service worker的install事件期间执行**
+
+  当用户重新浏览web应用，将有一个新的不同于预缓存assets的service worker。workbox-precaching将查看一个新的列表，决定哪些assets是新的，哪些是需要更新。在service worker sinstall事件期间，这些assets将在缓存中被更新，他们的修订信息将被更新或者添加到indexedDB中
+
+  预缓存会在service worker每次安装和激活都执行，确保用户下载的文件都是最新的assets
+
+  - workbox-precaching 期望得到字符串数组或者对象数组，就像以下
+
+    ```js
+    workbox.precaching.precacheAndRoute([
+        'styles/example.ac29.css',
+        {
+            url: '/index.html',
+            revision: 'as46',
+        }
+    ]);
+    ```
+
+    列表引用一组url，每个url都有自己的“修正”信息。上面例子的第一条"/styles/example.ac29.css"，修正信息已经在url上。这是浏览器允许将这些URLs安全缓存一段时间的最佳实践。像这样的assets，可以直接添加在预缓存列表中，不用使用revision
+
+    对于那些URL中没有带修正信息的assets，只需要添加一个文件hash revision属性。让workbox-precaching知道哪些文件是改变和需要更新
+
+    workbox可以通过工具生成这些list：
+
+    - workbox-build
+    - workbox-webpack-plugin
+    - workbox-cli
+
+  - 带有搜索参数的请求可以修改以移除特定值或所有值
+
+    默认情况下，`utm_`值被移除，将改变`/?utm_=123`到`/`的请求
+
+    可以通过`ignoreUrlParametersMatching`参数移除所有搜索参数或特定一组参数
+
+    ```js
+    workbox.precaching.precacheAndRoute(
+    	[
+            '/styles/index.0c9a31.css',
+            '/scripts/main.0d5770.js',
+        	{ url: '/index.html', revision: '383676' },
+    	],
+    	{
+            ignoreUrlParametersMatching: [/.*/]
+        }
+    )
+    ```
+
+  - 一般情况，请求以`/`结尾都会带上`index.html`，因此请求`/`都会默认去预缓存`/index.html`
+
+    可以通过设置`directoryIndex`属性设置成别的或者禁止该行为
+
+    ```js
+    workbox.precaching.precacheAndRoute(
+      [
+        '/styles/index.0c9a31.css',
+        '/scripts/main.0d5770.js',
+        { url: '/index.html', revision: '383676' },
+      ],
+      {
+        directoryIndex: null,
+      }
+    );
+    ```
+
+  - 如果请求在预缓存中匹配失败，将在该请求URLs的最后加上`.html`。意味着像`/about`会匹配`/about.html`
+
+    可以通过`cleanUrls`属性禁止这个行为
+
+    ```js
+    workbox.precaching.precacheAndRoute(
+      [
+        '/styles/index.0c9a31.css',
+        '/scripts/main.0d5770.js',
+        { url: '/index.html', revision: '383676' },
+      ],
+      {
+        cleanUrls: false,
+      }
+    );
+    ```
+
+  - 如果想定义自定义匹配，可以通过`urlManipulation`属性配置。该属性必须是带有可能匹配的数组返回值的回调函数
+
+    ```js
+    workbox.precaching.precacheAndRoute(
+      [
+        '/styles/index.0c9a31.css',
+        '/scripts/main.0d5770.js',
+        { url: '/index.html', revision: '383676' },
+      ],
+      {
+        urlManipulation: ({url}) => {
+          ...
+          return [alteredUrlOption1, alteredUrlOption2, ...];
+        }
+      }
+    );
+    ```
+
 - workbox.routing
+
+  service worker 拦截网络请求。它将返回浏览器响应，且方式可以是缓存内容，从网络中获取内容或通过service worker生成的内容
+
+  ![workbox-routing-diagram](http://reyshieh.com/assets/workbox-routing-diagram.png)
+
+  主要关注两个点：
+
+  - 请求的类型
+
+    默认情况，路由都以GET请求注册。如果想拦截别的类型，将指定方法
+
+  - 路由注册顺序
+
+    如果多个路由被注册用来处理同一个请求时，请求会采用第一个注册路由作为响应
+
+  Routes方法：
+
+  - matching
+
+    matching必须是**同步**的，因为路由总是同步的调用fetch事件
+
+    ```js
+    const matchCb = ({url, event}) => {
+      return (url.pathname === '/special/url');
+    };
+    ```
+
+  - handling
+
+    返回Response的Promise，Response取决于你，网络，缓存或者由service worker生成
+
+    ```js
+    // params值从match函数中返回
+    const handlerCb = ({url, event, params}) => {
+      return fetch(event.request)
+      .then((response) => {
+        return response.text();
+      })
+      .then((responseBody) => {
+        return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
+      });
+    };
+    ```
+
+  Workbox为执行matching和handling附带了一些helpers。但是如果想要不同的行为，编写自定义match和handler方法是最好的选择
+
+  注册以上回调：
+
+  ```
+  workbox.routing.registerRoute(matchCb, handlerCb);
+  ```
+
+  通常handler会是[workbox-strategies](https://developers.google.com/web/tools/workbox/modules/workbox-strategies)中的其中一个策略，如
+
+  ```js
+  workbox.routing.registerRoute(
+    matchCb,
+    workbox.strategies.staleWhileRevalidate()
+  );
+  ```
+
+  通常的实践是理由通用的表达式代替match回调，如
+
+  ```js
+  workbox.routing.registerRoute(
+    new RegExp('/styles/.*\.css'),
+    handlerCb
+  );
+  ```
+
+  同域请求和跨域请求match匹配需要带上域名，
 
 - workbox.strategies
 
