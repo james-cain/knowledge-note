@@ -1405,13 +1405,243 @@ window.onload = function() {
   );
   ```
 
-  同域请求和跨域请求match匹配需要带上域名，
+  同域请求和跨域请求match匹配需要带上域名，若不写域名，service worker不会匹配成功
+
+  **如何注册Navigation路由**
+
+  如果站点是单页应用(SPA)，对于navigation请求，可以通过[NavigationRoute](https://developers.google.com/web/tools/workbox/reference-docs/latest/workbox.routing.NavigationRoute)返回指定的响应
+
+  ```js
+  workbox.routing.registerNavigationRoute('/single-page.app.html');
+  ```
+
+  默认情况下，该响应会包括所有的navigation请求，如果想限制它，可以通过设置`whitelist`和`blacklist`参数匹配路由
+
+  ```js
+  workbox.routing.registerNavigationRoute('/single-page-app.html', {
+    whitelist: [
+      new RegExp('/blog/')
+    ],
+    blacklist: [
+      new RegExp('/blog/restricted/'),
+    ]
+  });
+  ```
+
+  需要注意：如果一个URL即在whitelist和blacklist，blacklist会覆盖whitelist
+
+  **设置默认Handler**
+
+  可以通过设置默认handler，即使不匹配路由也会被触发
+
+  ```js
+  workbox.routing.setDefaultHandler(({url, event, params}) => {
+    ...
+  });
+  ```
+
+  **设置异常捕获Handler**
+
+  设置异常捕获Handler，当路由抛出异常，会触发
+
+  ```js
+  workbox.routing.setCatchHandler(({url, event, params}) => {
+    ...
+  });
+  ```
+
+  **定义非get请求的路由**
+
+  ```js
+  workbox.routing.registerRoute(
+    matchCb,
+    handlerCb,
+    'POST'
+  );
+  workbox.routing.registerRoute(
+    new RegExp('/api/.*\.json'),
+    handlerCb,
+    'POST'
+  );
+  ```
+
+  **自定义workbox router**
+
+  ```js
+  const router = new DefaultRouter();
+  self.addEventListener('fetch', (event) => {
+    const responsePromise = router.handleRequest(event);
+    if (responsePromise) {
+      // Router found a route to handle the request
+      event.respondWith(responsePromise);
+    } else {
+      // No route found to handle the request
+    }
+  });
+  ```
+
+  当用Router class，那也需要使用Route class或者继承classes来注册路由
+
+  ```js
+  const router = new DefaultRouter();
+  router.registerRoute(new Route(matchCb, handlerCb));
+  router.registerRoute(new RegExpRoute(new RegExp(...), handlerCb));
+  router.registerRoute(new NavigationRoute(handlerCb));
+  ```
 
 - workbox.strategies
 
+  `workbox-strategies`提供了最普遍的缓存策略
+
+  - Stale-While-Revalidate（在等待时重新验证）
+
+    ![stale-while-revalidate](http://reyshieh.com/assets/stale-while-revalidate.png)
+
+    模式允许以尽可能快的速度响应请求，如果可用的话，可以使用缓存的响应，如果没有缓存，则返回到网络请求。然后使用网络请求来更新缓存
+
+  - Cache-First
+
+    ![cache-first](http://reyshieh.com/assets/cache-first.png)
+
+  - Network First
+
+    ![network-first](http://reyshieh.com/assets/network-first.png)
+
+  - Network Only
+
+    ![network-only](http://reyshieh.com/assets/network-only.png)
+
+  - Cache Only
+
+    ![cache-only](http://reyshieh.com/assets/cache-only.png)
+
+  **配置策略**
+
+  - 配置缓存名称
+
+    ```js
+    workbox.routing.registerRoute(
+      new RegExp('/images/'),
+      workbox.strategies.cacheFirst({
+        cacheName: 'image-cache',
+      })
+    );
+    ```
+
+  - 配置缓存过期限制
+
+  - 带有生命周期方法回调的plugins的数组
+
+    - workbox.expiration.Plugin
+    - workbox.cacheableResponse.Plugin
+    - workbox.boradcastUpdate.Plugin
+    - workbox.backgroundSync.Plugin
+
 - workbox.expiration
 
+  workbox提供了`workbox-cache-expiration` plugin，允许限制缓存入口的数量或者缓存能持续多长时间后移除入口
+
+  - maxEntries
+
+    需要主要，当缓存入口的数量超过限制，将会删除最老的入口
+
+  - maxAgeSeconds
+
+  ```js
+  workbox.routing.registerRoute(
+    /\/images\//,
+    workbox.strategies.cacheFirst({
+      cacheName: 'image-cache',
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 20,
+          maxAgeSeconds: 24 * 60 * 60,
+        }),
+      ],
+    })
+  );
+  ```
+
 - workbox.backgroundSync
+
+  当向web服务器发送数据时，有时请求将失败。可能是因为用户失去了连接，也可能是因为服务器宕机;无论哪种情况，通常都希望稍后再尝试发送请求。
+
+  [BackgroundSync API](https://wicg.github.io/BackgroundSync/spec/)是解决这个问题的一个方案。当service worker检测到网络请求失败，它可以注册以接收同步事件，当浏览器认为连接已经返回时，同步事件就会被发送。即使用户已经离开了应用程序，也可以传递同步事件，这使得它比重试失败请求的传统方法更有效。
+
+  Workbox Background Sync被设计来更容易的使用BackgroundSync API和整合和别的workbox模块的配合。也实现了对不支持BackgroundSync的浏览器降级策略
+
+  **基础使用**
+
+  使用后台同步最简单的方法是使用plugin，当将来的同步事件触发时，插件会自动对失败的请求进行排队并重试。
+
+  ```js
+  const bgSyncPlugin = new workbox.backgroundSync.Plugin('myQueueName', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours
+  });
+  
+  workbox.routing.registerRoute(
+    /\/api\/.*\/*.json/,
+    workbox.strategies.networkOnly({
+      plugins: [bgSyncPlugin]
+    }),
+    'POST'
+  );
+  ```
+
+  **提升使用**
+
+  Workbox Background Sync提供了Queue类，可以初始化和添加错误请求到队列中。失败请求会存储在[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)中并重新请求当浏览器认为连接恢复
+
+  - 创建队列
+
+    用队列名构造队列（必须和[origin](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy#Definition_of_an_origin)不一致）
+
+    ```js
+    const queue = new workbox.backgroundSync.Queue('myQueueName');
+    ```
+
+  - 添加一个请求到队列
+
+    当创建完Queue实例后，就可以添加失败请求到里面。添加失败请求通过唤起`.addRequest()`方法。例如，如下代码捕获任意失败请求并添加到队列中：
+
+    ```js
+    const queue = new workbox.backgroundSync.Queue('myQueueName');
+    
+    self.addEventListener('fetch', (event) => {
+      // Clone the request to ensure it's save to read when
+      // adding to the Queue.
+      const promiseChain = fetch(event.request.clone())
+      .catch((err) => {
+          return queue.addRequest(event.request);
+      });
+    
+      event.waitUntil(promiseChain);
+    });
+    ```
+
+    一旦添加到队列，请求会自动重试直到service worker接收到`sync`事件(只有在浏览器认为连接已经恢复的请求下发生)。
+
+    在不支持BackgroundSync API的浏览器中会在每次service worker被启动时重试队列。这要求页面控制service worker运行，因此不会非常有效。
+
+  **测试Workbox Background Sync**
+
+  测试BackgroundSync sync并不直观
+
+  可以按照以下方式：
+
+  - 加载页面，并注册service worker
+
+  - 关闭电脑网络或者关掉web server(**不能用chrome devtools的offline**，因为只会影响页面请求，并不会阻止service worker请求)
+
+  - 让网络请求插入到Workbox Background Sync 队列中
+
+  - 打开网络或者service worker
+
+  - 到chrome devtools>Application>service workers中主动调用sync 事件，输入workbox-background-sync:< 你的队列名 >，点击Sync按钮
+
+    ![devtools-sync](http://reyshieh.com/assets/devtools-sync.png)
+
+  - 到network请求中查看之前失败的请求，并且当重新请求成功，IndexDB数据将被清空
 
 - workbox.googleAnalytics
 
