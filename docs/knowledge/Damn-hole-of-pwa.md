@@ -748,7 +748,7 @@ scope应遵循如下规则：
    >     plugins: [
    >       // Force Cache
    >       new workbox.cacheableResponse.Plugin({
-   >         statuses: [0, 200], // One or more status codes that a Response can have and be considered cacheable.这里允许状态码为0的抢矿也缓存，可以解决跨域不缓存的问题
+   >         statuses: [0, 200], // One or more status codes that a Response can have and be considered cacheable.这里允许状态码为0的情况也缓存，可以解决跨域不缓存的问题
    >       }),
    >     ]
    >   }),
@@ -1645,12 +1645,240 @@ window.onload = function() {
 
 - workbox.googleAnalytics
 
+  **使Workbox Google Analytics生效**
+
+  调起`initialize()`方法
+
+  ```
+  workbox.googleAnalytics.initialize();
+  ```
+
+  以上是使用Google Analytics working offline的最简单方式，用该代码可以实现入队和重试失败Google Analytics请求。
+
+  用以上方式，会有一个缺陷，无法区别该请求是否是首次尝试。意味着用户脱机的所有交互数据都会被接收。但是，无法知道在用户脱机时发生了哪些交互。
+
+  可以通过设置一些参数来描述或注释这些从重新尝试请求中获得的数据
+
+  - 通过设置`parameterOverrides`或`hitFilters`设置区分重试请求和非重试请求
+    - parameterOverrides：为每个重试请求设置特定参数的相同值
+    - hitFilter：在运行时计算特定参数的值或从另一个参数的值派生
+
 - workbox.cacheableResponse
+
+  `workbox-cacheable-responce`模块提供标准的方式，基于状态码、带有特定值的header出现或者两者结合，决定是否缓存该请求
+
+  - 基于状态码缓存
+
+    ```js
+    workbox.routing.registerRoute(
+      new RegExp('^https://third-party.example.com/images/'),
+      workbox.strategies.cacheFirst({
+        cacheName: 'image-cache',
+        plugins: [
+          new workbox.cacheableResponse.Plugin({
+            statuses: [0, 200], // opaque responses 状态码为0
+          })
+        ]
+      })
+    );
+    ```
+
+    注：[Opaque responses](https://fetch.spec.whatwg.org/#concept-filtered-response-opaque)被定义在[Fetch API](https://fetch.spec.whatwg.org/)中，当CORS不启用时，对远程源发出的请求结果。对于不透明的响应，最直接的限制是不能从响应类的大多数属性(比如header)中获得有意义的信息，或者调用组成Body接口的各种方法(比如json()或text())。这符合不透明响应的黑箱性质。
+
+  - 基于Headers缓存
+
+    ```js
+    workbox.routing.registerRoute(
+      new RegExp('/path/to/api/'),
+      workbox.strategies.staleWhileRevalidate({
+        cacheName: 'api-cache',
+        plugins: [
+          new workbox.cacheableResponse.Plugin({
+            headers: {
+              'X-Is-Cacheable': 'true',
+            },
+          })
+        ]
+      })
+    );
+    ```
+
+    以上例子表示当请求URLs包含`/path/to/api/`，且header中包括`X-Is-Cacheable`值为true，那么该响应就会被缓存。
+
+    对于多个headers做标识，只要其中一个匹配即可。
+
+  - 基于以上两种情况同时存在
+
+    ```js
+    workbox.routing.registerRoute(
+      new RegExp('/path/to/api/'),
+      workbox.strategies.staleWhileRevalidate({
+        cacheName: 'api-cache',
+        plugins: [
+          new workbox.cacheableResponse.Plugin({
+            statuses: [200, 404],
+            headers: {
+              'X-Is-Cacheable': 'true',
+            },
+          })
+        ]
+      })
+    );
+    
+    ```
+
+    如果用混合方式，必须两种情况都同时满足才能算匹配
+
+  - 默认情况
+
+    - `staleWhileRevalidate`和`networkFirst`：带有0或200状态码的响应被缓存
+    - `cacheFirst`：只有200状态码会被缓存
+
+    之所以两种策略存在不同，因为opaque响应式黑盒式。service worker不能知道这个响应是否是合法、是否是成功或者失败。
 
 - workbox.broadcastUpdate
 
+  `workbox-broadcast-cache-update`模式提供了一个标准的方式，通知桌面端，缓存响应更新了。最普遍被使用在`staleWhileRevalidate`策略。
+
+  该模块利用 [Broadcast Channel API](https://developers.google.com/web/updates/2016/09/broadcastchannel) 通知更新。客户端监听更新，采取合适的行为，如自动展现一个消息让用户知道更新是合理的。
+
+  - 如何确定是否要更新？
+
+    缓存headers或有新的响应对象发生变化，表示更新
+
+    默认下，`Content-Length`,`ETag`和`Last-Modified ` headers会被比较。
+
+    workbox利用headers值代替逐字节比较会更有效，特别是潜在的大体积响应。
+
+    > 注：因为workbox需要解析header值，因此opaque response不能使用该功能，不会触发更新消息
+
+  - 使用Broadcast Cache更新
+
+    该库更倾向于和`staleWhileRevalidate`策略一起使用，策略包括立即返回缓存的响应，但也提供异步更新缓存的机制。
+
+    ```js
+    workbox.routing.registerRoute(
+      new RegExp('/api/'),
+      workbox.strategies.staleWhileRevalidate({
+        plugins: [
+          new workbox.broadcastUpdate.Plugin('api-updates')
+        ]
+      })
+    );
+    ```
+
+    通过以上配置，将会通过'api-updates'通道广播消息，但是你需要定制相关信息和app关联
+
+    在app中，可以以下方式监听：
+
+    ```js
+    const updatesChannel = new BroadcastChannel('api-updates');
+    updatesChannel.addEventListener('message', async (event) => {
+      const {cacheName, updatedUrl} = event.data.payload;
+    
+      // Do something with cacheName and updatedUrl.
+      // For example, get the cached content and update
+      // the content on the page.
+      const cache = await caches.open(cacheName);
+      const updatedResponse = await cache.match(updatedUrl);
+      const updatedText = await updatedResponse.text();
+      ...
+    });
+    ```
+
+    - 消息格式
+
+      `event.data`会遵循以下格式
+
+      ````js
+      {
+        type: 'CACHE_UPDATED',
+        meta: 'workbox-broadcast-cache-update',
+        // The two payload values vary depending on the actual update:
+        payload: {
+          cacheName: 'the-cache-name',
+          updatedUrl: 'https://example.com/'
+        }
+      }
+      ````
+
+    - 定制headers作为检测，通过`headersToCheck`属性
+
+      ```js
+      workbox.routing.registerRoute(
+        new RegExp('/api/'),
+        workbox.strategies.staleWhileRevalidate({
+          plugins: [
+            new workbox.broadcastUpdate.Plugin(
+              'api-updates',
+              headersToCheck: ['X-My-Custom-Header']
+            )
+          ]
+        })
+      );
+      ```
+
 - workbox.rangeRequest
+
+  发送请求时，range header可以设置告知服务器返回完整请求的一部分。对于像video文件很有用，用户可能会改变播放的位置
+
+  在某些情况下，可能希望为缓存的文件提供服务，但是浏览器已经设置了一个range header。通常header会被忽略。该模块会查阅缓存响应并返回指定范围的数据
+
+  - 基础用法
+
+    通过添加plugin策略，检查范围请求
+
+    ```js
+    workbox.routing.registerRoute(
+    	/.*.mp4/,
+    	workbox.strategies.cacheFirst({
+            plugins: [
+                new workbox.rangeRequests.Plugin(),
+            ],
+    	});
+    );
+    ```
 
 - workbox.streams
 
 - workbox.navigationPreload
+
+  "[Speed up Service Worker with Navigation Preloads](https://developers.google.com/web/updates/2017/02/navigation-preload)"介绍了navigation preload工作方式
+
+  `workbox-navigation-preload`处理检查当前浏览器是否支持navigation preload，如果支持，将自动创建`activate`事件使用。
+
+  Workbox会更新，以自动使用预加载响应。
+
+  **已经通过预缓存HTML来处理导航的开发人不需要启用导航预加载！**该特征倾向于为没有预缓存HTML的开发人员减少导航延迟，但仍然想利用Workbox处理别的assets的缓存。
+
+  例如，如果遵循应用程序Shell模式，并且已经设置了使用预缓存HTML的导航路由，那么启用导航预加载将是一种浪费。与预加载请求相关联的网络响应永远不会被使用，因为预缓存的HTML将被无条件地使用。
+
+  - 基础使用
+
+    ```js
+    // Enable navigation preload
+    workbox.navigationPreload.enable();
+    
+    // Swap in networkOnly, cacheFirst, or staleWhileRevalidate as needed.
+    const strategy = workbox.strategies.networkFirst({
+      cacheName: 'cached-navigations',
+      plugins: [
+        // Any plugins, like workbox.expiration, etc.
+      ],
+    });
+    
+    const navigationRoute = new workbox.routing.NavigationRoute(strategy, {
+      // Optionally, provide a white/blacklist of RegExps to determine
+      // which paths will match this route.
+      // whitelist: [],
+      // blacklist: [],
+    });
+    
+    workbox.routing.registerRoute(navigationRoute);
+    ```
+
+  - 浏览器支持
+
+    暂时只有Google浏览器支持navigation preload。
+
+    `workbox.navigationPreload.enable()`会在运行时检查浏览器支持情况，可以不用担心调用`workbox.navigationPreload.enable()`会出问题。
