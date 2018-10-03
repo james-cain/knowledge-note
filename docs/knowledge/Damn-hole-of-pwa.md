@@ -1057,6 +1057,77 @@ window.onload = function() {
 </script>
 ```
 
+### Workbox webpack Plugins
+
+实现两个类：`GenerateSW`和`InjectManifest`。
+
+#### GenerateSW Plugin
+
+该插件会创建service worker文件并添加webpack asset管道。
+
+**什么情况使用？**
+
+- 期望预缓存文件
+- 简单运行时配置需求(如，配置允许定义路由和策略)
+
+**什么情况不使用？**
+
+- 期望使用别的service worker特征(如，Web Push)
+- 期望导入额外的脚本或添加额外的逻辑
+
+**使用**
+
+最简配置方式
+
+```js
+// Inside of webpack.config.js:
+const {GenerateSW} = require('workbox-webpack-plugin');
+
+module.exports = {
+  // Other webpack config...
+  plugins: [
+    // Other plugins...
+    new GenerateSW()
+  ]
+};
+```
+
+该配置会生成预缓所有webpack assets的service worker
+
+[完整的配置](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin)
+
+```js
+// Inside of webpack.config.js:
+const {GenerateSW} = require('workbox-webpack-plugin');
+
+module.exports = {
+  // Other webpack config...
+  plugins: [
+    // Other plugins...
+    new GenerateSW({
+      option: 'value',
+    })
+  ]
+};
+```
+
+
+
+#### InjectManifest Plugin
+
+该插件将生成预缓存URLs列表，添加预缓存manifest到已存在service worker文件。否则文件将保持原样。
+
+**什么情况使用？**
+
+- 期望对service worker更多的控制
+- 预缓存文件
+- 对routing有更复杂的需求
+- 期望使用service worker别的APIs（如 Web Push）
+
+**什么情况不使用？**
+
+- 期望通过最简单的方式添加service worker到站点中
+
 ### Libraries
 
 - workbox
