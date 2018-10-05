@@ -1128,6 +1128,31 @@ module.exports = {
 
 - 期望通过最简单的方式添加service worker到站点中
 
+**使用**
+
+可以在webpack配置中如下
+
+```
+// Inside of webpack.config.js
+const { InjectManifest } = require('workbox-webpack-plugin');
+
+module.exports = {
+    // Other webpack config...
+    plugins: [
+        // Other plugins...
+        new InjectManifest({
+            swSrc: './src/sw.js',
+        })
+    ]
+};
+```
+
+该配置会创建一个预缓存manifest，并注入service worker文件通过`importScripts()`
+
+[更多配置](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin)
+
+
+
 ### Libraries
 
 - workbox
