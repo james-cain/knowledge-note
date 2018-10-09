@@ -1151,7 +1151,29 @@ module.exports = {
 
 [更多配置](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin)
 
+以下配置为webpack compilation使用
 
+- swDest：String,默认"service-worker.js"。build过程中会被创建，相对于webpack output路径
+
+- importWorkboxFrom：String，默认‘cdn’。可以为‘cdn’，‘local’，‘disabled’
+- chunks：Array或String，默认[]。默认情况，workbox将预缓存所有assets，不管是属于哪个块。如果想通过白名单来覆盖默认行为，可以通过该属性指定块名，只有属于指定中的块，才可以预缓存。
+- excludeChunks：Array或String，默认[]。该属性和chunks恰好相反，设置黑名单来排除预缓存
+- include：Array或RegExp或String。指定assets匹配规则，满足该匹配规则都将被写到预缓存manifest中
+- exclude：与include相反
+- importsDirectory：String，默认''。该属性到功能importWorkboxFrom为local时生效，可以通过指定该参数，来调整Workbox库默认拷贝到本地的路径。此选项不影响创建主服务工作者JavaScript文件的位置，它由swDest属性决定最终位置
+- precacheManifestFilename：String，默认为precache-manifest.[manifestHash].js
+
+以下配置和webpack compilation无关
+
+- swSrc：自定义模板资源路径。
+- globDirectory：String，默认undefined。配置该属性，需要确定同时也配置globPatterns，用来确定globPatterns匹配的文件路径位置，相对于当前工作文件
+- globFollow：Boolean，默认true。决定是否需要在生成预缓存manifest时允许使用符号连接
+- globIgnores：Array或String，默认['node_modules/* * /*']。排除匹配到的文件，不生成对应的预缓存
+- globPatterns：Array或String，默认['** / *.{js,css,html}'] (workbox-build和workbox-cli使用)或[] (workbox-webpack-plugin使用)，匹配到的文件将生成对应的预缓存。但该属性当使用workbox-webpack-plugin时是没必要使用的，因为该plugin会自动预缓存文件
+- globStrict：Boolean，默认true。为true，当生成预缓存manifest失败时会产生对应的错误信息；false，会自动跳过错误
+- templatedUrls：带有String的Object或String数组，默认null。
+- maximumFileSizeToCacheInBytes：Number，默认2097152，预缓存文件的最大值
+- dontCacheBustUrlsMatching：RegExp，默认null。匹配此regex的assets将被认为是通过其URL进行唯一版本化的，并且免除了在填充预缓存时执行的正常HTTP缓存破坏。如`dontCacheBustUrlsMatching: /\.\w{8}\./`
 
 ### Libraries
 
