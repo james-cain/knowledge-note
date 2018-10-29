@@ -1237,7 +1237,7 @@ JS运行在浏览器中，是单线程的，且JS可能会修改DOM结构，给D
 
   有defer，加载后续文档元素的过程将和script.js的加载并行进行（异步），但是script.js的执行要在所有元素解析完成之后，DOMContentLoaded事件触发之前完成。也就是当脚本下载完后，先解析DOM，解析完后再执行js
 
-![defer_async](http://coracain.top/assets/defer_async.jpg)
+![defer_async](http://reyshieh.com/assets/defer_async.jpg)
 
 但其实在现代浏览器中，用的最多的还是prefetch；defer和async都是异步加载脚本文件；慎用async，因为只要下载完成后就加载，不考虑页面样式先后的加载顺序，不过它对于那些可以不依赖任何脚本或不被任何脚本依赖的脚本来说是非常合适的，典型例子：Google Analytics；耗时较长的脚本代码可以使用defer来推迟执行。
 
@@ -1269,9 +1269,9 @@ JS运行在浏览器中，是单线程的，且JS可能会修改DOM结构，给D
 
 其实，用原理来解析会更容易理解，上图
 
-![webkit渲染过程](http://coracain.top/assets/webkit-render.jpg)
+![webkit渲染过程](http://reyshieh.com/assets/webkit-render.jpg)
 
-![webkit渲染过程](http://coracain.top/assets/gecko-render.jpg)
+![webkit渲染过程](http://reyshieh.com/assets/gecko-render.jpg)
 
 可以看出：
 
@@ -1913,7 +1913,56 @@ TCP中加入了很多机制，以便控制双向发送数据的速度，如**流
    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src https: 'self' ">
    ```
 
-5. purifycss
+5. [purifycss](https://github.com/purifycss/purifycss)、[purifycss-webpack](https://github.com/webpack-contrib/purifycss-webpack)
+
+   Purifycss可以去除html中引入的一些无用的css选择器，可以使用purifycss-webpack plugin去除，但该plugin依赖[extract-text-webpack-plugin](https://www.npmjs.com/package/extract-text-webpack-plugin)
+
+   安装依赖
+
+   ```html
+   npm i -D purifycss-webpack purify-css glob-all
+   ```
+
+   配置如下
+
+   ```js
+   const glob = require('glob-all')
+   const ExtractTextPlugin = require('extract-text-webpack-plugin')
+   const PurifyCSSPlugin = require('purifycss-webpack')
+   
+   new ExtractTextPlugin({
+       filename: utils.assetsPath('css/[name].[contenthash].css'),
+       // set the following option to `true` if you want to extract CSS from
+       // codesplit chunks into this main css file as well.
+       // This will result in *all* of your app's CSS being loaded upfront.
+       allChunks: false,
+   }),
+   // PurifyCSSPlugin必须要放在ExtractTextPlugin之后
+   new PurifyCSSPlugin({
+      	paths: glob.sync([path.join(__dirname, "/dist/*.html")])
+   }),
+   ```
+
+   按照以上配置，css压缩以了一半！
+
+   ![before-minify](http://reyshieh.com/assets/before-minify.jpeg)
+
+   ![after-minify-error](http://reyshieh.com/assets/after-minify-error.jpeg)
+
+   但当测试页面，发现element-ui的所有样式都被删除了，element-ui的样式是按需加载的。其实没有必要对这些代码也去检测，因此，可以在配置中添加白名单
+
+   ```js
+   new PurifyCSSPlugin({
+       paths: glob.sync([path.join(__dirname, "/dist/*.html")]),
+       purifyOptions: {
+       	whitelist: ['*el*'] // 过滤检测所有el的样式
+       }
+   }),
+   ```
+
+   经过以上压缩后，虽然才减少了几k，但说明代码中的冗余css还是很少的！
+
+   ![after-minify-success](http://reyshieh.com/assets/after-minify-success.jpeg)
 
 6. 性能分析
 
@@ -1921,4 +1970,28 @@ TCP中加入了很多机制，以便控制双向发送数据的速度，如**流
 
 8. workbox
 
-9. vue-content-placeholders
+9. 骨架屏
+
+   [vue-content-placeholders](https://github.com/michalsnik/vue-content-placeholders)
+
+   ```js
+   import VueContentPlaceholders from 'vue-content-placeholders';
+   Vue.use(VueContentPlaceholders);
+   
+   // 组件中使用方式
+   <content-placeholders :rounded="true">
+   	<content-placeholders-img class="swiper-placeholders" />
+   </content-placeholders>
+   ```
+
+   酷似facebook方式
+
+10. 依赖延迟加载
+
+   在项目中使用到webuploader，但首页中并没有使用插件，因此可以直接用defer或sync延迟加载，我选择使用defer，没有必要加载完成后立即执行
+
+   ```html
+   <link rel="stylesheet" defer href="./static/webuploader/webuploader.css">
+   <script type="text/javascript" defer src="./static/jquery-1.11.3/jquery.min.js"></script>
+   <script type="text/javascript" defer src="./static/webuploader/webuploader.js"></script>
+   ```
