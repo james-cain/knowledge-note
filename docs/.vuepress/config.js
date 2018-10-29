@@ -36,6 +36,7 @@ module.exports = {
           collapsable: false,
           children: [
             '/knowledge/Damn-hole-of-html5.md',
+            '/knowledge/Damn-hole-of-CSS3.md',
             '/knowledge/Damn-hole-of-javascript.md',
             '/knowledge/review-the-javascript.md',
             '/knowledge/Damn-hole-of-http.md'

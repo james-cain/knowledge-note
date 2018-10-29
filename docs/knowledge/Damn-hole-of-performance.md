@@ -1844,3 +1844,81 @@ TCP中加入了很多机制，以便控制双向发送数据的速度，如**流
 
 预防发送端过多向接收端发送数据的机制。否则，接收端可能因为忙碌、负载重或缓冲区既定而无法处理。实现该机制，双方都通知对方自己的**接收窗口(rwnd)**，其中包含能够保存数据的缓冲区空间大小信息。
 
+
+
+## 记录项目性能优化项
+
+近期做了一个应用商城的项目，考虑到这个项目以后使用的人数和应用数量会很多，于是认真考虑性能优化处理。以下记录整个优化点
+
+1. echarts按需加载
+
+   ```js
+   const echarts = require('echarts/lib/echarts');
+   
+   require('echarts/lib/chart/line');
+   require('echarts/lib/component/tooltip');
+   ```
+
+   因为在项目中只使用到了条形图，加载完整的echarts会浪费加载流量和影响性能
+
+   可以按需引入的模块列表见 <https://github.com/ecomfe/echarts/blob/master/index.js>
+
+2. [Lazy load](https://github.com/verlok/lazyload)
+
+   ```javascript
+   import LazyLoad from 'vanilla-lazyload';
+   
+   export default {
+     data() {
+       return {
+         lazyLoad: null,
+       };
+     },
+     mounted() {
+       this.lazyLoad = new LazyLoad({
+         container: document.getElementById('section-nav'),
+         elements_selector: '.lazy',
+       });
+     },
+     destroyed() {
+       this.lazyLoad.destroy();
+     },
+   };
+   ```
+
+   在对应的组件中，当加载出新的dom时，
+
+   ```js
+   this.$nextTick(() => this.lazyLoad.update());
+   ```
+
+   动态懒加载图片
+
+   HTML中元素
+
+   ```html
+   <img :data-src="`${resourceOrigin}${card.logo}`" class="lazy logo"/>
+   ```
+
+3. DNS提前解析
+
+   ```html
+   <meta http-equiv="x-dns-prefetch-control" content="on">
+   <link rel="dns-prefetch" href="https://reyshieh.com">
+   ```
+
+4. CSP安全策略
+
+   ```html
+   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src https: 'self' ">
+   ```
+
+5. purifycss
+
+6. 性能分析
+
+7. 内存分析
+
+8. workbox
+
+9. vue-content-placeholders

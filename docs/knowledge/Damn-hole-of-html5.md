@@ -139,3 +139,32 @@ input[type=file]使用的是onchange，onchange监听的为input的value值，�
 event.target.value= '';
 ```
 
+## Img srcset/sizes
+
+## execCommand
+
+```
+// 探测浏览器是否支持copy命令
+export function available() {
+  return !!document.queryCommandSupported && document.queryCommandSupported('copy');
+}
+
+// 复制指定文本信息
+export function copy(text) {
+  const fakeElem = document.body.appendChild(document.createElement('textarea'));
+  fakeElem.style.position = 'absolute';
+  fakeElem.style.left = '-9999px';
+  fakeElem.setAttribute('readonly', '');
+  fakeElem.value = text;
+  fakeElem.select();
+  try {
+    return document.execCommand('copy');
+  } catch (err) {
+    console.log(err);
+    return false;
+  } finally {
+    fakeElem.parentNode.removeChild(fakeElem);
+  }
+}
+```
+
