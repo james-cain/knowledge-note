@@ -57,7 +57,8 @@ module.exports = {
             '/knowledge/Damn-hole-of-performance.md',
             '/knowledge/Damn-hole-of-the-EST.md',
             '/knowledge/Damn-hole-of-the-web-worker.md',
-            '/knowledge/parameters-of-package.md'
+            '/knowledge/parameters-of-package.md',
+            '/knowledge/Advanced.md'
           ]
         },
         {
