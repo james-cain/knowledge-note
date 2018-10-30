@@ -196,3 +196,131 @@ function notifyMe() {
 }
 ```
 
+## pushManager
+
+浏览器实现消息推送，和native app一样，依赖于推送服务。是服务器、浏览器和推送服务三者之间进行的。首先要使用Notification.requestPermission 让用户授权，只有允许后，才会向浏览器推送服务。
+
+订阅服务过程，服务端需要一个唯一标识的身份区分不同的浏览器。由服务器端使用web-push生成**applicationServerKey**，这个key存在公钥和私钥，都需要转换成`UInt8Array`格式，公钥用于浏览器向推送服务发送请求，获取对应的PushSubscription(推送订阅对象)，再将该对象发送给服务器存储。完整的推送订阅对象结构如下：
+
+```js
+{
+    "endpoint": "https://fcm.googleapis.com/fcm/send/...",
+    "keys": {
+        "p256dh" : "BNcRd...",
+        "auth"   : "tBHI..."
+    }
+}
+```
+
+其中`endpoint`就是推送服务返回的唯一标识用户设备的地址，而`keys`是浏览器预先生成的，包含了用于安全验证信息
+
+###第一步，订阅消息的具体实现步骤如下：
+
+1. 注册 Service Worker
+2. 使用 pushManager 添加订阅，浏览器向推送服务发送请求，其中传递参数对象包含两个属性：
+   - `userVisibleOnly`，不允许静默的推送，所有推送都对用户可见，所以值为`true`
+   - `applicationServerKey`，服务器生成的公钥
+3. 得到推送服务成功响应后，浏览器将推送服务返回的 endpoint 加入推送订阅对象，向服务器发送这个对象供其存储
+
+具体代码实现：
+
+```js
+// 将base64的applicationServerKey转换成UInt8Array
+function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+    for (var i = 0, max = rawData.length; i < max; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+function subscribe(serviceWorkerReg) {
+    serviceWorkerReg.pushManager.subscribe({ // 2.订阅
+    	userVisibleOnly: true,
+    	appliactionServerKey: urlBase64ToUint8Array('<applicationServerKey>')
+    }).then(function(subscription) {
+        // 3.发送推送订阅对象到服务器，具体实现中发送请求到后端api
+        sendEndPointInSubscription(subscription);
+    }).catch(function () {
+        if (Notifacation.permission === 'denied') {
+            // 用户拒绝了订阅请求
+        }
+    });
+}
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+	// 1.注册service worker
+    navigator.serviceWorker.register('./service-worker.js').then(function(reg) {});
+    navigator.serviceWorker.ready.then(function(reg) {subscribe(reg)});
+}
+```
+
+取消订阅：
+
+```js
+navigator.serviceWorker.ready.then(function (reg) {
+    reg.pushManager.getSubscription().then(function(subscription) {
+        subscription.unsubscribe().then(function(successful) {
+            //
+        }).catch(function(e) {
+            //
+        });
+    });
+});
+```
+
+推送服务的响应
+
+接下来，服务端可以向endpoint发送包含以上请求头的请求了，推送服务响应`201`标识接受调用。其余响应状态码如下：
+
+- 429 Too many requests
+- 400 Invalid request
+- 404 Not Found 订阅过期，需要在服务端删除保存的推送订阅对象
+- 410 Gone 订阅失效，需要在服务端删除保存的推送订阅对象，并调用推送订阅对象的`unsubscribe()`方法
+- 413 Payload size too large
+
+###第二步，使用web-push发送消息
+
+[web-push](https://github.com/web-push-libs/web-push)可以帮助生成公私钥，用`setVapidDetail`设置公私钥，并且调用`sendNotification`可以向推送服务发起调用请求，根据返回状态码做响应操作
+
+具体实现可以如下：
+
+```js
+var webpush = require('web-push');
+var vapidKeys = webpush.generateVAPIDKeys();// 1. 生成公私钥
+webpush.setVapidDetails( // 2.设置公私钥
+	'mailto:sender@example.com',
+	vapidKeys.publicKey,
+	vapidKeys.privateKey
+);
+// 3.从数据库中拿出之前保存的pushSubscription
+// 4.向推送服务发起调用请求
+webpush.sendNotification(pushSubscription, '推送消息内容').catch(function(err) {
+    if (err.statusCode === 410) {
+        // 从数据库中删除推送订阅对象
+    }
+});
+```
+
+### 第三步，显示通知
+
+```js
+self.addEventListener('push', function (event) {
+	if (event.data) {
+        var promiseChain = Promise.resolve(event.data.json()).then(data => self.registration.showNotification(data.title, {}));
+        event.waitUntil(promiseChain);
+	}
+});
+```
+
+
+
+
+
+
+
+
+

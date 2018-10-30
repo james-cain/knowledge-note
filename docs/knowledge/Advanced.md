@@ -8,7 +8,7 @@
 
 - BoardcastChannel  https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel
 - Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>
-- PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>
+- PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push
 - ServiceWorker https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker  https://w3c.github.io/ServiceWorker/  https://github.com/w3c/ServiceWorker
 - background sync（还不在W3C中）workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
