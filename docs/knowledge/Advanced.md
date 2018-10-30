@@ -9,11 +9,10 @@
 - BoardcastChannel
 - Notification
 - PushManager
-- ServiceWorker
-- background sync（还不在W3C中） 
+- ServiceWorker https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker
+- background sync（还不在W3C中）workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
 - <https://developers.google.com/web/progressive-web-apps/desktop>
-- https://github.com/w3c/web-performance
 
 2.Typescript（优先级一）
 
@@ -32,23 +31,18 @@
 - 骨架屏 https://github.com/michalsnik/vue-content-placeholders（完成）
 - lazyload（完成）
 - 内存分析（优先级一）
-
 - https://developers.google.com/web/tools/chrome-devtools/memory-problems/
-
 - 性能分析（优先级一）
-
 - <https://developers.google.com/web/tools/chrome-devtools/speed/get-started>
 - <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/>
 - <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference>
-
 - 网络分析（优先级一）
-
 - <https://developers.google.com/web/tools/chrome-devtools/network-performance/>
 - https://developers.google.com/web/tools/chrome-devtools/network-performance/reference
-
 - CSP  https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP（完成）
 - DNS提前解析（完成）
 - purifycss（完成）
+- https://github.com/w3c/web-performance
 
 4.Vue长列表（优先级一）
 
@@ -109,6 +103,8 @@
 - electronic-wechat
 - vue-form-making
 
+20.IndexedDB API  https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API
+
 ## 知识类
 
 1.HTML标准
@@ -136,6 +132,7 @@
 - <https://micro-frontends.org/>（优先级一）
 - https://www.webcomponents.org/polyfills/（优先级一）
 - https://github.com/webcomponents/custom-elements（优先级一）
+- https://github.com/palmerhq/the-platform
 
 4.CSSTriggers/CSS参考手册  11月第一个星期
 
@@ -143,6 +140,8 @@
 - http://css.doyoe.com/
 
 5.WebAPI
+
+- https://developer.mozilla.org/zh-CN/docs/Web/API
 
 - IntersectionObserver
 - BoardcastChannel
@@ -158,11 +157,9 @@
 
 6.<https://nodejs.org/dist/latest-v10.x/docs/api/>
 
-7.《图解HTTP》、《图解TCP/IP》、《web性能权威指南》
+7.AI《AI未来》《深度学习》
 
-8.AI《AI未来》《深度学习》
-
-9.算法编写
+8.算法编写
 
 - leetcode
 - InterviewMap
@@ -171,7 +168,7 @@
 - 《算法导论》
 - mathjs
 
-10.类vue
+9.类vue
 
 - learn-vue
 - vue-analysis
@@ -179,7 +176,7 @@
 - vuera
 - chao
 
-11.类小程序
+10.类小程序
 
 - tua-mp
 - tina
@@ -189,7 +186,7 @@
 - san
 - weweb
 
-12.类react
+11.类react
 
 - preact
 - react
@@ -198,7 +195,7 @@
 - anu
 - nerv
 
-13.类mvvm
+12.类mvvm
 
 - aoy
 - virtual-dom
