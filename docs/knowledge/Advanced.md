@@ -6,10 +6,10 @@
 
 - workbox（完成，持续学习）
 
-- BoardcastChannel
-- Notification
-- PushManager
-- ServiceWorker https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker
+- BoardcastChannel  https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel
+- Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>
+- PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>
+- ServiceWorker https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker  https://w3c.github.io/ServiceWorker/  https://github.com/w3c/ServiceWorker
 - background sync（还不在W3C中）workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
 - <https://developers.google.com/web/progressive-web-apps/desktop>
@@ -29,7 +29,7 @@
 - 《图解TCP/IP》
 - 《图解HTTP》
 - 骨架屏 https://github.com/michalsnik/vue-content-placeholders（完成）
-- lazyload（完成）
+- [lazyload](https://github.com/verlok/lazyload) (完成)
 - 内存分析（优先级一）
 - https://developers.google.com/web/tools/chrome-devtools/memory-problems/
 - 性能分析（优先级一）

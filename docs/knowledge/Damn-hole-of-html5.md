@@ -30,7 +30,7 @@ IE8+浏览器支持
 
 发送核心JS代码：
 
-```
+```js
 window.parent.frames[1].postMessage(message, '*')
 ```
 
@@ -47,7 +47,7 @@ postMessage中的message参数不仅仅可以是字符串，结构对象、数�
 
 targetOrigin *****->接收任何目标来源 **/** -> 限制信息只能同源发送。注意在指定来源的时候，后面**不要带斜杆**
 
-```
+```js
 window.postMessage('发送消息', 'http://example.com');
 // 而不是
 window.postMessage('发送消息', 'http://example.com/');
@@ -73,7 +73,7 @@ MessagePort对象还有onmessage事件属性，可被用来定义事件句柄而
 
 ### 实例
 
-```
+```js
 // 本例组成由 主页面+内部嵌套两个iframe页面(iframe1和iframe2)
 // 首先是第一个iframe页面(称为iframe1)，主要完成任务为实现表单提交，通知另外一个iframe页(称为iframe2)，在iframe2中展现。在做表单提交前，需要先通知主页面已经加载好；并且接受来自主页面的传递进来的端口信息
 var eleForm = document.querySelector("form"), port;
@@ -143,7 +143,7 @@ event.target.value= '';
 
 ## execCommand
 
-```
+```js
 // 探测浏览器是否支持copy命令
 export function available() {
   return !!document.queryCommandSupported && document.queryCommandSupported('copy');
@@ -165,6 +165,34 @@ export function copy(text) {
   } finally {
     fakeElem.parentNode.removeChild(fakeElem);
   }
+}
+```
+
+## notification
+
+```html
+<button onclick="notifyMe()">Notify me!</button>
+```
+
+```js
+function notifyMe() {
+    // 先检查浏览器是否支持
+    if (!("Notification" in window)) {
+		alert("This browser does not support desktop notification");
+	}
+	// 检查用户是否同意接受通知
+	else if (Notification.permission === "granted") {
+        var notification = new Notification("Hi there!");
+	}
+	// 否则需要向用户获取权限
+	else if (Notification.permission === "denied") {
+        Notification.requestPermission(function (permission) {
+            // 如果用户统一，就可以向他们发送通知
+            if (permission === "granted") {
+                var notification = new Notification("Hi there!");
+            }
+        });
+	}
 }
 ```
 
