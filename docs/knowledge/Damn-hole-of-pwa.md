@@ -393,7 +393,7 @@ scope应遵循如下规则：
 
 > CSS中可以通过display-mode媒体查询条件去指定在不同的显示类型下不同的显示形式
 
-```
+```css
 @media all and (display-mode: fullscreen) {
     body {
         margin: 0;
@@ -442,7 +442,7 @@ scope应遵循如下规则：
 
 > 在指定了theme_color的值之后，地址栏依然呈白色。可以在页面HTML里设置name为theme_color的meta标签
 >
-> ```
+> ```html
 > <meta name="theme_color" content="green">
 > ```
 >
@@ -506,7 +506,7 @@ scope应遵循如下规则：
 
    > 注册的sw.update事件是在/components/UpdateToast.vue组件进行监听，并在更新时弹出提示，引导用户刷新页面。
    >
-   > ```
+   > ```js
    > mounted() {
    >         window.addEventListener('sw.update', this.handleUpdate);
    >     },
@@ -523,7 +523,7 @@ scope应遵循如下规则：
 
    - 在webpack中引入插件
 
-     ```
+     ```js
      //webpack.conf.js
      import SkeletonWebpackPlugin from 'vue-skeleton-webpack-plugin';
      plugins: [
@@ -546,7 +546,7 @@ scope应遵循如下规则：
 
    - 自动插入路由规则
 
-     ```
+     ```js
      // webpack.dev.conf.js
      import SkeletonWebpackPlugin from 'vue-skeleton-webpack-plugin';
      module: {
@@ -630,7 +630,7 @@ scope应遵循如下规则：
    >
    > **strategies**
    >
-   > ```
+   > ```js
    > // JS 请求：网络优先
    > workbox.routing.registerRoute(
    > 	new RegExp('.*\ .js'),
@@ -705,7 +705,7 @@ scope应遵循如下规则：
    >
    > 要做到能够完全离线，要让主文档也能被缓存下来
    >
-   > ```
+   > ```js
    > // 主文档: 网络优先
    > workbox.routing.registerRoute(
    >   /index\.html/,
@@ -723,7 +723,7 @@ scope应遵循如下规则：
    >
    > 当请求是**跨域资源（不仅限于接口，也包括图片等）**并且目标服务器并**没有设置CORS**时，响应类型会被设置为‘**opaque**’并且HTTP**状态码会被设置为0**.出于安全考虑，workbox对于这类资源的信任度不高，在使用**CacheFirst策略时只缓存HTTP状态码为200的资源**。所以这类资源不会被缓存，当然在离线时也无法被展现
    >
-   > ```
+   > ```html
    > <div>
    >   <p>不同域的文件</p>
    >   <p><img src="https://developers.google.com/web/tools/workbox/images/Workbox-Logo-Grey.svg" alt="不同域的文件"></p>
@@ -739,7 +739,7 @@ scope应遵循如下规则：
    >
    > 但如果执意要用cacheFirst缓存跨域资源，(cacheableResponse.Plugin)[https://developers.google.com/web/tools/workbox/reference-docs/latest/workbox.cacheableResponse.Plugin]
    >
-   > ```
+   > ```js
    > // Force Caching of Opaque Responses
    > workbox.routing.registerRoute(
    >   new RegExp('https://developers\.google\.com/'),
@@ -765,7 +765,7 @@ scope应遵循如下规则：
    >
    > workbox的内部使用一个数组记录所有动态缓存的正则表达式。在开发者使用registerRoute时，内部调用数组的unshift方法进行扩充。因此，结论是 **越后注册的规则将越先匹配**
 
-5. ```
+5. ```js
    navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
            reg.onupdatefound = function() {
                var installingWorker = reg.installing;
@@ -796,7 +796,7 @@ ios11版本已经全面兼容pwa，研究研究~
 
 糟糕的是，对于ios，要创建大量的标签适配各种屏幕和想要的方向，否则用户将会在你启动的app中看到白屏。
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -908,7 +908,7 @@ ios11版本已经全面兼容pwa，研究研究~
 
 可以在安装的pwas中使用css media queries
 
-```
+```css
 /* Replace "standalone" with "fullscreen" depending on your manifest.json display mode */
 
 @media (display-mode: standalone) {
@@ -930,7 +930,7 @@ ios11版本已经全面兼容pwa，研究研究~
 
 切换不同可视pwas的javascript
 
-```
+```js
 if (window.matchMedia('(display-mode: standalone)').matches) {
   // Is installed in standalone display mode
 }
@@ -946,7 +946,7 @@ if (window.matchMedia('(display-mode: fullscreen)').matches) {
 
 在定义动态路由之前可以做一些配置，如
 
-```
+```js
 // first
 workbox.core.setCacheNameDetails({
     prefix: 'reyshieh-cache',
@@ -1014,7 +1014,7 @@ Service worker编写完生效，必须要进行注册。但是在注册时，更
 
 以下是sw-register.js的实现代码
 
-```
+```js
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js?v=xxx').then(function(reg) {
         reg.onupdatefound = function() {
@@ -1132,7 +1132,7 @@ module.exports = {
 
 可以在webpack配置中如下
 
-```
+```js
 // Inside of webpack.config.js
 const { InjectManifest } = require('workbox-webpack-plugin');
 
@@ -1183,13 +1183,13 @@ module.exports = {
 
   - CDN
 
-    ```
+    ```js
     importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
     ```
 
     通过CDN调用后，您的service worker将拥有`workbox`命名空间，该空间将提供对所有Workbox模块的调用，如
 
-    ```
+    ```js
     workbox.precaching.*
     workbox.routing.*
     etc
@@ -1201,7 +1201,7 @@ module.exports = {
 
     可以通过[`workbox-cli`'s `copyLibraries` command](https://developers.google.com/web/tools/workbox/modules/workbox-cli#copylibraries) 或者从 [GitHub Release](https://github.com/GoogleChrome/workbox/releases)中下载，然后通过`modulePathPrefix`配置属性查找文件
 
-    ```
+    ```js
     importScripts('/third_party/workbox/workbox-sw.js');
     
     workbox.setConfig({
@@ -1217,7 +1217,7 @@ module.exports = {
 
   例如，如果你没有引入`workbox.strategies`，代码将发生问题:
 
-  ```
+  ```js
   importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
   
   self.addEventListener('fetch', (event) => {
@@ -1232,7 +1232,7 @@ module.exports = {
 
   如果你需要编写与此限制冲突的代码，可以使用`workbox.loadModule()`方法在事件处理程序之外显式地触发`importScripts()`调用:
 
-  ```
+  ```js
   importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
   
   // This will trigger the importScripts() for workbox.strategies and its dependencies:
@@ -1249,7 +1249,7 @@ module.exports = {
 
   或者，可以在事件处理程序之外创建对相关名称空间的引用，然后稍后使用该引用:
 
-  ```
+  ```js
   importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
   
   // This will trigger the importScripts() for workbox.strategies and its dependencies:
@@ -1280,7 +1280,7 @@ module.exports = {
 
   - Log Level
 
-    ```
+    ```js
     // The most verbose - displays all logs.
     workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
     
@@ -1299,7 +1299,7 @@ module.exports = {
 
     可以通过以下方式查看当前log level:
 
-    ```
+    ```js
     console.log(workbox.core.logLevel);
     ```
 
@@ -2000,3 +2000,17 @@ module.exports = {
     暂时只有Google浏览器支持navigation preload。
 
     `workbox.navigationPreload.enable()`会在运行时检查浏览器支持情况，可以不用担心调用`workbox.navigationPreload.enable()`会出问题。
+
+## 经验之处，引自taobaofed
+
+HTML，如果你想让页面离线可以访问，使用 NetworkFirst，如果不需要离线访问，使用 NetworkOnly，其他策略均不建议对 HTML 使用。
+
+CSS 和 JS，情况比较复杂，因为一般站点的 CSS，JS 都在 CDN 上，SW 并没有办法判断从 CDN 上请求下来的资源是否正确（HTTP 200），如果缓存了失败的结果，问题就大了。这种我建议使用 Stale-While-Revalidate 策略，既保证了页面速度，即便失败，用户刷新一下就更新了。
+
+如果你的 CSS，JS 与站点在同一个域下，并且文件名中带了 Hash 版本号，那可以直接使用 Cache First 策略。
+
+图片建议使用 Cache First，并设置一定的失效事件，请求一次就不会再变动了。
+
+上面这些只是普适性的策略，见仁见智。
+
+还有，要牢记，对于不在同一域下的任何资源，绝对不能使用 Cache only 和 Cache first。

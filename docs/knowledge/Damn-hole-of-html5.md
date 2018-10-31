@@ -316,11 +316,346 @@ self.addEventListener('push', function (event) {
 });
 ```
 
+## ServiceWorker
+
+service worker属于 [web worker](https://html.spec.whatwg.org/multipage/workers.html#workers)一类。service worker会在注册service worker client的源上执行。
+
+service worker包括一些state，如parsed、installing、installed、activating、activated和redundant。初始化于parsed
+
+service worker关联包含自己的注册表（[service worker registration](https://w3c.github.io/ServiceWorker/#dfn-service-worker-registration)）
+
+Service worker带有一个全局对象（[ServiceWorkerGlobalScope](https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope)）
+
+### Service Worker Registration
+
+包括scope url和一组service workers:installing worker（状态为installing 或null）、waiting worker（状态为installed或null）、active worker（状态为activating、activated或null）
+
+包括最新更新检测时间(last update check time)，默认为null
+
+通过cache mode来更新，包括imports、all或none，默认为imports
+
+包括uninstalling flag，默认不设置
+
+包括[NavigationPerloadManager](https://w3c.github.io/ServiceWorker/#navigationpreloadmanager)对象
+
+包括navigation preload enabled标记，默认不设置
+
+包括navigation preload header值，默认为true
+
+### Service Worker Client
+
+Service worker client是一个环境。它由一个与之关联的丢弃标记，默认不设置。
+
+如果sevice worker client是环境设置对象，那么它有一个定义返回service worker client源的算法；否则将返回service worker client创建URL源的地址
+
+window client：全局对象是Window对象的service worker client
+
+dedicated worker client：全局对象是[DedicatedWorkerGlobalScope](https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope)对象的service worker client
+
+shared worker client：全局对象是[SharedWorkerGlobalScope](https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope)对象的service worker client
+
+worker client：dedicated worker client和shared worker client
+
+### Client Context
+
+#### ServiceWorker
+
+```c#
+[SecureContext, Exposed=(Window,Worker)]
+interface ServiceWorker : EventTarget {
+  readonly attribute USVString scriptURL;
+  readonly attribute ServiceWorkerState state;
+  void postMessage(any message, optional sequence<object> transfer = []);
+
+  // event
+  attribute EventHandler onstatechange;
+};
+ServiceWorker includes AbstractWorker;
+
+enum ServiceWorkerState {
+  "installing",
+  "installed",
+  "activating",
+  "activated",
+  "redundant"
+};
+```
+
+该对象会在`ServiceWorkerRegistration.active`属性和`ServiceWorkerContainer.controller`属性中可用，它是一个激活并在控制页面的serviceWorker
+
+包括scriptURL和state两个只读属性。scriptURL必须和注册该ServiceWorker的文档处在同一域，state值可以为installing、installed、activating、activated或redundant
+
+- scriptURL
+
+  ```
+  // script放在https://example.com/app.html下
+  navigator.serviceWorker.register('/service_worker.js');
+  // 注册完成后,通过navigator.serviceWorker.controller.scriptURL返回的值为"https://example.com/service_worker.js"
+  ```
+
+- state
+
+  返回的值为ServiceWorkerState(installing,installed,activating,activated,redundant)之一
+
+#### ServiceWorkerRegistration
+
+```c#
+[SecureContext, Exposed=(Window,Worker)]
+interface ServiceWorkerRegistration : EventTarget {
+  readonly attribute ServiceWorker? installing;
+  readonly attribute ServiceWorker? waiting;
+  readonly attribute ServiceWorker? active;
+  [SameObject] readonly attribute NavigationPreloadManager navigationPreload;
+
+  readonly attribute USVString scope;
+  readonly attribute ServiceWorkerUpdateViaCache updateViaCache;
+
+  [NewObject] Promise<void> update();
+  [NewObject] Promise<boolean> unregister();
+
+  // event
+  attribute EventHandler onupdatefound;
+};
+
+enum ServiceWorkerUpdateViaCache {
+  "imports",
+  "all",
+  "none"
+};
+```
+
+- scope
+
+  ```js
+  // 以上面scriptURL为例
+  navigator.serviceWorker.ready.then(registration => console.log(registration.scope));
+  // https://exmaple.com/
+  ```
+
+#### navigator.serviceWorker
+
+```c#
+partial interface Navigator {
+  [SecureContext, SameObject] readonly attribute ServiceWorkerContainer serviceWorker;
+};
+
+partial interface WorkerNavigator {
+  [SecureContext, SameObject] readonly attribute ServiceWorkerContainer serviceWorker;
+};
+```
+
+返回ServiceWorkerContainer对象
+
+#### ServiceWorkerContainer
+
+```c#
+[SecureContext, Exposed=(Window,Worker)]
+interface ServiceWorkerContainer : EventTarget {
+  readonly attribute ServiceWorker? controller;
+  readonly attribute Promise<ServiceWorkerRegistration> ready;
+
+  [NewObject] Promise<ServiceWorkerRegistration> register(USVString scriptURL, optional RegistrationOptions options);
+
+  [NewObject] Promise<any> getRegistration(optional USVString clientURL = "");
+  [NewObject] Promise<FrozenArray<ServiceWorkerRegistration>> getRegistrations();
+
+  void startMessages();
 
 
+  // events
+  attribute EventHandler oncontrollerchange;
+  attribute EventHandler onmessage; // event.source of message events is ServiceWorker object
+  attribute EventHandler onmessageerror;
+};
+```
 
+- ServiceWorkerContainer.controller
 
+  当ServiceWorker的state是active时，返回一个ServiceWorker对象（和ServiceWorkerRegisteration.active）返回的对象相同。如果当前的state不是active或强制刷新浏览器则返回null
 
+- ServiceWorkerContainer.ready
 
+  定义serviceWorker是否准备好为一个页面服务，返回一个Promise对象。当ServiceWorkerRegistration获取到一个active的ServiceWorker时被解决
 
+- register(scriptURL, options)
 
+#### NavigationPreloadManager
+
+```c#
+[SecureContext, Exposed=(Window,Worker)]
+interface NavigationPreloadManager {
+  Promise<void> enable();
+  Promise<void> disable();
+  Promise<void> setHeaderValue(ByteString value);
+  Promise<NavigationPreloadState> getState();
+};
+
+dictionary NavigationPreloadState {
+  boolean enabled = false;
+  ByteString headerValue;
+};
+```
+
+- enable()
+
+  触发时，返回promise对象并且对注册表添加navigation preload enabled标签
+
+- diable()
+
+  触发时，返回promise对象并且取消navigation preload enabled标签
+
+- setHeaderValue(value)
+
+  设置Service-Worker-Navigation-Preload头并返回一个空Promise
+
+- getState()
+
+例子
+
+```js
+addEventListener('activate', event => {
+    event.waitUntil(async function () {
+        if (self.registration.navigationPreload) {
+            await self.registration.navigationPreload.enable();
+        }
+    }());
+});
+```
+
+Preloaded Response
+
+```js
+addEventListener('fetch', event => {
+    event.respondWith(async function () {
+        // 从缓存中读响应
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+        // else 使用preloaded响应
+        const response = await event.preloadedResponse;
+        if (response) return response;
+        // else 网络请求
+        return fetch(event.request);
+    }());
+});
+```
+
+#### ServiceWorkerGlobalScope
+
+ServiceWorker的全局执行上下文
+
+```c#
+[Global=(Worker,ServiceWorker), Exposed=ServiceWorker]
+interface ServiceWorkerGlobalScope : WorkerGlobalScope {
+  [SameObject] readonly attribute Clients clients;
+  [SameObject] readonly attribute ServiceWorkerRegistration registration;
+
+  [NewObject] Promise<void> skipWaiting();
+
+  attribute EventHandler oninstall;
+  attribute EventHandler onactivate;
+  attribute EventHandler onfetch;
+
+  // event
+  attribute EventHandler onmessage; // event.source of the message events is Client object
+  attribute EventHandler onmessageerror;
+};
+```
+
+- [Clients](https://developer.mozilla.org/en-US/docs/Web/API/Clients)
+
+- skipWaiting()
+
+  允许service worker直接从registration的waiting阶段跳到active阶段
+
+#### Client
+
+```c#
+[Exposed=ServiceWorker]
+interface Client {
+  readonly attribute USVString url;
+  readonly attribute FrameType frameType;
+  readonly attribute DOMString id;
+  readonly attribute ClientType type;
+  void postMessage(any message, optional sequence<object> transfer = []);
+};
+
+[Exposed=ServiceWorker]
+interface WindowClient : Client {
+  readonly attribute VisibilityState visibilityState;
+  readonly attribute boolean focused;
+  [SameObject] readonly attribute FrozenArray<USVString> ancestorOrigins;
+  [NewObject] Promise<WindowClient> focus();
+  [NewObject] Promise<WindowClient?> navigate(USVString url);
+};
+
+enum FrameType {
+  "auxiliary",
+  "top-level",
+  "nested",
+  "none"
+};
+```
+
+Client对象即service worker client。带有一个frame type，包括auxiliary、top-level、nested和none
+
+#### Clients
+
+```c#
+[Exposed=ServiceWorker]
+interface Clients {
+  // The objects returned will be new instances every time
+  [NewObject] Promise<any> get(DOMString id);
+  [NewObject] Promise<FrozenArray<Client>> matchAll(optional ClientQueryOptions options);
+  [NewObject] Promise<WindowClient?> openWindow(USVString url);
+  [NewObject] Promise<void> claim();
+};
+```
+
+当用户代理创建了ServiceWorkerGlobalScope对象时，必须创建一个Clients对象
+
+- claim()
+
+  允许激活的service worker设置自己
+
+#### Event
+
+##### ExtendableEvent
+
+```c#
+[Constructor(DOMString type, optional ExtendableEventInit eventInitDict), Exposed=ServiceWorker]
+interface ExtendableEvent : Event {
+  void waitUntil(Promise<any> f);
+};
+```
+
+event.waitUntil(f)
+
+##### FetchEvent
+
+```c#
+[Constructor(DOMString type, FetchEventInit eventInitDict), Exposed=ServiceWorker]
+interface FetchEvent : ExtendableEvent {
+  [SameObject] readonly attribute Request request;
+  readonly attribute Promise<any> preloadResponse;
+  readonly attribute DOMString clientId;
+  readonly attribute DOMString resultingClientId;
+  readonly attribute DOMString replacesClientId;
+
+  void respondWith(Promise<Response> r);
+};
+```
+
+### Caches
+
+```c#
+[SecureContext, Exposed=(Window,Worker)]
+interface Cache {
+  [NewObject] Promise<any> match(RequestInfo request, optional CacheQueryOptions options);
+  [NewObject] Promise<FrozenArray<Response>> matchAll(optional RequestInfo request, optional CacheQueryOptions options);
+  [NewObject] Promise<void> add(RequestInfo request);
+  [NewObject] Promise<void> addAll(sequence<RequestInfo> requests);
+  [NewObject] Promise<void> put(RequestInfo request, Response response);
+  [NewObject] Promise<boolean> delete(RequestInfo request, optional CacheQueryOptions options);
+  [NewObject] Promise<FrozenArray<Request>> keys(optional RequestInfo request, optional CacheQueryOptions options);
+};
+```
