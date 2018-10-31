@@ -344,7 +344,7 @@ Service worker带有一个全局对象（[ServiceWorkerGlobalScope](https://w3c.
 
 ### Service Worker Client
 
-Service worker client是一个环境。它由一个与之关联的丢弃标记，默认不设置。
+Service worker client是一个环境。service worker client有一个相关联的废弃标志，默认不设置。
 
 如果sevice worker client是环境设置对象，那么它有一个定义返回service worker client源的算法；否则将返回service worker client创建URL源的地址
 
@@ -355,6 +355,12 @@ dedicated worker client：全局对象是[DedicatedWorkerGlobalScope](https://ht
 shared worker client：全局对象是[SharedWorkerGlobalScope](https://html.spec.whatwg.org/multipage/workers.html#sharedworkerglobalscope)对象的service worker client
 
 worker client：dedicated worker client和shared worker client
+
+service worker client选择并使用service worker registration来进行对自己和子资源的加载。依靠对非子资源请求来对service worker registration选择，是匹配service worker registration从scope改变成注册映射的过程。
+
+当请求的url不是本地时，service worker client从scope到注册映射匹配service worker registration。也就是说，service worker client视图尝试咨询service worker registration--将scope url和创建URL相匹配。
+
+如果匹配成功，被选择的service worker registration的激活worker将开始控制service worker client。否则，将返回到默认行为的位置。
 
 ### Client Context
 
@@ -659,3 +665,13 @@ interface Cache {
   [NewObject] Promise<FrozenArray<Request>> keys(optional RequestInfo request, optional CacheQueryOptions options);
 };
 ```
+
+### Security Considerations
+
+#### Secure Context
+
+Service workers必须执行在secure contexts中。因此service workers和他的service worker clients需要在HTTPS域中。同样也允许在localhost，127.0.0.0/8，::1/128供开发使用。
+
+#### importScripts(urls)
+
+当被ServiceWorkerGlobalScope对象调用执行该方法时，必将import 脚本到worker global scope中，给到ServiceWorkerGlobalScope对象和urls，并对每个请求执行fetch操作
