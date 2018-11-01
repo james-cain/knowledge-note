@@ -403,6 +403,8 @@ enum ServiceWorkerState {
 
   返回的值为ServiceWorkerState(installing,installed,activating,activated,redundant)之一
 
+- postMessage(message, transfer)
+
 #### ServiceWorkerRegistration
 
 ```c#
@@ -484,6 +486,8 @@ interface ServiceWorkerContainer : EventTarget {
   定义serviceWorker是否准备好为一个页面服务，返回一个Promise对象。当ServiceWorkerRegistration获取到一个active的ServiceWorker时被解决
 
 - register(scriptURL, options)
+
+- onmessage
 
 #### NavigationPreloadManager
 
@@ -604,6 +608,8 @@ enum FrameType {
 
 Client对象即service worker client。带有一个frame type，包括auxiliary、top-level、nested和none
 
+- postMessage(message, transfer)
+
 #### Clients
 
 ```c#
@@ -651,6 +657,30 @@ interface FetchEvent : ExtendableEvent {
 };
 ```
 
+##### Events
+
+**install**: Service Worker安装成功后被触发的事件，在事件处理函数中可以添加需要缓存的文件
+
+**activate**: 当Service Worker安装完成后并进入激活状态，会触发activate事件。通过监听activate事件可以做一些预处理，如对旧版本的更新、对无用缓存的清理等
+
+**message**: Service Worker运行于独立context中，无法直接访问当前页面主线程的DOM等信息，但是通过postMessage API，可以实现消息的传递，这样主线程就可以接受Service Worker的指令操作DOM
+
+**fetch**(请求): 当浏览器在当前指定的scope下发起请求时，会触发fetch事件，并得到传有response参数的回调函数，回调中就可以做各种代理缓存的事情
+
+**push**(推送): push事件是为推送准备的。依赖于Notification API和PUSH API。通过PUSH API，当订阅了推送服务后，可以使用推送方式唤醒Service Worker以响应来自系统消息传递服务的消息，即使**用户已经关闭了页面**
+
+**sync**(后台同步): sync事件由background sync（后台）同步发出。background sync配合Service Worker推出的API，用于为Service Worker提供一个可以实现注册和监听同步处理的方法。但**还不在W3C Web API标准中**
+
+**notificationclick**
+
+**notificationclose**
+
+**canmakepayment**
+
+**paymentrequest**
+
+**messageerror**
+
 ### Caches
 
 ```c#
@@ -675,3 +705,182 @@ Service workers必须执行在secure contexts中。因此service workers和他�
 #### importScripts(urls)
 
 当被ServiceWorkerGlobalScope对象调用执行该方法时，必将import 脚本到worker global scope中，给到ServiceWorkerGlobalScope对象和urls，并对每个请求执行fetch操作
+
+### Service Worker与页面通信
+
+Service Worker没有直接操作页面DOM的权限，但是可以通过postMessage方法和Web页面进行通信，让页面操作DOM
+
+1. **Client**:postMessage(message, transfer)
+
+   在`sw.js`中向页面发信息，可以采用client.postMessage()方法
+
+   ```js
+   self.clients.matchAll().then(function(clients) {
+   	if (clients && clients.length) {
+           clients.forEach(function (client) {
+               // 发送字符串'sw.update'
+               client.postMessage('sw.update');
+           });
+   	}
+   });
+   ```
+
+2. **ServiceWorkerContainer**: onmessage()
+
+   在页面中接收`sw.js`发来的信息，通过event.data来读取数据
+
+   ```js
+   navigator.serviceWorker.addEventListener('message', function (event) {
+       if (e.data === 'sw.update') {
+           // 此处可以操作页面的DOM元素
+       }
+   });
+   ```
+
+3. **ServiceWorker**:postMessage(message, transfer)
+
+   在主页面给ServiceWorker发消息，可以采用navigation.serviceWorker.controller.postMessage()方法
+
+   ```js
+   // 点击指定DOM时给Service Worker发送消息
+   document.getElementById('app-refresh').addEventListener('click', function() {
+       navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage('sw.updatedone');
+   });
+   ```
+
+4. **ServiceWorkerGlobalScope**: onmessage()
+
+   在`sw.js`中接收主页面发来的信息，通过event.data来读取数据
+
+   ```js
+   self.addEventListener('message', function (event) {
+       console.log(event.data); // 输出：'sw.updatedone'
+   });
+   ```
+
+同样可以使用MessageChannel创建一个信道，并在这个信道的两个MessagePort属性来传递数据。
+
+以https://googlechrome.github.io/samples/service-worker/post-message/为例
+
+截取service-worker.js 通讯相关部分：
+
+```js
+// This is a somewhat contrived example of using client.postMessage() to originate a message from
+// the service worker to each client (i.e. controlled page).
+// Here, we send a message when the service worker starts up, prior to when it's ready to start
+// handling events.
+self.clients.matchAll().then(function(clients) {
+  clients.forEach(function(client) {
+    console.log(client);
+    client.postMessage('The service worker just started up.');
+  });
+});
+
+self.addEventListener('message', function(event) {
+  console.log('Handling message event:', event);
+	...
+      // This command adds a new request/response pair to the cache.
+      case 'add':
+        // If event.data.url isn't a valid URL, new Request() will throw a TypeError which will be handled
+        // by the outer .catch().
+        // Hardcode {mode: 'no-cors} since the default for new Requests constructed from strings is to require
+        // CORS, and we don't have any way of knowing whether an arbitrary URL that a user entered supports CORS.
+        var request = new Request(event.data.url, {mode: 'no-cors'});
+        return fetch(request).then(function(response) {
+          return cache.put(event.data.url, response);
+        }).then(function() {
+          event.ports[0].postMessage({
+            error: null
+          });
+        });
+...
+    }
+  }).catch(function(error) {
+    // If the promise rejects, handle it by returning a standardized error message to the controlled page.
+    console.error('Message handling failed:', error);
+
+    event.ports[0].postMessage({
+      error: error.toString()
+    });
+  });
+
+  // Beginning in Chrome 51, event is an ExtendableMessageEvent, which supports
+  // the waitUntil() method for extending the lifetime of the event handler
+  // until the promise is resolved.
+  if ('waitUntil' in event) {
+    event.waitUntil(p);
+  }
+
+  // Without support for waitUntil(), there's a chance that if the promise chain
+  // takes "too long" to execute, the service worker might be automatically
+  // stopped before it's complete.
+});
+```
+
+```js
+function showCommands() {
+  document.querySelector('#add').addEventListener('click', function() {
+    sendMessage({
+      command: 'add',
+      url: document.querySelector('#url').value
+    }).then(function() {
+      // If the promise resolves, just display a success message.
+      ChromeSamples.setStatus('Added to cache.');
+    }).catch(ChromeSamples.setStatus); // If the promise rejects, show the error.
+  });
+}
+
+function sendMessage(message) {
+  // This wraps the message posting/response in a promise, which will resolve if the response doesn't
+  // contain an error, and reject with the error if it does. If you'd prefer, it's possible to call
+  // controller.postMessage() and set up the onmessage handler independently of a promise, but this is
+  // a convenient wrapper.
+  return new Promise(function(resolve, reject) {
+    var messageChannel = new MessageChannel();
+    messageChannel.port1.onmessage = function(event) {
+      if (event.data.error) {
+        reject(event.data.error);
+      } else {
+        resolve(event.data);
+      }
+    };
+
+    // This sends the message data as well as transferring messageChannel.port2 to the service worker.
+    // The service worker can then use the transferred port to reply via postMessage(), which
+    // will in turn trigger the onmessage handler on messageChannel.port1.
+    // See https://html.spec.whatwg.org/multipage/workers.html#dom-worker-postmessage
+    navigator.serviceWorker.controller.postMessage(message,
+      [messageChannel.port2]);
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  // Set up a listener for messages posted from the service worker.
+  // The service worker is set to post a message to all its clients once it's run its activation
+  // handler and taken control of the page, so you should see this message event fire once.
+  // You can force it to fire again by visiting this page in an Incognito window.
+  navigator.serviceWorker.addEventListener('message', function(event) {
+    ChromeSamples.setStatus(event.data);
+  });
+
+  navigator.serviceWorker.register('service-worker.js')
+    // Wait until the service worker is active.
+    .then(function() {
+      return navigator.serviceWorker.ready;
+    })
+    // ...and then show the interface for the commands once it's ready.
+    .then(showCommands)
+    .catch(function(error) {
+      // Something went wrong during registration. The service-worker.js file
+      // might be unavailable or contain a syntax error.
+      ChromeSamples.setStatus(error);
+    });
+} else {
+  ChromeSamples.setStatus('This browser does not support service workers.');
+}
+```
+
+
+
+
+
