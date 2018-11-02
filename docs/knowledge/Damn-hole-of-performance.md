@@ -93,6 +93,50 @@ Link: </app/style.css>; rel=preload; as=style; nopush
 Link: </app/script.js>; rel=preload; as=script
 ```
 
+### resource-hints
+
+#### DNS Prefetch
+
+Dns-prefetch link关系类型用于指示将用于获取所需资源的源，并且用户代理应尽早解析
+
+```html
+<link rel="dns-prefetch" href="//example.com">
+```
+
+#### Preconnect
+
+Preconnect link关系类型用于指示将用于获取所需资源的源。初始化早的连接，包括DNS lookup，TCP握手，TLS协商，允许用户代理掩盖建立连接的高延迟成本
+
+```html
+<link rel="preconnect" href="//example.com">
+<link rel="preconnect" href="//cdn.example.com" crossorigin>
+```
+
+用户代理试图初始preconnect，履行全连接握手(DNS+TCP for HTTP, DNS+TCP+TLS for HTTPS)，或选出部分握手执行(DNS only for HTTP, DNS or DNS+TCP for HTTPS)，或跳过全部，取决于资源约束或别的原因
+
+#### Prefetch
+
+prefetch link关系类型用于确定可能在下一导航会被请求到的资源，用户代理应该fetch，以便在将来请求资源时，用户代理可以交付更快的响应
+
+```html
+<link rel="prefetch" href="//example.com/next-page.html" as="document" crossorigin="use-credentials">
+<link rel="prefetch" href="/library.js" as="script">
+```
+
+- 用户代理不应该对响应应用预处理，也不能对当前页面上下文自动执行或者应用预处理
+- as属性--可选属性
+- crossorigin属性—可选属性，指明该资源CORS策略
+
+#### Prerender
+
+和Prefetch区别，除了用户代理会fetch，还会提前执行
+
+```html
+<link rel="prerender" href="//example.com/next-page.html">
+```
+
+
+
 ## 网络加载类
 
 ### 首屏数据请求提前，避免Javascript文件加载后才请求数据
