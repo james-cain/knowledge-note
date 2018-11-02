@@ -22,6 +22,77 @@
 - https://www.cnblogs.com/-simon/p/5883336.html
 - https://www.cnblogs.com/callmeguxi/p/6846447.html
 
+## Web API
+
+### preload
+
+link元素上的preload关键字提供了一个声明性的fetch原语，该原语解决了初始化一个早期的fetch并将抓取与资源执行分离。preload关键字充当**低级原语**（low-level primitive），它使应用程序能够构建自定义资源加载和执行行为，而无需向用户代理隐藏资源并导致延迟的资源获取损耗。
+
+例如，应用程序可以使用preload关键字初始化CSS资源的早期、高优先级和非渲染阻塞获取，然后应用程序可以在适当的时间使用资源：
+
+实例一，使用markup
+
+```js
+<!-- preload stylesheet resource via declarative markup -->
+<link rel="preload" href="/styles/other.css" as="style">
+
+<!-- or, preload stylesheet resource via JavaScript -->
+<script>
+var res = document.createElement("link");
+res.rel = "preload";
+res.as = "style";
+res.href = "styles/other.css";
+document.head.appendChild(res);
+</script>
+```
+
+实例二，使用HTTP Header
+
+```html
+Link: <https://example.com/other/styles.css>; rel=preload; as=style
+```
+
+使用preload关键字作为优化来初始化更早的抓取，就不需要额外的特性检测检查：支持preload的浏览器会初始化抓取，不支持的预加载的浏览器会像以前一样忽略它并获取资源。
+
+ [`prefetch`](https://www.w3.org/TR/resource-hints/#dfn-prefetch)和preload都声明资源和它的fetch属性，但是在用户代理获取资源的方式和时间上是不同的。
+
+prefetch是可选的，通常是低优先级的，可以用于后续导航的资源
+
+preload是当前导航资源所必须的资源的强制获取
+
+因此，应该相应地使用每一种方法来最小化资源征用并优化负载性能
+
+#### as属性
+
+该属性对于确保正确的优先级、请求匹配、应用的正确策略配置(CSP)以及设置适当的Accept请求头是必要的
+
+| consumer                                                     | Preload directive                                  |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| `<audio>`                                                    | `<link rel=preload as=audio href=...>`             |
+| `<video>`                                                    | `<link rel=preload as=video href=...>`             |
+| `<track>`                                                    | `<link rel=preload as=track href=...>`             |
+| `<script>`, Worker's *importScripts*                         | `<link rel=preload as=script href=...>`            |
+| `<link rel=stylesheet>`, CSS [@import](https://github.com/import) | `<link rel=preload as=style href=...>`             |
+| CSS [@font-face](https://github.com/font-face)               | `<link rel=preload as=font href=...>`              |
+| `<img>`, `<picture>`, srcset, imageset                       | `<link rel=preload as=image href=...>`             |
+| SVG's `<image>`, CSS *-image                                 | `<link rel=preload as=image href=...>`             |
+| XHR, fetch                                                   | `<link rel=preload as=fetch crossorigin href=...>` |
+| Worker, SharedWorker                                         | `<link rel=preload as=worker href=...>`            |
+| `<embed>`                                                    | `<link rel=preload as=embed href=...>`             |
+| `<object>`                                                   | `<link rel=preload as=object href=...>`            |
+| `<iframe>`, `<frame>`                                        | `<link rel=preload as=document href=...>`          |
+
+####Server Push(HTTP/2)
+
+HTTP/2的Server Push响应在语义上等同于响应请求的服务器，与preload响应式相似，用户代理保留并在与应用程序发起的请求匹配时由应用程序执行。因此，从应用角度看，preload和server push响应式没有区别的
+
+服务器可以发起服务器推送，以获取由应用程序定义的预加载链接资源。启动服务器推送消除了客户端和服务器之间对声明的预加载链接资源的请求往返。如果使用Link header字段声明的资源不需要使用服务器推送，可以通过'**nopush**' target属性向服务器提供选择不需要的信号。
+
+```html
+Link: </app/style.css>; rel=preload; as=style; nopush
+Link: </app/script.js>; rel=preload; as=script
+```
+
 ## 网络加载类
 
 ### 首屏数据请求提前，避免Javascript文件加载后才请求数据
