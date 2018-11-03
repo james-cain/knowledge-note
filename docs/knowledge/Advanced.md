@@ -52,12 +52,13 @@ https://github.com/james-cain/samples
 
 3.Typescript
 
-- Typescript-Vue-Starter（优先级一）
-- vue-typescript-admin-template（优先级一）
+- Typescript-Vue-Starter（完成）
 - <https://ts.xcatliu.com/>（完成）
 - <https://zhongsp.gitbooks.io/typescript-handbook/content/>（优先级一）
 - https://www.tslang.cn/docs/home.html（优先级一）
-- Js标准自建对象 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+- Js标准自建对象 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects>
+- <https://github.com/DefinitelyTyped/DefinitelyTyped>
+- https://github.com/TypeStrong/ts-loader
 
 4.Vue长列表（优先级一）
 
@@ -147,7 +148,8 @@ https://github.com/james-cain/samples
 
 24.TDD开发模式
 
-- https://jestjs.io/zh-Hans/
+- <https://jestjs.io/zh-Hans/>
+- https://github.com/dwyl/learn-tdd
 
 ## 知识类：
 
