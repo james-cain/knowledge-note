@@ -2085,6 +2085,157 @@ TCP中加入了很多机制，以便控制双向发送数据的速度，如**流
 
 8. workbox
 
+   项目中使用的是`workbox@3.6.3`版本，还引用了`sw-register-webpack-plugin`
+
+   因为只想在生产环境里使用，所以以下配置仅在build脚本中添加
+
+   ```js
+   // 添加配置参数，除了enabled、scope是自定义参数，其他的都是workbox中需要的参数配置
+   serviceWorker: {
+       enabled: true,
+       scope: '/pc/',
+       swSrc: path.resolve(__dirname, '../build/service-worker.js'),
+       swDest: path.join(__dirname, '../dist', 'service-worker.js'),
+       dontCacheBustUrlsMatching: /\.\w{8}\./,
+       // If true, `workbox.routing.registerNavigationRoute()` won't be generated
+       // Defaults to `false`
+       disableGenerateNavigationRoute: false
+   }
+   ```
+
+   在prod.conf.js中的配置
+
+   ```js
+   const SWRegisterWebpackPlugin = require('sw-register-webpack-plugin')
+   const { InjectManifest } = require('workbox-webpack-plugin')
+   
+   // 重新配置service-worker.js
+   function useWorkbox(webpackConfig, workboxConfig) {
+     let {
+       swSrc,
+       swDest,
+       disableGenerateNavigationRoute = false,
+     } = workboxConfig;
+     
+     let workboxInjectManifestConfig = {
+       importWorkboxFrom: 'disabled',
+       exclude: [
+         /\.map$/,
+         /^manifest.*\.js(?:on)?$/,
+         /\.hot-update\.js$/,
+         /sw-register\.js/
+       ]
+     };
+     // swDest must be a relative path in workbox 3.x
+     swDest = path.basename(swDest);
+     workboxConfig = Object.assign({}, workboxConfig, workboxInjectManifestConfig, { swDest });
+   
+     let serviceWorkerContent = readFileSync(swSrc);
+   
+     let { version: workboxBuildVersion} = require('workbox-build/package.json');
+   
+     const importWorkboxClause = `
+       importScripts('${config.build.assetsPublicPath}static/workbox-v${workboxBuildVersion}/workbox-sw.js');
+       workbox.setConfig({
+         modulePathPrefix: '${config.build.assetsPublicPath}static/workbox-v${workboxBuildVersion}/'
+       });`;
+     serviceWorkerContent = importWorkboxClause + serviceWorkerContent;
+   
+     if (!disableGenerateNavigationRoute) {
+       const registerNavigationClause = `workbox.routing.registerNavigationRoute('${config.build.assetsPublicPath}index.html')`;
+       // precache inject point
+       const WORKBOX_PRECACHE_REG = /workbox\.precaching\.precacheAndRoute\(self\.__precacheManifest\);/;
+       if (WORKBOX_PRECACHE_REG.test(serviceWorkerContent)) {
+         serviceWorkerContent = serviceWorkerContent.replace(WORKBOX_PRECACHE_REG,
+           `workbox.precaching.precacheAndRoute(self.__precacheManifest);\n${registerNavigationClause}\n`);
+       } else {
+         serviceWorkerContent += registerNavigationClause;
+       }
+     }
+   
+     const tempSwSrc = path.join('./build', 'sw-temp.js');
+     writeFileSync(tempSwSrc, serviceWorkerContent, 'utf8');
+     workboxConfig.swSrc = tempSwSrc;
+   
+     delete workboxConfig.enabled;
+     delete workboxConfig.scope;
+     delete workboxConfig.disableGenerateNavigationRoute;
+   
+     webpackConfig.plugins.push(
+       new InjectManifest(workboxConfig)
+     );
+   }
+   
+   // 调用workbox
+   if (config.build.serviceWorker.enable !== false) {
+     useWorkbox(webpackConfig, config.build.serviceWorker);
+     webpackConfig.plugins.push(new SWRegisterWebpackPlugin({
+       filePath: path.resolve(__dirname, 'sw-register.js'),
+       prefix: config.build.assetsPublicPath,
+       scope: config.build.serviceWorker.scope
+     }))
+   }
+   ```
+
+   虽然上面已经自动生成了service-worker.js配置，但是还需要引入workbox源文件，官方提供三种方式，如果是外网，可以直接引用cdn方式。内网情况可以用workbox-build自动在dist中引入源文件。我采用的是内网方式，在build.js中引入
+
+   ```js
+   const {copyWorkboxLibraries} = require('workbox-build')
+   
+   if (config.build.serviceWorker.enable !== false) {
+       // Copy workbox files to dist/static/workbox-v3.*.*/
+       copyWorkboxLibraries(path.resolve(config.build.assetsRoot, 'static'));
+   }
+   ```
+
+   经过以上配置，已经可以在生产环境中实现离线访问了。
+
+   接下来是使用manifest在桌面添加快捷方式，在static文件夹中引入manifest.json
+
+   ```json
+   {
+     "start_url": "/pc/",
+     "name": "xxx",
+     "short_name": "xxx",
+     "icons": [
+         {
+             "src": "ic_launcher-512x512.png",
+             "type": "image/png",
+             "sizes": "512x512"
+         },
+         {
+             "src": "ic_launcher-192x192.png",
+             "type": "image/png",
+             "sizes": "192x192"
+         },
+         {
+             "src": "ic_launcher-256x256.png",
+             "type": "image/png",
+             "sizes": "256x256"
+         },
+         {
+             "src": "ic_launcher-144x144.png",
+             "type": "image/png",
+             "sizes": "144x144"
+         }
+     ],
+     "display": "standalone",
+     "background_color": "#000000",
+     "theme_color": "#278fef"
+   }
+   
+   ```
+
+   在html中引入json配置
+
+   ```html
+   <link rel="manifest" href="./static/manifest.json">
+   ```
+
+   大功告成，离线访问、桌面快捷方式已经实现
+
+   pwa不仅仅只有这两个功能，可以扩展配置，实现离线同步(sync)、推送(push)、通知(notification)
+
 9. 骨架屏
 
    [vue-content-placeholders](https://github.com/michalsnik/vue-content-placeholders)
