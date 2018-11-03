@@ -15,6 +15,7 @@ https://github.com/james-cain/samples
 - background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/（完成）
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
 - <https://developers.google.com/web/progressive-web-apps/desktop>
+- https://so-pwa.firebaseapp.com/
 
 2.性能优化处理
 
@@ -46,7 +47,8 @@ https://github.com/james-cain/samples
 - https://github.com/jsdom/jsdom（优先级一）
 - https://tc39.github.io/ecma262/（优先级一）
 - <https://w3c.github.io/preload/>（完成）
-- https://w3c.github.io/resource-hints/（优先级一）
+- <https://w3c.github.io/resource-hints/>（完成）
+- <https://www.w3.org/TR/appmanifest/>（优先级一）
 
 3.Typescript
 
@@ -55,6 +57,7 @@ https://github.com/james-cain/samples
 - <https://ts.xcatliu.com/>（完成）
 - <https://zhongsp.gitbooks.io/typescript-handbook/content/>（优先级一）
 - https://www.tslang.cn/docs/home.html（优先级一）
+- Js标准自建对象 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 4.Vue长列表（优先级一）
 
@@ -121,6 +124,8 @@ https://github.com/james-cain/samples
 - react-proto
 - electronic-wechat
 - vue-form-making
+- <https://electronjs.org/docs>
+- https://simulatedgreg.gitbooks.io/electron-vue/content/cn/
 
 20.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
 
@@ -133,6 +138,16 @@ https://github.com/james-cain/samples
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
 - https://github.com/stephentian/33-js-concepts（优先级四）
+
+23.dart & flutter
+
+- <https://www.dartlang.org/>
+- <https://flutter.io/docs/>
+- <https://github.com/james-cain/GSYGithubAppFlutter>
+
+24.TDD开发模式
+
+- https://jestjs.io/zh-Hans/
 
 ## 知识类：
 
