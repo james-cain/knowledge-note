@@ -54,17 +54,22 @@ https://github.com/james-cain/samples
 
 - Typescript-Vue-Starter（完成）
 - <https://ts.xcatliu.com/>（完成）
-- <https://zhongsp.gitbooks.io/typescript-handbook/content/>（优先级一）
+- <https://zhongsp.gitbooks.io/typescript-handbook/content/>(完成）
 - https://www.tslang.cn/docs/home.html（优先级一）
 - Js标准自建对象 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects>
 - <https://github.com/DefinitelyTyped/DefinitelyTyped>
-- https://github.com/TypeStrong/ts-loader
+- <https://github.com/TypeStrong/ts-loader>
+- <https://github.com/vuejs/vue-class-component>（完成）
+- <https://github.com/kaorun343/vue-property-decorator>（完成）
+- https://github.com/ktsn/vuex-class/（完成）
+- https://github.com/kaorun343/vue-typescript-example-2
 
 4.Vue长列表（优先级一）
 
 - vue-virtual-scroller
 - react-tiny-virtual-list
 - Clusterize.js
+- https://github.com/Akryum/vue-observe-visibility#installation
 
 5.WebWorker（优先级一）
 
@@ -88,7 +93,8 @@ https://github.com/james-cain/samples
 
 10.Performance （stats.js）（优先级三）
 
-- https://w3c.github.io/hr-time/
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
 11.MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
 
@@ -149,9 +155,15 @@ https://github.com/james-cain/samples
 24.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
-- https://github.com/dwyl/learn-tdd
+- <https://github.com/dwyl/learn-tdd>
 
-## 知识类：
+25.vuex持久化
+
+- <https://github.com/robinvdvleuten/vuex-persistedstate>
+
+26.SharedWorker、SharedWorkerGlobalScope
+
+27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题知识类：
 
 1.HTML标准
 
@@ -165,6 +177,7 @@ https://github.com/james-cain/samples
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
 - https://www.webcomponents.org/polyfills/（优先级四）
+- https://github.com/w3c/webcomponents
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
