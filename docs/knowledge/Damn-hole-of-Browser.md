@@ -83,12 +83,12 @@ console.log('script end');
 
 ### 缓存分类
 
-1. 强缓存
-2. 协商缓存
+1. 强缓存(200)
+2. 协商缓存(304)
 
 他们的匹配流程：
 
-1. 浏览器发送请求前，根据请求头的expires和cache-control判断是否命中强缓存策略，如果命中，直接从缓存获取资源，并不会发送请求。如果没有命中，进入下一步。
+1. 浏览器发送请求前，根据请求头的expires和cache-control判断是否命中强缓存策略，如果命中，直接从缓存获取资源，并**不会发送请求，直接使用浏览器缓存**。如果没有命中，进入下一步。
 2. 没有命中强缓存规则，浏览器会发送请求，根据请求头的last-modified和etag判断是否命中协商缓存，如果命中，直接从缓存中获取资源。如果没有命中，进入下一步。
 3. 如果前两步没有命中，直接从服务端获取资源。
 
@@ -114,7 +114,7 @@ location ~ .*\.(ico|svg|ttf|eot|woff)(.*) {
 }
 ```
 
-![强缓存](https://coracain.top/assets/StrongCache.jpg)
+![强缓存](http://reyshieh.com/assets/StrongCache.jpg)
 
 （1）expires（**http1.0**）：从图可以看出，expires的值是一个绝对时间，是http1.0的功能。如果浏览器的时间没有超过这个expires的时间，代表缓存还有效，命中强缓存，直接从缓存读取资源。不过由于存在浏览器和服务端时间可能出现较大误差，所以在之后http1.1提出了cache-control。
 
@@ -197,7 +197,7 @@ location ~ .*\.(ico|svg|ttf|eot|woff)(.*) {
 }
 ```
 
-![协商缓存](https://coracain.top/assets/NegotiateCache.jpg)
+![协商缓存](http://reyshieh.com/assets/NegotiateCache.jpg)
 
 （1）last-modified/if-modified-since：浏览器**首先发送一个请求，让服务端在response header 中返回请求的资源带上上次更新时间，就是last-modified，浏览器会缓存下这个时间**。然后浏览器在下次请求中，request header中带上if-modified-since**[保存的last-modified值]**。根据浏览器发送的修改时间和服务端的修改时间进行对比，一致代表资源没有改变，服务端返回正文为空的响应，让浏览器的缓存中读取资源，大大减小了请求的耗时。由于**last-modified依赖的是保存的绝对时间，还是会出现误差的情况**：一是保存的时间是以秒为单位的，1秒内多次修改是无法捕捉到的；二是各机器读取到的时间不一致，就有出现误差的可能性。为了改善这个问题，提出了使用Etag。
 
@@ -209,7 +209,7 @@ location ~ .*\.(ico|svg|ttf|eot|woff)(.*) {
 >
 > 在MSDN中，OutgoingResponse类中设置Etag值：
 >
-> ![Etag接口](https://coracain.top/assets/EtagInterface.jpg)
+> ![Etag接口](http://reyshieh.com/assets/EtagInterface.jpg)
 >
 > 在上图可以看出，在REST架构下，Etag值可以通过Guid，整数，长整数，字符串四种类型的参数传入SetETag方法。另外OutgoingResponse类也有字符串属性：ETag直接给它赋值也能在HTTP响应头中写入ETag值。
 
