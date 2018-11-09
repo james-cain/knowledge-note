@@ -135,7 +135,165 @@ prefetch link关系类型用于确定可能在下一导航会被请求到的资�
 <link rel="prerender" href="//example.com/next-page.html">
 ```
 
+### IntersectionObserver
 
+```js
+var io = new IntersectionObserver(callback, option);
+
+// 开始观察，指定观察哪个DOM节点，可以通过多次调用方法实现观察多个节点
+io.observe(document.getElementById('example'));
+
+// 停止观察
+io.unobserve(element);
+
+// 关闭观察器
+io.disconnect();
+```
+
+- callback: 可见性变化时的回调函数
+
+  一般会调用两次。一次是目标元素刚进入视口，另一次是完全离开视口
+
+  ```js
+  // callback会带一个entries数组参数，每个成员都是一个IntersectionObserverEntry对象
+  // 如果同时有多个被观察的对象可见性发生变化，entries数组就会有多个值
+  var io = new IntersectionObserver(
+      entries => {
+          console.log(entries);
+      }
+  );
+  ```
+
+- option：配置对象（可选）
+
+  - threshold
+
+    数组，属性决定了什么时候触发回调函数。每个成员都是一个门槛值，默认为[0]，即交叉比例(intersecionRatio)达到0就触发回调函数
+
+    ```js
+    new IntersectionObserver(
+    	entries => {},
+    	{
+            threshold: [0, 0.25, 0.5, 0.75, 1]
+    	}
+    )
+    ```
+
+  - root/rootMargin
+
+    root属性指定目标元素所在的容器节点（即根元素）。**容器元素必须是目标元素的祖先节点**
+
+    rootMargin属性定义根元素的margin，用来扩展或缩小`rootBounds`矩形的大小，影响`intersctionRect`交叉区域的大小。使用css定义方法，如10px 20px 30px 40px，表示top right bottom left四个方向
+
+    ```js
+    var opts = {
+        root: document.querySelector('.container'),
+        rootMargin: '500px 0px'
+    };
+    
+    var observer = new IntersectionObserver(
+    	callback,
+    	opts
+    );
+    ```
+
+**IntersectionObserver API是异步API，不随目标元素滚动同步触发**
+
+正常情况，intersectionObserver应该采用`window.requestIdleCallback()`，即只有线程空闲下来才会执行观察器。这样只有在其他任务执行完，浏览器有了空闲才会执行
+
+#### window.requestIdleCallback()
+
+```js
+var handle = window.requestIdleCallback(callback[, options]);
+```
+
+返回值可以用来传出`window.cancelIdleCallback()`方法，结束回调
+
+- callback
+
+  一个即将被调用的函数的引用。函数会接收到一个名为deadline的参数，属性：
+
+  - timeRemaining：一个返回DOMHighResTimeStamp的函数的引用
+  - didTimeout：如果callback在空闲时间被客户端执行，它的值为false，其他情况的值为true
+
+- options
+
+  - timeout：指定为正数时，当做浏览器调用callback的最后期限，毫秒
+
+| Feature       | Chrome | Firefox (Gecko) | Internet Explorer | Opera | Safari (WebKit) |
+| ------------- | ------ | --------------- | ----------------- | ----- | --------------- |
+| Basic support | 47     | 未实现[1]       | 未实现            | 34    | 未实现          |
+
+#### 实例（惰性加载 lazy load）
+
+```js
+function query(selector) {
+    return Array.from(document.querySelector(selector));
+}
+
+var observer = new IntersectionObserver(
+	function(changes) {
+        changes.forEach(function(change) {
+            var container = change.target;
+            var content = container.querySelector('template').content;
+            container.appendChild(content);
+            observer.unobserve(container);
+        });
+	}
+);
+
+query('.lazy-loaded').forEach(function(item) {
+    observer.observe(item);
+});
+```
+
+#### 实例（无限滚动 infinite scroll）
+
+```js
+var intersectionObserver = new IntersectionObserver(
+	function(entries) {
+        // 如果不可见，就返回
+        if (entries[0].intersectionRatio <= 0) return;
+        loadItems(10);
+        console.log('Loaded new items');
+	}
+);
+
+// 开始观察
+intersionObserver.observe(document.querySelector('.scrollerFooter'));
+```
+
+### IntersecionObserverEntry
+
+提供目标元素的信息，一共有六个属性
+
+```js
+{
+    // 可见性发生变化的时间，单位毫秒
+    time: 2000,
+   	// getBoundingClientRect()方法返回值，即根元素的矩形区域信息，如果没有根元素(即直接相对于视口滚动)，则返回null
+    rootBounds: ClientRect {
+        bottom: 100,
+        height: 200,
+        left: 0,
+        right: 1024,
+        top: 0,
+        width: 900
+    },
+    // 目标元素的矩形区域的信息
+    boundingClientRect: ClientRect {
+        // ...
+    },
+    // 目标元素与视口(或根元素)的交叉区域的信息
+    intersectionRect: ClientRect {
+        // ...
+    },
+    // 目标元素的可见比例
+    intersecionRatio: 0.5,
+    // 被观察的目标元素，DOM节点
+    target: element
+}
+```
 
 ## 网络加载类
 
