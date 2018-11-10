@@ -280,6 +280,8 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
         top: 0,
         width: 900
     },
+    // 返回布尔值，如果目标元素与交叉区域观察者对象(intersection observer)的根相交，则返回true。如果返回true，返回IntersectionObserverEntry值；否则返回false
+    isIntersecting: true,
     // 目标元素的矩形区域的信息
     boundingClientRect: ClientRect {
         // ...
@@ -288,7 +290,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
     intersectionRect: ClientRect {
         // ...
     },
-    // 目标元素的可见比例
+    // 目标元素的可见比例，intersectionRect与boundingClientRect的比例值
     intersecionRatio: 0.5,
     // 被观察的目标元素，DOM节点
     target: element
