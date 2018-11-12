@@ -6,7 +6,7 @@ https://github.com/james-cain/samples
 
 1.PWA
 
-- workbox（完成，持续学习）
+- workbox（持续学习）
 
 - BoardcastChannel workbox.broadcastUpdate  <https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel>  依赖于webworker（完成）
 - Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>（完成）
@@ -19,7 +19,7 @@ https://github.com/james-cain/samples
 
 2.性能优化处理
 
-- lighthouse（完成，持续学习）
+- lighthouse（持续学习）
 - 《web性能权威指南》
 - 《图解TCP/IP》
 - 《图解HTTP》
@@ -55,24 +55,31 @@ https://github.com/james-cain/samples
 - Typescript-Vue-Starter（完成）
 - <https://ts.xcatliu.com/>（完成）
 - <https://zhongsp.gitbooks.io/typescript-handbook/content/>(完成）
-- https://www.tslang.cn/docs/home.html（优先级一）
+- <https://www.tslang.cn/docs/home.html>（持续学习）
 - Js标准自建对象 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects>
 - <https://github.com/DefinitelyTyped/DefinitelyTyped>
 - <https://github.com/TypeStrong/ts-loader>
 - <https://github.com/vuejs/vue-class-component>（完成）
 - <https://github.com/kaorun343/vue-property-decorator>（完成）
 - https://github.com/ktsn/vuex-class/（完成）
-- https://github.com/kaorun343/vue-typescript-example-2
 
-4.Vue长列表（优先级一）
+4.IntersectionObserver、IntersectionObserverEntry
+
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback>（完成）
+- [Window.cancelIdleCallback()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/cancelIdleCallback)（完成）
+- <https://github.com/Akryum/vue-observe-visibility#installation>（完成）
+- https://github.com/russellgoldenberg/scrollama（优先级一）
+- <https://github.com/w3c/IntersectionObserver/tree/master/polyfill>（完成）
+
+5.Vue长列表（优先级一）
 
 - vue-virtual-scroller
-- react-tiny-virtual-list
 - Clusterize.js
-- https://github.com/Akryum/vue-observe-visibility#installation
 
-5.WebWorker（优先级一）
+6.WebWorker（优先级一）
 
+- https://whatwg-cn.github.io/html/#workers
 - greenlet
 - worker-dom
 - web-worker-proxy
@@ -81,46 +88,64 @@ https://github.com/james-cain/samples
 - comlink
 - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
-- https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md
+- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 
-6.router（navaid）（优先级二）
+7.video <https://github.com/videojs/video.js>
 
-7.state（reworm）（优先级二）
-
-8.IntersectionObserver（scrollama）（优先级三）
-
-9.MutationObserver.js（优先级三）
-
-10.Performance （stats.js）（优先级三）
-
-- <https://w3c.github.io/hr-time/>
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-11.MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
-
-12.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
-
-13.WebAssembly
-
-- https://webassembly.github.io/spec/core/
-
-14.polymer
-
-15.key-value for browser <https://github.com/james-cain/irondb>
-
-16.web安全
+8.web安全
 
 - <https://github.com/james-cain/Web-Security-Learning>
 - <https://github.com/leizongmin/js-xss>
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
+- https://github.com/Caligatio/jsSHA
 
-17.serverless
+9.vue-hooks
 
-18.video <https://github.com/videojs/video.js>
+- <https://github.com/yyx990803/vue-hooks>（优先级二）
 
-19.electron
+10.router（navaid）（优先级二）
+
+11.state（reworm）（优先级二）
+
+12.MutationObserver.js（优先级三）
+
+13.Performance （stats.js）（优先级三）
+
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+14.通信
+
+- MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
+- <https://whatwg-cn.github.io/html/#comms>
+
+15.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+
+16.WebAssembly
+
+- https://webassembly.github.io/spec/core/
+
+17.polymer
+
+18.microfrontends
+
+- <https://github.com/phodal/microfrontends>（优先级四）
+- <https://micro-frontends.org/>（优先级四）
+- https://www.webcomponents.org/polyfills/（优先级四）
+- https://github.com/w3c/webcomponents
+- https://github.com/webcomponents/custom-elements（优先级四）
+- <https://github.com/palmerhq/the-platform>
+
+19.key-value for browser <https://github.com/james-cain/irondb>
+
+20.serverless
+
+- <https://github.com/phodal/serverless>
+- https://github.com/serverless/serverless
+
+21.electron
 
 - vue-electron
 - electron-quick-start
@@ -134,36 +159,49 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 - https://simulatedgreg.gitbooks.io/electron-vue/content/cn/
 
-20.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+22.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
 
-21.V8
+23.V8
 
 - <https://v8.dev/docs>
 
-22.设计模式和js要点
+24.设计模式和js要点
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
 - https://github.com/stephentian/33-js-concepts（优先级四）
 
-23.dart & flutter
+25.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-24.TDD开发模式
+26.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-25.vuex持久化
+27.vuex持久化
 
 - <https://github.com/robinvdvleuten/vuex-persistedstate>
 
-26.SharedWorker、SharedWorkerGlobalScope
+28.SharedWorker、SharedWorkerGlobalScope
 
-27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题知识类：
+29.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+
+30.算法编写
+
+- leetcode
+- InterviewMap
+- Interview-Notebook
+- javascript-algorithms
+- 《算法导论》
+- mathjs
+
+31.GraphQL
+
+## 知识类：
 
 1.HTML标准
 
