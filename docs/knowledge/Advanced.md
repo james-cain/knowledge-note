@@ -20,6 +20,9 @@ https://github.com/james-cain/samples
 2.性能优化处理
 
 - lighthouse（持续学习）
+- <https://webpagetest.org/easy>
+- <https://developers.google.com/speed/pagespeed/insights/>
+- https://web.dev/
 - 《web性能权威指南》
 - 《图解TCP/IP》
 - 《图解HTTP》
@@ -76,8 +79,18 @@ https://github.com/james-cain/samples
 
 - vue-virtual-scroller
 - Clusterize.js
+- https://github.com/valdrinkoshi/virtual-scroller
 
-6.WebWorker（优先级一）
+6.video（优先级一）
+
+- <https://github.com/videojs/video.js>
+- <https://github.com/surmon-china/vue-video-player>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
+- https://chimee.org/docs/chimee_player_preface.html
+
+7.WebWorker（优先级一）
 
 - https://whatwg-cn.github.io/html/#workers
 - greenlet
@@ -90,8 +103,6 @@ https://github.com/james-cain/samples
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
 - <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 
-7.video <https://github.com/videojs/video.js>
-
 8.web安全
 
 - <https://github.com/james-cain/Web-Security-Learning>
@@ -99,37 +110,25 @@ https://github.com/james-cain/samples
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
-- https://github.com/Caligatio/jsSHA
+- <https://github.com/Caligatio/jsSHA>
 
-9.vue-hooks
+9.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+
+10.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（优先级二）
 
-10.router（navaid）（优先级二）
+11.vuex持久化
 
-11.state（reworm）（优先级二）
+- <https://github.com/robinvdvleuten/vuex-persistedstate>
 
-12.MutationObserver.js（优先级三）
+12.SharedWorker、SharedWorkerGlobalScope
 
-13.Performance （stats.js）（优先级三）
-
-- <https://w3c.github.io/hr-time/>
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-14.通信
-
-- MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
-- <https://whatwg-cn.github.io/html/#comms>
-
-15.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
-
-16.WebAssembly
+13.WebAssembly
 
 - https://webassembly.github.io/spec/core/
 
-17.polymer
-
-18.microfrontends
+14.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -138,14 +137,56 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-19.key-value for browser <https://github.com/james-cain/irondb>
+15.key-value for browser <https://github.com/james-cain/irondb>
 
-20.serverless
+16.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+
+17.V8
+
+- <https://v8.dev/docs>
+
+18.设计模式和js要点
+
+- <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
+- <https://github.com/leonardomso/33-js-concepts>（优先级四）
+- https://github.com/stephentian/33-js-concepts（优先级四）
+
+19.router（navaid）（优先级二）
+
+20.state（reworm）（优先级二）
+
+21.MutationObserver.js（优先级三）
+
+22.Performance （stats.js）（优先级三）
+
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+23.通信
+
+- MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
+- <https://whatwg-cn.github.io/html/#comms>
+
+24.算法编写
+
+- leetcode
+- InterviewMap
+- Interview-Notebook
+- javascript-algorithms
+- 《算法导论》
+- mathjs
+
+25.TDD开发模式
+
+- <https://jestjs.io/zh-Hans/>
+- <https://github.com/dwyl/learn-tdd>
+
+26.serverless
 
 - <https://github.com/phodal/serverless>
 - https://github.com/serverless/serverless
 
-21.electron
+27.electron
 
 - vue-electron
 - electron-quick-start
@@ -157,49 +198,21 @@ https://github.com/james-cain/samples
 - electronic-wechat
 - vue-form-making
 - <https://electronjs.org/docs>
-- https://simulatedgreg.gitbooks.io/electron-vue/content/cn/
+- <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-22.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+28.polymer
 
-23.V8
-
-- <https://v8.dev/docs>
-
-24.设计模式和js要点
-
-- <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
-- <https://github.com/leonardomso/33-js-concepts>（优先级四）
-- https://github.com/stephentian/33-js-concepts（优先级四）
-
-25.dart & flutter
+29.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-26.TDD开发模式
-
-- <https://jestjs.io/zh-Hans/>
-- <https://github.com/dwyl/learn-tdd>
-
-27.vuex持久化
-
-- <https://github.com/robinvdvleuten/vuex-persistedstate>
-
-28.SharedWorker、SharedWorkerGlobalScope
-
-29.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
-
-30.算法编写
-
-- leetcode
-- InterviewMap
-- Interview-Notebook
-- javascript-algorithms
-- 《算法导论》
-- mathjs
+30.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
 31.GraphQL
+
+32.浏览器 跨域、重绘重排
 
 ## 知识类：
 
