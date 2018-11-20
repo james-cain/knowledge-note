@@ -75,20 +75,15 @@ https://github.com/james-cain/samples
 - https://github.com/russellgoldenberg/scrollama（优先级一）
 - <https://github.com/w3c/IntersectionObserver/tree/master/polyfill>（完成）
 
-5.Vue长列表
+5.sticky
+
+- <https://github.com/dollarshaveclub/stickybits>（完成）
+
+6.Vue长列表
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
 - https://github.com/valdrinkoshi/virtual-scroller
-
-6.video（优先级一）
-
-- <https://github.com/videojs/video.js>
-- <https://github.com/surmon-china/vue-video-player>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
-- https://chimee.org/docs/chimee_player_preface.html
 
 7.WebWorker（优先级一）
 
@@ -110,36 +105,34 @@ https://github.com/james-cain/samples
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
-- <https://github.com/Caligatio/jsSHA>
 
-9.sticky
-
-- https://github.com/dollarshaveclub/stickybits
-
-10.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
-
-11.vue-hooks
+9.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（优先级二）
 - https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw
 
-12.vuex持久化
+10.vuex持久化
 
 - <https://github.com/robinvdvleuten/vuex-persistedstate>
 
-13.SharedWorker、SharedWorkerGlobalScope
+11.video（优先级一）
 
-14.nodejs/deno
+- <https://github.com/videojs/video.js>
+- <https://github.com/surmon-china/vue-video-player>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
+- https://chimee.org/docs/chimee_player_preface.html
+
+12.SharedWorker、SharedWorkerGlobalScope
+
+13.nodejs/deno
 
 - <https://nodejs.org/dist/latest-v10.x/docs/api/>
 - <https://github.com/denoland/deno>
-- https://github.com/GoogleChromeLabs/carlo
+- <https://github.com/GoogleChromeLabs/carlo>
 
-15.WebAssembly
-
-- https://webassembly.github.io/spec/core/
-
-16.microfrontends
+14.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -148,37 +141,50 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-17.key-value for browser <https://github.com/james-cain/irondb>
+15.key-value for browser <https://github.com/james-cain/irondb>
 
-18.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+16.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
 
-19.V8
-
-- <https://v8.dev/docs>
-
-20.设计模式和js要点
+17.设计模式和js要点
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
 - https://github.com/stephentian/33-js-concepts（优先级四）
 
-21.router（navaid）（优先级二）
+18.router（navaid）（优先级二）
 
-22.state（reworm）（优先级二）
+- https://github.com/kevindurb/router
 
-23.MutationObserver.js（优先级三）
+19.state（reworm）（优先级二）
 
-24.Performance （stats.js）（优先级三）
+20.MutationObserver.js（优先级三）
 
-- <https://w3c.github.io/hr-time/>
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-25.通信
+21.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
 - <https://whatwg-cn.github.io/html/#comms>
 
-26.算法编写
+22.浏览器 跨域、重绘重排
+
+- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
+- Http1/http2
+
+23.V8
+
+- <https://v8.dev/docs>
+
+24.WebAssembly
+
+- https://webassembly.github.io/spec/core/
+
+25.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+
+26.Performance （stats.js）（优先级三）
+
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+27.算法编写
 
 - leetcode
 - InterviewMap
@@ -187,17 +193,12 @@ https://github.com/james-cain/samples
 - 《算法导论》
 - mathjs
 
-27.AI《AI未来》《深度学习》
+28.AI《AI未来》《深度学习》
 
-28.TDD开发模式
+29.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
-
-29.浏览器 跨域、重绘重排
-
-- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
-- Http1/http2
 
 30.serverless
 

@@ -1,5 +1,26 @@
 # 网络安全
 
+## 同源策略（Same Origin Policy，SOP）
+
+同源策略是Web应用程序的一种安全模型，控制了网页中DOM之间的访问。SOP影响范围包括：普通的HTTP请求、XMLHttpRequest、XSLT、XBL
+
+### 如何判断同源？
+
+给定一个页面，如果另外一个页面使用的协议、端口、主机名都相同，则认为两个页面具有相同的源。例如：
+
+目标页面http://sub.eth.space/level/flower.html
+
+| 是否同源 | URI                                                   |
+| -------- | ----------------------------------------------------- |
+| 同源     | http://sub.eth.space/level2/fruit.html                |
+| 同源     | http://sub.eth.space:80/level/anotherlevel/fruit.html |
+| 不同源   | https://sub.eth.space/level/flower.html               |
+| 不同源   | http://sub.eth.space:81/level/flower.html             |
+| 不同源   | http://mania.eth.space/level3/flower.html             |
+| **同源** | http://red.sub.eth.space/level3/flower.html           |
+
+**同源策略没有禁止脚本的执行，而是禁止读取HTTP回复。**SOP其实在防止CSRF上作用非常有限，CSRF的请求往往在发送出去的瞬间就已经达到攻击的目的，比如发送一段敏感数据，或请求一个具体的功能。一般静态资源通常不受同源策略限制，如js/css/jpg/png等
+
 ## XSS(Cross site scripting)跨站点指令码
 
 分为三种类型：反射型，存储型，DOM-based
@@ -18,7 +39,7 @@
 \/ -> &##x2F;
 ```
 
-对于显示富文本来说，通常采用白名单过滤的办法 js-xss
+对于显示富文本来说，通常采用白名单过滤的办法[ js-xss](https://github.com/leizongmin/js-xss)
 
 CSP 内容安全策略
 

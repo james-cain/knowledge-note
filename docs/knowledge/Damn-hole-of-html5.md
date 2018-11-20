@@ -9,7 +9,7 @@
 - https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video
 - https://chimee.org/docs/chimee_player_preface.html
 
-目前原生H5支持的媒体格式主要有MP4、OGG、WebM、M3U8、FLV、RTMP等，但各大浏览器厂商之间对媒体格式的支持是不同的：
+目前原生H5支持的媒体格式主要有MP4、OGG、WebM、M3U8等，但各大浏览器厂商之间对媒体格式的支持是不同的：
 
 | 浏览器            | 支持的视频格式        |               |
 | ----------------- | --------------------- | ------------- |
@@ -22,48 +22,7 @@
 | ---------- | -------------- |
 | Android    | MP4,M3U8       |
 | iOS        | MP4,M3U8       |
-| Safari     | MP4,M3U8       |
-
-d
-
-点播优先使用mp4，其次使用m3u8，尽量不要使用flv做点播，移动端不支持flv格式的点播
-
-直播优先使用m3u8，尽量不要使用功能rtmp做直播，移动端不支持rtmp的直播
-
-对于以上的差异性，必须要考虑不同环境的兼容性问题。
-
-- 在video标签中嵌套source标签使不同环境设定响应媒体源的需求
-
-  ```html
-  <video controls>
-    <source src="https://xxx.org/vod/2.webm">
-    <source src="https://xxx.org/vod/2.ogg">
-    <source src="https://xxx.org/vod/2.mp4">
-    <source src='https://xxx.org/x.myvideoext' type='video/mp4; codecs="mp4v.20.8, mp4a.40.2"'>
-    <p>当前环境不支持video标签。</p>
-  </video>
-  ```
-
-- 在js中，通过HTMLVideoElement的canPlayType API判断兼容性
-
-  ```js
-  let videoEl = document.createElement("video");
-  
-  // 是否支持 MP4
-  videoEl.canPlayType('video/mp4') !== '';
-  
-  // 是否支持 MP4 & 特定编码的
-  videoEl.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"') !== '';
-  // 是否支持 webm & 特定编码的
-  videoEl.canPlayType('video/webm; codecs="vp8, vorbis"') !== '';
-  // 是否支持 ogg & 特定编码的
-  videoEl.canPlayType('video/ogg; codecs="theora, vorbis"') !== '';
-  
-  // 是否支持 HLS 的 m3u8
-  videoEl.canPlayType('application/vnd.apple.mpegURL') !== '';
-  // 是否支持 HLS 的 TS 切片
-  videoEl.canPlayType('video/mp2t; codecs="avc1.42E01E,mp4a.40.2"') !== '';
-  ```
+| Safari     |                |
 
 ## web通信
 
