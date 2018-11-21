@@ -79,13 +79,17 @@ https://github.com/james-cain/samples
 
 - <https://github.com/dollarshaveclub/stickybits>（完成）
 
-6.Vue长列表
+6.vuex持久化（完成）
+
+- <https://github.com/robinvdvleuten/vuex-persistedstate>
+
+7.Vue长列表
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
 - https://github.com/valdrinkoshi/virtual-scroller
 
-7.WebWorker（优先级一）
+8.WebWorker（优先级一）
 
 - https://whatwg-cn.github.io/html/#workers
 - greenlet
@@ -98,7 +102,7 @@ https://github.com/james-cain/samples
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
 - <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 
-8.web安全
+9.web安全
 
 - <https://github.com/james-cain/Web-Security-Learning>
 - <https://github.com/leizongmin/js-xss>
@@ -106,33 +110,51 @@ https://github.com/james-cain/samples
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
 
-9.vue-hooks
+10.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（优先级二）
-- https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw
+- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
 
-10.vuex持久化
+11.storage
 
-- <https://github.com/robinvdvleuten/vuex-persistedstate>
+- <https://github.com/james-cain/irondb>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+- <https://github.com/localForage/localForage>
+- <https://github.com/dfahlander/Dexie.js>
+- <https://github.com/erikolson186/zangodb>
+- https://github.com/jakearchibald/idb-keyval
 
-11.video（优先级一）
+12.video（优先级一）
 
 - <https://github.com/videojs/video.js>
 - <https://github.com/surmon-china/vue-video-player>
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
 - <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
-- https://chimee.org/docs/chimee_player_preface.html
+- <https://chimee.org/docs/chimee_player_preface.html>
+- <https://github.com/video-dev/hls.js>
 
-12.SharedWorker、SharedWorkerGlobalScope
+13.SharedWorker、SharedWorkerGlobalScope
 
-13.nodejs/deno
+14.nodejs/deno
 
 - <https://nodejs.org/dist/latest-v10.x/docs/api/>
 - <https://github.com/denoland/deno>
 - <https://github.com/GoogleChromeLabs/carlo>
 
-14.microfrontends
+15.设计模式和js要点
+
+- <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
+- <https://github.com/leonardomso/33-js-concepts>（优先级四）
+- https://github.com/stephentian/33-js-concepts（优先级四）
+
+16.router（navaid）（优先级二）
+
+- https://github.com/kevindurb/router
+
+17.state（reworm）（优先级二）
+
+18.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -141,50 +163,34 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-15.key-value for browser <https://github.com/james-cain/irondb>
+19.MutationObserver.js（优先级三）
 
-16.IndexedDB API  <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
-
-17.设计模式和js要点
-
-- <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
-- <https://github.com/leonardomso/33-js-concepts>（优先级四）
-- https://github.com/stephentian/33-js-concepts（优先级四）
-
-18.router（navaid）（优先级二）
-
-- https://github.com/kevindurb/router
-
-19.state（reworm）（优先级二）
-
-20.MutationObserver.js（优先级三）
-
-21.通信
+20.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
 - <https://whatwg-cn.github.io/html/#comms>
 
-22.浏览器 跨域、重绘重排
+21.浏览器 跨域、重绘重排
 
 - <https://daniel.haxx.se/blog/2018/11/11/http-3/>
 - Http1/http2
 
-23.V8
+22.V8
 
 - <https://v8.dev/docs>
 
-24.WebAssembly
+23.WebAssembly
 
 - https://webassembly.github.io/spec/core/
 
-25.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+24.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
 
-26.Performance （stats.js）（优先级三）
+25.Performance （stats.js）（优先级三）
 
 - <https://w3c.github.io/hr-time/>
 - https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
-27.算法编写
+26.算法编写
 
 - leetcode
 - InterviewMap
@@ -193,19 +199,19 @@ https://github.com/james-cain/samples
 - 《算法导论》
 - mathjs
 
-28.AI《AI未来》《深度学习》
+27.AI《AI未来》《深度学习》
 
-29.TDD开发模式
+28.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-30.serverless
+29.serverless
 
 - <https://github.com/phodal/serverless>
 - https://github.com/serverless/serverless
 
-31.electron
+30.electron
 
 - vue-electron
 - electron-quick-start
@@ -219,19 +225,19 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-32.polymer
+31.polymer
 
-33.dart & flutter
+32.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-34.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+33.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-35.GraphQL
+34.GraphQL
 
-36.elm
+35.elm
 
 - <https://elm-lang.org/>
 
