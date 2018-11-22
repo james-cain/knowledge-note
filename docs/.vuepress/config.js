@@ -47,6 +47,7 @@ module.exports = {
           collapsable: false,
           children: [
             '/knowledge/Damn-hole-of-common-plugin.md',
+            '/knowledge/Damn-hole-of-webapi.md',
             '/knowledge/Damn-hole-of-Browser.md',
             '/knowledge/Damn-hole-of-IE9.md',
             '/knowledge/Damn-hole-of-mobile-compatibility.md',
