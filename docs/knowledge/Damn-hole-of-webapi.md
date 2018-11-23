@@ -96,13 +96,69 @@
    IDBDatabase.onabort // 数据库使用终止时回调
    IDBDatabase.onclose // 数据库close，如会话关闭
    IDBDatabase.onerror // 数据库使用失败
-   IDBDatabase.onversionchange // 数据库结构发生变化(IDBOpenRequest.onupgradeneeded事件或IDBFactory.deleteDatabase())，不同于IDBVersionChangeEvent，但是相关联的
+   IDBDatabase.onversionchange // 数据库结构发生变化(IDBOpenDBRequest.onupgradeneeded事件或IDBFactory.deleteDatabase())，不同于IDBVersionChangeEvent，但是相关联的
    
    // 方法
    IDBDatabase.close()
    IDBDatabase.createObjectStore(name[, options]) // 创建或返回一个新的object store或index，即IDBObjectStore对象
    IDBDatabase.deleteObjectStore(name) // 通过给定名字销毁object store
-   IDBDatabase.transaction() // 返回事务对象(IDBTransaction)包含IDBTransaction.objectStore方法
+   IDBDatabase.transaction(storeNames[, mode]) // 返回事务对象(IDBTransaction)包含IDBTransaction.objectStore方法 storeNames可以是字符串数组，如果只有一个，可以直接用字符串名称
+   // 获取所有数据库可以使用db.objectStoreNames
+   // var transaction = db.transaction(db.objectStoreNames);
+   // mode有三个模式：readonly,readwrite,readwriteflush，默认为readonly，尽可能不要使用readwrite，除非必须写数据库
+   ```
+
+5. [`IDBObjectStore`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBObjectStore) 表示一个对象存储空间。
+
+   ```js
+   // 属性
+   IDBObjectStore.indexNames // 返回indexes名称list
+   IDBObjectStore.keyPath
+   IDBObjectStore.name // 获取store名称
+   IDBObjectStore.transaction // 获取属于哪个IDBTransaction对象
+   IDBObjectStore.autoIncrement // 自动增长计步，返回true/false
+   
+   // 方法
+   IDBObjectStore.add(value, key) // 返回IDBRequest对象，该方法只做插入，如果只更新已经存在的记录，要使用IDBObjectStore.put方法
+   IDBObjectStore.clear() // 返回IDBRequest对象，清除所有的数据，如果只想删除部分数据，要用IDBObjectStore.delete方法
+   IDBObjectStore.count([query]) // 返回IDBRequest对象，返回所有记录的数量或所有匹配key、IDBKeyRange的记录数量
+   IDBObjectStore.createIndex(indexName, keyPath[, objectParameters]) // 返回IDBIndex对象，创建一个新的字段/列，定义一个新的数据点
+   // objectParameters为IDBIndexParameters对象，可以包括属性：unique、multiEntry、locale
+   // objectStore.createIndex('hours', 'hours', { unique: true });
+   IDBObjectStore.delete(key or KeyRange) // 返回IDBRequest对象
+   IDBObjectStore.deleteIndex(indexName) // 删除index
+   IDBObjectStore.get(key) // 返回IDBRequest对象，根据key查询object store
+   IDBObjectStore.getKey(key) // 返回IDBRequest对象
+   IDBObjectStore.getAll([query, count]) // 返回IDBRequest对象
+   IDBObjectStore.getAllKeys([query, count]) // 返回IDBRequest对象
+   IDBObjectStore.index(name)
+   IDBObjectStore.openCursor([query, direction]) // 返回IDBRequest对象，在单独线程中，返回一个新的IDBCursorWithValue对象
+   // direction为IDBCursorDirection对象，合法值包括next、nextunique、prev、prevunique，默认next
+   IDBObjectStore.openKeyCursor([query, direction]) // 返回IDBRequest对象，在单独线程中，返回一个新的IDBCursor对象
+   IDBObjectStore.put(item[, key])
+   ```
+
+6. [`IDBIndex`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBIndex) 提供了到索引元数据的访问。
+
+7. [`IDBCursor`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBCursor) 遍历对象存储空间和索引。
+
+8. [`IDBTransaction`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBTransaction) 表示一个事务。在数据库上创建一个事务，指定它的范围（例如希望访问哪一个对象存储空间），并确定希望的访问类型（只读或写入）。
+
+   ```js
+   // 属性
+   IDBTransaction.db // 返回数据库连接
+   IDBTransaction.error 
+   IDBTransaction.mode // readonly、readwrite、versionchange，默认值为readonly
+   IDBTransaction.objectStoreNames // 返回IDBObjectStore对象的名称list
+   
+   // 事件
+   IDBTransaction.onabort
+   IDBTransaction.oncomplete
+   IDBTransaction.onerror
+   
+   // 方法
+   IDBTransaction.abort() // 事务发生异常时，回滚所有对象变化
+   IDBTransaction.objectStore(name) // 返回IDBObjectStore实例
    ```
 
 
