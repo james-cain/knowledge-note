@@ -11,6 +11,7 @@ https://github.com/james-cain/samples
 - BoardcastChannel workbox.broadcastUpdate  <https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel>  依赖于webworker（完成）
 - Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>（完成）
 - PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push（完成）
+- https://lavas.baidu.com/ready兼容性列表
 - ServiceWorker  涉及到Cache、CacheStorage、ServiceWorkerContainer、ServiceWorkerRegistration、ServiceWorker、ServiceWorkerGlobalScope、Clients、NavigationPreloadManager <https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker> <https://w3c.github.io/ServiceWorker/>  <https://github.com/w3c/ServiceWorker> （完成）
 - background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/（完成）
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
@@ -22,7 +23,9 @@ https://github.com/james-cain/samples
 - lighthouse（持续学习）
 - <https://webpagetest.org/easy>
 - <https://developers.google.com/speed/pagespeed/insights/>
-- https://web.dev/
+- <https://web.dev/>
+- <https://wpostats.com/>
+- https://github.com/davidsonfellipe/awesome-wpo
 - 《web性能权威指南》
 - 《图解TCP/IP》
 - 《图解HTTP》
@@ -83,13 +86,25 @@ https://github.com/james-cain/samples
 
 - <https://github.com/robinvdvleuten/vuex-persistedstate>
 
-7.Vue长列表
+7.storage
+
+- <https://github.com/james-cain/irondb>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+- <https://github.com/localForage/localForage>
+- <https://github.com/dfahlander/Dexie.js>
+- <https://github.com/erikolson186/zangodb>
+- <https://github.com/jakearchibald/idb-keyval>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB>
+- <https://www.w3.org/TR/IndexedDB/#introduction>
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto> 使用加密存储
+
+8.Vue长列表
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
 - https://github.com/valdrinkoshi/virtual-scroller
 
-8.WebWorker（优先级一）
+9.WebWorker（优先级一）
 
 - https://whatwg-cn.github.io/html/#workers
 - greenlet
@@ -102,27 +117,19 @@ https://github.com/james-cain/samples
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
 - <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 
-9.web安全
+10.web安全
 
 - <https://github.com/james-cain/Web-Security-Learning>
 - <https://github.com/leizongmin/js-xss>
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
+- https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
 
-10.vue-hooks
+11.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（优先级二）
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
-
-11.storage
-
-- <https://github.com/james-cain/irondb>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
-- <https://github.com/localForage/localForage>
-- <https://github.com/dfahlander/Dexie.js>
-- <https://github.com/erikolson186/zangodb>
-- https://github.com/jakearchibald/idb-keyval
 
 12.video（优先级一）
 
@@ -201,17 +208,26 @@ https://github.com/james-cain/samples
 
 27.AI《AI未来》《深度学习》
 
-28.TDD开发模式
+- https://github.com/apachecn/AiLearning
+
+28.tensorFlow
+
+29.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-29.serverless
+30.搜索引擎
+
+- https://github.com/olivernn/lunr.js
+
+31.serverless
 
 - <https://github.com/phodal/serverless>
-- https://github.com/serverless/serverless
+- <https://github.com/serverless/serverless>
+- https://github.com/embark-framework/embark
 
-30.electron
+32.electron
 
 - vue-electron
 - electron-quick-start
@@ -225,19 +241,19 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-31.polymer
+33.polymer
 
-32.dart & flutter
+34.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-33.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+35.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-34.GraphQL
+36.GraphQL
 
-35.elm
+37.elm
 
 - <https://elm-lang.org/>
 
