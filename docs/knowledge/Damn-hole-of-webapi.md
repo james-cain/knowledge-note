@@ -57,6 +57,71 @@ index.openCursor().onsuccess = function(event) {
 };
 ```
 
+### 数据库版本更新问题
+
+> 同一个数据库可以同时在多个客户端（页面、工作线程）中被利用，事务确保当在读写时不会冲突。如果其中一个新的客户端期望更新数据库，除非其他客户端都关闭当前版本的数据库连接，否则是不允许的。
+>
+> 为了防止新的客户端中断更新，客户端可以通过 [监听版本事件](https://www.w3.org/TR/IndexedDB/#connection-version-change-event)做到。该事件会在别的客户端期望更新数据库时触发。
+>
+> 可以做如下操作:
+
+方式一：
+
+```js
+db.onversionchange = function() {
+	// 保存所有数据
+    saveUnsave().then(function() {
+        // 如果document不在激活态，可以直接reload页面而不需要用户交互
+        if (!document.hasFocus()) {
+            location.reload();
+        }
+        // 如果document正在focus，重新刷新页面太粗暴了，可以通过向用户弹出询问的方式会合理些
+        else {
+            displayMessage('Please reload this page for the latest version.');
+        }
+    })
+}
+function saveUnsavedData() {}
+function displayMessage() {}
+```
+
+方式二：调用connection的close()方法。但是，这样要确保应用对这件事知情，否则接下来的操作都会是失败的
+
+```js
+db.onversionchange = function() {
+    saveUnsavedData().then(function() {
+        db.close();
+        stopUsingTheDatabase();
+    });
+};
+
+function stopUsingTheDatabase() {}
+```
+
+>  如果别的客户端在versionchange事件触发后仍持有数据库的连接，blocked事件就会触发
+
+```js
+var request = indexedDB.open('library', 4);
+var blockedTimeout;
+
+request.onblocked = function() {
+    // 给别的客户端时间异步保存数据
+    blockedTimeout = setTimeout(function() {
+        displayMessage('Upgrade blocked - Please close other tabs displaying this site.');
+    }, 1000);
+}
+
+request.onupgradeneeded = function(event) {
+    clearTimeout(blockedTimeout);
+    hideMessage();
+    // ...
+}
+
+function hideMessage() {}
+```
+
+> 对于已经断开了数据库连接的客户端，不会看到对应message
+
 ### API
 
 1. [`IDBFactory`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBFactory) 提供了对数据库的访问。这是由全局对象 `indexedDB` 实现的接口，因而也是该 API 的入口
@@ -273,4 +338,39 @@ index.openCursor().onsuccess = function(event) {
    IDBTransaction.objectStore(name) // 返回IDBObjectStore实例
    ```
 
+9. [`IDBKeyRange`](https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange) 定义键的范围。
 
+   > 通过该属性，可以限制range使用大写、小写绑定。如，遍历所有键值，其中值的范围在A-Z。
+   >
+   > 可以使用以下代码结构，检索所有键在一个确认的范围：
+
+   All keys <= x: IDBKeyRange.upperBound(x)
+
+   All keys < x: IDBKeyRange.upperBound(x, true)
+
+   All keys >= y: IDBKeyRange.lowerBound(y)
+
+   All keys > y: IDBKeyRange.lowerBound(y, true)
+
+   All keys >= x && <= y: IDBKeyRange.bound(x, y)
+
+   All keys > x && < y: IDBKeyRange.bound(x, y, true, true)
+
+   All keys > x && <=y: IDBKeyRange.bound(x, y, true, false)
+
+   All keys >= x && < y: IDBKeyRange.upperBound(x, y, false, true)
+
+   All keys = z: IDBKeyRange.only(z)
+
+10. [`IDBCursorWithValue`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBCursorWithValue) 遍历对象存储空间和索引并返回游标的当前值。
+
+11. [`IDBEnvironment`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBEnvironment) 提供了到客户端数据库的访问。它由 [window](https://developer.mozilla.org/en-US/docs/DOM/window) 对象实现。
+
+    IDBEnvironment.indexedDB // 工厂函数，包含IDBFactory对象
+
+12. [`IDBVersionChangeEvent`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBVersionChangeEvent) 表明数据库的版本号已经改变。
+
+    ```js
+    IDBVersionChangeEvent.oldVersion // 返回旧版本数据库的版本号
+    IDBVersionChangeEvent.newVersion // 返回新版本数据库的版本号
+    ```

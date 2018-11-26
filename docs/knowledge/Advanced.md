@@ -141,27 +141,25 @@ https://github.com/james-cain/samples
 - <https://chimee.org/docs/chimee_player_preface.html>
 - <https://github.com/video-dev/hls.js>
 
-13.SharedWorker、SharedWorkerGlobalScope
+13.Performance （stats.js）（优先级三）
 
-14.nodejs/deno
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
-- <https://nodejs.org/dist/latest-v10.x/docs/api/>
-- <https://github.com/denoland/deno>
-- <https://github.com/GoogleChromeLabs/carlo>
-
-15.设计模式和js要点
+14.设计模式和js要点
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
 - https://github.com/stephentian/33-js-concepts（优先级四）
+- 《高性能Javascript》
+- 《你不知道的Javascript》
+- 《Mostly-adequate-guide》
+- <https://github.com/kamranahmedse/developer-roadmap>
+- <https://github.com/ziishaned/learn-regex>
+- <https://tc39.github.io/ecma262/#sec-intro>
+- https://tc39.github.io/process-document/
 
-16.router（navaid）（优先级二）
-
-- https://github.com/kevindurb/router
-
-17.state（reworm）（优先级二）
-
-18.microfrontends
+15.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -170,34 +168,14 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-19.MutationObserver.js（优先级三）
-
-20.通信
-
-- MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
-- <https://whatwg-cn.github.io/html/#comms>
-
-21.浏览器 跨域、重绘重排
+16.浏览器 跨域、重绘重排
 
 - <https://daniel.haxx.se/blog/2018/11/11/http-3/>
 - Http1/http2
 
-22.V8
+17.linux《鸟哥的私房菜》
 
-- <https://v8.dev/docs>
-
-23.WebAssembly
-
-- https://webassembly.github.io/spec/core/
-
-24.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
-
-25.Performance （stats.js）（优先级三）
-
-- <https://w3c.github.io/hr-time/>
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-26.算法编写
+18.算法编写
 
 - leetcode
 - InterviewMap
@@ -206,28 +184,64 @@ https://github.com/james-cain/samples
 - 《算法导论》
 - mathjs
 
-27.AI《AI未来》《深度学习》
+19.nodejs/deno
+
+- <https://nodejs.org/dist/latest-v10.x/docs/api/>
+- <https://github.com/denoland/deno>
+- <https://github.com/GoogleChromeLabs/carlo>
+
+20.密码学
+
+- <https://github.com/nakov/practical-cryptography-for-developers-book>
+- https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
+
+21.MutationObserver.js（优先级三）
+
+22.通信
+
+- MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
+- <https://whatwg-cn.github.io/html/#comms>
+
+23.V8
+
+- <https://v8.dev/docs>
+
+24.WebAssembly
+
+- https://webassembly.github.io/spec/core/
+
+25.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+
+26.AI《AI未来》《深度学习》
 
 - https://github.com/apachecn/AiLearning
 
-28.tensorFlow
+27.tensorFlow
 
-29.TDD开发模式
+28.SharedWorker、SharedWorkerGlobalScope
+
+29.router（navaid）（优先级二）
+
+- https://github.com/kevindurb/router
+
+30.state（reworm）（优先级二）
+
+31.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-30.搜索引擎
+32.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-31.serverless
+33.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - https://github.com/embark-framework/embark
 
-32.electron
+34.electron
 
 - vue-electron
 - electron-quick-start
@@ -241,19 +255,19 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-33.polymer
+35.polymer
 
-34.dart & flutter
+36.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-35.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+37.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-36.GraphQL
+38.GraphQL
 
-37.elm
+39.elm
 
 - <https://elm-lang.org/>
 
@@ -273,29 +287,15 @@ https://github.com/james-cain/samples
 - 《Mostly-adequate-guide》
 - <https://github.com/kamranahmedse/developer-roadmap>
 - <https://github.com/ziishaned/learn-regex>
-- https://tc39.github.io/ecma262/#sec-intro
+- <https://tc39.github.io/ecma262/#sec-intro>
+- https://tc39.github.io/process-document/
 
 3.CSSTriggers/CSS参考手册  11月第一个星期
 
 - <https://csstriggers.com/>
-- http://css.doyoe.com/
+- <http://css.doyoe.com/>
 
-4.WebAPI
-
-- https://developer.mozilla.org/zh-CN/docs/Web/API
-- IntersectionObserver
-- BoardcastChannel
-- MessageChannel
-- MutationObserver
-- Notification
-- Performance
-- PushManager
-- RTC
-- ServiceWorker
-- WebWorker
-- document.execCommand/document.queryCommandSupported (完成)
-
-5.类vue
+4.类vue
 
 - learn-vue
 - vue-analysis
@@ -303,7 +303,7 @@ https://github.com/james-cain/samples
 - vuera
 - chao
 
-6.类小程序
+5.类小程序
 
 - tua-mp
 - tina
@@ -313,7 +313,7 @@ https://github.com/james-cain/samples
 - san
 - weweb
 
-7.类react
+6.类react
 
 - preact
 - react
@@ -322,7 +322,7 @@ https://github.com/james-cain/samples
 - anu
 - nerv
 
-8.类mvvm
+7.类mvvm
 
 - aoy
 - virtual-dom
