@@ -89,13 +89,13 @@ https://github.com/james-cain/samples
 7.storage
 
 - <https://github.com/james-cain/irondb>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>（完成）
 - <https://github.com/localForage/localForage>
 - <https://github.com/dfahlander/Dexie.js>
 - <https://github.com/erikolson186/zangodb>
-- <https://github.com/jakearchibald/idb-keyval>
+- <https://github.com/jakearchibald/idb-keyval>（完成）
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB>
-- <https://www.w3.org/TR/IndexedDB/#introduction>
+- <https://www.w3.org/TR/IndexedDB/#introduction>（完成）
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto> 使用加密存储
 
 8.Vue长列表
@@ -120,18 +120,24 @@ https://github.com/james-cain/samples
 10.web安全
 
 - <https://github.com/james-cain/Web-Security-Learning>
+- https://tech.meituan.com/fe_security.html
 - <https://github.com/leizongmin/js-xss>
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
-- https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 
-11.vue-hooks
+11.编译原理
+
+- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
+
+12.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（优先级二）
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
+- https://juejin.im/post/5bfa929551882524cb6f413b
 
-12.video（优先级一）
+13.video（优先级一）
 
 - <https://github.com/videojs/video.js>
 - <https://github.com/surmon-china/vue-video-player>
@@ -141,12 +147,12 @@ https://github.com/james-cain/samples
 - <https://chimee.org/docs/chimee_player_preface.html>
 - <https://github.com/video-dev/hls.js>
 
-13.Performance （stats.js）（优先级三）
+14.Performance （stats.js）（优先级三）
 
 - <https://w3c.github.io/hr-time/>
 - https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
-14.设计模式和js要点
+15.设计模式和js要点
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
@@ -159,7 +165,7 @@ https://github.com/james-cain/samples
 - <https://tc39.github.io/ecma262/#sec-intro>
 - https://tc39.github.io/process-document/
 
-15.microfrontends
+16.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -168,14 +174,14 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-16.浏览器 跨域、重绘重排
+17.浏览器 跨域、重绘重排
 
 - <https://daniel.haxx.se/blog/2018/11/11/http-3/>
 - Http1/http2
 
-17.linux《鸟哥的私房菜》
+18.linux《鸟哥的私房菜》
 
-18.算法编写
+19.算法编写
 
 - leetcode
 - InterviewMap
@@ -184,64 +190,64 @@ https://github.com/james-cain/samples
 - 《算法导论》
 - mathjs
 
-19.nodejs/deno
+20.密码学
+
+- <https://github.com/nakov/practical-cryptography-for-developers-book>
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
+
+21.nodejs/deno
 
 - <https://nodejs.org/dist/latest-v10.x/docs/api/>
 - <https://github.com/denoland/deno>
 - <https://github.com/GoogleChromeLabs/carlo>
 
-20.密码学
+22.MutationObserver.js（优先级三）
 
-- <https://github.com/nakov/practical-cryptography-for-developers-book>
-- https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
-
-21.MutationObserver.js（优先级三）
-
-22.通信
+23.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）（优先级三）
 - <https://whatwg-cn.github.io/html/#comms>
 
-23.V8
+24.V8
 
 - <https://v8.dev/docs>
 
-24.WebAssembly
+25.WebAssembly
 
 - https://webassembly.github.io/spec/core/
 
-25.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+26.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
 
-26.AI《AI未来》《深度学习》
+27.AI《AI未来》《深度学习》
 
 - https://github.com/apachecn/AiLearning
 
-27.tensorFlow
+28.tensorFlow
 
-28.SharedWorker、SharedWorkerGlobalScope
+29.SharedWorker、SharedWorkerGlobalScope
 
-29.router（navaid）（优先级二）
+30.router（navaid）（优先级二）
 
 - https://github.com/kevindurb/router
 
-30.state（reworm）（优先级二）
+31.state（reworm）（优先级二）
 
-31.TDD开发模式
+32.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-32.搜索引擎
+33.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-33.serverless
+34.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - https://github.com/embark-framework/embark
 
-34.electron
+35.electron
 
 - vue-electron
 - electron-quick-start
@@ -255,19 +261,19 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-35.polymer
+36.polymer
 
-36.dart & flutter
+37.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-37.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+38.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-38.GraphQL
+39.GraphQL
 
-39.elm
+40.elm
 
 - <https://elm-lang.org/>
 
