@@ -259,6 +259,22 @@ function hideMessage() {}
    // direction为IDBCursorDirection对象，合法值包括next、nextunique、prev、prevunique，默认next
    IDBObjectStore.openKeyCursor([query, direction]) // 返回IDBRequest对象，在单独线程中，返回一个新的IDBCursor对象
    IDBObjectStore.put(item[, key])
+   // put可以指定key来影响key generator，当且仅当key是数值且高于最后生成key
+   // 示例
+   store = db.createObjectStore('store', { autoIncrement: true });
+   store.put('a'); // will get key 1
+   store.put('b', 3); // will get key 3
+   store.put('c'); // will get key 4
+   store.put('d', -10); // will get key -10
+   store.put('e'); // will get key 5
+   store.put('f', 6.00001); // will get 6.00001
+   store.put('g'); // will get key 7
+   store.put('f', 8.9999); // will get 8.9999
+   store.put('g'); // will get key 9
+   store.put('h', 'foo'); // will get key 'foo'
+   store.put('i'); // will get key 10
+   store.put('j', [1000]); // will use key [1000]
+   store.put('k'); // will get key 11
    ```
 
 6. [`IDBIndex`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBIndex) 提供了到索引元数据的访问。

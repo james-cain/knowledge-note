@@ -257,3 +257,7 @@
 
 [front-end-interview-handbook](https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md)
 
+## Safari真机调试JS
+
+[真机调试](https://www.jianshu.com/p/ed4b1bfb57dc)
+
