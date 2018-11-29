@@ -122,6 +122,53 @@ function hideMessage() {}
 
 > 对于已经断开了数据库连接的客户端，不会看到对应message
 
+### Object Store
+
+> object store是对数据库的数据的主要存储机制。每个数据库都有一系列的object stores。`object stores都可以被修改，但是只能使用upgrade transaction，例如，通过upgradeneeded事件响应`。当一个新的数据库被创建时，是不包括任何object stores的
+>
+> object  store的每个数据都有一个key和value。list根据对key升序排序。相同的key不会用重复的记录
+>
+> object store都有一个key path。如果object store有一个key path，那么会使用**in-line keys**，否则使用**out-of-line keys**
+>
+> object store有一个key generator
+>
+> object store可以从记录中通过以下三种途径获取key：
+>
+> 1. **key generator**
+> 2. **key path**
+> 3. **可以明确的指名key值**，当值被存储到object store中时。
+
+### Values
+
+> 每个记录都关联一个value。用户代理必须支持任何序列化独享。包括简单类型，如String、Date对象；和Object、Array实例，File对象、Blob对象、ImageData对象等。
+
+### Keys
+
+> 为了高效检索记录，每个记录时根据它的key来组织
+>
+> key的类型包括：number，date，string，binary，array；其中binary是新提出的草案，支持的浏览器包括Chrome 58，Firefox 51和Safari 10.1
+
+### 示例
+
+```js
+var request = indexedDB.open("library");
+request.onupgradeneeded = function () {
+	var db = request.result;
+var store = db.createObjectStore("books", { keyPath: 'isbn.id'});
+	store.put({title: "Quarry Memories", author: "Fred", isbn: { id: 123456, name: 'test' }});
+}
+request.onsuccess = function () {
+	var db = request.result;
+	var tx = db.transaction("books", "readonly");
+	var store = tx.objectStore("books");
+	var request2 = store.get(123456)
+	request2.onsuccess = function () {
+		console.log(request2.result);
+	}
+}
+
+```
+
 ### API
 
 1. [`IDBFactory`](https://developer.mozilla.org/en-US/docs/IndexedDB/IDBFactory) 提供了对数据库的访问。这是由全局对象 `indexedDB` 实现的接口，因而也是该 API 的入口
