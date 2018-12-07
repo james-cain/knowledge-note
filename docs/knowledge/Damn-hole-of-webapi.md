@@ -154,7 +154,7 @@ function hideMessage() {}
 var request = indexedDB.open("library");
 request.onupgradeneeded = function () {
 	var db = request.result;
-var store = db.createObjectStore("books", { keyPath: 'isbn.id'});
+	var store = db.createObjectStore("books", { keyPath: 'isbn.id'});
 	store.put({title: "Quarry Memories", author: "Fred", isbn: { id: 123456, name: 'test' }});
 }
 request.onsuccess = function () {
@@ -162,6 +162,25 @@ request.onsuccess = function () {
 	var tx = db.transaction("books", "readonly");
 	var store = tx.objectStore("books");
 	var request2 = store.get(123456)
+	request2.onsuccess = function () {
+		console.log(request2.result);
+	}
+}
+
+// 新增一个name object store
+var request = indexedDB.open("library", 2);
+request.onupgradeneeded = function () {
+	console.log('upgrading');
+	var db = request.result;
+	var store = db.createObjectStore("name");
+	store.put('james', 'reyshieh');
+}
+request.onsuccess = function () {
+	console.log('success');
+	var db = request.result;
+	var tx = db.transaction("name", "readonly");
+	var store = tx.objectStore("name");
+	var request2 = store.get('reyshieh')
 	request2.onsuccess = function () {
 		console.log(request2.result);
 	}
