@@ -104,9 +104,16 @@ https://github.com/james-cain/samples
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
-- https://github.com/valdrinkoshi/virtual-scroller
+- <https://github.com/valdrinkoshi/virtual-scroller>
 
-9.WebWorker（优先级一）
+9.图像识别
+
+- <https://github.com/naptha/tesseract.js>
+- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>
+- <https://github.com/antimatter15/ocrad.js>
+- https://github.com/muwoo/Matting
+
+10.WebWorker（优先级一）
 
 - https://whatwg-cn.github.io/html/#workers
 - greenlet
@@ -119,13 +126,6 @@ https://github.com/james-cain/samples
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
 - <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 - <https://github.com/james-cain/things-you-can-do-in-a-web-worker>
-
-10.图像识别
-
-- <https://github.com/naptha/tesseract.js>
-- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>
-- <https://github.com/antimatter15/ocrad.js>
-- https://github.com/muwoo/Matting
 
 11.web安全
 
@@ -164,6 +164,7 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
 - <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
 - <https://chimee.org/docs/chimee_player_preface.html>
+- https://github.com/Chimeejs/chimee-player
 - <https://github.com/video-dev/hls.js>
 
 16.Performance （stats.js）（优先级三）
