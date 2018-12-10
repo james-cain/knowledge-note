@@ -36,3 +36,52 @@ event.target.value= '';
 
 ## appmanifest
 
+## Canvas
+
+### CanvasRenderingContext2D
+
+该接口提供的2D渲染背景用来绘制<canvas>元素，需要在<canvas>上调用getContext()，并提供"2d"的参数：
+
+```js
+var canvas = document.getElementById('tutorial');
+var ctx = canvas.getContext('2d');
+```
+
+#### 填充和描边样式
+
+CanvasRenderingContext2D.fillStyle -- 图形内部的颜色和样式
+
+CanvasRenderingContext2D.strokeStyle -- 图形边线的颜色和样式
+
+#### 像素控制
+
+[`CanvasRenderingContext2D.createImageData()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/createImageData) -- 使用指定的尺寸，创建一个新的ImageData对象。所有的像素在新的对象中都是透明的。
+
+```js
+ctx.createImageData(width, height);
+ctx.createImageData(imageData); // 从现有的ImageData对象复制一个和其宽度和高度相同的对象。图像自身不允许被复制
+```
+
+[`CanvasRenderingContext2D.getImageData()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/getImageData) -- 返回一个ImageData对象，用来描述canvas区域隐含的像素数据，起始点为(sx, sy)、宽为sw、高为sh
+
+```js
+ctx.getImageData(sx, sy, sw, sh);
+// sx 被提取图像数据矩形区域的左上角x坐标
+// sy 被提取图像数据矩形区域的左上角y坐标
+// sw 被提取的图像数据矩形区域的宽度
+// sh 被提取的图像数据矩形区域的高度
+```
+
+### ImageData
+
+> 可以使用该属性，去除、填充背景等应用
+
+```js
+// 属性
+ImageData.data // Uint8ClampedArray描述了一个以RGBA顺序数据的一维数组，数据使用0至255的整数
+ImageData.height // 使用像素描述ImageData的实际高度
+ImageData.width // 使用像素描述ImageData的实际宽度
+```
+
+
+
