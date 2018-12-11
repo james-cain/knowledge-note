@@ -53,6 +53,36 @@ CanvasRenderingContext2D.fillStyle -- 图形内部的颜色和样式
 
 CanvasRenderingContext2D.strokeStyle -- 图形边线的颜色和样式
 
+#### 绘制图像
+
+[`CanvasRenderingContext2D.drawImage()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage) -- 绘制指定的图片
+
+```js
+ctx.drawImage(image, dx, dy);
+ctx.drawImage(image, dx, dy, dWidth, dHeight);
+ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+```
+
+![canvas_drawImage](http://reyshieh.com/assets/canvas_drawImage.png)
+
+d -- destination s -- source
+
+dx -- 目标画布的左上角在目标canvas上X轴的位置
+
+dy -- 目标画布的左上角在目标canvas上Y轴的位置
+
+dWidth -- 在目标画布上绘制图像的宽度
+
+dHeight -- 在目标画布上绘制图像的高度
+
+sx -- 需要绘制到目标上下文中的，源图像的矩形选择框的左上角X坐标
+
+sy -- 需要绘制到目标上下文中的，源图像的矩形选择框的左上角Y坐标
+
+sWidth -- 需要绘制到目标上下文中的，源图像的矩形选择框的宽度
+
+sHeight -- 需要绘制到目标上下文中的，源图像的矩形选择框的高度
+
 #### 像素控制
 
 [`CanvasRenderingContext2D.createImageData()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/createImageData) -- 使用指定的尺寸，创建一个新的ImageData对象。所有的像素在新的对象中都是透明的。

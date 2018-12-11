@@ -317,7 +317,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
 
 避免页面HTML载入完成到页面内容展示这段过程中页面出现空白
 
-```
+```html
 <!DOCTYPE html>
 
 <html lang="en">
@@ -357,7 +357,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
 
 让浏览器提前解析获取静态资源的主机IP，避免等到请求时才发起DNS解析请求。通常移动端HTML采用如下方式
 
-```
+```html
 <meta http-equiv="x-dns-prefetch-control" content="on">
 <link rel="dns-prefetch" href="//cdn.domain.com">
 ```
@@ -368,7 +368,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
 
 对于移动端首屏加载后，提前加载可能会被使用的资源，保证用户需要浏览时已经加载完成
 
-```
+```html
 <link rel="preload" href="https://example.com">
 ```
 
@@ -378,7 +378,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
 
 预渲染，可以通过预渲染将下载的文件先放在后台渲染
 
-```
+```html
 <link rel="prerender" href="https://example.com">
 ```
 
@@ -410,7 +410,7 @@ intersionObserver.observe(document.querySelector('.scrollerFooter'));
 
 AMP HTML可以作为优化前端页面性能的一个解决方案，使用AMP Component中的元素来代替原始的页面元素进行直接渲染。
 
-```
+```html
 <!-- 不推荐 -->
 
 <video width="400" height="300" src="http://www.domain.com/videos/myvideo.mp4" poster="path/poster.jpg">
@@ -490,7 +490,7 @@ AMP HTML可以作为优化前端页面性能的一个解决方案，使用AMP Co
 
 使用事件代理可以避免对每个元素都进行绑定，并且可以避免出现内存泄露及需要动态添加元素的事件绑定问题，所以尽量不要直接使用事件绑定。
 
-```
+```js
 // 不推荐
 $('.btn').on('click', function(e){
     console.log(this);
@@ -509,7 +509,7 @@ $('body').on('click', '.btn', function(e){
 
 需要对touchmove、scroll这类可能连续触发回调的事件设置事件节流，例如设置每隔16ms（60帧的帧间隔为16.7ms，因此可以合理地设置为16ms）才进行一次事件处理，避免频繁的事件调用导致移动端页面卡顿。
 
-```
+```js
 // 推荐
 $('.scroller').on('touchmove', '.btn', function(e){
     let self = this;
@@ -529,7 +529,7 @@ $('.scroller').on('touchmove', '.btn', function(e){
 
 例子
 
-```
+```js
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
@@ -569,7 +569,7 @@ $('.scroller').on('touchmove', '.btn', function(e){
 
 Debounce.js
 
-```
+```js
 function debounce(func, wait, immediate) {
 
     var timeout, result;
@@ -610,7 +610,7 @@ function debounce(func, wait, immediate) {
 
 方法一：使用时间戳，当触发事件的时候，取出当前的时间戳，然后减去之前的时间戳（最一开始值设为0），如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳，如果小于，就不执行
 
-```
+```js
 function throttle(func, wait) {
     var context, args;
     var previous = 0;
@@ -629,7 +629,7 @@ function throttle(func, wait) {
 
 方法二：使用定时器，当触发事件的时候，设置一个定时器，再触发事件的时候，如果定时器存在，就不执行，直到定时器执行，然后执行函数，清空定时器，设置下个定时器
 
-```
+```js
 function throttle(func, wait) {
     var timeout;
     var previous = 0;
@@ -650,7 +650,7 @@ function throttle(func, wait) {
 
 方法三：结合以上两者的优势，做到鼠标移入立刻执行，停止触发的时候还能再执行一次。
 
-```
+```js
 function throttle(func, wait) {
     var timeout, context, args, result;
     var previous = 0;
@@ -689,7 +689,7 @@ function throttle(func, wait) {
 
 一般认为，在移动端设置Viewport可以加速页面的渲染，同时可以避免缩放导致页面重排重绘。在移动端固定Viewport设置的方法如下。
 
-```
+```html
 <!-- 设置viewport不缩放 -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -703,7 +703,7 @@ function throttle(func, wait) {
 
 使用CSS3动画时可以设置transform: translateZ(0)来开启移动设备浏览器的GPU图形处理加速，让动画过程更加流畅。
 
-```
+```css
 -webkit-transform: translateZ(0);
 -ms-transform: translateZ(0);
 -o-transform: translateZ(0);
@@ -726,7 +726,7 @@ transform: translateZ(0);
 
 ### 渲染几万条数据不卡住页面
 
-```
+```js
 可以通过requestAnimationFrame来每16ms刷新一次
 
 setTimeout(() => {
@@ -807,7 +807,7 @@ HTTP2.0引入了多路复用，能让多个请求使用同一个TCP链接，加�
 
 "显灵板"(Ouija Board)是任何支持背景图片的HTML元素，如SPAN或DIV。使用CSS的background-position属性，可以将HTML元素放置到背景图片中期望的位置上。
 
-```
+```html
 <div style="background-image: url('a_lot_of_sprites.gif);
 			background-posiiton: -260px -90px;
 			width: 26px;
@@ -1017,13 +1017,13 @@ Vary: Accept-Encoding
 
 - 使用LINK标签
 
-  ```
+  ```html
   <link rel="stylesheet" href="style.css">
   ```
 
 - 使用@import规则
 
-  ```
+  ```css
   <style>
   	@import url("style.css");
   </style>
@@ -1066,7 +1066,7 @@ CSS表达式是动态设置CSS属性的一种强大(并且危险)的方式。
 
 在很多动态页面，可以使用CSS表达式将背景色设置为每小时变化一次。
 
-```
+```css
 background-color: expression((new Date()).getHours()%2 ? '#b8d4ff' : '#f08100');
 ```
 
@@ -1076,7 +1076,7 @@ expression方法接受一个Javascript表达式。
 
 如果CSS表达式必须被求值一次，那么可以在这一次执行中重写自身。
 
-```
+```html
 <style>
 P {
     background-color: expression(altBgcolor(this));
@@ -1181,7 +1181,7 @@ TTL值建议设置为1天，但是一些拥有巨大数量用户的顶级网站�
 
 - 在HTML文档的头中包含meta refresh标签，在content属性指定的秒数后重定向
 
-  ```
+  ```html
   <meta http-equiv="refresh" content="0; url=http://stevesouders.com/newuri">
   ```
 
@@ -1221,7 +1221,7 @@ Javascript并不支持多线程，所以无法使用Javascript代码创建一个
 
 创建并启动worker
 
-```
+```js
 // 创建并开始执行worker
 var worker = new Worker("js/decrypt.js");
 
@@ -1252,7 +1252,7 @@ onmessage = function(e) {
 
 Gears Worker API与Web Worker API相似但并不完全一致。如下代码就是使用Gears的API来重写
 
-```
+```js
 // 创建Worker Pool，它会产生Worker
 var workerPool = google.gears.factory.create('beta.workerpool');
 
@@ -1299,7 +1299,7 @@ workerPool.onmessage = function(ignore1, ignore2, e) {
 - 使用delete关键字从内存中移除不再需要的Javascript对象
 - 从网页的DOM树上移除不再是必须的节点
 
-```
+```js
 var page = { address: "http://some/url" };
 
 page.contents = getContents(page.address);
@@ -1333,7 +1333,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   该方法的缺陷是通过XMLHttpRequest获取的脚本必须部署在和主页面相同的域中。
 
-  ```
+  ```js
   var xhrObj = getXHRObject();
   xhrObj.onreadystatechange = function() {
       if (xhrObj.readyState == 4 && xhrObj.status == 200) {
@@ -1348,7 +1348,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   该方式也是通过XMLHttpRequest来获取Javascript的。但与eval不同的是，该机制是通过创建一个script的DOM元素，然后把XMLHttpRequest的响应注入script中来执行Javascript的。
 
-  ```
+  ```js
   var xhrObj = getXHRObject();
   xhrObj.onreadystatechange = function() {
       if (xhrObj.readyState == 4 && xhrObj.status == 200) {
@@ -1365,7 +1365,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   该技术使用Javascript动态地创建script DOM元素并设置其src属性
 
-  ```
+  ```js
   var scriptElem = document.createElement('script');
   scriptElem.src = 'http://anydomain.com/A.js';
   document.getElementsByTagName('head')[0].appendChild(scriptElem);
@@ -1379,7 +1379,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   只在部分浏览器中实现了并行下载。
 
-  ```
+  ```html
   <script defer src="A.js"></script>
   ```
 
@@ -1393,7 +1393,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   不推荐使用该技术，因为它只在部分浏览器中实现并行下载，而且还阻塞脚本之外所有其他资源的下载。
 
-  ```
+  ```js
   document.write("<script type='text/javascript' src='A.js'></script>");
   ```
 
@@ -1429,7 +1429,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   整合异步加载外部脚本和行内脚本的首选。
 
-  ```
+  ```js
   <script type="text/javascript">
   var aExamples = [['couple-normal.php','Normal Script Src'],..];
   
@@ -1470,7 +1470,7 @@ delete nodeToDelete.parent.removeChild(nodeToDelete);
 
   **可以让浏览器异步执行行内脚本**，使其有可能实现并行下载和逐步渲染。简单的异步调用就是**使用setTimeout**，例子：
 
-  ```
+  ```js
   function longCode() {
       var tStart = Number(new Date());
       while((tStart + 5000) > Number(new Date())) {};
@@ -1568,7 +1568,7 @@ Javascript引擎会在页面加载后创建一个全局的执行上下文，然�
 
 例子：
 
-```
+```js
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -1591,7 +1591,7 @@ var result = add(5, 10);
 
 在代码执行过程中，执行上下文对应的作用域链通常保持不变。然而有两个语句会临时增长执行上下文的作用域链。**第一个是with语句**，用于将对象属性作为局部变量来显示，使其便于访问。例如：
 
-```
+```js
 var person = {
     name: 'Nicholas',
     age: 30
@@ -1689,7 +1689,7 @@ displayInfo();
 
   Javascript中没有用于移除字符串头尾空白的原生修剪方法。自行封装trim函数实现
 
-  ```
+  ```js
   function trim(text) {
       return text.replace(/^\s+|\s+$/g, "");
   }
@@ -1697,7 +1697,7 @@ displayInfo();
 
   但是以上方法中存在性能问题-正则表达式。一方面是指名有两个匹配模式的管道运算符，另一方面是指名全局应用该模式的g标记。可以将正则表达式一分为二并去掉g标记来重写函数，以此来提高速度：
 
-  ```
+  ```js
   function trim(text) {
       return text.replace(/^\s+/, "").replace(/\s+$/, "");
   }
@@ -1705,7 +1705,7 @@ displayInfo();
 
   但最快的裁剪字符串方式，如下
 
-  ```
+  ```js
   function trim(text) {
       text = text.replace(/^\s+/, "");
       for (var i = text.length - 1; i >= 0; i--) {
@@ -1754,7 +1754,7 @@ Javascript的单线程本质特性意味着任何时间段内只能执行一个�
 
 用定时器拆分处理数组的函数：
 
-```
+```js
 // 函数接受三个参数：
 // 第一个是需要处理的数组，第二个是用来处理每个数组元素的函数，最后一个是可选的用来设置处理函数执行时的上下文
 // 处理元素用到了定时器，所以在每个元素处理后代码会被挂起
@@ -1782,7 +1782,7 @@ chunk(todo, function(item) {
 
 如何通过一个有效的算法（冒泡排序）来对大型数据集进行排序，避免脚本长时间运行的问题
 
-```
+```js
 // 函数拆分了array排序时的每次遍历，让浏览器在对数组处理的过程中还能做些其他事情。
 function sort(array, onComplete) {
     var pos = 0;
@@ -1825,7 +1825,7 @@ Comet的目标包括随时从服务端向客户端推送数据、提升传统Aja
 
   由于每台服务器允许的最大并发连接数有限制，所以在很多浏览器中连接很容易发生阻塞或死锁。最简单的方式是简单轮询，即网站或应用每x毫秒发出一个请求来检查是否有更新需要呈现到用户界面上。
 
-  ```
+  ```js
   setTimeout(function() {xhrRequest({"foo": "bar"})}, 2000);
   
   function xhrRequest(data) {
