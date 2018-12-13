@@ -38,6 +38,44 @@ event.target.value= '';
 
 ## Canvas
 
+### HTMLCanvasElement
+
+- 属性
+
+  height
+
+  width
+
+- 方法
+
+  ```js
+  // 其中contextId可接受的参数有"2d"和"experimental-webgl"
+  // getContext('2d')返回CanvasRenderingContext2D对象
+  // getContext('experienmal-webgl')返回WebGLRenderingContext对象
+  getContext(contextId)
+  // 返回一个data:URL,根据type参数指定的类型将包含在canvas中的图片文件编码成字符串形式，type默认为image/png
+  // 如果canvas的宽度或长度为0，返回字符串"data:,"
+  // Chorme支持image/webp类型
+  // type值为image/jpeg或image/webp，则第二个参数的值在0.0和1.0之间的话，会被看做是图片质量参数
+  // 如果不在0.0和1.0之间，则会使用默认的图片质量
+  toDataURL(type, ...args)
+  // 返回Blob对象，表示包含在该canvas中的图片文件，type没有指定参数，默认使用image/png
+  toBlob(callback, type, ...args)
+  // e.g.
+  function test() {
+      var canvas = document.getElementById('canvas');
+      canvas.toBlob(function(blob) {
+          var newImg = document.createElement('img'),
+          	url = URL.createObjectURL(blob);
+          newImg.onload = function() {
+              URL.revokeObjectURL(url);
+          };
+          newImg.src = url;
+          document.body.appendChild(newImg);
+      });
+  }
+  ```
+
 ### CanvasRenderingContext2D
 
 该接口提供的2D渲染背景用来绘制<canvas>元素，需要在<canvas>上调用getContext()，并提供"2d"的参数：
@@ -101,6 +139,19 @@ ctx.getImageData(sx, sy, sw, sh);
 // sw 被提取的图像数据矩形区域的宽度
 // sh 被提取的图像数据矩形区域的高度
 ```
+
+[`CanvasRenderingContext2D.putImageData()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/putImageData) -- 将数据从已有的ImageData绘制到位图上
+
+```js
+ctx.putImageData(imagedata, dx, dy);
+ctx.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
+// imagedata 包含像素值的数组对象
+// dx 源图像数据在目标画布中的位置偏移量(x轴方向的偏移量)
+// dy 源图像数据在目标画布中的位置偏移量(y轴方向的偏移量)
+
+```
+
+
 
 ### ImageData
 

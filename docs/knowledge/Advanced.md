@@ -29,6 +29,8 @@ https://github.com/james-cain/samples
 - 《web性能权威指南》
 - 《图解TCP/IP》
 - 《图解HTTP》
+- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
+- https://duoani.github.io/HTTP-RFCs.zh-cn/
 - 骨架屏 https://github.com/michalsnik/vue-content-placeholders（完成）
 - lazyload（完成）
 - 内存分析（优先级一）
@@ -69,6 +71,7 @@ https://github.com/james-cain/samples
 - <https://github.com/vuejs/vue-class-component>（完成）
 - <https://github.com/kaorun343/vue-property-decorator>（完成）
 - https://github.com/ktsn/vuex-class/（完成）
+- https://github.com/jkchao/typescript-book-chinese
 
 4.IntersectionObserver、IntersectionObserverEntry
 
@@ -99,19 +102,27 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB>
 - <https://www.w3.org/TR/IndexedDB/#introduction>（完成）
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto> 使用加密存储
+- <https://github.com/google/leveldb>
+- <https://github.com/google/lovefield>
+- <https://github.com/kripken/sql.js/> — sqlite数据库
+- <https://github.com/mapbox/node-sqlite3>
+- https://github.com/kriasoft/node-sqlite
 
-8.Vue长列表
+8.图片处理
+
+- <https://github.com/naptha/tesseract.js>
+- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>（完成）
+- <https://www.zhangxinxu.com/wordpress/2017/07/html5-canvas-image-compress-upload/>（完成）
+- <https://github.com/antimatter15/ocrad.js>
+- <https://github.com/muwoo/Matting>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement>（完成）
+- https://github.com/nimoat/photo-edit
+
+9.Vue长列表
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
 - <https://github.com/valdrinkoshi/virtual-scroller>
-
-9.图像识别
-
-- <https://github.com/naptha/tesseract.js>
-- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>
-- <https://github.com/antimatter15/ocrad.js>
-- https://github.com/muwoo/Matting
 
 10.WebWorker（优先级一）
 
@@ -122,57 +133,13 @@ https://github.com/james-cain/samples
 - react-webwoker
 - stockroom
 - comlink
+- https://github.com/webpack-contrib/worker-loader
 - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>
 - <https://html.spec.whatwg.org/multipage/workers.html#workers>
 - <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
 - <https://github.com/james-cain/things-you-can-do-in-a-web-worker>
 
-11.web安全
-
-- <https://github.com/james-cain/Web-Security-Learning>
-- https://tech.meituan.com/fe_security.html
-- <https://github.com/leizongmin/js-xss>
-- <https://github.com/Hacker0x01/hacker101>
-- <https://github.com/evilcos/xssor>
-- <https://github.com/zhansingsong/js-leakage-patterns>
-- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
-- <https://github.com/chriso/validator.js>
-
-12.linux《鸟哥的私房菜》
-
-- <http://www.study-area.org/network/network.htm>
-- <http://www.study-area.org/compu/compu.htm>
-- <http://www.study-area.org/network/networkfr.htm>
-- <http://www.linux.org.tw/>
-- http://linux.vbird.org/
-
-13.编译原理
-
-- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
-
-14.vue-hooks
-
-- <https://github.com/yyx990803/vue-hooks>（优先级二）
-- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
-- https://juejin.im/post/5bfa929551882524cb6f413b
-
-15.video（优先级一）
-
-- <https://github.com/videojs/video.js>
-- <https://github.com/surmon-china/vue-video-player>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
-- <https://chimee.org/docs/chimee_player_preface.html>
-- https://github.com/Chimeejs/chimee-player
-- <https://github.com/video-dev/hls.js>
-
-16.Performance （stats.js）（优先级三）
-
-- <https://w3c.github.io/hr-time/>
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-17.设计模式和js要点
+11.设计模式和js要点
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>（优先级四）
 - <https://github.com/leonardomso/33-js-concepts>（优先级四）
@@ -184,9 +151,66 @@ https://github.com/james-cain/samples
 - <https://github.com/ziishaned/learn-regex>
 - <https://tc39.github.io/ecma262/#sec-intro>
 - <https://tc39.github.io/process-document/>
-- https://github.com/iliakan/javascript-tutorial-en
+- <https://github.com/iliakan/javascript-tutorial-en>
+- http://asmjs.org/
+- http://kripken.github.io/emscripten-site/
 
-18.microfrontends
+12.web安全
+
+- <https://github.com/james-cain/Web-Security-Learning>
+- https://tech.meituan.com/fe_security.html
+- <https://github.com/leizongmin/js-xss>
+- <https://github.com/Hacker0x01/hacker101>
+- <https://github.com/evilcos/xssor>
+- <https://github.com/zhansingsong/js-leakage-patterns>
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
+- <https://github.com/chriso/validator.js>
+- https://github.com/infoslack/awesome-web-hacking
+
+13.linux《鸟哥的私房菜》
+
+- <http://www.study-area.org/network/network.htm>
+- <http://www.study-area.org/compu/compu.htm>
+- <http://www.study-area.org/network/networkfr.htm>
+- <http://www.linux.org.tw/>
+- http://linux.vbird.org/
+
+14.编译原理
+
+- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
+
+15.nodejs/deno
+
+- <https://nodejs.org/dist/latest-v10.x/docs/api/>
+- <https://github.com/denoland/deno>
+- <https://github.com/GoogleChromeLabs/carlo>
+
+16.vue-hooks
+
+- <https://github.com/yyx990803/vue-hooks>（优先级二）
+- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
+- https://juejin.im/post/5bfa929551882524cb6f413b
+
+17.video（优先级一）
+
+- <https://github.com/videojs/video.js>
+- <https://github.com/surmon-china/vue-video-player>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
+- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
+- <https://chimee.org/docs/chimee_player_preface.html>
+- https://github.com/Chimeejs/chimee-player
+- <https://github.com/video-dev/hls.js>
+- <https://www.cnblogs.com/xkfz007/archive/2012/08/12/2613690.html>
+
+18.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
+
+19.Performance （stats.js）（优先级三）
+
+- <https://w3c.github.io/hr-time/>
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+20.microfrontends
 
 - <https://github.com/phodal/microfrontends>（优先级四）
 - <https://micro-frontends.org/>（优先级四）
@@ -195,12 +219,7 @@ https://github.com/james-cain/samples
 - https://github.com/webcomponents/custom-elements（优先级四）
 - <https://github.com/palmerhq/the-platform>
 
-19.浏览器 跨域、重绘重排
-
-- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
-- Http1/http2
-
-20.算法编写
+21.算法编写
 
 - leetcode
 - InterviewMap
@@ -212,24 +231,18 @@ https://github.com/james-cain/samples
 - <https://github.com/algorithm-visualizer/algorithm-visualizer>
 - <https://github.com/pyloque/fastscan>
 - <https://github.com/chihungyu1116/leetcode-javascript>
-- https://github.com/haoel/leetcode
-
-21.密码学
-
-- <https://github.com/nakov/practical-cryptography-for-developers-book>
-- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
+- <https://github.com/haoel/leetcode>
+- <https://github.com/skyhee/Algorithms-Learning-With-Go>
 
 22.V8
 
 - <https://v8.dev/docs>
 - https://v8.js.cn/
-- https://github.com/bluezhan/v8
+- <https://github.com/bluezhan/v8>
 
-23.nodejs/deno
+23.WebAssembly
 
-- <https://nodejs.org/dist/latest-v10.x/docs/api/>
-- <https://github.com/denoland/deno>
-- <https://github.com/GoogleChromeLabs/carlo>
+- https://webassembly.github.io/spec/core/
 
 24.TDD开发模式
 
@@ -243,17 +256,24 @@ https://github.com/james-cain/samples
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-26.WebAssembly
+26.密码学
 
-- https://webassembly.github.io/spec/core/
+- <https://github.com/nakov/practical-cryptography-for-developers-book>
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 
-27.RTC（webrtc/samples、webRTC-Experiment）（优先级四）
-
-28.AI《AI未来》《深度学习》
+27.AI《AI未来》《深度学习》
 
 - https://github.com/apachecn/AiLearning
 
-29.tensorFlow
+28.tensorFlow
+
+29.go
+
+- <https://github.com/astaxie/beego>
+- <https://golang.org/>
+- <https://github.com/Unknwon/the-way-to-go_ZH_CN>
+- <https://github.com/chai2010/advanced-go-programming-book>
+- https://github.com/golang-china/gopl-zh
 
 30.MutationObserver.js（优先级三）
 
@@ -296,11 +316,19 @@ https://github.com/james-cain/samples
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-39.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+39.hybrid app
 
-40.GraphQL
+- <https://github.com/ionic-team/capacitor>
+- <https://github.com/ionic-team/ionic>
+- <https://github.com/ionic-team/ionic-native>
+- <https://cordova.apache.org/>
+- https://github.com/NativeScript/NativeScript
 
-41.elm
+40.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+
+41.GraphQL
+
+42.elm
 
 - <https://elm-lang.org/>
 
