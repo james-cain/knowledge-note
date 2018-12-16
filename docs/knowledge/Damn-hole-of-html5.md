@@ -24,6 +24,42 @@
 | iOS        | MP4,M3U8       |
 | Safari     |                |
 
+## audio
+
+可以运用<audio>和<embed>元素来实现浏览器兼容的网页声音调用及播放
+
+- embed标签定义外部（非HTML）内容的容器，如果浏览器不支持该文件格式，没有插件的话就无法播放该音频
+- audio元素为HTML5元素，在旧浏览器无作用
+
+调用示例：
+
+```html
+<audio controls="controls">
+    <source src="alex-car-00010.ogg" type="audio/ogg">
+    <source src="alex-car-00010.mp3" type="audio/mp3">
+    <embed height="40" width="100" autostart="false" src="alex-car-00010.m4a.wav">
+</audio>
+```
+
+### PCM文件与WAV文件
+
+> audio不支持.pcm文件播放
+
+- PCM(Pulse Code Modulation，脉码编码调制)。PCM文件是模拟音频信号经模数转换(A/D变换)直接形成的二进制序列，没有附加文件头和文件结束标志。PCM的声音数据没有被压缩，如果是单声道的文件，采样数据按时间的先后顺序依次存入
+
+  但只有这些数字化的音频二进制序列并不能够播放。
+
+- WAVE(Waveform Audio File Format)，无损音频编码。WAV文件可以理解为PCM文件的wrapper，在查看PCM和WAV文件的hex文件，WAV文件只是在PCM文件的开头多了44bytes，来表征其声道数、采样频率和采样位数等信息。可以被基本所有的音频播放器播放，包括audio标签
+
+  WAV是一种声音文件格式，符合RIFF(Resource Interchange File Format)文件规范，用于保存音频信息资源。RIFF文件都在数据块前有文件头
+
+  ![wav](http://reyshieh.com/assets/wav.png)
+
+  - 文件开头是RIFF头：0 4 数据块ID包含了“RIFF”在ASCII编码中的值（大端是0x52494646）；4 4 数据块大小 36 + subChunk2Size，即 4 + (8 + SubChunk1Size) + (8 + SubChunk2Size)，也即整个文件的大小减去ChunkID和ChunkSize所占8bytes；8 4 Format包含了字母“WAVE”（大端是0x57415645）。
+  - “WAVE” format包含了2个子块：“fmt”和“data”
+  - “fmt”子块描述了声音数据的格式：12 4 SubChunk1ID 包含了“fmt”（大端是0x666d7420）；16 4 SubChunk1Size是随后SubChunk的大小；20 2 AudioFormat；22 2 声道数，单声道是1，双声道是2；24 4 采样频率，一般有8000，44100等值；28 4 字节频率 = 采样频率 * 声道数 * 采样位数 / 8（ByteRate == SampleRate * NumChannels * BitsPerSample/8）；32 2 （BlockAlign == NumChannels * BitsPerSample/8 ）；34 2 采样位数，8对应8bits，16对应16bits
+  - “data”子块包含音频数据大小和真实的声音数据：36 4 SubChunk2ID包含了字母“data”(大端格式下是0x64617461)‘；40 4 数据字节数(Subchunk2Size == NumSamples * NumChannels * BitsPerSample/8)；44 * 实际的声音数据
+
 ## Input重复上传同一文件问题
 
 input[type=file]使用的是onchange，onchange监听的为input的value值，只有在内容发生改变的时候去触发，而value在上传文件的时候保存的是文件的内容，只需要在上传成功的回调里面，将当前input的value值置空即可。

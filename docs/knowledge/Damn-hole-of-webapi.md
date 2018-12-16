@@ -1326,3 +1326,234 @@ if ('serviceWorker' in navigator) {
 }
 ```
 
+## WebWorker
+
+> 独立于任何UI脚本在后台运行脚本的API
+>
+> 解决长时间运行的脚本问题，不会因影响用户点击或其他交互而中断
+>
+> 解决耗时任务问题，不会为了保持页面可响应而立即返回
+>
+> 通常workers应该有较长的生命期，较高的启动性能消耗，且每个实例都会产生较高的内存消耗
+
+e.g.
+
+1. 数字密集型计算的后台worker
+
+```html
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Worker example: One-core computation</title>
+ </head>
+ <body>
+  <p>The highest prime number discovered so far is: <output id="result"></output></p>
+  <script>
+   var worker = new Worker('worker.js');
+   worker.onmessage = function (event) {
+     document.getElementById('result').textContent = event.data;
+   };
+  </script>
+ </body>
+</html>
+```
+
+对应的worker.js
+
+```js
+var n = 1;
+search: while (true) {
+    n += 1;
+    for(var i = 2; i <= Math.sqrt(n); i += 1) {
+        if (n % i == 0) {
+            continue search;
+        }
+    }
+    postMessage(n);
+}
+```
+
+2. Javascript模块化worker
+
+使用Javascript import声明来引入其他模块的能力；默认严格模式；顶层声明不会污染worker的全局作用域
+
+模块workers可以使用跨域脚本实例化，只要使用CORS协议把该脚本暴露出来
+
+模块worker中importScripts()方法将自动失效，Javascript import声明是更好的选择
+
+```html
+<script type="module">
+  const worker = new Worker("worker.js", { type: "module" });
+  worker.onmessage = receiveFromWorker;
+</script>
+```
+
+3. 共享worker
+
+```html
+<script>
+	var worker = new SharedWorker("test.js");
+	var log = document.getElementById("log");
+	worker.port.onmessage = function(e) {
+        log.textContent += '\n' + e.data;
+	}
+</script>
+```
+
+```js
+// test.js
+onconnect = function(e) {
+    var port = e.ports[0];
+    port.postMessage("Hello World!");
+}
+```
+
+也可以使用addEventListener()接收事件
+
+e.g.
+
+```html
+<script>
+	// 该例子向worker发送一个事件使得worker以另一个事件回复
+	var worker = new SharedWorker("test.js");
+	var log = document.getElementById("log");
+	worker.port.addEventListener("message", function(e) {
+        log.textContent += "\n" + e.data;
+	}, false);
+	worker.port.start(); // 使用addEventLitener事件方式必须用该方法
+	worker.port.postMessage('ping');
+</script>
+```
+
+```js
+// test.js
+onconnect = function(e) {
+    var port = e.ports[0];
+    port.postMessage("Hello World!");
+    port.onmessage = function(e) {
+    	// 不是e.ports[0].postMessage
+        port.postMessage("pong"); 
+        // 或者可以使用
+        // e.target.postMessage("pong");
+    }
+}
+```
+
+两个页面连接到同一个worker，第二个页面在第一个页面中的iframe
+
+e.g.
+
+```html
+<!DOCTYPE HTML>
+<meta charset="utf-8">
+<title>Shared workers: demo 3</title>
+<pre id="log">Log:</pre>
+<script>
+  var worker = new SharedWorker('test.js');
+  var log = document.getElementById('log');
+  worker.port.addEventListener('message', function(e) {
+    log.textContent += '\n' + e.data;
+  }, false);
+  worker.port.start();
+  worker.port.postMessage('ping');
+</script>
+<iframe src="inner.html"></iframe>
+
+<!-- inner.html -->
+<!DOCTYPE HTML>
+<meta charset="utf-8">
+<title>Shared workers: demo 3 inner frame</title>
+<pre id=log>Inner log:</pre>
+<script>
+  var worker = new SharedWorker('test.js');
+  var log = document.getElementById('log');
+  worker.port.onmessage = function(e) {
+   log.textContent += '\n' + e.data;
+  }
+</script>
+```
+
+```js
+// test.js
+var count = 0;
+onconnect = function(e) {
+  count += 1;
+  var port = e.ports[0];
+  port.postMessage('Hello World! You are connection #' + count);
+  port.onmessage = function(e) {
+    port.postMessage('pong');
+  }
+}
+```
+
+4. 通过共享worker共享状态
+
+同时打开多个窗口浏览同一个地图。在一个worker的协调下，所有窗口共享同样的地图信息。每个窗口都可以独立地随意移动，一旦在地图上设置了任何数据，其他窗口也都会更新
+
+5. 委托
+
+可以将计算密集型任何分割到多个worker中来得到更好的性能
+
+e.g. 将1到10000000的所有数字进行操作的计算密集型的任务移交给10个子worker
+
+```html
+<script>
+	var worker = new Worker('worker.js');
+	worker.onmessage = function(e) {
+        document.getElementById('result').textContent = e.data;
+	}
+</script>
+```
+
+```js
+// worker.js
+var num_workers = 10;
+var items_per_worker = 1000000;
+var result = 0;
+var pending_workers = num_workers;
+for (var i = 0; i < num_workers; i += 1) {
+    var worker = new Worker('core.js');
+    worker.postMessage(i * items_per_worker);
+    worker.postMessage((i + 1) * items_per_worker);
+    worker.onmessage = storeResult;
+}
+function storeResult(event) {
+    result += 1 * event.data;
+    pending_workers -= 1;
+    if (pending_workers <= 0) postMessage(result);
+}
+```
+
+```js
+// core.js
+var start;
+onmessage = getStart;
+function getStart(event) {
+    start = 1 * event.data;
+    onmessage = getEnd;
+}
+var end;
+function getEnd(event) {
+    end = 1 * event.data;
+    onmessage = null;
+    work();
+}
+function work() {
+    var result = 0;
+    for (var i = start; i < end; i += 1) {
+        result += 1;
+    }
+    postMessage(result);
+    close();
+}
+```
+
+### API
+
+```js
+var worker = new Worker('helper.js');
+// 加入type: module代表模块脚本
+var worker = new Worker('helper.js', { type: 'module' });
+```
+

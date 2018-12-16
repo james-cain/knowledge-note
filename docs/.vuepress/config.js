@@ -57,7 +57,6 @@ module.exports = {
             '/knowledge/Damn-hole-of-javascript-algonithms.md',
             '/knowledge/Damn-hole-of-performance.md',
             '/knowledge/Damn-hole-of-the-EST.md',
-            '/knowledge/Damn-hole-of-the-web-worker.md',
             '/knowledge/parameters-of-package.md',
             '/knowledge/Advanced.md'
           ]
@@ -76,9 +75,7 @@ module.exports = {
           title: '拓展',
           collapsable: false,
           children: [
-            '/knowledge/Damn-hole-of-pwa.md',
-            '/knowledge/Damn-hole-of-electron.md',
-            '/knowledge/how-to-learn-ionic.md'
+            '/knowledge/Damn-hole-of-pwa.md'
           ]
         },
         {
