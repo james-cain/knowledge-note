@@ -58,7 +58,8 @@ https://github.com/james-cain/samples
 - <https://w3c.github.io/preload/>（完成）
 - <https://w3c.github.io/resource-hints/>（完成）
 - <https://www.w3.org/TR/appmanifest/>
-- https://github.com/indutny/common-shake
+- <https://github.com/indutny/common-shake>
+- https://github.com/JacksonTian/anywhere
 
 3.Typescript
 
@@ -128,19 +129,19 @@ https://github.com/james-cain/samples
 
 10.WebWorker
 
-- https://whatwg-cn.github.io/html/#workers
-- greenlet
-- worker-dom
-- web-worker-proxy
-- react-webwoker
-- stockroom
-- comlink
-- https://github.com/webpack-contrib/worker-loader
-- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>
-- <https://html.spec.whatwg.org/multipage/workers.html#workers>
-- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
-- <https://github.com/james-cain/things-you-can-do-in-a-web-worker>
-- SharedWorker、SharedWorkerGlobalScope
+- https://github.com/mchaov/WebWorkers
+- https://github.com/developit/greenlet
+- https://github.com/ampproject/worker-dom
+- https://github.com/satya164/web-worker-proxy
+- https://github.com/developit/stockroom
+- https://github.com/GoogleChromeLabs/comlink
+- <https://github.com/webpack-contrib/worker-loader>
+- <https://whatwg-cn.github.io/html/#workers>（完成）
+- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>（完成）
+- <https://html.spec.whatwg.org/multipage/workers.html#workers>（完成）
+- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>（完成）
+- SharedWorker、SharedWorkerGlobalScope（完成）
+- <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
 11.设计模式和js要点
 
@@ -267,6 +268,7 @@ https://github.com/james-cain/samples
 - <https://github.com/chihungyu1116/leetcode-javascript>
 - <https://github.com/haoel/leetcode>
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
+- https://github.com/MisterBooo/LeetCodeAnimation
 
 22.V8
 
@@ -309,25 +311,41 @@ https://github.com/james-cain/samples
 - <https://golang.org/>
 - <https://github.com/Unknwon/the-way-to-go_ZH_CN>
 - <https://github.com/chai2010/advanced-go-programming-book>
-- https://github.com/golang-china/gopl-zh
+- <https://github.com/golang-china/gopl-zh>
 
-30.MutationObserver.js
+30.dart & flutter
 
-31.通信
+- <https://www.dartlang.org/>
+- <https://flutter.io/docs/>
+- <https://github.com/james-cain/GSYGithubAppFlutter>
+
+31.hybrid app
+
+- <https://github.com/ionic-team/capacitor>
+- <https://github.com/ionic-team/ionic>
+- <https://github.com/ionic-team/ionic-native>
+- <https://cordova.apache.org/>
+- https://github.com/NativeScript/NativeScript
+
+32.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+
+33.MutationObserver.js
+
+34.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-32.router（navaid）
+35.router（navaid）
 
 - https://github.com/kevindurb/router
 
-33.state（reworm）
+36.state（reworm）
 
-34.搜索引擎
+37.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-35.electron
+38.electron
 
 - vue-electron
 
@@ -351,23 +369,7 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-36.polymer
-
-37.dart & flutter
-
-- <https://www.dartlang.org/>
-- <https://flutter.io/docs/>
-- <https://github.com/james-cain/GSYGithubAppFlutter>
-
-38.hybrid app
-
-- <https://github.com/ionic-team/capacitor>
-- <https://github.com/ionic-team/ionic>
-- <https://github.com/ionic-team/ionic-native>
-- <https://cordova.apache.org/>
-- https://github.com/NativeScript/NativeScript
-
-39.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+39.polymer
 
 40.GraphQL
 

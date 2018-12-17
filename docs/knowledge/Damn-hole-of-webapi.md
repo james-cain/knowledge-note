@@ -1555,5 +1555,79 @@ function work() {
 var worker = new Worker('helper.js');
 // 加入type: module代表模块脚本
 var worker = new Worker('helper.js', { type: 'module' });
+
+// 使用postMessage()方法来向Worker发送数据。该通信通道可以发送结构化数据，如果要发送ArrayBuffer对象(通过直接传输它们而不是克隆后发送)，在第二个参数上提供它们的列表
+worker.postMessage({
+    operation: 'find-edges',
+    input: buffer,// ArrayBuffer对象
+    threshold: 0.6,
+}, [buffer]);
+
+// 共享worker
+// 使用SharedWorker()构造函数来创建共享worker。该构造函数使用脚本URL作为第一个参数，worker名(如果有的话)作为第二个参数
+var worker = new SharedWorker('service.js');
+worker.port.onmessage = function(event) { ... };
+worker.port.postMessage({'some message'});
+
+// 在共享worker内，新的client会使用connect事件来声明，新的client的port由事件对象的source属性给出
+onconnect = function (event) {
+  var newPort = event.source;
+  // set up a listener
+  newPort.onmessage = function (event) { ... };
+  // send a message back to the port
+  newPort.postMessage('ready!'); // can also send structured data, of course
+};
+```
+
+### WorkerGlobalScope
+
+```typescript
+interface WorkerGlobalScope : EventTarget {
+  readonly attribute WorkerGlobalScope self;
+  readonly attribute WorkerLocation location; // WorkerLocation对象
+  readonly attribute WorkerNavigator navigator; // WorkerNavigator对象
+  void importScripts(USVString... urls); // 获取urls中的每一个URL，按照传入的顺序一个接一个地执行它们并返回
+
+  attribute OnErrorEventHandler onerror;
+  attribute EventHandler onlanguagechange;
+  attribute EventHandler onoffline;
+  attribute EventHandler ononline;
+  attribute EventHandler onrejectionhandled;
+  attribute EventHandler onunhandledrejection;
+};
+```
+
+WorkerGlobalScope对象有：
+
+- 一个与之关联的type（"classic"或"module"）
+- 一个与之关联的HTTPS状态，初始值为"none"
+- 一个与之关联的referrer策略，初始值为空字符串
+- 一个与之关联的CSP列表，初始值为空列表
+- 一个与之关联的模块银蛇，初始为空的模块映射
+
+### DedicatedWorkerGlobalScope
+
+```typescript
+[Global=(Worker,DedicatedWorker),Exposed=DedicatedWorker]
+interface DedicatedWorkerGlobalScope : WorkerGlobalScope {
+  void postMessage(any message, optional sequence<object> transfer = []);
+
+  void close();
+
+  attribute EventHandler onmessage;
+};
+```
+
+### SharedWorkerGlobalScope
+
+```typescript
+[Global=(Worker,SharedWorker),Exposed=SharedWorker]
+interface SharedWorkerGlobalScope : WorkerGlobalScope {
+  readonly attribute DOMString name; // 必须返回SharedWorkerGlobalScope对象的name，使用SharedWorker构造器，可以通过name的值获取该worker的引用
+
+  void close();
+
+  attribute EventHandler onconnect;
+};
 ```
 
