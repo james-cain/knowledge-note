@@ -12,7 +12,10 @@ https://github.com/james-cain/samples
 - Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>（完成）
 - PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push（完成）
 - https://lavas.baidu.com/ready兼容性列表
-- ServiceWorker  涉及到Cache、CacheStorage、ServiceWorkerContainer、ServiceWorkerRegistration、ServiceWorker、ServiceWorkerGlobalScope、Clients、NavigationPreloadManager <https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker> <https://w3c.github.io/ServiceWorker/>  <https://github.com/w3c/ServiceWorker> （完成）
+- ServiceWorker  涉及到Cache、CacheStorage、ServiceWorkerContainer、ServiceWorkerRegistration、ServiceWorker、ServiceWorkerGlobalScope、Clients、NavigationPreloadManager （完成）
+- <https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker> （完成）
+- <https://w3c.github.io/ServiceWorker/> （完成）
+- <https://github.com/w3c/ServiceWorker> （完成）
 - background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/（完成）
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
 - <https://developers.google.com/web/progressive-web-apps/desktop>
@@ -88,11 +91,7 @@ https://github.com/james-cain/samples
 
 - <https://github.com/dollarshaveclub/stickybits>（完成）
 
-6.vuex持久化（完成）
-
-- <https://github.com/robinvdvleuten/vuex-persistedstate>
-
-7.storage
+6.storage、vuex持久化
 
 - <https://github.com/james-cain/irondb>
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>（完成）
@@ -109,9 +108,13 @@ https://github.com/james-cain/samples
 - <https://github.com/kripken/sql.js/> — sqlite数据库
 - <https://github.com/mapbox/node-sqlite3>
 - https://github.com/mapbox/node-sqlite3/wiki
-- https://github.com/kriasoft/node-sqlite
+- <https://github.com/kriasoft/node-sqlite>
 
-8.图片处理
+- vuex持久化
+
+- <https://github.com/robinvdvleuten/vuex-persistedstate>（完成）
+
+7.图片处理
 
 - <https://github.com/naptha/tesseract.js>
 - <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>（完成）
@@ -121,20 +124,22 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement>（完成）
 - https://github.com/nimoat/photo-edit
 
-9.Vue长列表
+8.Vue长列表
 
 - vue-virtual-scroller（完成）
 - Clusterize.js
 - <https://github.com/valdrinkoshi/virtual-scroller>
 
-10.WebWorker
+9.WebWorker
 
-- https://github.com/mchaov/WebWorkers
-- https://github.com/developit/greenlet
+- <https://github.com/mchaov/WebWorkers>（完成）
+- <https://github.com/developit/greenlet>（完成）
 - https://github.com/ampproject/worker-dom
 - https://github.com/satya164/web-worker-proxy
 - https://github.com/developit/stockroom
-- https://github.com/GoogleChromeLabs/comlink
+- <https://github.com/GoogleChromeLabs/comlink>
+- <http://javascript.ruanyifeng.com/stdlib/arraybuffer.html>
+- <http://www.ruanyifeng.com/blog/2018/07/web-worker.html>（完成）
 - <https://github.com/webpack-contrib/worker-loader>
 - <https://whatwg-cn.github.io/html/#workers>（完成）
 - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>（完成）
@@ -143,7 +148,7 @@ https://github.com/james-cain/samples
 - SharedWorker、SharedWorkerGlobalScope（完成）
 - <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
-11.设计模式和js要点
+10.设计模式、js要点、microfrontends
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>
 - <https://github.com/leonardomso/33-js-concepts>
@@ -157,9 +162,18 @@ https://github.com/james-cain/samples
 - <https://tc39.github.io/process-document/>
 - <https://github.com/iliakan/javascript-tutorial-en>
 - http://asmjs.org/
-- http://kripken.github.io/emscripten-site/
+- <http://kripken.github.io/emscripten-site/>
 
-12.web安全/密码学
+- microfrontends 微前端
+
+- <https://github.com/phodal/microfrontends>
+- <https://micro-frontends.org/>
+- https://www.webcomponents.org/polyfills/
+- https://github.com/w3c/webcomponents
+- https://github.com/webcomponents/custom-elements
+- <https://github.com/palmerhq/the-platform>
+
+11.web安全/密码学
 
 - web安全
 
@@ -179,7 +193,7 @@ https://github.com/james-cain/samples
 - <https://github.com/nakov/practical-cryptography-for-developers-book>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 
-13.linux《鸟哥的私房菜》
+12.linux《鸟哥的私房菜》
 
 - <http://www.study-area.org/network/network.htm>
 - <http://www.study-area.org/compu/compu.htm>
@@ -187,25 +201,26 @@ https://github.com/james-cain/samples
 - <http://www.linux.org.tw/>
 - http://linux.vbird.org/
 
-14.编译原理
+13.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 
-15.nodejs/deno
+14.nodejs/deno
 
 - <https://nodejs.org/dist/latest-v10.x/docs/api/>
 - <https://github.com/denoland/deno>
 - <https://github.com/GoogleChromeLabs/carlo>
 - <https://deno.land/typedoc/index.html>
-- https://github.com/JacksonTian/anywhere
+- <https://github.com/JacksonTian/anywhere>
+- Child Processes
 
-16.vue-hooks
+15.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
 - https://juejin.im/post/5bfa929551882524cb6f413b
 
-17.video、audio
+16.video、audio、RTC
 
 - 视频
 
@@ -230,6 +245,7 @@ https://github.com/james-cain/samples
 - https://www.khronos.org/registry/OpenGL-Refpages/es3.0/
 - webGL
 - https://webglfundamentals.org/webgl/lessons/zh_cn/
+- http://taobaofed.org/blog/2018/12/17/webgl-texture/index.html
 
 - 音频
 
@@ -238,21 +254,17 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio>
 - https://github.com/abysshal/WAVHelper/
 
-18.RTC（webrtc/samples、webRTC-Experiment）19.Performance （stats.js）
+- RTC
+
+- webrtc/samples
+- webRTC-Experiment
+
+17.Performance （stats.js）
 
 - <https://w3c.github.io/hr-time/>
 - https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
-20.microfrontends
-
-- <https://github.com/phodal/microfrontends>
-- <https://micro-frontends.org/>
-- https://www.webcomponents.org/polyfills/
-- https://github.com/w3c/webcomponents
-- https://github.com/webcomponents/custom-elements
-- <https://github.com/palmerhq/the-platform>
-
-21.算法编写
+18.算法编写
 
 - leetcode
 - InterviewMap
@@ -270,7 +282,7 @@ https://github.com/james-cain/samples
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
 - https://github.com/MisterBooo/LeetCodeAnimation
 
-22.V8
+19.V8
 
 - <https://v8.dev/docs>
 - https://v8.js.cn/
@@ -278,34 +290,34 @@ https://github.com/james-cain/samples
 - <https://github.com/ry/v8worker>
 - https://github.com/ry/v8worker2
 
-23.WebAssembly
+20.WebAssembly
 
-- https://webassembly.github.io/spec/core/
+- <https://webassembly.github.io/spec/core/>
 
-24.TDD开发模式
+21.interview
+
+- <https://github.com/qiu-deqing/FE-interview>
+- https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
+
+22.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-25.serverless
+23.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-26.interview
-
-- <https://github.com/qiu-deqing/FE-interview>
-- https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
-
-27.AI《AI未来》《深度学习》
+24.AI《AI未来》《深度学习》
 
 - https://github.com/apachecn/AiLearning
 
-28.tensorFlow
+25.tensorFlow
 
-29.go
+26.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -313,13 +325,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-30.dart & flutter
+27.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-31.hybrid app
+28.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -327,25 +339,25 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-32.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+29.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-33.MutationObserver.js
+30.MutationObserver.js
 
-34.通信
+31.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-35.router（navaid）
+32.router（navaid）
 
 - https://github.com/kevindurb/router
 
-36.state（reworm）
+33.state（reworm）
 
-37.搜索引擎
+34.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-38.electron
+35.electron
 
 - vue-electron
 
@@ -369,11 +381,11 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-39.polymer
+36.polymer
 
-40.GraphQL
+37.GraphQL
 
-41.elm
+38.elm
 
 - <https://elm-lang.org/>
 

@@ -1185,3 +1185,94 @@ person1.name = 'person1';
 console.log(person2.name); // 
 ```
 
+## Ajax
+
+> 请求数据常用方式：XMLHttpRequest(XHR)、Dynamic script tag insertion(动态脚本注入)、Multipart XHR
+
+### 动态脚本注入
+
+能跨域请求数据。可使用JavaScript创建一个新的脚本标签，并设置src属性为不同域的URL。
+
+```js
+var scriptElement = document.createElement('script');
+scriptElement.src = 'http://any-domain.com/javascript/lib.js';
+document.getElementByTagName('head')[0].appendChild(scriptElement);
+
+function jsonCallback(jsonString) {
+    var data = eval('(' + jsonString + ')');
+    // 处理数据...
+}
+
+// lib.js
+jsonCallback({ "status": 1, "colors": ["#fff", "#000"] });
+```
+
+因为响应消息作为脚本标签的源码，必须是可执行的JavaScript代码。不能使用纯XML、纯JSON或其他任何格式的数据，无论哪种格式，都必须封装在一个回调函数中。
+
+若发送的数据是很重要的数据，可以在发送失败的情况下重试：
+
+```js
+function xhrPost(url, params, callback) {
+    var req = new XMLHttpRequest();
+    req.onerror = function() {
+        setTimeout(function() {
+            xhrPost(url, params, callback);
+        }, 1000);
+    };
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) {
+            if (callback && typeof callback == 'function') {
+                callback();
+            }
+        }
+    };
+    req.open('POST', url, true);
+    req.send(params.json('&'));
+}
+```
+
+### Beacons(信标)
+
+类似于动态脚本注入。使用Javascript创建一个新的Image对象，并把src属性设置为服务器上脚本的URL
+
+服务器会接收到数据并保存下来，无须向客户端发送任何回馈信息。
+
+```js
+var url = '/status_tracker.php';
+var params = [
+    'step=2',
+    'time=1238027314'
+];
+var beacon = new Image();
+beacon.src = url + '?' + params.join('&');
+beacon.onload = function() {
+    if (this.width == 1) {
+        // 成功
+    } else if (this.width == 2) {
+        // 失败，请重试并创建另一个信标
+    }
+}
+beacon.onerror = function() {
+    // 出错，稍后重试并创建另一个信标
+}
+```
+
+## 定时机制处理数组
+
+```js
+function timedProcessArray(items, process, callback) {
+    var todo = item.concat();
+    setTimeout(function() {
+        var start = +new Date();
+        do {
+            process(todo.shift());
+        } while(todo.length > 0 && (+new Date() - start < 50));
+        if (todo.length > 0) {
+            setTimeout(arguments.callee, 25);
+        } else {
+            callback(items);
+        }
+    });
+}
+```
+
