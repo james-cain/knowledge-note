@@ -758,6 +758,44 @@ console.log(memorizeAdd(1, 2, 4)) // 7
 
 **对于为什么必须要用尾调用，可以这么理解**。如果函数最后执行的单纯的一个函数调用，相当于对于本函数来说已经完成了自己的任务了，就可以释放了。那个函数想怎么样就怎样，不关我的事。但是如果还有别的操作，就必须等待对方的返回值，计算完后，才能释放，只有若干个的递归还吃得消，若是成千的递归，那性能可想而知。
 
+### Memoization
+
+在多次调用递归函数时，会遇到大量的不可避免的重复调用。可以加入缓存方案来使整个计算更加简便·
+
+```js
+function memfactorial(n) {
+    if (!memfactorial.cache) {
+        memfactorial.cache = {
+            "0": 1,
+            "1": 1,
+        };
+    }
+    
+    if (!memfactorial.cache.hasOwnProperty(n)) {
+        memfactorial.cache[n] = n * memfactorial(n-1);
+    }
+    
+    return memfactorial.cache[n];
+}
+```
+
+以上是递归乘法的优化写法，大大减小了递归发生的运算时间
+
+因此，依照这种思路，可以封装一个基本的memoize()函数
+
+```js
+function memoize(fundamental, cache) {
+    cache = cache || {};
+    var shell = function(arg) {
+        if (!cache.hasOwnProperty(arg)) {
+            cache[arg] = fundamental(arg);
+        }
+        return cache[arg];
+    };
+    return shell;
+}
+```
+
 ## 构造函数（constructor）、实例原型（prototype）、实例之间的关系
 
 例如
@@ -1276,3 +1314,241 @@ function timedProcessArray(items, process, callback) {
 }
 ```
 
+## 定时器
+
+前序
+
+用于执行Javascript和更新用户界面的进程被称为"浏览器UI线程"。UI线程的工作基于一个简单的队列系统，任务会被保存到队列中直到进程空闲。这些任务包括运行JavaScript代码、执行UI更新，包括重绘和重排
+
+> JavaScript中的定时器包括setTimeout()和setInterval()
+>
+> 这两个方法都会带两个参数：要执行的函数和执行前等待时间(单位ms)
+
+注意点：
+
+- 第二个参数代表的任务何时**被添加到**UI队列中，而**不是**一定会在这段时间后**执行**，这个任务会等待队列中其他所有任务执行完毕才会执行。
+- 无论发生何种情况，创建一个定时器会造成UI线程暂停，如同它从一个任务切换到下一个任务。因此，定时器代码会重置所有相关的浏览器限制，包括长时间运行脚本定时器。此外，调用栈也在定时器的代码中重置为0。这一特性使得定时器成为长时间运行JavaScript代码理想的跨浏览器解决方案。
+- 定时器延迟的最小值建议为25ms（实际时间是15或30）以确保至少有15毫秒延迟。
+
+## 浏览器中的DOM操作
+
+> 浏览器中通常把DOM和JavaScript独立实现。以下是几个浏览器的情况
+
+| 浏览器  | 渲染引擎                      | JavaScript引擎                  |
+| ------- | ----------------------------- | ------------------------------- |
+| IE      | Trident(放在mshtml.dll文件中) | JScript(放在jscript.dll文件中)  |
+| Safari  | WebCore                       | JavaScriptCore(SquirrelFish)    |
+| Google  | WebCore                       | V8                              |
+| Firefox | Gecko                         | SpiderMonkey(新版叫JagerMonkey) |
+
+因此，可以看出，要在JavaScript中调用DOM操作，其实是跨越了一个很长的桥梁，次数越多，成本就越高。减少它们之间的交互，让运算尽量留在ECMAScript这一端处理是重要的处理方式
+
+优化方式：
+
+- 更新一大段HTML时，用innerHMTL会是推荐方式
+
+- 尽量克隆已有元素，而不是创建新元素--使用element.cloneNode()代替document.createElement()
+
+- 访问集合元素时使用局部变量，就是尽量在函数中，定义局部变量来减少作用域链的频繁查找
+
+- 使用新的能区分元素节点和其他类型节点的DOM元素，比如注释和文本节点(通常只是两个节点间的空格)。这样可以减少不必要的过滤，提升效率
+
+  | 能区分元素节点和其他节点的DOM属性 | 被替换的属性      |
+  | --------------------------------- | ----------------- |
+  | children                          | childNodes        |
+  | childElementCount                 | childNodes.length |
+  | firstElementChild                 | firstChild        |
+  | lastElementChild                  | lastChild         |
+  | nextElementSibling                | nextSibling       |
+  | previousElementSibling            | perviousSibling   |
+
+- 重绘和重排
+
+  以下情况会导致发生重排：
+
+  - 添加或删除可见的DOM元素
+  - 元素位置发生变化
+  - 元素尺寸改变（包括：外边距、内边距、边框厚度、宽度、高度等属性改变）
+  - 内容改变，例如：文本改变或图片被另一个不同尺寸的图片替代
+  - 页面渲染器初始化
+  - 浏览器窗口尺寸改变
+
+  每次重排都会产生计算消耗，因此大多数浏览器都是通过队列化修改并批量执行来优化重排过程。
+
+  以下操作会导致队列刷新：
+
+  - offsetTop,offsetLeft,offsetWidth,offsetHeight
+  - scrollTop,scrollLeft,scrollWidth,scrollHeight
+  - clientTop,clientLeft,clientWidth,clientHeight
+  - getComputedStyle()
+
+  他们都会刷新渲染队列，即使是在获取最近未发生改变的或者与最新改变无关的布局信息
+
+  **一个有效的方法是不要在布局信息改变时查询它。如读取computed样式的代码被移到末尾**
+
+  ```js
+  bodystyle.color = 'red';
+  bodystyle.color = 'white';
+  bodystyle.color = 'green';
+  tmp = computed.backgroundColor;
+  ```
+
+  最小化重排和重绘
+
+  - 合并多次对DOM和样式的修改，然后一次处理
+
+  - 合并所有的改变然后一次处理，使用cssText属性实现方案
+
+    ```
+    var el = document.getElementById('mydiv');
+    el.style.cssText = 'border-left: 1px; border-right: 2px;';
+    ```
+
+  - 可以通过以下步骤减少重绘和重排的次数：
+
+    1. 使元素脱离文档流
+    2. 对其应用多重改变
+    3. 把元素待会文档中
+
+    脱离文档流的方式也有三种：
+
+    1. 隐藏元素，应用修改，重新显示
+    2. 使用文档片段(document fragment)，在当前DOM之外构建一个子树，再把它拷贝回文档
+    3. 将原始元素拷贝到一个脱离文档的节点中，修改副本，完成后再替换元素元素
+
+  - 缓存布局信息。尽量减少布局信息的获取次数，获取后把它赋值给局部变量，然后在操作局部变量
+
+    ```js
+    // 低效做法
+    myElement.style.left = 1 + myElement.offsetLeft + 'px';
+    myElement.style.top = 1 + myElement.offsetTop + 'px';
+    if (myElement.offsetLeft >= 500) {
+        stopAnimation();
+    }
+    
+    // 高效做法
+    // 获取一次起始位置的值，然后将其赋值给一个变量，然后直接使用current变量而不再查询偏移
+    var current = myElement.offsetLeft;
+    current++;
+    myElement.style.left = current + 'px';
+    myElement.style.top = current + 'px';
+    if (current >= 500) {
+        stopAnimation();
+    }
+    ```
+
+## 延迟加载
+
+> 延迟加载时消除函数中的重复工作的方法之一。
+>
+> 一般的实现方式，先检查并决定使用哪种方法去绑定或取消绑定事件处理器。然后原始函数被包含正确操作的新函数覆盖。随后每次调用事件都不会再做检测，因为检测代码已经被新的函数覆盖。
+
+e.g. 对比
+
+```js
+// 没有延迟加载
+function addHandler(target, eventType, handler) {
+    if (target.addEventListener) { // DOM2 Events
+    	target.addEventListener(eventType, handler, false);
+    } else { // IE
+    	target.attachEvent("on" + eventType, handler);
+    }
+}
+function removeHandler(target, eventType, handler) {
+    if (target.removeEventListener) {
+        target.removeEventListener(eventType, handler, false);
+    } else {
+        target.detachEvent("on" + eventType, handler);
+    }
+}
+
+// 延迟加载方法
+function addHandler(target, eventType, handler) {
+    // 复写现有函数
+    if (target.addEventListener) {
+        addHandler = function(target, eventType, handler) {
+            target.addEventListner(eventType, handler, false);
+        };
+    } else {
+        addHandler = function(target, eventType, handler) {
+            target.attachEvent("on" + eventType, handler);
+        };
+    }
+    addHandler(target, eventType, handler);
+}
+function removeHandler(target, eventType, handler) {
+    // 复写现有函数
+    if (target.removeEventListener) {
+        removeHandler = function(target, eventType, handler) {
+            target.removeEventListener(eventType, handler, false);
+        };
+    } else {
+        removeHandler = function(target, eventType, handler) {
+            target.detachEvent("on" + eventType, handler);
+        };
+    }
+    removeHandler(target, eventType, handler);
+}
+```
+
+## 条件预加载(conditional advance loading)
+
+> 条件预加载也是减少函数做相同工作的方式之一
+>
+> 与延迟加载相比，条件预加载将检测逻辑提前，而不是等到函数调用时才判断。检测的操作依然只有一次，只是它在过程中来的更早
+
+e.g.
+
+```js
+var addHandler = document.body.addEventListener ?
+	function(target, eventType, handler) {
+        target.addEventListener(eventType, handler, false);
+	} :
+	function(target, eventType, handler) {
+        target.attachEvent("on" + eventType, handler);
+	};
+	
+var removeHandler = document.body.removeEventListener ?
+	function(target, eventType, handler) {
+        target.removeEventListener(eventType, handler, false);
+	} :
+	function(target, eventType, handler) {
+        target.detachEvent("on" + eventType, handler);
+	};
+```
+
+## 使用快速JavaScript代码
+
+> 位操作是JavaScript中速度很快的运算。少去了从64位到32位的表示的转换过程
+
+JavaScript中的位逻辑操作符包括：
+
+- AND 位与 - 两个操作数的对应位都是1时，该位返回1
+- OR 位或 - 两个操作数的对应位**只要有**一个为1时，该位返回1
+- XOR 位异或 - 两个操作数的对应位**只有**一个为1时，该位返回1
+- NOT 位取反 - 遇0则返1，反之亦然
+
+e.g. 采用对2取模运算实现表格行颜色交替
+
+```js
+// 正常的实现方式
+for (var i = 0, len = rows.length; i < len; i++) {
+    if (i % 2) {
+        className = 'even';
+    } else {
+        className = 'odd';
+    }
+}
+
+// 直接用位操作
+// 使用最低位二进制数判断，偶数最低位是0，奇数是1.然后再和1做位与运算，结果为0表示奇数，1表示偶数
+for (var i = 0, len = row.length; i < len; i++) {
+    if (i & 1) {
+        className = 'even';
+    } else {
+        className = 'odd';
+    }
+}
+```
+
+使用位操作，代码虽然没有怎么发生变化，但是速度却比原来的版本加快了不少(取决于浏览器)。
