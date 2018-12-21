@@ -2,7 +2,7 @@
 
 ## async和await
 
-```
+```js
 var a = 0
 var b = async () => {
   a = a + await 10
@@ -24,7 +24,7 @@ console.log('1', a) // -> '1' 1
 
 ## Proxy
 
-```
+```js
 // 用proxy实现数据绑定和监听
 let onWatch = (obj, setBind, getLogger) => {
     let handler = {
@@ -52,7 +52,7 @@ p.a // -> Get 'a' = 2
 
 ## 0.1 +  0.2 != 0.3 的处理
 
-```
+```js
 parseFloat((0.1 + 0.2).toFixed(10))
 ```
 
@@ -110,7 +110,7 @@ m 多行
 
 方法一：排序后去重，支持自定义规则如何视为相同元素，如字母大小写视为一致
 
-```
+```js
 var array = [1, 1, '1'];
 
 function unique(array, iteratee) {
@@ -136,7 +136,7 @@ console.log(unique(array, function(item) {
 
 方法二：用filter简化外层循环
 
-```
+```js
 var array = [1, 2, 1, 1, '1'];
 
 function unique(array) {
@@ -150,7 +150,7 @@ console.log(unique(array));
 
 方法三：用Object键值对实现
 
-```
+```js
 var array = [1, 2, 1, 1, '1'];
 
 function unique(array) {
@@ -165,7 +165,7 @@ console.log(unique(array));
 
 方法四：es6 set
 
-```
+```js
 var array = [1, 2, 1];
 
 var unique = (array) => [...new Set(array)];
@@ -199,7 +199,7 @@ unique(array);
 4. 让class成为O的内部属性[[class]]的值
 5. 最后返回由"[object" 和class和"]"三部分组成的字符串
 
-```
+```js
 // 写个demo
 console.log(Object.prototype.toString.call(undefined)) // [object Undefined]
 console.log(Object.prototype.toString.call(null)) // [object Null]
@@ -210,7 +210,7 @@ console.log(Object.prototype.toString.call(date)) // [object Date]
 
 除了以上例子之外，Object.prototype.toString实际可以判断至少12中类型（14种）
 
-```
+```js
 var number = 1; // [object Number]
 var string = '123'; // [object String]
 var boolean = true; // [object Boolean]
@@ -229,7 +229,7 @@ Object.prototype.toString.call(arguments) // [object Arguments]
 
 基于上述typeof 和 Object.prototype.toString可以封装一个判断类型函数，当为基础类型，使用typeof，引用类型使用toString，同时，在es6中，null和undefined会被Object.prototype.toString 识别为[object Object]，需要兼容这种情况
 
-```
+```js
 var class2type = {};
 
 // 生成class2type映射
@@ -247,7 +247,7 @@ function type(obj) {
 
 **plainObject**：翻译成中文，称为“纯粹的对象”，就是该对象是通过"{}"或"new Object"创建的，该对象含有零个或者多个键值对。plainObject的目的使用来区别别的js对象如null，数组，宿主对象（documents）等。以jquery为例
 
-```
+```js
 $.isPlainObject({}) // true
 $.isPlainObject(new Object) // true
 $.isPlainObject(Object.create(null)) // true
@@ -260,7 +260,7 @@ $.isPlainObject(Object.create({})) // false
 
 jquery3.0中的源码
 
-```
+```js
 var class2type = {};
 
 // 相当于 Object.prototype.toString
@@ -303,7 +303,7 @@ function isPlainObject(obj) {
 
 注意：判断Ctor构造函数是不是Object构造函数，用的是hasOwn.toString.call(Ctor)，并不是Object.prototype.toString，可测试
 
-```
+```js
 console.log(hasOwn.toString.call(Ctor)); // function Object() { [native code] }
 console.log(Object.prototype.toString.call(Ctor)); // [object Function]
 ```
@@ -312,7 +312,7 @@ console.log(Object.prototype.toString.call(Ctor)); // [object Function]
 
 **EmptyObject**：判断对象是否是空对象，只要遍历对象，有属性，即为非空
 
-```
+```js
 function isEmptyObject(obj) {
     var name;
     
@@ -326,7 +326,7 @@ function isEmptyObject(obj) {
 
 **Window对象**：判断window对象，只需判断该对象中是否有指向自身的window属性
 
-```
+```js
 function isWindow(obj) {
     return obj != null && obj === obj.window;
 }
@@ -334,7 +334,7 @@ function isWindow(obj) {
 
 **isArrayLike**：该函数判断类数组对象和数组，都会返回true
 
-```
+```js
 function isArrayLike(obj) {
     // obj 必须有length属性
     var length = !!obj && "length" in obj && obj.length;
@@ -355,7 +355,7 @@ function isArrayLike(obj) {
 
 **isElement**：判断是不是DOM元素
 
-```
+```js
 function isElement(obj) {
     return !!(obj && obj.nodeType === 1);
 }
@@ -365,7 +365,7 @@ function isElement(obj) {
 
 concat和slice是浅拷贝
 
-```
+```js
 var shallowCopy = function(obj) {
     if (typeof obj !== 'object') return;
     // 根据obj的类型判断是新建一个数组还是对象
@@ -384,7 +384,7 @@ var shallowCopy = function(obj) {
 
 简单粗暴的方式
 
-```
+```js
 var new_arr = JSON.parse(JSON.stringify(arr));
 console.log(new_arr);
 ```
@@ -393,7 +393,7 @@ console.log(new_arr);
 
 实现深拷贝，只需在浅拷贝的基础上，如果是对象，就递归调用深拷贝函数就可以
 
-```
+```js
 var deepClone = function (obj) {
     if (typeof obj !== 'object') return;
     var newObj = obj instanceof Array ? [] : {};
@@ -410,7 +410,7 @@ var deepClone = function (obj) {
 
 用reduce实现
 
-```
+```js
 var arr = [1, [2, [3, 4]]];
 
 function flatten(arr) {
@@ -435,7 +435,7 @@ console.log(flatten(arr));
 
 **判断NaN相等**
 
-```
+```js
 function eq(a, b) {
     if (a !== a) return b !== b;
 }
@@ -447,7 +447,7 @@ console.log(eq(NaN, NaN));
 
 Object.prototype.toString方法判断结果却是一致的，如下
 
-```
+```js
 var toString = Object.prototype.toString;
 toString.call('xx'); // "[object String]"
 toString.call(new String('xx')); // "[object String]"
@@ -455,7 +455,7 @@ toString.call(new String('xx')); // "[object String]"
 
 但是同样还是不能比较字符串和字符串包装对象是相等的，可以利用隐式类型转换
 
-```
+```js
 console.log('xx' + '' === new String('xx') + ''); // true
 ```
 
@@ -467,7 +467,7 @@ console.log('xx' + '' === new String('xx') + ''); // true
 
 **Boolean**
 
-```
+```js
 var a = true;
 var b = new Boolean(true);
 
@@ -476,7 +476,7 @@ console.log(+a === +b); // true
 
 **Date**
 
-```
+```js
 var a = new Date(2018, 7, 21);
 var b = new Date(2018, 7, 21);
 
@@ -485,7 +485,7 @@ console.log(+a === +b); // true
 
 **RegExp**
 
-```
+```js
 var a = /a/i;
 var b = new RegExp(/a/i);
 
@@ -494,7 +494,7 @@ console.log(+a === +b); // true
 
 Number 会比较特殊些，存在Number(NaN)，永远和NaN都不等，需要加上之前的NaN相等的比较方式
 
-```
+```js
 var a = Number(NaN);
 var b = Number(NaN);
 
@@ -511,7 +511,7 @@ console.log(eq(a, b)); // true
 
 **简版deepEq函数**
 
-```
+```js
 var toString = Object.prototype.toString;
 
 function deepEq(a, b) {
@@ -538,7 +538,7 @@ function deepEq(a, b) {
 
 第一版
 
-``` 
+``` js
 var curry = function (fn) {
     var args = [].slice.call(arguments, 1);
     return function () {
@@ -564,7 +564,7 @@ addCurry(1, 2); // 3
 
 第二版，实现合并数组
 
-```
+```js
 function sub_curry(fn) {
     var args = [].slice.call(arguments, 1);
     return function () {
@@ -603,7 +603,7 @@ fn("a")("b")("c") // ["a", "b", "c"]
 
 **简单的局部应用**
 
-```
+```js
 function partial(fn) {
     var args = [].slice.call(arguments, 1);
     return function () {
@@ -631,7 +631,7 @@ obj.addOne(2);
 
 ## 函数组合
 
-```
+```js
 function compose() {
     var args = arguments;
     var start = args.length - 1;
@@ -648,7 +648,7 @@ function compose() {
 
 **pointfree**指的是函数无须提及将要操作的数据是什么样的。
 
-```
+```js
 // 需求：输入 'kevin daisy kelly'，返回'K.D.K'
 // 非pointfree，因为提到了数据name
 var initials = function (name) {
@@ -675,7 +675,7 @@ initials("kevin daisy kelly");
 
 第一版，来自《Javascript权威指南》
 
-```
+```js
 function memorize(f) {
     var cache = {};
     return function () {
@@ -710,7 +710,7 @@ console.timeEnd('not use memorize')
 
 但是以上的方法是有问题的，当参数是对象的时候，就会自动调用toString方法转换成[Object object]，再拼接字符串作为key值，因此，以下
 
-```
+```js
 var propValue = function(obj){
     return obj.value
 }
@@ -725,7 +725,7 @@ console.log(memoizedAdd({value: 2})) // 1
 
 第二版，来自underscore实现
 
-```
+```js
 var memorize = function (func, hasher) {
     var memorize = function (key) {
         var cache = memorize.cache;
@@ -742,7 +742,7 @@ var memorize = function (func, hasher) {
 
 如果该函数是单参数，不传入hasher也是可以的，因为address只取了第一个实参。若要支持多参数，就必须要传入hasher函数，具体实现可以使用JSON.stringify，demo如下
 
-```
+```js
 var memorizeAdd = memorize(add, function() {
     var args = Array.prototype.slice.call(arguments);
     return JSON.stringify(args);
@@ -800,7 +800,7 @@ function memoize(fundamental, cache) {
 
 例如
 
-```
+```js
 function Person() {}
 var person = new Person();
 person.name = 'xx';
@@ -811,7 +811,7 @@ Person就是**构造函数**，使用new创建了一个实例对象person
 
 **__ proto __**：每一个js对象（除了null）都具有这个属性，指向该对象的原型
 
-```
+```js
 function Person() {}
 var person = new Person();
 console.log(person.__proto__ === Person.prototype); // true
@@ -819,7 +819,7 @@ console.log(person.__proto__ === Person.prototype); // true
 
 **constructor**：每个原型都有一个constructor属性指向关联的构造函数
 
-```
+```js
 function Person() {}
 
 var person = new Person();
@@ -831,7 +831,7 @@ console.log(person.constructor === Person) // true
 
 综上描述，可以得出
 
-```
+```js
 function Person() {}
 var person = new Person();
 
@@ -842,7 +842,7 @@ console.log(Object.getPrototypeOf(person) === Person.prototype) // true es5获�
 
 **Object.prototype的原型是什么？**
 
-```
+```js
 console.log(Object.prototype.__proto__ === null) // true
 ```
 
@@ -852,7 +852,7 @@ ECMAScript中规定，所有函数的参数都是按值传递，可以理解为�
 
 但是，同样存在困惑，如下例子
 
-```
+```js
 var obj = {
     value: 1
 };
@@ -866,7 +866,7 @@ console.log(obj.value); // 2
 
 不是说是按值传递吗？为什么这里看着就像引用传递呢？同样在看一个例子
 
-```
+```js
 var obj = {
     value: 1
 };
@@ -890,7 +890,7 @@ console.log(obj.value); // 1
 
 **工厂模式**
 
-```
+```js
 function createPerson(name) {
     var o = new Object();
     o.name = name;
@@ -908,7 +908,7 @@ console.log(person1 instanceof Object); // true
 
 **构造函数模式**
 
-```
+```js
 function Person(name) {
     this.name = name;
     this.getName = function () {
@@ -927,7 +927,7 @@ console.log(person2 instanceof Object); // true
 
 **构造函数模式优化**
 
-```
+```js
 function Person(name) {
     this.name = name;
     this.getName = getName;
@@ -945,7 +945,7 @@ var person3 = new Person('xx');
 
 **原型模式**
 
-```
+```js
 function Person(name) {}
 Person.prototype.name = 'xx';
 Person.prototype.getName = function () {
@@ -963,7 +963,7 @@ var person4 = new Person();
 
 构造函数模式与原型模式双剑合璧
 
-```
+```js
 function Person(name) {
     this.name = name;
 }
@@ -983,7 +983,7 @@ var person5 = new Person();
 
 **动态原型模式**
 
-```
+```js
 function Person(name) {
     this.name = name;
     if (typeof this.getName != "function") {
@@ -1000,7 +1000,7 @@ var person6 = new Person('xx');
 
 如下解释：
 
-```
+```js
 function Person(name) {
     this.name = name;
     if (typeof this.getName != "function") {
@@ -1034,7 +1034,7 @@ person2.getName();
 
 **寄生构造函数模式**
 
-```
+```js
 function Person (name) {
     var o = new Object();
     o.name = name;
@@ -1051,7 +1051,7 @@ console.log(person7 instanceof Object); // true
 
 这种写法有一个好处，比如想给特殊数组创建方法，又不想直接修改Array构造函数，可以这样写：
 
-```
+```js
 function SpecialArray() {
     var values = new Array();
     for (var i = 0, len = arguments.length; i < len; i++) {
@@ -1078,7 +1078,7 @@ console.log(colors2.toPipedString); // red|blue|green
 
 **稳妥构造函数模式**
 
-```
+```js
 function person(name) {
 	var o = new Object();
 	o.sayName = function () {
@@ -1098,7 +1098,7 @@ console.log(person9.name); //xx2
 
 **原型链继承**
 
-```
+```js
 function Parent () {
     this.name = 'xx';
 }
@@ -1118,7 +1118,7 @@ console.log(child1.getName()); // xx
 
 **借用构造函数(经典继承)**
 
-```
+```js
 function Parent() {
     this.names = ['xl', 'cora'];
 }
@@ -1140,7 +1140,7 @@ console.log(child2.names); // ['xl', 'cora']
 
    举个例子
 
-   ```
+   ```js
    function Parent (name) {
        this.name = name;
    }
@@ -1166,7 +1166,7 @@ console.log(child2.names); // ['xl', 'cora']
 
 原型链继承和经典继承双剑合璧
 
-```
+```js
 function Parent(name) {
     this.name = name;
     this.colors = ['red', 'blue', 'green'];
@@ -1200,7 +1200,7 @@ console.log(child2.colors); // ["red", "blue", "green"]
 
 **原型式继承**
 
-```
+```js
 function createObj(o) {
     function F(){}
     F.prototype = o;
@@ -1212,7 +1212,7 @@ Object.create的模拟实现，将传入的对象作为创建的对象的原型
 
 缺点：包含引用类型的属性值始终都会共享响应的值跟原型链继承一样
 
-```
+```js
 var person = {
     name: 'xl',
     friends: ['cora'],

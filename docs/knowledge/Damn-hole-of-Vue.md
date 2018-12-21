@@ -63,3 +63,5 @@ export function nextTick(cb?: Function, ctx?: Object) {
 }
 ```
 
+## Hooks
+

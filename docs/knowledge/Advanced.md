@@ -4,6 +4,10 @@
 
 性能 安全 视频 linux 算法
 
+## 前端方向
+
+界面展现用户体验和可访问性方向、偏后的js/nodejs开发方向、audio/video音视频富媒体方向、SVG/canvas/webGL动效创意表现与数据可视化方向、工具建设文档管理内部站建设的前端运维方向、会议预定团建组织对外品牌宣传的前端运营方向
+
 ## 代码类：
 
 https://github.com/james-cain/samples
@@ -159,18 +163,21 @@ https://github.com/james-cain/samples
 
 10.vue-hooks
 
-- <https://github.com/yyx990803/vue-hooks>
-- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
+- <https://github.com/yyx990803/vue-hooks>（完成）
+- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
 - https://juejin.im/post/5bfa929551882524cb6f413b
 
 11.设计模式、js要点、microfrontends
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>
 - <https://github.com/leonardomso/33-js-concepts>
-- https://github.com/stephentian/33-js-concepts
+- <https://github.com/stephentian/33-js-concepts>
+- <https://github.com/qiu-deqing/FE-interview>
+- https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
 - 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
-- 《Mostly-adequate-guide》
+- https://github.com/MostlyAdequate/mostly-adequate-guide
+- https://github.com/llh911001/mostly-adequate-guide-chinese
 - <https://github.com/kamranahmedse/developer-roadmap>
 - <https://github.com/ziishaned/learn-regex>
 - <https://tc39.github.io/ecma262/#sec-intro>
@@ -178,6 +185,11 @@ https://github.com/james-cain/samples
 - <https://github.com/iliakan/javascript-tutorial-en>
 - http://asmjs.org/
 - <http://kripken.github.io/emscripten-site/>
+- <https://github.com/Qquanwei/trackpoint-tools> — 无痕埋点
+- <https://github.com/Autarc/optimal-select> — 生成元素标识
+- https://github.com/rowthan/whats-element — 生成元素标识
+- 跨域
+- https://github.com/Tencent/vConsole
 
 - microfrontends 微前端
 
@@ -224,17 +236,7 @@ https://github.com/james-cain/samples
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 
-15.nodejs/deno
-
-- <https://nodejs.org/dist/latest-v10.x/docs/api/>
-- <https://github.com/denoland/deno>
-- <https://github.com/GoogleChromeLabs/carlo>
-- <https://deno.land/typedoc/index.html>
-- <https://github.com/JacksonTian/anywhere>
-- Child Processes
-- https://archiverjs.com/docs/
-
-16.video、audio、RTC
+15.video、audio、RTC
 
 - 视频
 
@@ -253,6 +255,11 @@ https://github.com/james-cain/samples
 - https://github.com/Kagami/ffmpeg.js
 - <http://ffmpeg.org/ffmpeg-all.html>
 - <https://github.com/xdsnet/other-doc-cn-ffmpeg>
+- <http://ffmpeg.org/documentation.html>
+- <https://trac.ffmpeg.org/>
+- <https://blog.csdn.net/leixiaohua1020/article/list/49>
+- <http://www.rosoo.net/a/index_av.html>
+- http://bbs.chinaffmpeg.com/forum.php
 - 《FFmpeg从入门到精通》
 - 渲染相关
 - 《OpenGL ES 3.0编程指南》
@@ -273,7 +280,7 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - https://github.com/muaz-khan/WebRTC-Experiment
 
-17.算法编写
+16.算法编写
 
 - leetcode
 - https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
@@ -289,10 +296,31 @@ https://github.com/james-cain/samples
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
 - https://github.com/MisterBooo/LeetCodeAnimation
 
+17.nodejs/deno/puppeteer
+
+- Nodejs
+
+- <https://nodejs.org/dist/latest-v10.x/docs/api/>
+- <https://github.com/GoogleChromeLabs/carlo>
+- <https://github.com/JacksonTian/anywhere>
+- Child Processes/fs/event/net/path
+- <https://archiverjs.com/docs/>
+
+- Deno
+
+- <https://github.com/denoland/deno>
+- <https://deno.land/typedoc/index.html>
+
+- Puppeteer
+
+- <https://github.com/james-cain/puppeteer-deep>
+- https://github.com/checkly/puppeteer-examples
+
 18.V8
 
 - <https://v8.dev/docs>
-- https://v8.js.cn/
+- <https://v8.js.cn/>
+- https://github.com/thlorenz/v8-perf
 - <https://github.com/bluezhan/v8>
 - <https://github.com/ry/v8worker>
 - https://github.com/ry/v8worker2
@@ -301,30 +329,25 @@ https://github.com/james-cain/samples
 
 - <https://webassembly.github.io/spec/core/>
 
-20.interview
-
-- <https://github.com/qiu-deqing/FE-interview>
-- https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
-
-21.TDD开发模式
+20.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-22.serverless
+21.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-23.AI《AI未来》《深度学习》
+22.AI《AI未来》《深度学习》
 
 - https://github.com/apachecn/AiLearning
 
-24.tensorFlow
+23.tensorFlow
 
-25.go
+24.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -332,13 +355,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-26.dart & flutter
+25.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-27.hybrid app
+26.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -346,25 +369,25 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-28.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-29.MutationObserver.js
+28.MutationObserver.js
 
-30.通信
+29.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-31.router（navaid）
+30.router（navaid）
 
 - https://github.com/kevindurb/router
 
-32.state（reworm）
+31.state（reworm）
 
-33.搜索引擎
+32.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-34.electron
+33.electron
 
 - vue-electron
 
@@ -388,11 +411,11 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-35.polymer
+34.polymer
 
-36.GraphQL
+35.GraphQL
 
-37.elm
+36.elm
 
 - <https://elm-lang.org/>
 
