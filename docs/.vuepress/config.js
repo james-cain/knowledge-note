@@ -39,6 +39,8 @@ module.exports = {
             '/knowledge/Damn-hole-of-CSS3.md',
             '/knowledge/Damn-hole-of-javascript.md',
             '/knowledge/review-the-javascript.md',
+            '/knowledge/Damn-hole-of-interview.md',
+            '/knowledge/Damn-hole-of-design-patterns.md',
             '/knowledge/Damn-hole-of-http.md'
           ]
         },
