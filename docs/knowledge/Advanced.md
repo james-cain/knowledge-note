@@ -2,7 +2,7 @@
 
 ## 重点项
 
-性能 安全 视频 linux 算法
+性能 安全 视频 linux 算法 编译原理
 
 ## 前端方向
 
@@ -143,7 +143,27 @@ https://github.com/james-cain/samples
 - Clusterize.js
 - <https://github.com/valdrinkoshi/virtual-scroller>
 
-9.WebWorker
+9.nodejs/deno/puppeteer
+
+- Nodejs
+
+- <https://nodejs.org/dist/latest-v10.x/docs/api/>
+- <https://github.com/GoogleChromeLabs/carlo>
+- <https://github.com/JacksonTian/anywhere>
+- Child Processes/fs/event/net/path
+- <https://archiverjs.com/docs/>
+
+- Deno
+
+- <https://github.com/denoland/deno>
+- <https://deno.land/typedoc/index.html>
+
+- Puppeteer
+
+- <https://github.com/james-cain/puppeteer-deep>
+- https://github.com/checkly/puppeteer-examples
+
+10.WebWorker
 
 - <https://github.com/mchaov/WebWorkers>（完成）
 - <https://github.com/developit/greenlet>（完成）
@@ -161,15 +181,30 @@ https://github.com/james-cain/samples
 - SharedWorker、SharedWorkerGlobalScope（完成）
 - <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
-10.vue-hooks
+11.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>（完成）
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
-- https://juejin.im/post/5bfa929551882524cb6f413b
+- <https://juejin.im/post/5bfa929551882524cb6f413b>
 
-11.设计模式、js要点、microfrontends
+12.设计模式、js要点、microfrontends
+
+- microfrontends 微前端
+
+- <https://github.com/phodal/microfrontends>
+- <https://micro-frontends.org/>
+- https://www.webcomponents.org/polyfills/
+- https://github.com/w3c/webcomponents
+- <https://github.com/webcomponents/custom-elements>
+- https://github.com/Tencent/omi
+- <https://github.com/palmerhq/the-platform>
+
+- 设计模式
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>
+
+- Js要点
+
 - <https://github.com/leonardomso/33-js-concepts>
 - <https://github.com/stephentian/33-js-concepts>
 - <https://github.com/qiu-deqing/FE-interview>
@@ -177,7 +212,8 @@ https://github.com/james-cain/samples
 - 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
 - https://github.com/MostlyAdequate/mostly-adequate-guide
-- https://github.com/llh911001/mostly-adequate-guide-chinese
+- <https://github.com/llh911001/mostly-adequate-guide-chinese>
+- https://github.com/Tencent/vConsole
 - <https://github.com/kamranahmedse/developer-roadmap>
 - <https://github.com/ziishaned/learn-regex>
 - <https://tc39.github.io/ecma262/#sec-intro>
@@ -189,18 +225,13 @@ https://github.com/james-cain/samples
 - <https://github.com/Autarc/optimal-select> — 生成元素标识
 - https://github.com/rowthan/whats-element — 生成元素标识
 - 跨域
-- https://github.com/Tencent/vConsole
 
-- microfrontends 微前端
+13.编译原理
 
-- <https://github.com/phodal/microfrontends>
-- <https://micro-frontends.org/>
-- https://www.webcomponents.org/polyfills/
-- https://github.com/w3c/webcomponents
-- https://github.com/webcomponents/custom-elements
-- <https://github.com/palmerhq/the-platform>
+- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
+- 《现代编译原理》
 
-12.web安全/密码学
+14.web安全/密码学
 
 - web安全
 
@@ -221,20 +252,6 @@ https://github.com/james-cain/samples
 - 《图解密码技术》
 - <https://github.com/nakov/practical-cryptography-for-developers-book>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
-
-13.linux《鸟哥的私房菜》
-
-- <http://www.study-area.org/network/network.htm>
-- <http://www.study-area.org/compu/compu.htm>
-- <http://www.study-area.org/network/networkfr.htm>
-- <http://www.linux.org.tw/>
-- <http://linux.vbird.org>/
-- 《图解TCP/IP》
-- 《图解HTTP》
-
-14.编译原理
-
-- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 
 15.video、audio、RTC
 
@@ -282,12 +299,14 @@ https://github.com/james-cain/samples
 
 16.算法编写
 
+- 基础算法
+
 - leetcode
 - https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
-- https://github.com/apachecn/awesome-algorithm
+- <https://github.com/apachecn/awesome-algorithm>
 - 《算法导论》
-- https://github.com/josdejong/mathjs
+- <https://github.com/josdejong/mathjs>
 - <https://github.com/Jam3/math-as-code>
 - <https://github.com/algorithm-visualizer/algorithm-visualizer>
 - <https://github.com/pyloque/fastscan>
@@ -296,25 +315,24 @@ https://github.com/james-cain/samples
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
 - https://github.com/MisterBooo/LeetCodeAnimation
 
-17.nodejs/deno/puppeteer
+- AI
 
-- Nodejs
+- <https://github.com/apachecn/AiLearning>
+- 《AI未来》
+- 《深度学习》
 
-- <https://nodejs.org/dist/latest-v10.x/docs/api/>
-- <https://github.com/GoogleChromeLabs/carlo>
-- <https://github.com/JacksonTian/anywhere>
-- Child Processes/fs/event/net/path
-- <https://archiverjs.com/docs/>
+- tensorflow
 
-- Deno
+17.linux
 
-- <https://github.com/denoland/deno>
-- <https://deno.land/typedoc/index.html>
-
-- Puppeteer
-
-- <https://github.com/james-cain/puppeteer-deep>
-- https://github.com/checkly/puppeteer-examples
+- 《鸟哥的私房菜》
+- <http://www.study-area.org/network/network.htm>
+- <http://www.study-area.org/compu/compu.htm>
+- <http://www.study-area.org/network/networkfr.htm>
+- <http://www.linux.org.tw/>
+- <http://linux.vbird.org>/
+- 《图解TCP/IP》
+- 《图解HTTP》
 
 18.V8
 
@@ -341,13 +359,7 @@ https://github.com/james-cain/samples
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-22.AI《AI未来》《深度学习》
-
-- https://github.com/apachecn/AiLearning
-
-23.tensorFlow
-
-24.go
+22.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -355,13 +367,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-25.dart & flutter
+23.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-26.hybrid app
+24.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -369,25 +381,25 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+25.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-28.MutationObserver.js
+26.MutationObserver.js
 
-29.通信
+27.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-30.router（navaid）
+28.router（navaid）
 
 - https://github.com/kevindurb/router
 
-31.state（reworm）
+29.state（reworm）
 
-32.搜索引擎
+30.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-33.electron
+31.electron
 
 - vue-electron
 
@@ -411,11 +423,11 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-34.polymer
+32.polymer
 
-35.GraphQL
+33.GraphQL
 
-36.elm
+34.elm
 
 - <https://elm-lang.org/>
 

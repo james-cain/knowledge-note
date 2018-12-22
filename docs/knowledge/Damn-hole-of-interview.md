@@ -214,9 +214,9 @@ Math.pow(2, -1075) // 0
   Infinity与null计算时，**null会转成0**，等同于与0计算
 
   ```js
-  0 * Infinity // NaN
-  0 / Infinity // 0
-  Infinity / 0 // Infinity
+  null * Infinity // NaN
+  null / Infinity // 0
+  Infinity / null // Infinity
   ```
 
   Infinity与undefined计算都是NaN
@@ -236,4 +236,353 @@ Math.pow(2, -1075) // 0
 > 在计算机中，二进制数值都会转换成对应的科学计数法表示。如4.5，转换成二进制是100.1，特学技术法表示是1.001 * 2^2，因此，不难看出，第1位，在非零情况下，都为1.
 
 资料：https://github.com/camsong/blog/issues/9
+
+## 值类型和引用类型
+
+值类型（string、number、boolean、null、undefined）
+
+- 占用空间固定，保存在**栈**中（当一个方法执行时，每个方法都会建立自己的内存栈，在这个方法内定义的变量将会逐个放入这块栈内存里，随着方法的执行结束，这个方法的内存栈也将自然销毁。因此，所有在方法中定义的变量都是放在栈内存中的；**栈中存储的是基础变量以及一些对象的引用变量，基础变量的值是存储在栈中，而引用变量存储在栈中的是指向堆中的数组或者对象的地址，因此，修改引用类型总会影响到其他指向这个地址的引用变量**）
+- **保存和复制的是值本身**
+- 使用typeof检测数据的类型
+- 基本类型数据是值类型
+
+引用类型（object、array、function）
+
+- 占用空间不固定，保存在**堆**中（当在程序中创建一个对象时，对象将被保存到运行时数据区中，以便反复利用，这个运行时数据区就是堆内存。堆内存中的对象不会随方法的结束而销毁，即使方法结束后，这个对象还可能被另一个引用变量引用，则这个对象依然不会被销毁，只有当一个对象没有任何引用变量引用时，系统的垃圾回收机制才会回收它）
+- **保存与复制的是指向对象的一个指针**
+- 使用instanceof检测数据类型
+- 使用new()方法构造出的对象是引用型
+
+### 纯函数
+
+对于一个函数，给定一个输入，返回一个唯一的输出。除此之外，不会对外部环境产生任何附带影响，称为纯函数。所有函数内部定义的变量在函数返回之后都被垃圾回收掉。
+
+如果函数的输入是对象(Array、Function、Object)，虽然还是按值传递，但对于对象来说，应该说是**按共享传递**比较合适。实际传递的是该对象的副本，因此修改了该副本中某个值，还是会影响到对象本身。但如果对该对象直接替换，会导致找不到原值，而不会修改原值。
+
+e.g.
+
+```js
+// 非纯函数
+function changeAgelmpure(person) {
+    person.age = 25;
+    return person;
+}
+var reyshieh = {
+    name: 'reyshieh',
+    age: 26
+};
+var changedRey = changeAgelmpure(reyshieh);
+console.log(reyshieh); // {name: 'reyshieh', age: 25}
+console.log(changedRey); // {name: 'reyshieh', age: 25}
+
+// 纯函数
+function changeAgeImpure(person) {
+    var newPersonObj = JSON.parse(JSON.stringify(person));
+    newPersonObj.age = 25;
+    return newPersonObj;
+}
+var reyshieh = {
+    name: 'reyshieh',
+    age: 26
+};
+var changedRey = changeAgelmpure(reyshieh);
+console.log(reyshieh); // {name: 'reyshieh', age: 26}
+console.log(changedRey); // {name: 'reyshieh', age: 25}
+```
+
+```js
+function changeAgeAndReference(person) {
+    person.age = 25; // 此时还没有修改对象本身，修改属性后，影响原来的对象
+    person = {
+        name: 'John',
+        age: 50
+    }; // 修改了对象本身，不再具有引用关系
+    
+    return person;
+}
+var personObj1 = {
+    name: 'Alex',
+    age: 30
+};
+var personObj2 = changeAgeAndReference(personObj1);
+console.log(personObj1); // -> ? {name: "Alex", age: 25}
+console.log(personObj2); // -> ? {name: "John", age: 50}
+```
+
+## 强转换
+
+### 隐式转换为布尔："truthy"和"falsy"
+
+当转换布尔值时，任何值都可以被使用。以下这些值会被转换为false：
+
+- undefined，null
+- Boolean：false
+- Number：-0，+0，NaN
+- String：''
+
+所有其他值都会认为是true
+
+被转换成'false'的值称为falsy；被转换成'true'的值称为truthy
+
+### 典型运算符操作结果
+
+```js
+// 比较
+[] == ![] // true 左边取toString取到空字符串再转数字得到0，右边被!强制转为boolean得到false再转数字
+NaN !== NaN // true
+false == []; // true boolean转数字，数组取toString得到空字符串再转数字
+false == {}; // false boolean转数字，对象取valueOf得到空对象"[object Object]"
+"" == []; // true 字符串转数字，数组取toString得到空字符串再转数字
+"" == {}; // false 字符串转数字，对象取valueOf得到空对象"[object Object]"
+"" == [null]; // true 数组取toString得到空字符串，转数字后得到0
+0 == '\n'; // true '\n'即为''，转数字后得到0
+0 == []; // true
+0 == {}; // false
+1 == true // true
+2 == true // false
+"2" == true // flase
+
+null > 0 // false
+null < 0 // false
+null == 0 // false
+null >= 0 // true
+
+// 加法
+true + 1 // 1
+undefined + 1 // NaN
+
+let obj = {};
+
+{} + 1 // 1，这里的 {} 被当成了代码块
+{ 1 + 1 } + 1 // 1
+
+obj + 1 // [object Object]1
+{} + {} // Chrome 上显示 "[object Object][object Object]"，Firefox 显示 NaN
+
+[] + {} // [object Object] []转为空字符串，{}转为字符串'[object Object]'
+[] + a // [object Object]
++ [] // 等价于 + "" => 0
+{} + [] // 0 {}被当成空而无作用，+[]被强制转型为数字
+a + [] // [object Object]
+
+[2,3] + [1,2] // '2,31,2'
+[2] + 1 // '21'
+[2] + (-1) // "2-1"
+
+// 减法或其他操作，无法进行字符串连接，因此在错误的字符串格式下返回 NaN
+[2] - 1 // 1
+[2,3] - 1 // NaN
+{} - 1 // -1
+```
+
+### JSON的字符串化
+
+JSON.stringify将值序列化为JOSN字符串，和ToString有关，但并不等于强制转型
+
+- 若为简单值，字符串、数字、boolean、null，规则和ToString相同
+- 若字符串中有非法值undefined、function、symbol、具有循环的对象，JSON.stringify会自动忽略这些非法值或抛出异常。若某个元素的值为非法值，则会自动转为null；若其中的一个属性为非法值(如function)，会排除这个属性
+- 若待转换的对象中带有**toJSON方法**，会优先调用该方法，并将该方法返回的值作为序列化的结果
+
+```js
+JSON.stringify(undefined) // undefined，忽略非法值
+JSON.stringify(function() {}) // undefined，忽略非法值
+JSON.stringify(Symbol()) // undefined，忽略非法值
+JSON.stringify([1, 2, 3, undefined]) // "[1,2,3,null]"，非法值以 null 取代
+JSON.stringify({ a: 2, b: function() {}}) // "{"a":2}"，忽略非法屬性
+```
+
+```js
+// 循环错误
+const a = { someProperty: 'Jack' };
+const b = { anotherProperty: a };
+a.b = b;
+JSON.stringify(a) // Uncaught TypeError: Converting circular structure to JSON
+JSON.stringify(b) // Uncaught TypeError: Converting circular structure to JSON
+```
+
+toJSON e.g.
+
+```js
+const someObj = {
+  a: 2,
+  b: function() {}, // 非法!
+  toJSON: function() {
+    return {
+      a: 3, // 序列化過程只包含 a 屬性
+    }
+  },
+}
+
+JSON.stringify(someObj); // "{"a":3}"
+```
+
+用toJSON解决循环错误
+
+```js
+const a = {
+    someProperty: 'Jack',
+    toJSON: function() {
+        return {
+            prompt: 'Hello World'
+        }
+    },
+};
+
+const b = {
+    anotherProperty: a,
+    toJSON: function() {
+        return {
+            prompt: 'Hello World'
+        }
+    },
+};
+
+a.b = b;
+
+// 序列化成功！不會被報錯了！
+JSON.stringify(a) // "{"prompt":"Hello World"}"
+JSON.stringify(b) // "{"prompt":"Hello World"}"
+```
+
+JSON.stringify可传入第二个选择性参数(取代器)来过滤需要序列化的属性
+
+- 取代器是数组时，数组内的元素为指定要包含的属性名称。
+
+  ```js
+  // e.g.
+  const someObj = {
+      a: 2,
+      b: function() {},
+  }
+  
+  JSON.stringify(someObj, ['a']); // "{"a": 2}"
+  ```
+
+- 取代器是函数时，函数是用来返回需要做序列化的属性的值。
+
+  ```js
+  const someObj = {
+    a: 2,
+    b: function() {},
+  }
+  
+  JSON.stringify(someObj, function(key, value) {
+    if (key !== 'b') {
+      return value
+    }
+  });
+  
+  // "{"a":2}"
+  ```
+
+### ToNumber
+
+规则
+
+- undefined -> NaN
+
+- null -> +0 即0
+
+- boolean true -> 1 false -> +0 即0
+
+- string -> NaN
+
+- **object**，尤其重要
+
+  - 若有定义valueOf方法，优先使用valueOf取基本类型值
+  - 若没有valueOF方法，则改用toString方法取得基本类型值，再用ToNumber转为数字
+  - Object.create(null)建立的null没有valueOf或toString方法
+
+  ```js
+  const a = {
+    name: 'Apple',
+    valueOf: function() {
+      return '999'
+    }
+  }
+  
+  Number(a) // 999
+  ```
+
+### 类型转换技巧
+
+- 使用一元正/负运算符转换
+
+  ```js
+  +('123') // 123
+  -('-123') // 123
+  
+  // 用该方式将日期转换为时间戳，等价于Date.now()或.getTime()
+  const timestamp = +new Date();
+  timestamp // 1539236301262
+  ```
+
+- 使用一元位元否定运算符(bitwise not, ~)
+
+  该运算符用来进行二进制的补码运算(~x => -(x+1), 如 ~42 => -43)
+
+  ```js
+  const str = 'Hello World';
+  
+  function find(target) {
+    const result = str.indexOf(target);
+  
+    if (~result) {
+      console.log(`找到了，索引值原本是 ${result}，被轉為 ${~result}`);
+    } else {
+      console.log(`找不到，回傳結果原本是 ${result}，被轉為 ${~result}`);
+    }
+  }
+  
+  find('llo'); // 找到了，索引值原本是 2，被轉為 -3
+  find('abc') // 找不到，回傳結果原本是 -1，被轉為 0
+  ```
+
+- 使用~~将浮点数转为整数
+
+  其运算方式与运行两次~操作，同时截断小数的结果，类似!!的真假判断两次
+
+  使用**x | 0也可以得到与~~的结果相同**，区别在于 ~~运算符的优先级更高，遇到四则运算时不用包括号
+
+  它与**Math.floor()运算的结果不同**
+
+  ```js
+  Math.floor(-29.8) // -30
+  ~~-29.8 // -29
+  -29.8 | 0 // -29
+  ```
+
+### 关系比较
+
+规则
+
+1. 若两个运算符都是字符串，直接依照字母顺序比较
+2. 除了第1点之外的状况，遵循以下
+   - **先使用ToPrimitive做强制转型-先使用valueOf取得值，再用toString方法转为字符串**
+   - **若有任一值转型后的结果不是字符串，就是用ToNumber的规则转为数字，来做数字上的比较**
+
+e.g.
+
+```js
+const a = [12];
+const b = ['13'];
+
+a < b // true, '12' < '13'
+a > b // false
+```
+
+下例比较有意思
+
+```js
+const a = { b: 12 };
+const b = { b: 13 };
+
+a < b // false, '[object Object]' < '[object Object]'
+a > b // false，其实是比较b < a， '[object Object]' < '[object Object]'
+a == b // false，其实是比较两实例的引用
+
+// 以下两个难以理解
+a >= b // true，其实是!(b > a)，因此!false得到true
+a <= b // true
+```
 
