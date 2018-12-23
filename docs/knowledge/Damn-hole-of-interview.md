@@ -342,6 +342,9 @@ false == {}; // false boolean转数字，对象取valueOf得到空对象"[object
 2 == true // false
 "2" == true // flase
 
+null == false; // false，null和undefined比较为true，null和1或0比较都为false
+null == true; // false
+null == undefined; // true
 null > 0 // false
 null < 0 // false
 null == 0 // false
@@ -489,9 +492,9 @@ JSON.stringify可传入第二个选择性参数(取代器)来过滤需要序列�
 
 - **object**，尤其重要
 
-  - 若有定义valueOf方法，优先使用valueOf取基本类型值
-  - 若没有valueOF方法，则改用toString方法取得基本类型值，再用ToNumber转为数字
-  - Object.create(null)建立的null没有valueOf或toString方法
+  - **若有定义valueOf方法，优先使用valueOf取基本类型值**
+  - **若没有valueOF方法，则改用toString方法取得基本类型值，再用ToNumber转为数字**
+  - **Object.create(null)建立的null没有valueOf或toString方法**
 
   ```js
   const a = {
@@ -556,10 +559,15 @@ JSON.stringify可传入第二个选择性参数(取代器)来过滤需要序列�
 
 规则
 
-1. 若两个运算符都是字符串，直接依照字母顺序比较
-2. 除了第1点之外的状况，遵循以下
-   - **先使用ToPrimitive做强制转型-先使用valueOf取得值，再用toString方法转为字符串**
-   - **若有任一值转型后的结果不是字符串，就是用ToNumber的规则转为数字，来做数字上的比较**
+1. 若一个是null，另一个是undefined，返回true
+2. 若一个是null，另一个是非undefined和null，返回false
+
+3. 若两个运算符都是字符串，直接依照字母顺序比较
+
+4. 除了1，2，3点之外的状况，遵循以下
+
+- **先使用ToPrimitive做强制转型-先使用valueOf取得值，再用toString方法转为字符串**
+- **若有任一值转型后的结果不是字符串，就是用ToNumber的规则转为数字，来做数字上的比较**
 
 e.g.
 
@@ -584,5 +592,105 @@ a == b // false，其实是比较两实例的引用
 // 以下两个难以理解
 a >= b // true，其实是!(b > a)，因此!false得到true
 a <= b // true
+```
+
+### ==、===、Object.is比较
+
+| x                   | y                   | `==`    | `===`   | `Object.is` |
+| ------------------- | ------------------- | ------- | ------- | ----------- |
+| `undefined`         | `undefined`         | `true`  | `true`  | `true`      |
+| `null`              | `null`              | `true`  | `true`  | `true`      |
+| `true`              | `true`              | `true`  | `true`  | `true`      |
+| `false`             | `false`             | `true`  | `true`  | `true`      |
+| `"foo"`             | `"foo"`             | `true`  | `true`  | `true`      |
+| `{ foo: "bar" }`    | `x`                 | `true`  | `true`  | `true`      |
+| `0`                 | `0`                 | `true`  | `true`  | `true`      |
+| `+0`                | `-0`                | `true`  | `true`  | `false`     |
+| `0`                 | `false`             | `true`  | `false` | `false`     |
+| `""`                | `false`             | `true`  | `false` | `false`     |
+| `""`                | `0`                 | `true`  | `false` | `false`     |
+| `"0"`               | `0`                 | `true`  | `false` | `false`     |
+| `"17"`              | `17`                | `true`  | `false` | `false`     |
+| `[1,2]`             | `"1,2"`             | `true`  | `false` | `false`     |
+| `new String("foo")` | `"foo"`             | `true`  | `false` | `false`     |
+| `null`              | `undefined`         | `true`  | `false` | `false`     |
+| `null`              | `false`             | `false` | `false` | `false`     |
+| `undefined`         | `false`             | `false` | `false` | `false`     |
+| `{ foo: "bar" }`    | `{ foo: "bar" }`    | `false` | `false` | `false`     |
+| `new String("foo")` | `new String("foo")` | `false` | `false` | `false`     |
+| `0`                 | `null`              | `false` | `false` | `false`     |
+| `0`                 | `NaN`               | `false` | `false` | `false`     |
+| `"foo"`             | `NaN`               | `false` | `false` | `false`     |
+| `NaN`               | `NaN`               | `false` | `false` | `true`      |
+
+## typeof
+
+返回一个字符串，来表示数据的类型
+
+| 数据类型                             | Type                     |
+| ------------------------------------ | ------------------------ |
+| Undefined                            | "undefined"              |
+| Null                                 | "object"                 |
+| 布尔值                               | "boolean"                |
+| 数值                                 | "number"                 |
+| 字符串                               | "string"                 |
+| Symbol                               | "symbol"                 |
+| 宿主对象（JS环境提供的，比如浏览器） | Implementation-dependent |
+| 函数对象                             | "function"               |
+| 任何其他对象                         | "object"                 |
+
+来几个e.g.
+
+```js
+// 例1
+var y = 1, x = y = typeof x;
+x;//"undefined"
+// 表达式是从右往左的，x由于变量提升，类型不是null，而是undefined，所以x=y=”undefined”
+
+// 例2
+(function f(f){
+  return typeof f();//"number"
+})(function(){ return 1; });
+// 传入的参数为f也就是function(){ return 1; }这个函数。通过f()执行后，得到结果1，所以typeof 1返回”number”
+
+// 例3
+var foo = {
+  bar: function() { return this.baz; },
+  baz: 1
+};
+(function(){
+  return typeof arguments[0]();//"undefined"
+})(foo.bar);
+// this永远指向函数执行时的上下文，而不是定义时的（ES6的箭头函数不算）。当arguments执行时，this已经指向了window对象。所以是”undefined”
+
+// 例4
+var foo = {
+  bar: function(){ return this.baz; },
+  baz: 1
+}
+typeof (f = foo.bar)();//undefined
+// 同样是this的指向问题
+
+// 例5
+var f = (function f(){ return "1"; }, function g(){ return 2; })();
+typeof f;//"number"
+// 分组选择符，举例
+// var a = (1,2,3);
+// document.write(a);//3,会以最后一个为准
+// 因此上例实际是返回第二个函数
+
+// 例6
+var x = 1;
+if (function f(){}) {
+  x += typeof f;
+}
+x;//"1undefined"
+// 这是一个javascript语言规范上的问题，在条件判断中加入函数声明。这个声明语句本身没有错，也会返回true，但是javascript引擎在搜索的时候却找不到该函数。所以结果为”1undefined”
+
+// 例7
+(function(foo){
+  return typeof foo.bar;
+})({ foo: { bar: 1 } }); // "undefined"
+// 形参的foo指向的是{ foo: { bar: 1 } }这个整体
 ```
 
