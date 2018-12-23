@@ -694,3 +694,128 @@ x;//"1undefined"
 // 形参的foo指向的是{ foo: { bar: 1 } }这个整体
 ```
 
+typeof在两种情况下会返回"undefined"
+
+- 变量没有被声明
+- 变量的值是`undefined`
+
+e.g.
+
+```js
+typeof undeclareVariable === "undefined" // true
+
+var declareVariable;
+typeof declareVariable // 'undefined'
+
+typeof undefined // 'undefined'
+```
+
+但如果在一个未声明的变量上，直接判断当前值是否是undefined，就会抛出异常，因为只有`typeof`才可以正常检测未声明的变量的同时还不报错
+
+e.g.
+
+```js
+undeclareVariable === undefined
+// ReferenceError: undeclareVariable is not defined
+```
+
+未初始化的变量，没有被传入参数的形参，不存在的属性，都不会出现上面的问题，因为它们总是可访问的，值总是`undefined`
+
+```js
+var declaredVariable;
+declaredVariable === undefined; // true
+
+(function (x) { return x === undefined }())
+// true
+
+({}).foo === undefined
+// true
+```
+
+可以使用Object.prototype.toString来判断类型，判断的结果是准确的
+
+```js
+Object.prototype.toString.call(1) // "[object Number]"
+
+Object.prototype.toString.call('hi') // "[object String]"
+
+Object.prototype.toString.call({a:'hi'}) // "[object Object]"
+
+Object.prototype.toString.call([1,'a']) // "[object Array]"
+
+Object.prototype.toString.call(true) // "[object Boolean]"
+
+Object.prototype.toString.call(() => {}) // "[object Function]"
+
+Object.prototype.toString.call(null) // "[object Null]"
+
+Object.prototype.toString.call(undefined) // "[object Undefined]"
+
+Object.prototype.toString.call(Symbol(1)) // "[object Symbol]"
+```
+
+### instanceof
+
+伪代码
+
+```js
+function new_instance_of(leftValue, rightValue) {
+    let rightProto = rightValue.prototype; // 取右表达式的prototype值
+    leftValue = leftValue.__proto__;
+    
+    while (true) {
+		if (leftValue === null) {
+            return false;
+		}
+		if (leftValue === rightValue) {
+            return true;
+		}
+		leftValue = leftValue.__proto__;
+	}
+}
+```
+
+实际上，instanceof的主要实现原理就是对__ proto __ 和prototype的理解，下面有对这两个做分析
+
+### __ proto __和prototype
+
+-  方法(Function)是对象，方法的原型(Function.prototype)是对象。因此无论是方法还是方法的原型，都具有对象共有的特征
+- 对象在创建实例后，实例需要和对象构造函数原型产生引用，他们之间是通过__ proto __隐式指向的，这样实例就能够访问在构造函数原型中定义的属性和方法
+- 原型对象也有一个属性，constructor，这个属性包含一个指针，指回原构造函数
+
+引用一张关系图
+
+![prototype-and-proto](http://reyshieh.com/assets/prototype-and-proto.png)
+
+解释：
+
+1. 构造函数Foo() -- 构造函数的原型属性Foo.prototype指向了原型对象，在原型对象里共有的方法，所有构造函数声明的实例(如f1，f2)都可以共享方法
+
+2. 原型对象Foo.prototype — 保存着实例共享的方法，有一个指针constructor指回构造函数
+
+3. 实例 — f1和f2是Foo对象的两个实例，这两个对象也有属性__ proto __，指向构造函数的原型对象，这样就可以像1中所述访问原型对象的所有方法
+
+4. 构造函数Foo()除了是方法，还是对象，也同样有__ proto __属性，会指向它的构造函数的原型对象，也就是Function。
+
+   因此，__ proto __ 指向了Function.prototype
+
+5. 逐级往上指向，再指向Object.prototype，最后Object.prototype的 __ proto __ 属性指向null
+
+由该图，可以推断出
+
+```js
+Object instanceof Object // true，由图可知，Object的prototype属性是Object.prototype，而由于Object本身是一个函数，由Function所创建，所以Object.__proto__的值是Function.prototype，而Function.prototype的__proto__属性是Object.prototype，所以可以判断出为true
+Function instanceof Function // true
+Function instanceof Object // true，由图可知，Foo函数的prototype属性时Foo.prototype，而Foo的__proto__属性是Function.prototype，而Function.prototype的__proto__属性并没有指向Foo.prototype，因此可以判断出为false
+Foo instanceof Foo // false
+Foo instanceof Object // true
+Foo instanceof Function // true
+```
+
+最后总结：
+
+- 实例有属性__ proto __，指向该实例对应对象的构造函数的原型
+
+- 对象有属性__ proto __，还有属性prototype，prototype指向该对象的原型对象
+
+  __ proto __指向对象构造函数的构造函数的原型
