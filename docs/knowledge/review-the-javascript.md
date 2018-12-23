@@ -6,7 +6,7 @@
 
 “箭头函数”的`this`，**总是指向定义时所在的对象**，而不是运行时所在的对象。还有一种描述**总是指向所在函数运行时的this**
 
-```
+```js
 // demo1
 var a = {
     name: 'A',
@@ -40,24 +40,24 @@ function fn() {
     })
 }
 fn.call({a: 100})
-输出如下：
-    real {a: 100}
-    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-    es6 {a: 100}
-    es6 {a: 100}
-    es6 {a: 100}
+// 输出如下：
+//    real {a: 100}
+//    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//    js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//    es6 {a: 100}
+//    es6 {a: 100}
+//    es6 {a: 100}
 fn()
-输出如下：
-	real Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
-因为 fn函数只有运行后，箭头函数才会按照定义生成this指向，因此此时箭头函数定义时的所在对象恰好是fn运行时所在的对象。上例中的两个输出，第一个输出，因为fn运行时所指向的对象是{a: 100},因此箭头函数的定义时指向也为{a: 100};第二个输出，因为fn运行时所指向的对象是window，因此箭头函数的定义时指向也为window
+// 输出如下：
+//	real Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	js Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+//	es6 Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+// 因为 fn函数只有运行后，箭头函数才会按照定义生成this指向，因此此时箭头函数定义时的所在对象恰好是fn运行时所在的对象。上例中的两个输出，第一个输出，因为fn运行时所指向的对象是{a: 100},因此箭头函数的定义时指向也为{a: 100};第二个输出，因为fn运行时所指向的对象是window，因此箭头函数的定义时指向也为window
 
 // demo3
 function foo() {
@@ -76,14 +76,12 @@ var t1 = f.call({id: 2})()();
 var t2 = f().call({id: 3})();
 var t3 = f()().call({id: 4});
 
-输出：
-id: 1
-id: 1
-id: 1
-原因很简单 因为f在运行时已经确定了此时的箭头函数的定义时指向，接下来的运行时的变化将不会影响this的指向
-```
+// 输出：
+// id: 1
+// id: 1
+// id: 1
+// 原因很简单 因为f在运行时已经确定了此时的箭头函数的定义时指向，接下来的运行时的变化将不会影响this的指向
 
-```
 // this 对象
 var bob = {
     _name: "Bob",
@@ -116,7 +114,7 @@ square(2, 4, 7.5, 8); // returns: [4, 16, 56,25, 64]
 
 允许在结构中设置原型，简化foo: foo 这样的赋值，定义方法和调用父级。
 
-```
+```js
 var obj = {
     // 设置 prototype
     __proto__: theProtoObj,
@@ -150,7 +148,7 @@ var obj = {
 
 不定参数（rest）用在参数末尾，将最末尾的参数转换成数组，不定参数让我们不在需要arguments
 
-```
+```js
 // default
 function f(x, y=12) {
     return x + y;
@@ -175,7 +173,7 @@ f(...[1, 2, 3]) == 6
 
 > 注：使用迭代器要引入Babel的polyfill
 
-```
+```js
 let fibonacci = {
     [Symbol.iterator]() {
         let pre = 0, cur = 1;
@@ -199,7 +197,7 @@ for (var n of fibonacci) {
 
 通过使用function* 和yield关键字简化了迭代器的编写
 
-```
+```js
 let fibonacci = {
     [Symbol.iterator]: function*() {
         let pre = 0, cur = 1;
@@ -225,7 +223,7 @@ for (var n of fibonacci) {
 
 由宿主环境的默认加载器定义模块运行时的行为，采取隐式异步模式—在模块可以被获取和加载前不会有代码执行
 
-```
+```js
 export function sum(){}
 export var pi = xx
 export default
@@ -248,7 +246,7 @@ weakMaps提供了对对象的弱引用（不会被垃圾回收计数）
 
 proxies允许创建一个可以全范围控制宿主对象行为的对象，可用于拦截，对象的虚拟化，日志记录/性能分析等
 
-```
+```js
 // 代理普通对象
 var target = {}
 var handler = {
@@ -270,7 +268,7 @@ var p = new Proxy(target, handler)
 p() === "I am the proxy"
 ```
 
-```
+```js
 // 所有元操作(meta-operations)
 var handler =
 {

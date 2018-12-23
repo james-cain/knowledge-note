@@ -819,3 +819,6 @@ Foo instanceof Function // true
 - 对象有属性__ proto __，还有属性prototype，prototype指向该对象的原型对象
 
   __ proto __指向对象构造函数的构造函数的原型
+
+## this、call、apply、bind
+

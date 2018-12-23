@@ -58,7 +58,6 @@ module.exports = {
             '/knowledge/Damn-hole-of-safe-and-hacker.md',
             '/knowledge/Damn-hole-of-javascript-algonithms.md',
             '/knowledge/Damn-hole-of-performance.md',
-            '/knowledge/Damn-hole-of-the-EST.md',
             '/knowledge/parameters-of-package.md'
           ]
         },
