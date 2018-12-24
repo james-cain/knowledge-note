@@ -37,7 +37,6 @@ https://github.com/james-cain/samples
 - <https://web.dev/>
 - <https://wpostats.com/>
 - https://github.com/davidsonfellipe/awesome-wpo
-- 《web性能权威指南》
 - <https://csstriggers.com/> - css列表，性能相关
 - <https://daniel.haxx.se/blog/2018/11/11/http-3/>
 - https://duoani.github.io/HTTP-RFCs.zh-cn/
@@ -152,6 +151,9 @@ https://github.com/james-cain/samples
 - <https://github.com/JacksonTian/anywhere>
 - Child Processes/fs/event/net/path
 - <https://archiverjs.com/docs/>
+- https://github.com/chyingp/nodejs-learning-guide
+- <https://github.com/webtorrent/webtorrent>
+- https://github.com/mhzed/wstunnel
 
 - Deno
 
@@ -162,6 +164,7 @@ https://github.com/james-cain/samples
 
 - <https://github.com/james-cain/puppeteer-deep>
 - https://github.com/checkly/puppeteer-examples
+- https://github.com/GoogleChromeLabs/puppeteer-examples
 
 10.WebWorker
 
@@ -187,7 +190,7 @@ https://github.com/james-cain/samples
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
 - <https://juejin.im/post/5bfa929551882524cb6f413b>
 
-12.设计模式、js要点、microfrontends
+12.设计模式、js要点、microfrontends、网络
 
 - microfrontends 微前端
 
@@ -211,6 +214,7 @@ https://github.com/james-cain/samples
 - https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
 - 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
+- http://2ality.com/
 - https://github.com/MostlyAdequate/mostly-adequate-guide
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
 - https://github.com/Tencent/vConsole
@@ -218,6 +222,7 @@ https://github.com/james-cain/samples
 - <https://github.com/ziishaned/learn-regex>
 - <https://tc39.github.io/ecma262/#sec-intro>
 - <https://tc39.github.io/process-document/>
+- https://github.com/tc39/proposals
 - <https://github.com/iliakan/javascript-tutorial-en>
 - http://asmjs.org/
 - <http://kripken.github.io/emscripten-site/>
@@ -225,6 +230,15 @@ https://github.com/james-cain/samples
 - <https://github.com/Autarc/optimal-select> — 生成元素标识
 - https://github.com/rowthan/whats-element — 生成元素标识
 - 跨域
+
+- 网络
+
+- 《图解TCP/IP》
+- 《图解HTTP》
+- https://daniel.haxx.se/http2/
+- <https://daniel.haxx.se/http3-explained/>
+- https://http3-explained.haxx.se/zh/
+- 《web性能权威指南》
 
 13.编译原理
 
@@ -331,8 +345,6 @@ https://github.com/james-cain/samples
 - <http://www.study-area.org/network/networkfr.htm>
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org>/
-- 《图解TCP/IP》
-- 《图解HTTP》
 
 18.V8
 
