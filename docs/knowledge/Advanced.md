@@ -125,6 +125,7 @@ https://github.com/james-cain/samples
 - vuex持久化
 
 - <https://github.com/robinvdvleuten/vuex-persistedstate>（完成）
+- https://github.com/amark/gun
 
 7.图片处理
 
@@ -142,7 +143,31 @@ https://github.com/james-cain/samples
 - Clusterize.js
 - <https://github.com/valdrinkoshi/virtual-scroller>
 
-9.nodejs/deno/puppeteer
+9.vue-hooks
+
+- <https://github.com/yyx990803/vue-hooks>（完成）
+- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
+- <https://juejin.im/post/5bfa929551882524cb6f413b>
+
+10.WebWorker
+
+- <https://github.com/mchaov/WebWorkers>（完成）
+- <https://github.com/developit/greenlet>（完成）
+- https://github.com/ampproject/worker-dom
+- https://github.com/satya164/web-worker-proxy
+- https://github.com/developit/stockroom
+- <https://github.com/GoogleChromeLabs/comlink>
+- <http://javascript.ruanyifeng.com/stdlib/arraybuffer.html>
+- <http://www.ruanyifeng.com/blog/2018/07/web-worker.html>（完成）
+- <https://github.com/webpack-contrib/worker-loader>
+- <https://whatwg-cn.github.io/html/#workers>（完成）
+- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>（完成）
+- <https://html.spec.whatwg.org/multipage/workers.html#workers>（完成）
+- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>（完成）
+- SharedWorker、SharedWorkerGlobalScope（完成）
+- <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
+
+11.nodejs/deno/puppeteer
 
 - Nodejs
 
@@ -163,32 +188,9 @@ https://github.com/james-cain/samples
 - Puppeteer
 
 - <https://github.com/james-cain/puppeteer-deep>
-- https://github.com/checkly/puppeteer-examples
-- https://github.com/GoogleChromeLabs/puppeteer-examples
-
-10.WebWorker
-
-- <https://github.com/mchaov/WebWorkers>（完成）
-- <https://github.com/developit/greenlet>（完成）
-- https://github.com/ampproject/worker-dom
-- https://github.com/satya164/web-worker-proxy
-- https://github.com/developit/stockroom
-- <https://github.com/GoogleChromeLabs/comlink>
-- <http://javascript.ruanyifeng.com/stdlib/arraybuffer.html>
-- <http://www.ruanyifeng.com/blog/2018/07/web-worker.html>（完成）
-- <https://github.com/webpack-contrib/worker-loader>
-- <https://whatwg-cn.github.io/html/#workers>（完成）
-- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>（完成）
-- <https://html.spec.whatwg.org/multipage/workers.html#workers>（完成）
-- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>（完成）
-- SharedWorker、SharedWorkerGlobalScope（完成）
-- <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
-
-11.vue-hooks
-
-- <https://github.com/yyx990803/vue-hooks>（完成）
-- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
-- <https://juejin.im/post/5bfa929551882524cb6f413b>
+- <https://github.com/checkly/puppeteer-examples>
+- <https://github.com/GoogleChromeLabs/puppeteer-examples>
+- https://github.com/dhamaniasad/HeadlessBrowsers
 
 12.设计模式、js要点、microfrontends、网络
 
@@ -290,7 +292,8 @@ https://github.com/james-cain/samples
 - <https://trac.ffmpeg.org/>
 - <https://blog.csdn.net/leixiaohua1020/article/list/49>
 - <http://www.rosoo.net/a/index_av.html>
-- http://bbs.chinaffmpeg.com/forum.php
+- <http://bbs.chinaffmpeg.com/forum.php>
+- Utf-8 utf-16原理理
 - 《FFmpeg从入门到精通》
 - 渲染相关
 - 《OpenGL ES 3.0编程指南》
@@ -334,6 +337,7 @@ https://github.com/james-cain/samples
 - <https://github.com/apachecn/AiLearning>
 - 《AI未来》
 - 《深度学习》
+- https://github.com/BrainJS/brain.js
 
 - tensorflow
 

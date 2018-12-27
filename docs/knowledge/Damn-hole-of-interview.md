@@ -754,7 +754,7 @@ Object.prototype.toString.call(undefined) // "[object Undefined]"
 Object.prototype.toString.call(Symbol(1)) // "[object Symbol]"
 ```
 
-### instanceof
+## instanceof
 
 伪代码
 
@@ -974,4 +974,157 @@ a.func2()     // Cherry
 var b = func2;
 b(); // Uncaught TypeError: this.func1 is not a function
 ```
+
+## 闭包
+
+闭包是能读取其他函数内部变量的函数
+
+闭包的用处：
+
+- 可以读取函数内部的变量
+- 让变量的值始终在内存中
+
+```js
+function init() {
+    var name = 'Mozilla'; // name 是一个被init创建的局部变量
+    function displayName() { // displayName()是内部函数，一个闭包
+        alert(name); // 使用了父函数中声明的变量
+    }
+    displayName();
+}
+init();
+```
+
+e.g.
+
+```js
+var name = "The Window";
+
+var object = {
+    name : "My Object",
+    getNameFunc : function(){
+        return function(){
+            return this.name;
+        };
+    }
+};
+
+alert(object.getNameFunc()());
+// getNameFunc方法返回的函数是挂在window上的，所以this指向window，弹出框显示The Window
+```
+
+```js
+var name = "The Window";
+
+var object = {
+    name : "My Object",
+    getNameFunc : function(){
+        var that = this;
+        return function(){
+    		return that.name;
+    	};
+	}
+};
+
+alert(object.getNameFunc()());
+//  因为this指针用内部的代替了，所以返回的是My Object
+```
+
+```js
+var makeCounter = function() {
+    var privateCounter = 0;
+    function changeBy(val) {
+        privateCounter += val;
+    }
+    return {
+        increment: function() {
+            changeBy(1);
+        },
+        decrement: function() {
+            changeBy(-1);
+        },
+        value: function() {
+            return privateCounter;
+        }
+    }
+};
+
+var Counter1 = makeCounter();
+var Counter2 = makeCounter();
+console.log(Counter1.value()); // 0
+Counter1.increment();
+Counter1.increment();
+console.log(Counter1.value()); // 2
+console.log(Coutner2.value()); // 0
+```
+
+上例可以看出两个不同的计数器，是相互独立的。每个闭包都是引用自己的词法作用域内的变量privateCounter
+
+## 作用域
+
+> 作用域是程序源代码中定义变量的区域，是用于确定在何处以及如何查找变量(标识符)的规则
+>
+> 作用域规定了如何查找变量，也就是确定当前执行代码对变量的访问权限
+>
+> ECMAScript 6之前只有**全局作用域**和**函数作用域**
+
+### 静态作用域(词法作用域)
+
+函数的作用域在函数定义的时候就决定了。
+
+```js
+function fn1(x) {
+    var y = x + 4;
+    function f2(z) {
+        console.log(x, y, z);
+    }
+    fn2(y * 5);
+}
+fn1(6); // 6 10 50
+```
+
+词法作用域在书写代码时函数声明的位置就决定了。编译阶段已经能够知道全部标识符在哪里以及是如何声明的，所以词法作用域是静态的作用域，也就是词法作用域能够预测在执行代码的过程中如何查找标识符
+
+### 动态作用域
+
+函数的作用域在函数调用的时候才决定
+
+## 函数式编程
+
+借助数组的map方法，可以很方便的实现数组的函数式
+
+```js
+const nextCharForNumStr = (str) => [str]
+	.map(s => s.trim())
+	.map(s => parseInt(s))
+	.map(i => i + 1)
+	.map(i => String.fromCharCode(i))
+
+nextCharForNumStr(' 64 ') // ['A']
+```
+
+这里的技巧在于，可以将需要变换的字符串，放在数组中，将对字符串的操作拆解成多个小步骤
+
+根据上面的思路，可以创建一个新的类型，在类型中定义map方法，实现和数组map相似的功能
+
+```js
+const Box = (x) => ({
+    map: f => Box(f(x)),		// 返回容器为了链式调用
+    fold: f => f(x),			// 将元素从容器中取出
+    inspect: () => `Box(${x})`	// 看容器里有什么内容
+});
+
+const nextCharForNumStr = (str) => Box(str)
+	.map(s => s.trim())
+	.map(i => parseInt(i))
+	.map(i => i + 1)
+	.map(i => String.fromCharCode(i))
+	.fold(c => c.toLowerCase());
+	
+nextCharForNumStr(' 64 '); // a
+```
+
+https://github.com/BuptStEve/blog/issues/15
+
+## JS表达式与语句
 

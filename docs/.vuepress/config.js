@@ -52,6 +52,7 @@ module.exports = {
             '/knowledge/Damn-hole-of-webapi.md',
             '/knowledge/Damn-hole-of-Browser.md',
             '/knowledge/Damn-hole-of-IE9.md',
+            '/knowledge/Damn-hole-of-nodejs.md',
             '/knowledge/Damn-hole-of-mobile-compatibility.md',
             '/knowledge/Damn-hole-of-google-devtools.md',
             '/knowledge/Damn-hole-of-network.md',
