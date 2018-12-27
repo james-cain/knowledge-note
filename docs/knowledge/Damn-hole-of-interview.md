@@ -1126,5 +1126,217 @@ nextCharForNumStr(' 64 '); // a
 
 https://github.com/BuptStEve/blog/issues/15
 
-## JS表达式与语句
+## JS表达式(expressions)与语句(statements)
+
+**一个表达式返回一个值**，可以在任何需要值的地方使用表达式，也就是，会在我们使用它的地方期望得到一个值。举例如调用function中的参数(arguments)，或者声明=的右边都属于expressions的位置
+
+下面的每一行都是一个expression
+
+```js
+myvar
+100 + x
+fn("a", "b")
+```
+
+可以粗略的将一个语句描述为**一个行为**，循环结构和if语句就是语句的例子。程序基本上是一系列语句的结合(**基础声明除外**)，如在MDN中定义的if语句
+
+```js
+if (condition)
+	statement1
+[else
+	statement2]
+```
+
+当JavaScript需要编写一条语句时，均可以写入一个表达式，这样的语句称为**表达式语句**，例如在`statement1`的地方写入一个`function`，这个function就称为`expression statement`，属于特殊的statement，这个function自然可以return一个值，同事也可以在内部产生一些`side effect`，不过如果我们重点放在`side effect`部分时，通常会返回`undefined`。
+
+```js
+function say() {
+    console.log('hello');
+}
+
+say();
+
+// undefined
+// hello
+```
+
+通常一个statement是独立的
+
+但不能编写一条语句来代替表达式。如，if语句不能成为函数的参数
+
+有些语句和表达式之间是有相似的功能的。
+
+e.g.
+
+```js
+// if语句和条件运算符
+var x;
+if (y >= 0) {
+    x = y;
+} else {
+    x = -y;
+}
+// 条件运算符
+var x = (y >= 0 ? y : -y);
+// 等号和封号之间的代码是一个表达式。括号不是必要的，括号是为了是代码更加清晰易懂
+```
+
+### 封号和逗号运算符
+
+封号用来连接不同的语句
+
+```js
+foo(); bar();
+```
+
+逗号运算符计算两个表达式的值并返回第二个表达式的值
+
+```js
+"a", "b" // 输出 'b'
+
+var x = ("a", "b")
+x // 输出 'b'
+
+console.log(("a", "b")) // 输出 b
+```
+
+### 对象字面量(object literal)和块级作用域(block)
+
+对象字面量e.g.
+
+```js
+{
+    foo: bar(3, 5)
+}
+```
+
+上述代码是一个合法的语句：
+
+- 代码块：花括号中的一系列语句
+- 标签：在任意语句前添加标签，这里的标签是foo
+- 语句：表达式语句bar(3, 5)
+
+{}可用于定义作用域或对象字面量
+
+e.g.
+
+```js
+[] + {} // [object Object]
+
+{} + [] // 0
+```
+
+这两个语句返回结果不一样。第二个语句的加号左边相当于一个代码块({})，后面加上一个[]，所以返回0
+
+Javascript允许一个块级作用域既不充当循环也不充当if语句的一部分而独立存在。e.g.
+
+```js
+// 该例可以通过标签命名块级作用域，并在合适的时机跳出这个作用域，返回到上层作用域中
+function test(printTwo) {
+    priting: {
+        console.log("One");
+        if (!printTwo) break printing;
+        console.log("Two");
+    }
+    console.log("Three");
+}
+
+test(false);
+// 输出：
+// One
+// Three
+test(true);
+// 输出：
+// One
+// Two
+// Three
+```
+
+### 函数表达式和函数声明
+
+函数声明
+
+```js
+function() {}
+```
+
+可以在这个表达式上加一个名字，将它变成命名后的函数表达式
+
+```js
+function foo() {}
+```
+
+命名后的函数表达式和函数声明仅从语句上是无法区分的，但效果截然不同
+
+- 函数表达式产生一个值(函数)
+- 函数声明是一个动作：创建一个变量，其值是函数
+
+如果需要立即调用函数，必须使用函数表达式，不能使用函数声明？[不理解]
+
+```js
+(function() {})();
+(function foo())();
+// 实际二者都可执行，如何理解上句话？
+```
+
+### 使用对象字面量和函数表达式作为语句
+
+因为有些表达式和语句无法区分开，意味着相同的代码由于上下文环境不同，作用也是不同的。
+
+为了避免歧义，JavaScript语法**禁止表达式语句以大括号和关键字function开始**
+
+如果想写一个以这两个标记中的任何一个开始的表达式语句，应该把它**放在括号里面**，它不会改变它的结果，但确保它出现在只有表达式的上下文中。
+
+e.g.
+
+```js
+// eval 
+// 在语句上下文中解析它所受到的参数。如果想让eval返回一个对象，则必须在对象字面量周围加上括号
+eval("{foo: 123}") // 123
+eval("({foo: 123})") // {foo: 123}
+```
+
+```js
+// 自执行函数(IIFEs)
+(function () {return "abc"}()) // 'abc'
+
+// 如果省略括号，则会出现语法错误(函数声明不能声明匿名函数)
+function() {return "abc"}() // SyntaxError
+
+// 即使添加了名字也会返回语法错误(函数声明不能被立即调用)
+function foo() {return "abc"}() // SyntaxError
+```
+
+另外，还有一种方式可以保证表达式在表达式上下文中被解析的方法，即在函数声明之前添加一个一元运算符(如+或!)，但是与括号不同的是，这些符号会改变输出的表示形式:
+
+```js
++function() {console.log("hello")}() 
+// 输出：
+// hello
+// NaN
+// NaN出现正式由于+号运算undefined的结果，也可以使用void运算符：
+void function() {console.log("hello")}()
+// 输出：
+// hello
+// undefined
+```
+
+#### 连接多个IIFEs
+
+要使用封号
+
+```js
+(function() {}())
+(function() {}())
+// TypeError: undefined is not a function
+// 错误原因是JavaScript认为第二行是尝试将第一行的结果作为函数调用
+// 解决方法是：
+(function() {}());
+(function() {}())
+// OK
+// 还可以使用一元运算符的操作符，可以省略封号，因为执行会自动添加封号
+void function (){}()
+void function (){}()
+// OK
+```
 
