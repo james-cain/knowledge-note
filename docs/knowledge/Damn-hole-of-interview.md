@@ -1160,11 +1160,20 @@ say();
 // hello
 ```
 
-通常一个statement是独立的
+> 通常一个statement是独立的，只会完成某项任务，不过如果它影响了整个程序，例如：改变了内部的状态，或者影响后面的statement，这些造成的改变就称为side effect(副作用)
 
 但不能编写一条语句来代替表达式。如，if语句不能成为函数的参数
 
+总结下关系:
+
+- syntax
+  - statements
+    - expression statements
+  - expressions
+
 有些语句和表达式之间是有相似的功能的。
+
+### if条件语句和条件运算符(三元运算符)
 
 e.g.
 
@@ -1200,9 +1209,11 @@ x // 输出 'b'
 console.log(("a", "b")) // 输出 b
 ```
 
+存在某些expressions看起来很像是statements。e.g.
+
 ### 对象字面量(object literal)和块级作用域(block)
 
-对象字面量e.g.
+对象字面量，属于expression，用来产生一个对象，e.g.
 
 ```js
 {
@@ -1210,7 +1221,9 @@ console.log(("a", "b")) // 输出 b
 }
 ```
 
-上述代码是一个合法的语句：
+> object literal是一个通过`{}`与`,`逗号分隔的键值对列表，如`var o = {name: 'Object'}`写法
+
+同时，上述代码是一个合法的语句，它具备：
 
 - 代码块：花括号中的一系列语句
 - 标签：在任意语句前添加标签，这里的标签是foo
@@ -1221,6 +1234,18 @@ console.log(("a", "b")) // 输出 b
 e.g.
 
 ```js
+1 + 'string' // '1string'
+1 + undefined // NaN
+1 + null // 1
+1 + [2, 3,] // '12, 3'
+1 + {name: 'reyshieh'} // '1[object Object]'
+// 通过上面的示例，得知，除了undefined和null，基本上js会把对象先"toString()"再相加
+
+[].toString() // ''
+[1, 2, 3].toString() // '1, 2, 3'
+var o = {};
+o.toString(); // '[object Object]'
+
 [] + {} // [object Object]
 
 {} + [] // 0
@@ -1252,9 +1277,11 @@ test(true);
 // Three
 ```
 
-### 函数表达式和函数声明
+从上面验证了`{}`语法如果遇到statements的位置，就会被当做statements，如果在expressions的位置就会被当成一个值
 
-函数声明
+### 函数表达式(function expression)和函数声明(function声明)
+
+下面是一个`function expression`
 
 ```js
 function() {}
@@ -1266,17 +1293,16 @@ function() {}
 function foo() {}
 ```
 
-命名后的函数表达式和函数声明仅从语句上是无法区分的，但效果截然不同
+命名后的函数表达式和函数声明仅从语句上是无法区分的(放在`=`右边是expression)，但效果截然不同
 
 - 函数表达式产生一个值(函数)
 - 函数声明是一个动作：创建一个变量，其值是函数
 
-如果需要立即调用函数，必须使用函数表达式，不能使用函数声明？[不理解]
+如果需要立即调用函数，必须使用函数表达式，不能使用函数声明
 
 ```js
 (function() {})();
 (function foo())();
-// 实际二者都可执行，如何理解上句话？
 ```
 
 ### 使用对象字面量和函数表达式作为语句
@@ -1284,6 +1310,8 @@ function foo() {}
 因为有些表达式和语句无法区分开，意味着相同的代码由于上下文环境不同，作用也是不同的。
 
 为了避免歧义，JavaScript语法**禁止表达式语句以大括号和关键字function开始**
+
+换句话说，就是在JavaScript认定为statement的位置，使用了expression会变成expression statement。**这并不是expression，所以产生了一些特殊的{}会被当做block解释，function开头的语法会被当做函数声明**
 
 如果想写一个以这两个标记中的任何一个开始的表达式语句，应该把它**放在括号里面**，它不会改变它的结果，但确保它出现在只有表达式的上下文中。
 
@@ -1339,4 +1367,289 @@ void function (){}()
 void function (){}()
 // OK
 ```
+
+另外，关于JavaScript自动补上封号有几个建议
+
+1. 在return，break，continue，++，—五中statement中，`换行字符`可完全等于`;`
+2. var，if，do while，for，continue，break，return，with，switch，throw，try，debugger关键字开头，以及空的statement，上一行会自动补上封号
+3. 遇到expression statement和function expression情况非常复杂，后面请务必要加上封号
+4. 凡`(`和`{`开头的statements前面或上一句不加非常危险
+
+总结：
+
+- expressions: 会产生一个值，其意义就是代表一个值的表达式，例如`x+y`
+- statements: 完成某项任务的操作。赋值，条件判断，声明都算是statements，如`if (condition) {console.log('WoW')}`
+- expression statements: 属于一种statement，其产生一个值（或回传一个值），并完成某项任务。例如：x += 1或在statement执行一个side effect的函数调用
+- 在statements位置放入expressions要小心（即expression statement），因为JavaScript对于expression和expression statement解释行为是不一样的
+- 下面两种语法对于其位置尤其需要注意
+  - function
+    - statement位置：当作函数声明，即创建一个值为function的变量，不能立即调用（除了加()）
+    - expression位置：为function expression产生一个为function的值，可以被立即调用(IIFE)
+  - {}
+    - statement位置：block，一个程序块，如for，label块。不能作为对象（除了加()）
+    - expression位置：对象实体，建一个值，对象
+
+引自:
+
+https://segmentfault.com/a/1190000004565693
+
+http://2ality.com/2012/09/expressions-vs-statements.html
+
+## 变量提升
+
+JavaScript中，函数及变量的声明都将被提升到函数的最顶部
+
+JavaScript中，变量可以在使用后声明，也就是变量可以先使用再声明
+
+> 注意：JavaScript初始化不会被提升
+>
+> JavaScript只有声明的变量会提升，初始化不会
+>
+> e.g.
+>
+> ```js
+> var x = 5; // 初始化x
+> var y = 7; // 初始化y
+> elem = document.getElementById("demo");
+> elem.innerHTML = x + " " + y; // 5 7
+> ```
+>
+> ```js
+> var x = 5; // 初始化 x
+> 
+> elem = document.getElementById("demo"); // 查找元素 
+> elem.innerHTML = x + " " + y;           // 5 undefined
+> 
+> var y = 7; // 初始化 y，因为是初始化，不会被提升，导致上面的y是一个未定义的变量
+> ```
+
+**在严格模式(strict mode)下，不允许使用未声明的变量**
+
+变量提升只对var命令声明的变量有效，如果一个变量不是用var命令声明的，就不会发生变量提升
+
+```js
+console.log(b);
+b = 1;
+// ReferenceError: b is not defined
+```
+
+**ES6引入块级作用域，块级作用域中使用let声明的变量同样会提升，只不过不允许在实际声明语句前使用**
+
+函数提升同样会将声明提升至作用域头部，不过不同于变量提升，函数同样会将函数体定义提升至头部
+
+```js
+function b() {
+    a = 10;
+    return;
+    function a() {}
+}
+// 编译器修改
+function b() {
+    function a() {}
+    a = 10;
+    return;
+}
+```
+
+在创建创建步骤中，JavaScript解释器会通过function关键字识别出函数声明并且将其提升至头部；函数的生命周期会将声明、初始化、赋值三个步骤都提升到作用域头部
+
+### JavaScript的解析机制
+
+遇到script标签，js就进行预解析，将变量var和function声明提升，但不会执行function，然后进入上下文执行，上下文执行还是执行预解析同样操作，直到没有var和function，再开始执行上下文
+
+在JavaScript中，所有绑定的声明会在控制流到达它们出现的作用域时被初始化，这里的作用域就是`执行上下文(Execution Context)`，每个执行上下文分为`内存分配(Memory Creation Phase)`与`执行(Execution)`两个阶段。
+
+在内存分配阶段会进行变量创建，即开始进入了`变量的生命周期`；变量的生命周期包含`声明(Declaration phase)`、`初始化(Initialization phase)`、`赋值(Assignment phase)`三个过程。其中声明步骤会在作用域中注册变量，初始化步骤负责为变量分配内存并且创建作用域绑定。此时变量被初始化为undefined
+
+ES6中的let与const关键字声明的变量会在作用域头部被初始化，不过这些变量仅允许在实际声明之后使用。在作用域头部与变量实际声明处之间的区域称为`暂时死域(Temporal Dead Zone)`，TDZ能避免传统的提升引起的潜在问题。
+
+e.g.
+
+```js
+a = 5;
+show();
+var a;
+function show() {};
+```
+
+预解析：
+
+```js
+function show() {};
+var a;
+a = 5;
+show();
+```
+
+### 函数作用域
+
+存在一个很常见的问题，粒度过大，在使用闭包或者其他特性时导致异常的变量传递，如下
+
+```js
+var callbacks = [];
+
+// 这里的 i 被提升到了当前函数作用域头部
+for (var i = 0; i <= 2; i++) {
+    callbacks[i] = function () {
+            return i * 2;
+        };
+}
+
+console.log(callbacks[0]()); //6
+console.log(callbacks[1]()); //6
+console.log(callbacks[2]()); //6
+// 因为函数作用域内的i是全局作用域中的，此时i已经被污染了，变成了3
+```
+
+### 块级作用域
+
+类似于if、switch条件选择或者for、while这样的循环体即是所谓的块级作用域。在ES5中，要实现块级作用域，即需要在原来的函数作用域上包裹一层，即在需要限制变量提升的地方手动设置一个变量来替代原来的全局变量
+
+```js
+var callbacks = [];
+for (var i = 0; i <= 2; i++) {
+    (function (i) {
+        // 这里的 i 仅归属于该函数作用域
+        callbacks[i] = function () {
+            return i * 2;
+        };
+    })(i);
+}
+callbacks[0]() === 0;
+callbacks[1]() === 2;
+callbacks[2]() === 4;
+```
+
+在ES6中，可以直接利用`let`关键字达成
+
+```js
+let callbacks = []
+for (let i = 0; i <= 2; i++) {
+    // 这里的 i 属于当前块作用域
+    callbacks[i] = function () {
+        return i * 2
+    }
+}
+callbacks[0]() === 0
+callbacks[1]() === 2
+callbacks[2]() === 4
+```
+
+### 函数表达式
+
+使用函数表达式的方式不存在函数提升，因为函数名称使用变量表示的，只存在变量提升。即函数表达式也会先声明函数名，然后赋值匿名函数给它
+
+e.g.
+
+例1
+
+```js
+var getName=function(){
+  console.log(2);
+}
+
+function getName(){
+  console.log(1);
+}
+
+getName(); // ?
+```
+
+按照正常思维，可能会认为返回的是1。但实际上，getName是变量，变量的声明将提升到顶部，而变量的赋值依然保留在原来的位置。注意，函数优先，虽然函数声明和变量声明都会提升，但是函数会首先被提升，然后才是变量，提升后为
+
+```js
+//函数、变量声明提升后
+function getName(){    //函数声明提升到顶部
+  console.log(1);
+}
+
+var getName;    //变量声明提升
+getName = function(){    //变量赋值依然保留在原来的位置
+  console.log(2);
+}
+
+getName(); // 最终输出：2
+```
+
+例2
+
+```js
+sayHello();
+
+function sayHello () {
+    function hello () {
+        console.log('Hello!');
+    }
+
+    hello();
+
+    var hello = function () {
+        console.log('Hey!');
+    }
+}
+
+// Hello!
+```
+
+例3
+
+```js
+sayHello();
+
+function sayHello () {
+    hello();
+
+    var hello = function () {
+        console.log('Hey!');
+    }
+}
+
+// VM3376:5 Uncaught TypeError: hello is not a function
+```
+
+### 函数声明
+
+相同命名的函数，后者将会覆盖前者
+
+```js
+say();
+function say() {
+    function hello() {
+        console.log('Hello!');
+    }
+    hello();
+    function hello() {
+        console.log('Hey!');
+    }
+}
+// Hey!
+```
+
+### 避免使用全局变量
+
+- 函数自执行
+
+  解决避免全局变量，可以用自执行创建一个新的作用域，这样变量就不会相互污染
+
+  ```js
+  (function(win) {
+      var doc = win.document;
+      // ...
+  }(window));
+  ```
+
+- 模块化
+
+### 作用域中的名称
+
+在JavaScript中，作用域中的名称有以下四种
+
+1. 语言自身定义：所有的作用域默认都会包含this和arguments
+2. 函数形参：函数有名字的形参会进入到函数体的作用域中
+3. 函数声明：通过function foo() {}的形式
+4. 变量声明：通过var foo的形式
+
+名称解析顺序就是按照以上排序进行。
+
+## Promise
 

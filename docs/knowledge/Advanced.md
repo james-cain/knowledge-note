@@ -190,9 +190,34 @@ https://github.com/james-cain/samples
 - <https://github.com/james-cain/puppeteer-deep>
 - <https://github.com/checkly/puppeteer-examples>
 - <https://github.com/GoogleChromeLabs/puppeteer-examples>
-- https://github.com/dhamaniasad/HeadlessBrowsers
+- <https://github.com/dhamaniasad/HeadlessBrowsers>
+- <https://github.com/yujiosaka/headless-chrome-crawler>
 
-12.设计模式、js要点、microfrontends、网络
+12.electron
+
+- vue-electron
+
+- - electron-quick-start
+
+- guppy
+
+- vue-design
+
+- nativefier
+
+- ram
+
+- react-proto
+
+- electronic-wechat
+
+- vue-form-making
+
+- <https://electronjs.org/docs>
+
+- <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
+
+13.设计模式、js要点、microfrontends、网络
 
 - microfrontends 微前端
 
@@ -219,6 +244,8 @@ https://github.com/james-cain/samples
 - http://2ality.com/
 - https://github.com/MostlyAdequate/mostly-adequate-guide
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
+- <http://www.ruanyifeng.com/blog/2017/03/pointfree.html>
+- http://www.ruanyifeng.com/blog/2017/02/fp-tutorial.html
 - https://github.com/Tencent/vConsole
 - <https://github.com/kamranahmedse/developer-roadmap>
 - <https://github.com/ziishaned/learn-regex>
@@ -242,12 +269,12 @@ https://github.com/james-cain/samples
 - https://http3-explained.haxx.se/zh/
 - 《web性能权威指南》
 
-13.编译原理
+14.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 - 《现代编译原理》
 
-14.web安全/密码学
+15.web安全/密码学
 
 - web安全
 
@@ -268,8 +295,9 @@ https://github.com/james-cain/samples
 - 《图解密码技术》
 - <https://github.com/nakov/practical-cryptography-for-developers-book>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
+- https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 
-15.video、audio、RTC
+16.video、audio、RTC
 
 - 视频
 
@@ -314,7 +342,7 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - https://github.com/muaz-khan/WebRTC-Experiment
 
-16.算法编写
+17.算法编写
 
 - 基础算法
 
@@ -330,18 +358,21 @@ https://github.com/james-cain/samples
 - <https://github.com/chihungyu1116/leetcode-javascript>
 - <https://github.com/haoel/leetcode>
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
-- https://github.com/MisterBooo/LeetCodeAnimation
+- <https://github.com/MisterBooo/LeetCodeAnimation>
+- https://github.com/liuyubobobo/Play-Leetcode
 
 - AI
 
 - <https://github.com/apachecn/AiLearning>
 - 《AI未来》
 - 《深度学习》
-- https://github.com/BrainJS/brain.js
+- <https://github.com/BrainJS/brain.js>
+- <https://github.com/trekhleb/homemade-machine-learning>
+- https://github.com/Microsoft/onnxjs
 
 - tensorflow
 
-17.linux
+18.linux
 
 - 《鸟哥的私房菜》
 - <http://www.study-area.org/network/network.htm>
@@ -350,7 +381,7 @@ https://github.com/james-cain/samples
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org>/
 
-18.V8
+19.V8
 
 - <https://v8.dev/docs>
 - <https://v8.js.cn/>
@@ -359,23 +390,23 @@ https://github.com/james-cain/samples
 - <https://github.com/ry/v8worker>
 - https://github.com/ry/v8worker2
 
-19.WebAssembly
+20.WebAssembly
 
 - <https://webassembly.github.io/spec/core/>
 
-20.TDD开发模式
+21.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-21.serverless
+22.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-22.go
+23.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -383,13 +414,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-23.dart & flutter
+24.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-24.hybrid app
+25.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -397,47 +428,23 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-25.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+26.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-26.MutationObserver.js
+27.MutationObserver.js
 
-27.通信
+28.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-28.router（navaid）
+29.router（navaid）
 
 - https://github.com/kevindurb/router
 
-29.state（reworm）
+30.state（reworm）
 
-30.搜索引擎
+31.搜索引擎
 
 - https://github.com/olivernn/lunr.js
-
-31.electron
-
-- vue-electron
-
-- - electron-quick-start
-
-- guppy
-
-- vue-design
-
-- nativefier
-
-- ram
-
-- react-proto
-
-- electronic-wechat
-
-- vue-form-making
-
-- <https://electronjs.org/docs>
-
-- <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
 32.polymer
 
