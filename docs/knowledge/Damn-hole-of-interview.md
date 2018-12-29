@@ -380,7 +380,7 @@ a + [] // [object Object]
 
 ### JSON的字符串化
 
-JSON.stringify将值序列化为JOSN字符串，和ToString有关，但并不等于强制转型
+JSON.stringify将值序列化为JSON字符串，和ToString有关，但并不等于强制转型
 
 - 若为简单值，字符串、数字、boolean、null，规则和ToString相同
 - 若字符串中有非法值undefined、function、symbol、具有循环的对象，JSON.stringify会自动忽略这些非法值或抛出异常。若某个元素的值为非法值，则会自动转为null；若其中的一个属性为非法值(如function)，会排除这个属性
@@ -1652,4 +1652,358 @@ function say() {
 名称解析顺序就是按照以上排序进行。
 
 ## Promise
+
+promise是代表了异步操作最终完成或者失败的对象
+
+- 一个promise可能有三种状态：等待(pending)、已完成(fulfilled)、已拒绝(rejected)
+- 一个promise的状态只能从"等待"转到"完成"态或者"拒绝"态，不能逆向转换，同时"完成"态和"拒绝"态不能相互转换
+- promise必须实现then方法
+
+## 立即执行函数，模块化，命名空间
+
+### 立即执行函数(IIFE)
+
+e.g.
+
+例1
+
+```js
+(function(window, undefined) {
+    // ...
+}(window))
+// or
+(function(window, undefined) {
+    // ...
+})(window)
+```
+
+前面讲解了expressions和statements，如果是函数声明，此时代表的是statements，expression statements是不允许以`function`或者`{`开头的，解析时会抛异常，所以函数声明的立即执行函数是必须加上括号的。但如果函数变量赋值，就不需要加括号，因为此时是expression
+
+```js
+var a = function(a) {return a;}(1);
+a // 1
+```
+
+除了括号以外，还可以使用二元运算符开头达到同样效果，如在函数声明前增加`~`、`+`
+
+```js
+~function() {
+    // 代码
+}();
+// or
++function() {
+    // 代码
+}();
+```
+
+在例1中，观察细致的朋友应该会发现，传入的参数多了一个`undefined`，这是为啥？
+
+> 因为在IIFE执行时，实参只有一个，形参有两个，自然undefined会被赋值为undefined
+>
+> 为了防止特殊值undefined被恶意代码篡改：低版本浏览器，undefined是支持被修改的，因此
+>
+> ```js
+> if (wall === undefined) {
+>     // ...
+> }
+> ```
+>
+> 会得到你不想要的答案
+>
+> 多增加一个形参，目的就是为了防止恶意修改。只要在这个IIFE作用域内，undefined就能正常获取
+>
+> 其次，如果将undefined作为形参，压缩工具就可以对这些定义进行压缩，减小文件体积
+
+#### 放大模式
+
+在作用域内对传入的形参进行判断，如果非空，在原有的对象基础上叠加新功能，再将新对象返回，可以将一个冗长的对象代码段拆分成多个小代码段进行加载，同时可以重复var声明，因为取得最后一个将会是完整的对象
+
+e.g.
+
+```js
+var rey = (function(window, REY, undefined) {
+    if (typeof REY === 'undefined') REY = {};
+    // 绑定方法say
+    REY.say = function() {
+        console.log('hello');
+    };
+    return REY;
+}(window, rey));
+var rey = (function(window, REY, undefined) {
+    if (typeof REY === 'undefined') REY = {};
+    // 绑定方法whoIam
+    Rey.whoIam = function() {
+        console.log('rey');
+    };
+    reutrn REY;
+}(window, rey));
+// 调用
+rey.say();
+rey.whoIam();
+```
+
+#### 宽放大模式
+
+在实参部分，第二参数为`window.rey || (window.rey = {})`
+
+该模式也同样可以把大文件切分成多个小文件加载，不必考虑文件加载的先后顺序，不存在强耦合关系
+
+e.g.
+
+```js
+(function(window, REY, undefined) {
+    REY.say = function() {
+        console.log('hello');
+    };
+}(window, window.rey || (window.rey = {})));
+(function(window, REY, undefined) {
+    REY.whoIam = function() {
+        console.log('rey');
+    };
+}(window, window.rey || (window.rey = {})));
+```
+
+#### 分文件加载IIFE要注意
+
+前面讲解expressions和statements时介绍过，如果多个IIFEs连接时，必须要在两个IIFE之间添加`;`，否则在执行的时候，会把第一个IIFE当做函数调用名下一个IIFE的`()`内容当做实参，导致代码报错
+
+解决这个问题，可以在IIFE最前面添加一个`;`，这样就防止了这类事情的发生
+
+e.g.
+
+```js
+;(function(window, REY, undefined) {
+    REY.say = function(){
+        console.log('hello');
+    };
+}(window, window.rey) || (window.rey = {}));
+```
+
+### 模块
+
+#### 立即执行函数+闭包
+
+立即执行函数可以创建作用域，闭包可以读取其他函数的变量。结合两者，可以做一个不受别的作用域影响的函数
+
+e.g.
+
+```js
+var module = (function() {
+    var privateName = 'inner';
+    var privateFunc = function() {
+        console.log('私有函数');
+    }
+    
+    return {
+        name: privateName,
+        sayName: function() {
+            console.log(this.name);
+        }
+    }
+}());
+
+module.sayName(); // inner
+module.name; // inner
+```
+
+## 递归
+
+### 递归调用栈
+
+e.g.
+
+```js
+function factorial(n) {
+    console.trace() // 该方法可以查看每一次当前的调用栈的状态
+    if (n === 0) {
+        return 1
+    }
+
+    return n * factorial(n - 1)
+}
+
+factorial(2)
+```
+
+现在观察调用栈。第一次打印
+
+```js
+// 调用栈包含了一个factorial函数的调用，这里是factorial(3)
+console.trace
+factorial @ VM3766:2
+(anonymous) @ VM3766:10
+```
+
+第二次打印
+
+```js
+// 调用栈中出现了两个函数的调用
+VM3766:2 console.trace
+factorial @ VM3766:2
+factorial @ VM3766:7
+(anonymous) @ VM3766:10
+```
+
+第三次打印
+
+```js
+// 调用栈中出现了三个函数的调用
+VM3766:2 console.trace
+factorial @ VM3766:2
+factorial @ VM3766:7
+factorial @ VM3766:7
+(anonymous) @ VM3766:10
+```
+
+可以看出，如果传入的参数特别大，那调用栈将会变得非常大，最终可能超出调用栈的缓存大小而崩溃导致执行失败。解决这个问题，应该使用`尾递归`
+
+### 尾调用
+
+当一个函数执行时的最后一个步骤是返回另一个函数的调用，就是尾调用
+
+函数的调用方式可以是以下几种方式
+
+- 函数调用：func(...)
+- 方法调用: Obj.method(...)
+- call调用：func.call(...)
+- apply调用：func.apply(...)
+
+并且只有以下表达式包含尾调用:
+
+- 条件操作符：? ：
+
+  ```js
+  const a = x => x ? f() : g();
+  // f() 和 g()都在尾部
+  ```
+
+- 逻辑或：||
+
+  ```js
+  const a = () => f() || g();
+  // g()有可能是尾调用，f()不是
+  // 等价
+  const a = () => {
+      const fResult = f()
+      if (fResult) {
+          return fResult // 不是尾调用
+      } else {
+          return g() // 尾调用
+      }
+  }
+  // 只有当f()的结果为falsy时，g()才是尾调用
+  ```
+
+- 逻辑与：&&
+
+  ```js
+  const a = () => f() && g()
+  // g()有可能是尾调用，f()不是
+  // 等价
+  const a = () => {
+      const fResult = f(); // 不是尾调用
+      if (fResult) {
+          return g(); // 尾调用
+      } else {
+          return fResult;
+      }
+  }
+  // 只有当f()的结果为truthy时，g()才是尾调用
+  ```
+
+- 逗号：,
+
+  ```js
+  const a = () => (f(), g())
+  // g()是尾调用
+  // 等价
+  const a = () => {
+      f();
+      return g();
+  }
+  ```
+
+### 尾调用优化
+
+函数在调用的时候会在调用栈(call stack)中存有记录，每一条记录叫做一个调用帧(call frame)，每调用一个函数就向栈中push一条记录，函数执行结束后一次向外弹出，直到清空调用栈
+
+**尾调用优化只在严格模式下有效**
+
+尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用记录，只要直接用内层函数的调用记录取代外层函数的调用就可以，调用栈中始终只保持一条调用帧，从而节省很大一部分的内存，这就是尾调用优化的意义
+
+### 尾递归
+
+尾递归是一种递归的写法，可以避免不断的将函数压栈最终导致堆栈溢出。
+
+修改之前的函数
+
+e.g.
+
+```js
+function factorial(n, total = 1) {
+    console.trace()
+    if (n === 0) {
+        return total
+    }
+
+    return factorial(n - 1, n * total)
+}
+
+factorial(2)
+```
+
+按照理想情况，上述例子应该不再需要多次对factorial进行压栈处理，因为每一个递归调用都不在依赖于上一个递归调用的值，空间复杂度为o(1)而不是o(n)
+
+但是在chrome中调试，发现第三次压栈后
+
+```js
+console.trace
+factorial @ VM5050:3
+factorial @ VM5050:8
+factorial @ VM5050:8
+(anonymous) @ VM5050:11
+```
+
+不仅仅是`chrome`，`firefox`、`nodejs低版本`的均没有开启尾调用优化
+
+在`safari`里进行了尾调用优化
+
+在Nodejs v6以下，可以通过开启`strict mode`，并使用`--harmony_tailcalls`来开启尾递归优化
+
+node新版本已经移除了--harmony_tailcalls功能
+
+e.g.
+
+```js
+'use strict'
+
+function factorial(n, total = 1) {
+    console.trace()
+    if (n === 0) {
+        return total
+    }
+
+    return factorial(n - 1, n * total)
+}
+
+factorial(3)
+
+// 使用命令
+// node --harmony_tailcalls factorial.js
+```
+
+调用栈信息永远只有一个在堆栈中
+
+```js
+console.trace
+factorial @ VM5050:3
+```
+
+总结：
+
+- 尾递归不一定会将代码执行速度提高；相反，可能会变慢
+
+- 尾递归可以使用更少的内存，让递归函数更加安全
+
+## 算法
 
