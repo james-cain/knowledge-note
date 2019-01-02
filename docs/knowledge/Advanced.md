@@ -193,31 +193,7 @@ https://github.com/james-cain/samples
 - <https://github.com/dhamaniasad/HeadlessBrowsers>
 - <https://github.com/yujiosaka/headless-chrome-crawler>
 
-12.electron
-
-- vue-electron
-
-- - electron-quick-start
-
-- guppy
-
-- vue-design
-
-- nativefier
-
-- ram
-
-- react-proto
-
-- electronic-wechat
-
-- vue-form-making
-
-- <https://electronjs.org/docs>
-
-- <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
-
-13.设计模式、js要点、microfrontends、网络
+12.设计模式、js要点、microfrontends、网络
 
 - microfrontends 微前端
 
@@ -241,7 +217,8 @@ https://github.com/james-cain/samples
 - https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
 - 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
-- http://2ality.com/
+- <http://2ality.com/>
+- http://liubin.org/promises-book/
 - https://github.com/MostlyAdequate/mostly-adequate-guide
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
 - <http://www.ruanyifeng.com/blog/2017/03/pointfree.html>
@@ -268,13 +245,45 @@ https://github.com/james-cain/samples
 - <https://daniel.haxx.se/http3-explained/>
 - https://http3-explained.haxx.se/zh/
 - 《web性能权威指南》
+- <http://www.study-area.org/network/network.htm>
+- <http://www.study-area.org/compu/compu.htm>
+- <http://www.study-area.org/network/networkfr.htm>
 
-14.编译原理
+13.算法编写
 
-- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
-- 《现代编译原理》
+- 基础算法
 
-15.web安全/密码学
+- leetcode
+- https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
+- <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
+- <https://github.com/apachecn/awesome-algorithm>
+- 《算法导论》
+- <https://github.com/josdejong/mathjs>
+- <https://github.com/Jam3/math-as-code>
+- <https://github.com/algorithm-visualizer/algorithm-visualizer>
+- <https://github.com/pyloque/fastscan>
+- <https://github.com/chihungyu1116/leetcode-javascript>
+- <https://github.com/haoel/leetcode>
+- <https://github.com/skyhee/Algorithms-Learning-With-Go>
+- <https://github.com/MisterBooo/LeetCodeAnimation>
+- <https://github.com/liuyubobobo/Play-Leetcode>
+- <https://github.com/apachecn/awesome-algorithm>
+- <https://github.com/gatieme/CodingInterviews>
+- <https://leetcode-cn.com/>
+- 《剑指offer》
+
+- AI
+
+- <https://github.com/apachecn/AiLearning>
+- 《AI未来》
+- 《深度学习》
+- <https://github.com/BrainJS/brain.js>
+- <https://github.com/trekhleb/homemade-machine-learning>
+- https://github.com/Microsoft/onnxjs
+
+- tensorflow
+
+14.web安全/密码学
 
 - web安全
 
@@ -297,7 +306,7 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 
-16.video、audio、RTC
+15.video、audio、RTC
 
 - 视频
 
@@ -340,46 +349,42 @@ https://github.com/james-cain/samples
 - RTC
 
 - https://github.com/webrtc/samples
-- https://github.com/muaz-khan/WebRTC-Experiment
+- <https://github.com/muaz-khan/WebRTC-Experiment>
 
-17.算法编写
+16.编译原理
 
-- 基础算法
+- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
+- 《现代编译原理》
 
-- leetcode
-- https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
-- <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
-- <https://github.com/apachecn/awesome-algorithm>
-- 《算法导论》
-- <https://github.com/josdejong/mathjs>
-- <https://github.com/Jam3/math-as-code>
-- <https://github.com/algorithm-visualizer/algorithm-visualizer>
-- <https://github.com/pyloque/fastscan>
-- <https://github.com/chihungyu1116/leetcode-javascript>
-- <https://github.com/haoel/leetcode>
-- <https://github.com/skyhee/Algorithms-Learning-With-Go>
-- <https://github.com/MisterBooo/LeetCodeAnimation>
-- https://github.com/liuyubobobo/Play-Leetcode
-
-- AI
-
-- <https://github.com/apachecn/AiLearning>
-- 《AI未来》
-- 《深度学习》
-- <https://github.com/BrainJS/brain.js>
-- <https://github.com/trekhleb/homemade-machine-learning>
-- https://github.com/Microsoft/onnxjs
-
-- tensorflow
-
-18.linux
+17.linux
 
 - 《鸟哥的私房菜》
-- <http://www.study-area.org/network/network.htm>
-- <http://www.study-area.org/compu/compu.htm>
-- <http://www.study-area.org/network/networkfr.htm>
 - <http://www.linux.org.tw/>
-- <http://linux.vbird.org>/
+- <http://linux.vbird.org/>
+
+18.electron
+
+- vue-electron
+
+- - electron-quick-start
+
+- guppy
+
+- vue-design
+
+- nativefier
+
+- ram
+
+- react-proto
+
+- electronic-wechat
+
+- vue-form-making
+
+- <https://electronjs.org/docs>
+
+- <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
 19.V8
 
