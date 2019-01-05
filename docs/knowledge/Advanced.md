@@ -193,21 +193,7 @@ https://github.com/james-cain/samples
 - <https://github.com/dhamaniasad/HeadlessBrowsers>
 - <https://github.com/yujiosaka/headless-chrome-crawler>
 
-12.设计模式、js要点、microfrontends、网络
-
-- microfrontends 微前端
-
-- <https://github.com/phodal/microfrontends>
-- <https://micro-frontends.org/>
-- https://www.webcomponents.org/polyfills/
-- https://github.com/w3c/webcomponents
-- <https://github.com/webcomponents/custom-elements>
-- https://github.com/Tencent/omi
-- <https://github.com/palmerhq/the-platform>
-
-- 设计模式
-
-- <https://github.com/kamranahmedse/design-patterns-for-humans>
+12.js要点、microfrontends、vue源码
 
 - Js要点
 
@@ -217,6 +203,7 @@ https://github.com/james-cain/samples
 - https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
 - 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
+- Es6 promise/set/map/proxy
 - <http://2ality.com/>
 - http://liubin.org/promises-book/
 - https://github.com/MostlyAdequate/mostly-adequate-guide
@@ -237,7 +224,22 @@ https://github.com/james-cain/samples
 - https://github.com/rowthan/whats-element — 生成元素标识
 - 跨域
 
-- 网络
+- vue源码
+
+- <http://hcysun.me/vue-design/art/>
+- <https://ustbhuangyi.github.io/vue-analysis/prepare/>
+
+- microfrontends 微前端
+
+- <https://github.com/phodal/microfrontends>
+- <https://micro-frontends.org/>
+- https://www.webcomponents.org/polyfills/
+- https://github.com/w3c/webcomponents
+- <https://github.com/webcomponents/custom-elements>
+- https://github.com/Tencent/omi
+- <https://github.com/palmerhq/the-platform>
+
+13.网络
 
 - 《图解TCP/IP》
 - 《图解HTTP》
@@ -249,7 +251,7 @@ https://github.com/james-cain/samples
 - <http://www.study-area.org/compu/compu.htm>
 - <http://www.study-area.org/network/networkfr.htm>
 
-13.算法编写
+14.算法编写
 
 - 基础算法
 
@@ -272,6 +274,10 @@ https://github.com/james-cain/samples
 - <https://leetcode-cn.com/>
 - 《剑指offer》
 
+- 设计模式
+
+- <https://github.com/kamranahmedse/design-patterns-for-humans>
+
 - AI
 
 - <https://github.com/apachecn/AiLearning>
@@ -283,7 +289,7 @@ https://github.com/james-cain/samples
 
 - tensorflow
 
-14.web安全/密码学
+15.web安全/密码学
 
 - web安全
 
@@ -306,7 +312,7 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 
-15.video、audio、RTC
+16.video、audio、RTC
 
 - 视频
 
@@ -351,18 +357,18 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
 
-16.编译原理
+17.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 - 《现代编译原理》
 
-17.linux
+18.linux
 
 - 《鸟哥的私房菜》
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org/>
 
-18.electron
+19.electron
 
 - vue-electron
 
@@ -386,7 +392,7 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-19.V8
+20.V8
 
 - <https://v8.dev/docs>
 - <https://v8.js.cn/>
@@ -395,23 +401,23 @@ https://github.com/james-cain/samples
 - <https://github.com/ry/v8worker>
 - https://github.com/ry/v8worker2
 
-20.WebAssembly
+21.WebAssembly
 
 - <https://webassembly.github.io/spec/core/>
 
-21.TDD开发模式
+22.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-22.serverless
+23.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-23.go
+24.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -419,13 +425,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-24.dart & flutter
+25.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-25.hybrid app
+26.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -433,29 +439,29 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-26.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-27.MutationObserver.js
+28.MutationObserver.js
 
-28.通信
+29.通信
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-29.router（navaid）
+30.router（navaid）
 
 - https://github.com/kevindurb/router
 
-30.state（reworm）
+31.state（reworm）
 
-31.搜索引擎
+32.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-32.polymer
+33.polymer
 
-33.GraphQL
+34.GraphQL
 
-34.elm
+35.elm
 
 - <https://elm-lang.org/>
 
