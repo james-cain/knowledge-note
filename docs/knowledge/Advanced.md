@@ -176,7 +176,8 @@ https://github.com/james-cain/samples
 - <https://github.com/JacksonTian/anywhere>
 - Child Processes/fs/event/net/path
 - <https://archiverjs.com/docs/>
-- https://github.com/chyingp/nodejs-learning-guide
+- <https://github.com/chyingp/nodejs-learning-guide>
+- https://github.com/i0natan/nodebestpractices
 - <https://github.com/webtorrent/webtorrent>
 - https://github.com/mhzed/wstunnel
 
@@ -199,6 +200,8 @@ https://github.com/james-cain/samples
 
 - <https://github.com/leonardomso/33-js-concepts>
 - <https://github.com/stephentian/33-js-concepts>
+- <https://30secondsofcode.org/adapter#ary>
+- https://github.com/30-seconds/30-seconds-of-code
 - <https://github.com/qiu-deqing/FE-interview>
 - https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
 - 《高性能Javascript》（完成）
@@ -239,7 +242,7 @@ https://github.com/james-cain/samples
 - https://github.com/Tencent/omi
 - <https://github.com/palmerhq/the-platform>
 
-13.网络
+13.TCP/IP
 
 - 《图解TCP/IP》
 - 《图解HTTP》

@@ -783,7 +783,7 @@ function new_instance_of(leftValue, rightValue) {
 - 对象在创建实例后，实例需要和对象构造函数原型产生引用，他们之间是通过__ proto __隐式指向的，这样实例就能够访问在构造函数原型中定义的属性和方法
 - 原型对象也有一个属性，constructor，这个属性包含一个指针，指回原构造函数
 
-引用一张关系图
+引用一张关系图（经典图，引自网络）
 
 ![prototype-and-proto](http://reyshieh.com/assets/prototype-and-proto.png)
 
@@ -2004,6 +2004,151 @@ factorial @ VM5050:3
 - 尾递归不一定会将代码执行速度提高；相反，可能会变慢
 
 - 尾递归可以使用更少的内存，让递归函数更加安全
+
+## 混合对象类
+
+### 构造函数(constructor)
+
+每个原型都有一个constructor属性指向关联的构造函数
+
+```js
+function Person() {}
+var person = new Person();
+person.name = 'reyshieh';
+console.log(person.name);
+console.log(person.__proto__ === Person.prototype); // true
+console.log(Person === Person.prototype.constructor); // true
+console.log(person.constructor === Person); // true
+```
+
+Person是构造函数，使用new创建一个实例对象person
+
+#### new内部机制
+
+1. 创建新对象，同时继承对象类的原型，即Person.prototype
+2. 执行对象类的构造函数，同时该实例的属性和方法被this引用，即this指向新构造的实例
+3. 如果构造函数return了一个新的"对象"，这个对象会取代整个new出来的结果。如果构造函数没有return对象，机会返回步骤1创建的对象，即隐式返回this
+
+代码阐述
+
+```js
+// let p = new Person()；
+let p = (function() {
+    let obj = {};
+    obj.__proto__ = Person.prototype;
+    //其他赋值语句 ...
+    return obj;
+}());
+```
+
+### 继承多种方式
+
+#### 借用构造函数(经典继承)
+
+```js
+function Parent() {
+    this.names = ['rey', 'shieh'];
+}
+function Child() {
+    Parent.call(this);
+}
+var child1 = new Child();
+child1.names.push('cain');
+console.log(child1.names); // ['rey', 'shieh', 'cain']
+var child2 = new Child();
+console.log(child2.names); // ['rey', 'shieh']
+```
+
+问题：
+
+1. 避免了引用类型的属性被所有实例共享
+
+2. 可以在Child中向Parent传参
+
+   ```js
+   function Parent(name) {
+   	this.name = name;
+   }
+   function Child(name) {
+       Parent.call(this, name);
+   }
+   var child1 = new Child('rey');
+   console.log(child1.name); // 'rey'
+   var child2 = new Child('shieh');
+   console.log(child2.name); // 'shieh'
+   ```
+
+#### 组合继承(原型链继承+经典继承)
+
+```js
+function Parent(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+Parent.prototype.getName = function (){
+    console.log(this.name);
+}
+function Child(name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+
+var child1 = new Child('kevin', '18');
+
+child1.colors.push('black');
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // ["red", "blue", "green", "black"]
+
+var child2 = new Child('daisy', '20');
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // ["red", "blue", "green"]
+```
+
+优点:融合原型链继承和经典继承的优点，最常用的继承模式
+
+##原型
+
+### 原型继承
+
+####原型链继承
+
+```js
+function Parent() {
+    this.name = 'reyshieh';
+}
+Parent.prototype.getName = function () {
+    console.log(this.name);
+}
+function Child() {}
+Child.prototype = new Parent();
+var child1 = new Child();
+console.log(child1.getName()); // reyshieh
+```
+
+问题:
+
+1. 引用类型的属性被所有实例共享
+2. 在创建Child的实例时，不能向Parent传参
+
+#### 原型式继承
+
+```js
+function createObj(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+```
+
+Object.create的模拟实现，将传入的对象作为创建的对象的原型
+
+缺点：包含引用类型的属性值始终都会共享响应的值，跟原型链继承一样
 
 ## 算法
 
