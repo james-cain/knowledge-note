@@ -1631,3 +1631,105 @@ interface SharedWorkerGlobalScope : WorkerGlobalScope {
 };
 ```
 
+## Mutation Observer
+
+Mutation Observer API用来监视DOM变动，如节点的增减、属性变动、文本内容的变动。
+
+DOM发生变动就会触发Mutation Observer事件。但是，与事件本质不同：
+
+- 事件是同步触发，DOM的变化立即会触发相应的事件
+- Mutation Observer是异步触发，DOM的变化会等到当前所有DOM操作都结束了才会触发
+
+解决了DOM变动频繁的问题。如在文档中连续插入1000个<p>元素，用Mutation Observer只在1000个元素插入后才触发，且只触发一次
+
+### 使用
+
+#### 构造函数
+
+```js
+var observer = new MutationObserver(callback);
+```
+
+回调函数接受两个参数，第一个变动数组，第二个观察器实例
+
+```js
+var observer = new MutationObserver(function (mutations, observer) {
+    mutations.forEach(function (mutation) {
+        console.log(mutation);
+    });
+});
+```
+
+#### 实例方法
+
+##### observe()
+
+> 第一个参数：所要观察的DOM节点
+>
+> 第二个参数：一个配置对象，指定所要观察的特定变动
+
+```js
+var article = document.querySelector('article');
+var options = {
+    childList: true,
+    attributes: true
+};
+observer.observe(article, options);
+```
+
+options有以下几种
+
+- childList: 子节点的变动（指新增，删除或更改）
+- attribute: 属性的变动
+- characterData: 节点内容或节点文本的变动
+
+##### disconnect()
+
+用来停止观察。调用方法后，DOM发生变动不会触发观察器
+
+```js
+observer.disconnect();
+```
+
+##### takeRecords()
+
+用来清除变动记录。即不在处理未处理的变动。返回变动记录的数组
+
+```js
+observer.takeRecords();
+```
+
+## MutationRecord
+
+Mutation Observer回调函数返回实例的数组，包括以下DOM相关信息
+
+```js
+type: 观察的变动类型(attribute、characterData或childList)
+target：发生变动的DOM节点
+addedNodes：新增的DOM节点
+removedNodes：删除的DOM节点
+previousSibling：前一个同级节点，如果没有返回null
+nextSibling：下一个同级节点，如果没有则返回null
+attributeName：发生变动的属性
+oldValue：变动前的值。只对attribute和characterData变动有效，如果发生childList变动，则返回null
+```
+
+e.g.
+
+```js
+var callback = function(records) {
+    records.map(function(record) {
+        console.log('Mutation type: ' + record.type);
+        console.log('Mutation target: ' + record.target);
+    });
+};
+var p = new MutationObserver(callback);
+var option = {
+    childList: true,
+    subtree: true
+};
+p.observe(document.body, option);
+```
+
+使用Mutation Observer API时，网页加载DOM节点的生成会产生变动记录，只要观察DOM的变动，就能在第一个时间触发相关事件，因此也就没有必要使用`DOMContentLoaded`事件
+

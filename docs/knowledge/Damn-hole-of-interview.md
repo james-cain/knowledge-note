@@ -2156,6 +2156,8 @@ Javascript是单线程语言，受限于需要和用户互动，以及操作DOM�
 
 我们可以将这些任务分为**同步任务(synchronous)**和**异步任务(asynchronous)**两种。同步任务指在**主线程**上排队执行的任务，只有前一个任务执行完毕，才能执行下一个任务；异步任务指不进入主线程，进入**任务队列(task queue)**的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行
 
+除了主线程，还存在其他的线程，如：处理Ajax请求的线程、处理DOM事件的线程、定时器线程、读写文件的线程等
+
 ![event-loop](http://www.reyshieh.com/assets/event-loop.png)
 
 异步执行的运行机制如下：
@@ -2188,6 +2190,104 @@ Node.js不仅提供了setTimeout()和setInterval()两个方法，还有另外两
 
 - process.nextTick()方法指定的任务总是发生在所有异步任务之前
 - setImmediate()方法是在当前"任务队列"的尾部添加事件，也就是指定的任务总是在下一次EventLoop时执行
+
+理解宏任务和微任务，先举个例子
+
+```js
+console.log('script start');
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0);
+Promise.resolve().then(function() {
+    console.log('promise1');
+}).then(function() {
+    console.log('promise2');
+});
+console.log('script end');
+```
+
+正确的执行顺序是：script start, script end, promise1, promise2, setTimeout
+
+但实际在不同的浏览器里执行出来的效果是不一样的
+
+### 宏任务（macrotask/task）
+
+浏览器为了使JS内部task与DOM任务能够有序执行，会在一个task执行结束后，在下一个task执行之前，对页面进行重新渲染（task -> 渲染 -> task -> ...）
+
+**setTimeout的作用是等待给定的时间后为它的回调产生一个新的宏任务。**这就是为什么'setTimeout'在'script end'之后打印，因为打印 'script end'是第一个宏任务里的事情，而'setTimeout'是另一个独立的任务里打印的
+
+### 微任务（microtasks/jobs）
+
+微任务通常就是需要在当前task执行结束后立即执行的任务，如对一些动作反馈，并不需要分配一个新的task，而只是异步的立即执行任务，这样便可以减小一点性能的开销。
+
+**只要执行栈中没有其他的js代码正在执行且宏任务执行完，微任务队列会立即执行。**
+
+如果在微任务执行期间微任务队列加入了新的微任务，会将新的微任务加入队列尾部，之后也会执行。
+
+### 宏任务、微任务实例
+
+```html
+<div class="outer">
+	<div class="inner"></div>
+</div>
+```
+
+```js
+var outer = document.querySelector('.outer');
+var inner = document.querySelector('.inner');
+
+new MutationObserver(function() {
+    console.log('mutate');
+}).observe(outer, {
+    attributes: true
+});
+
+function onClick() {
+    console.log('click');
+    setTimeout(function() {
+        console.log('timeout');
+    }, 0);
+    Promise.resolve().then(function() {
+        console.log('promise');
+    });
+    outer.setAttribute('data-random', Math.Random());
+}
+inner.addEventListener('click', onClick);
+outer.addEventListener('click', onClick);
+```
+
+结果如下：
+
+click promise mutate click promise mutate timeout timeout
+
+## 多进程浏览器
+
+- 浏览器是多进程的
+- 系统给浏览器进程都会分配资源(cpu、内存)
+- 每打开一个Tab页，就相当于创建了一个独立的浏览器进程
+
+浏览器包括这些进程
+
+- Browser进程 - 浏览器主进程（负责协调、主控），只有一个
+  - 负责浏览器界面显示，与用户交互。如前进、后退等
+  - 负责各个页面的管理，创建和销毁其他进程
+  - 将Renderer进程得到的内存中的Bitmap，绘制到用户界面上
+  - 网络资源的管理、下载等
+- 第三方插件进程
+- GPU进程 - 最多一个，用于绘制3D等
+- 浏览器渲染进程（浏览器内核）（Renderer进程，内部是多线程的）：默认每个Tab页面一个进程，互不影响
+  - 页面渲染
+  - 脚本执行
+  - 事件处理
+
+之所以多进程，原因
+
+- 避免单个页面 crash，影响整个浏览器
+- 避免第三方插件 crash影响整个浏览器
+- 多进程充分利用多核优势
+- 方便使用沙盒模型隔离插件等进程，提高浏览器稳定性
+
+
 
 ## 算法
 
