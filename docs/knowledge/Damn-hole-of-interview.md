@@ -2156,6 +2156,8 @@ Javascript是单线程语言，受限于需要和用户互动，以及操作DOM�
 
 我们可以将这些任务分为**同步任务(synchronous)**和**异步任务(asynchronous)**两种。同步任务指在**主线程**上排队执行的任务，只有前一个任务执行完毕，才能执行下一个任务；异步任务指不进入主线程，进入**任务队列(task queue)**的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行
 
+![event-loop](http://www.reyshieh.com/assets/event-loop.png)
+
 异步执行的运行机制如下：
 
 1. 所有同步任务在主线程上执行，形成一个执行栈(execution context stack)
