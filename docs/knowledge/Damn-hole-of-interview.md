@@ -2394,6 +2394,96 @@ absolute虽然脱离普通文档流，但还是无法脱离默认复合层。所
 
 **硬件加速时尽量使用index**。基于浏览器的CSS3原理，元素添加了硬件加速，并且index层级比较低，那么在这个元素后面的其他元素(如果层级更高或者相同，并带relative或absolute属性相同)，会默认变为复合层渲染，影响性能
 
+## Object.assign()
+
+```js
+Object.assign(target, ...sources)
+```
+
+函数参数为一个目标对象(该对象作为最终的返回值)，源对象(任意多个)
+
+通过调用该函数可以拷贝所有可被枚举的自有属性值到目标对象中
+
+**可枚举属性由enumerable值决定**。可枚举性决定了这个属性是否能被for...in查找遍历到。对象不可枚举，方法for...in，JSON.stringify()，Object.keys()都会失效
+
+**null或undefined源被视为空对象对待，不会对目标对象产生任何影响**
+
+**不可枚举对象也不会对目标对象产生影响**
+
+**如果目标对象不可写，将会引发TypeError**
+
+Object.assign不仅返回一个新拼接出来的值，同时也会改变第一个参数(target)的值，e.g.
+
+```js
+var obj = Object.create({ foo: 1 }, {
+    bar: {
+        value: 2 // bar是一个不可枚举的属性
+    },
+    baz: {
+        value: 3,
+        enumerable: true // baz是一个可枚举属性
+    }
+});
+var copy = Object.assign({}, obj);
+console.log(copy); // {baz: 3}
+```
+
+## Object.create()
+
+```js
+Object.create(proto [, propertiesObject ])
+```
+
+该是ES5提出的对象创建方式，第一参数是要继承的原型，如果不是一个子函数，可以传入null，第二个参数是对象的属性描述符，这个参数是可选的。返回一个具有指定的内部原型且包含指定的属性（如果有）的新对象。
+
+满足以下任一条件，则将引发TypeError异常：
+
+- prototype参数不是对象且不为null
+- descriptors参数中的描述符具有value或writable特性，并具有get或set特性
+- descriptors参数中的描述符具有不为函数的get或set特性
+
+**如果要停止原型链，可以使用采用了null prototype参数的函数，所创建的对象将没有原型。**
+
+```js
+function Car (desc) {
+    this.desc = desc;
+    this.color = "red";
+}
+
+Car.prototype = {
+    getInfo: function() {
+      return 'A ' + this.color + ' ' + this.desc + '.';
+    }
+};
+//instantiate object using the constructor function
+var car =  Object.create(Car.prototype);
+car.color = "blue";
+alert(car.getInfo()); // 弹出A blue undefined
+```
+
+## Object.defineProperty()
+
+```js
+Object.defineProperty(obj, prop, descriptor)
+```
+
+- Obj: 目标对象
+- prop: 需要定义的属性或方法的名字
+- descriptor: 目标属性所拥有的特性
+
+### 特性特性
+
+- value：属性的值
+- writable：是否可以随意重写
+- configurable：是否能删除或被删除
+- enumerable：是否能for...in循环遍历或Object.keys中列举出来
+- get：目标属性被访问就会调用此方法，并将方法的运算结果返回用户
+- set：目标属性被赋值，就会调用此方法
+
+## Memoization
+
+
+
 ## 算法
 
  ### 排序算法

@@ -198,19 +198,23 @@ https://github.com/james-cain/samples
 
 - Js要点
 
-- <https://github.com/leonardomso/33-js-concepts>
 - <https://github.com/stephentian/33-js-concepts>
 - <https://30secondsofcode.org/adapter#ary>
-- https://github.com/30-seconds/30-seconds-of-code
-- <https://github.com/qiu-deqing/FE-interview>
-- https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/questions/css-questions.md
-- 《高性能Javascript》（完成）
 - 《你不知道的Javascript》
+- <http://hcysun.me/vue-design/art/>
+- <https://ustbhuangyi.github.io/vue-analysis/prepare/>
+- <https://github.com/llh911001/mostly-adequate-guide-chinese>
 - Es6 promise/set/map/proxy
+- <https://github.com/qiu-deqing/FE-interview>
+- <https://github.com/yangshun/front-end-interview-handbook/>
+- https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
+- blob/master/Translations/Chinese/questions/css-questions.md
+- 《高性能Javascript》（完成）
+- <https://github.com/leonardomso/33-js-concepts>
+- <https://github.com/30-seconds/30-seconds-of-code>
 - <http://2ality.com/>
 - http://liubin.org/promises-book/
 - https://github.com/MostlyAdequate/mostly-adequate-guide
-- <https://github.com/llh911001/mostly-adequate-guide-chinese>
 - <http://www.ruanyifeng.com/blog/2017/03/pointfree.html>
 - http://www.ruanyifeng.com/blog/2017/02/fp-tutorial.html
 - https://github.com/Tencent/vConsole
@@ -226,11 +230,6 @@ https://github.com/james-cain/samples
 - <https://github.com/Autarc/optimal-select> — 生成元素标识
 - https://github.com/rowthan/whats-element — 生成元素标识
 - 跨域
-
-- vue源码
-
-- <http://hcysun.me/vue-design/art/>
-- <https://ustbhuangyi.github.io/vue-analysis/prepare/>
 
 - microfrontends 微前端
 
@@ -313,9 +312,18 @@ https://github.com/james-cain/samples
 - 《图解密码技术》
 - <https://github.com/nakov/practical-cryptography-for-developers-book>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
-- https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+- <https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io>
 
-16.video、audio、RTC
+16.V8
+
+- <https://v8.dev/docs>
+- <https://v8.js.cn/>
+- https://github.com/thlorenz/v8-perf
+- <https://github.com/bluezhan/v8>
+- <https://github.com/ry/v8worker>
+- https://github.com/ry/v8worker2
+
+17.video、audio、RTC
 
 - 视频
 
@@ -360,22 +368,24 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
 
-17.编译原理
+18.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 - 《现代编译原理》
 
-18.linux
+19.linux
 
 - 《鸟哥的私房菜》
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org/>
 
-19.electron
+20.electron
 
 - vue-electron
 
 - - electron-quick-start
+
+- https://github.com/caijinyc/Here
 
 - guppy
 
@@ -394,15 +404,6 @@ https://github.com/james-cain/samples
 - <https://electronjs.org/docs>
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
-
-20.V8
-
-- <https://v8.dev/docs>
-- <https://v8.js.cn/>
-- https://github.com/thlorenz/v8-perf
-- <https://github.com/bluezhan/v8>
-- <https://github.com/ry/v8worker>
-- https://github.com/ry/v8worker2
 
 21.WebAssembly
 
