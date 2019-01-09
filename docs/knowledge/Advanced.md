@@ -194,7 +194,7 @@ https://github.com/james-cain/samples
 - <https://github.com/dhamaniasad/HeadlessBrowsers>
 - <https://github.com/yujiosaka/headless-chrome-crawler>
 
-12.js要点、microfrontends、vue源码
+12.js要点、microfrontends、vue源码、V8、WebAssembly
 
 - Js要点
 
@@ -241,6 +241,19 @@ https://github.com/james-cain/samples
 - https://github.com/Tencent/omi
 - <https://github.com/palmerhq/the-platform>
 
+- V8
+
+- <https://v8.dev/docs>
+- <https://v8.js.cn/>
+- https://github.com/thlorenz/v8-perf
+- <https://github.com/bluezhan/v8>
+- <https://github.com/ry/v8worker>
+- <https://github.com/ry/v8worker2>
+
+- WebAssembly
+
+- <https://webassembly.github.io/spec/core/>
+
 13.TCP/IP
 
 - 《图解TCP/IP》
@@ -260,21 +273,21 @@ https://github.com/james-cain/samples
 - leetcode
 - https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
+- <https://leetcode-cn.com/>
+- 《剑指offer2》
 - <https://github.com/apachecn/awesome-algorithm>
+- <https://github.com/chihungyu1116/leetcode-javascript>
+- <https://github.com/haoel/leetcode>
+- <https://github.com/algorithm-visualizer/algorithm-visualizer>
+- <https://github.com/MisterBooo/LeetCodeAnimation>
 - 《算法导论》
 - <https://github.com/josdejong/mathjs>
 - <https://github.com/Jam3/math-as-code>
-- <https://github.com/algorithm-visualizer/algorithm-visualizer>
 - <https://github.com/pyloque/fastscan>
-- <https://github.com/chihungyu1116/leetcode-javascript>
-- <https://github.com/haoel/leetcode>
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
-- <https://github.com/MisterBooo/LeetCodeAnimation>
 - <https://github.com/liuyubobobo/Play-Leetcode>
-- <https://github.com/apachecn/awesome-algorithm>
 - <https://github.com/gatieme/CodingInterviews>
-- <https://leetcode-cn.com/>
-- 《剑指offer》
+- https://www.nowcoder.com/ta/cracking-the-coding-interview
 
 - 设计模式
 
@@ -287,7 +300,8 @@ https://github.com/james-cain/samples
 - 《深度学习》
 - <https://github.com/BrainJS/brain.js>
 - <https://github.com/trekhleb/homemade-machine-learning>
-- https://github.com/Microsoft/onnxjs
+- <https://github.com/Microsoft/onnxjs>
+- https://github.com/Avik-Jain/100-Days-Of-ML-Code
 
 - tensorflow
 
@@ -314,16 +328,7 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - <https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io>
 
-16.V8
-
-- <https://v8.dev/docs>
-- <https://v8.js.cn/>
-- https://github.com/thlorenz/v8-perf
-- <https://github.com/bluezhan/v8>
-- <https://github.com/ry/v8worker>
-- https://github.com/ry/v8worker2
-
-17.video、audio、RTC
+16.video、audio、RTC
 
 - 视频
 
@@ -368,6 +373,19 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
 
+17.c++
+
+- 《Essential C++》入门
+- http://www.runoob.com/cplusplus/cpp-tutorial.html入门
+- https://zhuanlan.zhihu.com/nihaoCPP入门
+- 《C++ Primer》系统化
+- 《C++标准库》函数库
+- 《深入理解C++对象模型》函数库
+- 《STL源码剖析》函数库
+- 《effective C++》更好性能、更优雅
+- 《More Effective C++》更好性能、更优雅
+- <https://github.com/huihut/interview> 面试总结
+
 18.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
@@ -405,23 +423,19 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-21.WebAssembly
-
-- <https://webassembly.github.io/spec/core/>
-
-22.TDD开发模式
+21.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-23.serverless
+22.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-24.go
+23.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -429,13 +443,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-25.dart & flutter
+24.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-26.hybrid app
+25.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -443,29 +457,29 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-27.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+26.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-28.MutationObserver.js
+27.MutationObserver.js（完成）
 
-29.通信
+28.通信（完成）
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-30.router（navaid）
+29.router（navaid）
 
 - https://github.com/kevindurb/router
 
-31.state（reworm）
+30.state（reworm）
 
-32.搜索引擎
+31.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-33.polymer
+32.polymer
 
-34.GraphQL
+33.GraphQL
 
-35.elm
+34.elm
 
 - <https://elm-lang.org/>
 
