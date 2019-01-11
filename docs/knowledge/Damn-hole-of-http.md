@@ -471,4 +471,5 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0
 
 56. Vary 响应头，决定了对于未来的一个请求头，应该用一个缓存的回复（response）还是向源服务器请求一个新的回复
 
-### 
+## SPDY/HTTP2.0
+

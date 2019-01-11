@@ -167,34 +167,7 @@ https://github.com/james-cain/samples
 - SharedWorker、SharedWorkerGlobalScope（完成）
 - <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
-11.nodejs/deno/puppeteer
-
-- Nodejs
-
-- <https://nodejs.org/dist/latest-v10.x/docs/api/>
-- <https://github.com/GoogleChromeLabs/carlo>
-- <https://github.com/JacksonTian/anywhere>
-- Child Processes/fs/event/net/path
-- <https://archiverjs.com/docs/>
-- <https://github.com/chyingp/nodejs-learning-guide>
-- https://github.com/i0natan/nodebestpractices
-- <https://github.com/webtorrent/webtorrent>
-- https://github.com/mhzed/wstunnel
-
-- Deno
-
-- <https://github.com/denoland/deno>
-- <https://deno.land/typedoc/index.html>
-
-- Puppeteer
-
-- <https://github.com/james-cain/puppeteer-deep>
-- <https://github.com/checkly/puppeteer-examples>
-- <https://github.com/GoogleChromeLabs/puppeteer-examples>
-- <https://github.com/dhamaniasad/HeadlessBrowsers>
-- <https://github.com/yujiosaka/headless-chrome-crawler>
-
-12.js要点、microfrontends、vue源码、V8、WebAssembly
+11.js要点、microfrontends、vue源码、V8、WebAssembly、nodejs/deno/puppeteer
 
 - Js要点
 
@@ -205,6 +178,9 @@ https://github.com/james-cain/samples
 - <https://ustbhuangyi.github.io/vue-analysis/prepare/>
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
 - Es6 promise/set/map/proxy
+- <https://github.com/Troland/how-javascript-works>
+- <https://github.com/loverajoel/jstips>
+- https://github.com/yujiangshui/An-English-Guide-for-Programmers
 - <https://github.com/qiu-deqing/FE-interview>
 - <https://github.com/yangshun/front-end-interview-handbook/>
 - https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
@@ -254,7 +230,33 @@ https://github.com/james-cain/samples
 
 - <https://webassembly.github.io/spec/core/>
 
-13.TCP/IP
+- nodejs/deno/puppeteer
+- Nodejs
+
+- <https://nodejs.org/dist/latest-v10.x/docs/api/>
+- <https://github.com/GoogleChromeLabs/carlo>
+- <https://github.com/JacksonTian/anywhere>
+- Child Processes/fs/event/net/path
+- <https://archiverjs.com/docs/>
+- <https://github.com/chyingp/nodejs-learning-guide>
+- https://github.com/i0natan/nodebestpractices
+- <https://github.com/webtorrent/webtorrent>
+- https://github.com/mhzed/wstunnel
+
+- Deno
+
+- <https://github.com/denoland/deno>
+- <https://deno.land/typedoc/index.html>
+
+- Puppeteer
+
+- <https://github.com/james-cain/puppeteer-deep>
+- <https://github.com/checkly/puppeteer-examples>
+- <https://github.com/GoogleChromeLabs/puppeteer-examples>
+- <https://github.com/dhamaniasad/HeadlessBrowsers>
+- <https://github.com/yujiosaka/headless-chrome-crawler>
+
+12.TCP/IP
 
 - 《图解TCP/IP》
 - 《图解HTTP》
@@ -266,7 +268,7 @@ https://github.com/james-cain/samples
 - <http://www.study-area.org/compu/compu.htm>
 - <http://www.study-area.org/network/networkfr.htm>
 
-14.算法编写
+13.算法编写
 
 - 基础算法
 
@@ -305,7 +307,7 @@ https://github.com/james-cain/samples
 
 - tensorflow
 
-15.web安全/密码学
+14.web安全/密码学
 
 - web安全
 
@@ -327,6 +329,19 @@ https://github.com/james-cain/samples
 - <https://github.com/nakov/practical-cryptography-for-developers-book>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - <https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io>
+
+15.c++
+
+- 《Essential C++》入门
+- http://www.runoob.com/cplusplus/cpp-tutorial.html入门
+- https://zhuanlan.zhihu.com/nihaoCPP入门
+- 《C++ Primer》系统化
+- 《C++标准库》函数库
+- 《深入理解C++对象模型》函数库
+- 《STL源码剖析》函数库
+- 《effective C++》更好性能、更优雅
+- 《More Effective C++》更好性能、更优雅
+- <https://github.com/huihut/interview> 面试总结
 
 16.video、audio、RTC
 
@@ -373,31 +388,18 @@ https://github.com/james-cain/samples
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
 
-17.c++
-
-- 《Essential C++》入门
-- http://www.runoob.com/cplusplus/cpp-tutorial.html入门
-- https://zhuanlan.zhihu.com/nihaoCPP入门
-- 《C++ Primer》系统化
-- 《C++标准库》函数库
-- 《深入理解C++对象模型》函数库
-- 《STL源码剖析》函数库
-- 《effective C++》更好性能、更优雅
-- 《More Effective C++》更好性能、更优雅
-- <https://github.com/huihut/interview> 面试总结
-
-18.编译原理
+17.编译原理
 
 - <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
 - 《现代编译原理》
 
-19.linux
+18.linux
 
 - 《鸟哥的私房菜》
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org/>
 
-20.electron
+19.electron
 
 - vue-electron
 
@@ -423,19 +425,19 @@ https://github.com/james-cain/samples
 
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-21.TDD开发模式
+20.TDD开发模式
 
 - <https://jestjs.io/zh-Hans/>
 - <https://github.com/dwyl/learn-tdd>
 
-22.serverless
+21.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-23.go
+22.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -443,13 +445,13 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-24.dart & flutter
+23.dart & flutter
 
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
 
-25.hybrid app
+24.hybrid app
 
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
@@ -457,29 +459,29 @@ https://github.com/james-cain/samples
 - <https://cordova.apache.org/>
 - https://github.com/NativeScript/NativeScript
 
-26.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+25.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
-27.MutationObserver.js（完成）
+26.MutationObserver.js（完成）
 
-28.通信（完成）
+27.通信（完成）
 
 - MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
 
-29.router（navaid）
+28.router（navaid）
 
 - https://github.com/kevindurb/router
 
-30.state（reworm）
+29.state（reworm）
 
-31.搜索引擎
+30.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-32.polymer
+31.polymer
 
-33.GraphQL
+32.GraphQL
 
-34.elm
+33.elm
 
 - <https://elm-lang.org/>
 

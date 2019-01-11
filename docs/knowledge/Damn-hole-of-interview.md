@@ -2480,6 +2480,108 @@ Object.defineProperty(obj, prop, descriptor)
 - get：目标属性被访问就会调用此方法，并将方法的运算结果返回用户
 - set：目标属性被赋值，就会调用此方法
 
+## 类型化数组(Typed Arrays)
+
+一些新功能，如音视频编辑、访问WebSockets的原始数据等，直接对原始的二进制数据操作会更加快速
+
+类型数组将实现拆分为**缓冲**和**视图**两部分
+
+- 缓冲 - 由ArrayBuffer对象实现，描述的是一个数据块
+
+- 视图 - 为了访问在缓冲对象中包含的内存，不要使用视图。视图提供了上下文，即数据类型、起始偏移量和元素数，将数据转换为实际有类型的数组
+
+  ![arraybuffer](http://www.reyshieh.com/assets/arraybuffer.png)
+
+### ArrayBuffer
+
+是一种数据类型，用来表示一个通用的、固定长度的二进制数据缓冲区。不能直接操纵ArrayBuffer中的内容，需要创建一个类型化数组或一个描述缓冲数据格式的DataView，使用它们来读写缓冲区中的内容
+
+### 类型数组视图
+
+类型化数组视图具有自描述行的名字和所有常用的数值类型，如Int8、Uint32、Float64等
+
+使用e.g.
+
+```js
+var buffer = new ArrayBuffer(16)
+var int32View = new Int32Array(buffer)
+for(var i=0; i<int32View.length; i++) {
+	int32View[i] = i*2;
+	console.log("Entry " + i +":" + int32View[i])
+}
+// Entry 1:2
+// Entry 2:4
+// Entry 3:6
+
+var int16View = new Int16Array(buffer)
+for(var i=0; i<int16View.length; i++) {
+	console.log("Entry " + i +":" + int16View[i])
+}
+// Entry 0:0
+// Entry 1:0
+// Entry 2:2
+// Entry 3:0
+// Entry 4:4
+// Entry 5:0
+// Entry 6:6
+// Entry 7:0
+```
+
+### 转换为普通数组
+
+可以使用`Array.from`，或者`Array.prototype.slice.call(typedArray)`
+
+```js
+var typedArray = new Uint8Array([1, 2, 3, 4]),
+    normalArray = Array.prototype.slice.call(typedArray);
+normalArray.length === 4;
+normalArray.constructor === Array;
+```
+
+> 注意：在计算机中字节序的排序存在大端(big endian)和小端(little endian)。这里采用的是大端，即地址最低位到最高位存储的数据为真实数据的高位到低位，因此存在下面这个例子的问题
+>
+> ```
+> var arraybuffer = new ArrayBuffer(4);
+> var aView = new Int8Array(arraybuffer);  //从0开始到内存末尾
+> var bView = new Int16Array(arraybuffer,2); //从2开始到末尾
+> 
+> aView[0] = 1;
+> aView[1] = 2;
+> aView[2] = 3;
+> aView[3] = 4;
+> 
+> bView[0] = 500;
+> bView[1] = 8;
+> 
+> console.log(aView[2] );      //return   -12
+> console.log(aView[3] );      //return   1
+> ```
+>
+> 500在计算机中二进制表示为 00000001 11110100
+>
+> aView是有符号8位数组，11110100代表的是-12
+>
+> 根据大端的存储规则，aView[2]代表的是-12，aView[3]代表的是1
+>
+> 如果将上面的aView改为Uint8Array，如下
+>
+> ```
+> var arraybuffer = new ArrayBuffer(4);
+> var aView = new Uint8Array(arraybuffer);  //从0开始到内存末尾
+> var bView = new Int16Array(arraybuffer,2); //从2开始到末尾
+> 
+> aView[0] = 1;
+> aView[1] = 2;
+> aView[2] = 3;
+> aView[3] = 4;
+> 
+> bView[0] = 500;
+> bView[1] = 8;
+> 
+> console.log(aView[2] );      //return   244
+> console.log(aView[3] );      //return   1
+> ```
+
 ## Memoization
 
 ```js
@@ -2493,6 +2595,130 @@ function memoize(fundamental, cache) {
     };
     return shell;
 }
+```
+
+## 原码、反码、补码、移码
+
+### 原码
+
+原码是符号位加上真值的绝对值，即用第一位表示符号，其余位表示值，以8位二进制：
+
+```
+[+1]原 = 0000 0001
+[-1]原 = 1000 0001
+```
+
+取值范围
+
+```
+[1111 1111, 0111 1111]
+即
+[-127, 127]
+```
+
+### 反码
+
+正数的反码是其本身；负数的反码是在其原码的基础上，符号位不变，其余各位取反
+
+```
+[+1]原 = [0000 0001]原 = [0000 0001]反
+[-1]反 = [1000 0001]原 = [1111 1110]反
+```
+
+### 补码
+
+正数的补码是其本身；**负数的补码是在其原码的基础上，符号位不变，其余各位取反，最后+1**（即在反码的基础上+1）
+
+```
+[+1]原 = [0000 0001]原 = [0000 0001]反 = [0000 0001]补
+[-1]反 = [1000 0001]原 = [1111 1110]反 = [1111 1111]补
+```
+
+**补码用于解决计算机的减法运算问题**，因为原码计算减法算出的结果是错误的，反码算出的结果0会带上-，但实际这个符号是没有任何意义的
+
+```
+1-1 = 1+(-1) = [0000 0001]原 + [1000 0001]原 = [0000 0001]补 + [1111 1111]补 = [0000 0000]补 = [0000 0000]原
+
+(-1) + (-127) = [1000 0001]原 + [1111 1111]原 = [1111 1111]补 + [1000 0001]补 = [1000 0000]补
+因为[1000 0000]补代表的是-128，使用的是-0的补码表示出来的，所以-128并没有原码和反码表示
+```
+
+**使用8位二进制，原码或反码表示的范围[-127, +127]，补码表示的范围[-128, 127]**
+
+32位int类型，表示范围是[-2^31, 2^31-1]
+
+#### JS中的按位非(~)
+
+实际该符号操作只需记住公式 **任意数值x进行按位非操作的结果为-(x + 1)**，即~5结果为-6
+
+计算步骤为（e.g. ~1）
+
+- 将1转二进制 = 0000 0001
+- 按位取反 = 1111 1110
+- 接下来采用补码逻辑 = 1000 0010
+- 转换为十进制 = -2
+
+接着举例
+
+```js
+var n = -4.9;
+console.log(n); //4.9
+n = ~n;
+console.log(n);//3
+n = ~n;
+console.log(n);//-4
+
+console.log('~null: ', ~null);       // => -1
+console.log('~undefined: ', ~undefined);  // => -1
+console.log('~0: ', ~0);          // => -1
+console.log('~{}: ', ~{});         // => -1
+console.log('~[]: ', ~[]);         // => -1
+console.log('~(1/0): ', ~(1/0));      // => -1
+console.log('~false: ', ~false);      // => -1
+console.log('~true: ', ~true);       // => -2
+console.log('~1.2543: ', ~1.2543);     // => -2
+console.log('~4.9: ', ~4.9);       // => -5
+console.log('~(-2.999): ', ~(-2.999));   // => 1
+```
+
+~~x，可以用这个方法代理parseInt(value)，而且效率更加高效 e.g.
+
+```js
+console.log('~~null: ', ~~null);       // => 0
+console.log('~~undefined: ', ~~undefined);  // => 0
+console.log('~~0: ', ~~0);          // => 0
+console.log('~~{}: ', ~~{});         // => 0
+console.log('~~[]: ', ~~[]);         // => 0
+console.log('~~(1/0): ', ~~(1/0));      // => 0
+console.log('~~false: ', ~~false);      // => 0
+console.log('~~true: ', ~~true);       // => 1
+console.log('~~1.2543: ', ~~1.2543);     // => 1
+console.log('~~4.9: ', ~~4.9);       // => 4
+console.log('~~(-2.999): ', ~~(-2.999));   // => -2
+```
+
+
+
+为什么带小数位会去除？
+
+
+
+### 移码
+
+移码是将补码的符号位取反即可
+
+```
+[+1]原 = [0000 0001]原 = [0000 0001]反 = [0000 0001]补 = [1000 0001]移
+[-1]反 = [1000 0001]原 = [1111 1110]反 = [1111 1111]补 = [0111 1111]移
+```
+
+**移码表示法是在数x上增加一个偏移量来定义的，常用来表示浮点数中的阶码，所以是整数**
+
+如果机器字长为n，规定偏移量为2^(n-1)。若x是整数，则x移 = 2^(n-1) + x。e.g.
+
+```
+[+1]移 = [1000 0000] + [0000 0001]补 = [1000 0001]移
+[-1]反 = [1000 0000] + [1111 1111]补 = [0111 1111]移
 ```
 
 ## 算法
