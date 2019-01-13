@@ -485,9 +485,56 @@ HTTP2.0增加了`二进制分帧层`，定义了如何封装HTTP消息并在客�
 
 所有HTTP2.0通信都在一个连接上完成，这个连接可以承载任意数量的双向数据流。每个数据流以消息的形式发送，而消息由一到多个帧组成，这些帧可以乱序发送，然后再根据每个帧首部的流标识符重新组装
 
+### 二进制分帧层
+
+HTTP2.0性能增强的核心，全在于新增的二进制分帧层。定义了如何封装HTTP消息并在客户端与服务器之间传输
+
+![binary-frames](http://www.reyshieh.com/assets/binary-frames.png)
+
+"层"指的是位于套接字接口与应用可见的高层HTTP API之间的一个新机制，HTTP的语义不受影响，不同的是传输期间的编码发生了变化
+
+### 二进制分帧
+
+HTTP2.0建立连接后，客户端与服务端会通过交换帧来通信，帧是基于这个新协议通信的最小单位。所有帧都共享一个8字节的首部，其中包含帧的长度、类型、标志，还有一个保留位和一个31位的流标识符
+
+![http2-binary-summary](http://www.reyshieh.com/assets/http2-binary-summary.png)
+
+- 16位的长度前缀意味着一帧大约可以携带64KB数据，不包括8字节首部
+- 8位的类型字段决定如何解释帧其余部分的内容
+- 8位的标志字段允许不同的帧类型定义特定于帧的消息标志
+- 1位保留字段始终为0
+- 31位的流标识符唯一标识HTTP2.0的流
+
+帧类型包括：
+
+- DATA：用于传输HTTP消息体
+- HEADERS：用于传输关于流的额外的首部字段
+- PRIORITY：用于指定或重新指定引用资源的优先级
+- RST_STREAM：用于通知流的非正常终止
+- SETTINGS：用于通知两端通信方式的配置数据
+- PUSH_PROMISE：用于发出创建流和服务器引用资源的要约
+- PING：用于计算往返时间，执行“活性”检查
+- GOAWAY：用于通知对端停止在当前连接中创建流
+- WINDOW_UPDATE：用于针对个别流或个别连接实现流量控制
+- CONTINUATION：用于继续一系列首部块片段
+
+利用GOAWAY类型的帧，告诉客户端要处理的最后一个流ID，从而消除一些请求竞争，而且浏览器也可以据此智能地重试或取消"悬着的"请求，这是保证复用连接的一个重要功能
+
+在发送应用数据之前，必须创建一个**新流**并随之发送相应的元数据，比如流优先级、HTTP首部等。HTTP2.0规定客户端和服务器都可以发起新流，存在两种可能：
+
+- 客户端通过发送HEADERS帧来发起新流，帧包含带有新流ID的公用首部、可选的31位优先值，以及一组HTTP键-值对首部
+
+  ![http2-headers-priority](http://www.reyshieh.com/assets/http2-headers-priority.png)
+
+- 服务器通过发送PUSH_PROMISE帧来发起推送流，和HEADERS帧等效，但包含"要约流ID"，没有优先值
+
+- HEADERS帧和PUSH_PROMISE帧都只用于沟通新流的元数据，净荷会在DATA帧中单独发送。规定，客户端发送的流具有奇数ID，服务器发起的流具有偶数ID。两端的流ID不会冲突，各自持有一个简单的计数器
+
 ### 多向请求与响应
 
 二进制分帧层的加入，实现了多向请求和响应，客户端和服务器可以把HTTP消息分解为互不依赖的帧，然后乱序发送，最后再在另一端把它们重新组合起来
+
+![http2-request-mor](http://www.reyshieh.com/assets/http2-request-more.png)
 
 >注意，HTTP2.0加入了多向请求与响应，为了优化HTTP1.x的方案，如拼接文件、图片精灵、域名分区都变得没有必要。而且这些优化有可能反而带来更大的消耗。同时这个方式减少TCP连接的数量，也会减少客户端和服务器CPU及内存占用
 
@@ -539,10 +586,43 @@ HTTP2.0在客户端和服务器端使用"首部表"来跟踪和存储之前发�
 
 每个新的首部键-值对要么被追加到当前表的末尾，要么替换表中的值
 
+![http2-header-diff](http://www.reyshieh.com/assets/http2-header-diff.png)
+
 ### HTTP2.0升级与发现
 
 因为HTTP1.x在短时间内是不会去除的，存在很长一段时间内HTTP1.x和HTTP2.0并存。于是，支持HTTP2.0的客户端在发起请求之前，必须能发现服务器及所有中间设备是否支持HTTP2.0协议。存在三种情况：
 
-- 通过TLS和ALPN发起新的HTTPS连接
+- 通过TLS和ALPN(应用层协议协商，Application Layer Protocol Negotiation)发起新的HTTPS连接
 - 根据之前的信息发送新的HTTP连接
-- 没有之前
+- 没有之前的信息而发起新的HTTP连接
+
+减少网络延迟是HTTP2.0的关键条件，因此在建立HTTPS连接时一定会用到ALPN协商
+
+HTTP1.0和HTTP2.0都使用同一个端口(80)，且没有服务器是否支持HTTP2.0的其他任何信息，此时客户端只能使用HTTP upgrade机制通过协调确定适当的协议
+
+```
+GET /page HTTP/1.1
+Host server.example.com
+Connection: Upgrade, HTTP2-Settings
+Upgrade: HTTP/2.0
+HTTP2-Settings: (SETTINGS payload)
+
+// 响应 http1.1方式
+HTTP/1.1 200 OK
+Content-length: 243
+Content-type: text/html
+// 响应 http2.0方式
+HTTP/1.1 101 Switching Protocols
+Connection: Upgrade
+Upgrade: HTTP/2.0
+```
+
+如果客户端因为自己保存有或通过其他手段（如DNS记录、手工配置等）获得了关于HTTP2.0的支持信息，也可以直接发送HTTP2.0分帧，而不必依赖Upgrade机制
+
+最坏的情况就是无法建立连接，客户端再回退一步。重新使用Upgrade首部，或者切换到带ALPN协商的TLS信道
+
+### HTTP1.x和2.0相互转换
+
+如果客户端与服务器端不能保证两端同事支持HTTP2.0，那么可以新增一个转换层，使1.x服务器利用HTTP2.0
+
+一台服务器可以接受HTTP2.0会话，处理之后再向既有基础设施分派1.x格式的请求。接到响应后，再将其转换成HTTP2.0的流返回给客户端
