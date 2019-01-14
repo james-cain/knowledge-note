@@ -177,6 +177,7 @@ https://github.com/james-cain/samples
 - <http://hcysun.me/vue-design/art/>
 - <https://ustbhuangyi.github.io/vue-analysis/prepare/>
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
+- https://github.com/trimstray/the-book-of-secret-knowledge
 - Es6 promise/set/map/proxy
 - <https://github.com/Troland/how-javascript-works>
 - <https://github.com/loverajoel/jstips>
@@ -229,6 +230,7 @@ https://github.com/james-cain/samples
 - WebAssembly
 
 - <https://webassembly.github.io/spec/core/>
+- https://webassembly.org/
 
 - nodejs/deno/puppeteer
 - Nodejs

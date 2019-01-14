@@ -1295,6 +1295,8 @@ beacon.onerror = function() {
 }
 ```
 
+
+
 ## 定时机制处理数组
 
 ```js

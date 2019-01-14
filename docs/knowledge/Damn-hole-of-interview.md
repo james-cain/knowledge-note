@@ -2527,6 +2527,49 @@ for(var i=0; i<int16View.length; i++) {
 // Entry 7:0
 ```
 
+> ArrayBuffer对比Blob？
+
+Blob是Binary Large Object(大型二进制对象)的缩写。代表原始的二进制数据。和ArrayBuffer类似，都是二进制数据的容器
+
+```js
+// 可以用字符串构建Blob
+var blob = new Blob(['rey shieh']);
+
+// ArrayBuffer
+var blob = new Blob([new ArrayBuffer(10)]);
+```
+
+可以看出，ArrayBuffer是Blob的底层，Blob内部使用了ArrayBuffer。并且构造好的一个Blob实体就是一个raw data。为什么要设计Blob和ArrayBuffer？ArrayBuffer更底层，所以专注细节，比如说按字节读写文件；Blob更像一个整体，就是一个原始的Binary Data，只要来回传输就行
+
+> blob和ArrayBuffer使用？
+
+在HTML5中，file对象的内部就是使用Blob，从< input >标签中获取的File对象即使一个Blob实例
+
+blob文件的转换，可以使用FileReader对象：
+
+```js
+var fd = new FileReader();
+
+// fd有几个文件读取方法，可以得到ArrayBuffer、Blob或String数据
+
+// 使用ArrayBuffer读取方式，得到一个ArrayBuffer实例
+fd.readAsArrayBuffer(file);
+
+// 使用blob的方式，得到一个blob对象
+fd.readAsBinaryString(file);
+
+fd.onload = function(e) {
+    // 读取成功后得到ArrayBuffer
+    buffer = e.target.result;
+}
+```
+
+将一个blob文件以ArrayBuffer的形式进行读取，得到一个ArrayBuffer的实例，目的为何？因为这样就可以对文件的字节进行读写，比如要判断一个文件的类型，就可以读取它的前两个字节，与Hash表进行匹配等
+
+在实际数据交互中，发送的数据往往是Binary Data，很少需要使用ArrayBuffer按byte来手动构造数据
+
+这么解释，blob和ArrayBuffer就都有存在的必要了
+
 ### 转换为普通数组
 
 可以使用`Array.from`，或者`Array.prototype.slice.call(typedArray)`
