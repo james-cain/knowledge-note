@@ -291,7 +291,11 @@ https://github.com/james-cain/samples
 - <https://github.com/skyhee/Algorithms-Learning-With-Go>
 - <https://github.com/liuyubobobo/Play-Leetcode>
 - <https://github.com/gatieme/CodingInterviews>
-- https://www.nowcoder.com/ta/cracking-the-coding-interview
+- <https://www.nowcoder.com/ta/cracking-the-coding-interview>
+
+- 数据结构
+
+- https://wizardforcel.gitbooks.io/think-dast/content/
 
 - 设计模式
 
@@ -316,6 +320,7 @@ https://github.com/james-cain/samples
 - 《白帽子讲web安全》
 - 《web安全深度剖析》
 - <https://github.com/james-cain/Web-Security-Learning>
+- https://wizardforcel.gitbooks.io/web-hacking-101/content/
 - https://tech.meituan.com/fe_security.html
 - <https://github.com/leizongmin/js-xss>
 - <https://github.com/Hacker0x01/hacker101>

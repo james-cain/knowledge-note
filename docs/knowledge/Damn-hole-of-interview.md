@@ -2570,6 +2570,78 @@ fd.onload = function(e) {
 
 这么解释，blob和ArrayBuffer就都有存在的必要了
 
+blob除了以上，还可以构造URL
+
+URL对象的createObjectURL方法允许传入一个blob，得到一个临时的URL
+
+```js
+var URI = URL.createObjectURL(xhr.response);
+var img = document.cerateElement('img');
+img.src = URI;
+document.append(img);
+```
+
+> 如何实现Blob与ArrayBuffer、TypeArray和字符串String之间转换？
+
+- 将字符串转换成Blob对象
+
+  ```js
+  var blob = new Blob(['rey shieh'], {
+      type: 'text/plain'
+  });
+  console.info(blob);
+  console.info(blob.slice(1, 3, 'text/plain'));
+  ```
+
+- 将TypeArray转换成Blob对象
+
+  ```js
+  var array = new Uint16Array([97, 32, 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33]);
+  var blob = new Blob([array]);
+  var reader = new FileReader();
+  // 将Blob对象读成字符串
+  reader.readAsText(blob, 'utf-8');
+  reader.onload = function(e) {
+      console.info(reader.result); // a Hello world!
+  }
+  ```
+
+  ArrayBuffer转Blob
+
+  ```js
+  var buffer = new ArrayBuffer(32);
+  var blob = new Blob([buffer]);
+  ```
+
+- 将Blob对象转换成String字符串，使用FileReader的`readAsText`方法
+
+  ```js
+  var blob = new Blob(['rey shieh'], {
+      type: 'text/plain'
+  });
+  // 将Blob对象转换成字符串
+  var reader = new FileReader();
+  reader.readAsText(blob, 'utf-8');
+  reader.onload = function(e) {
+      console.info(reader.result);
+  };
+  ```
+
+- 将Blob对象转换成ArrayBuffer，使用FileReader的`readAsArrayBuffer`方法
+
+  ```js
+  var blob = new Blob(['rey shieh'], {
+      type: 'text/plain'
+  });
+  var reader = new FileReader();
+  reader.readAsArrayBuffer(blob);
+  reader.onload = function(e) {
+      console.info(reader.result);
+  }
+  ```
+
+- 将文件转换成Blob，使用FileReader的`readerAsBinaryString`方法
+
 ### 转换为普通数组
 
 可以使用`Array.from`，或者`Array.prototype.slice.call(typedArray)`
@@ -2740,11 +2812,7 @@ console.log('~~4.9: ', ~~4.9);       // => 4
 console.log('~~(-2.999): ', ~~(-2.999));   // => -2
 ```
 
-
-
 为什么带小数位会去除？
-
-
 
 ### 移码
 
@@ -2763,6 +2831,78 @@ console.log('~~(-2.999): ', ~~(-2.999));   // => -2
 [+1]移 = [1000 0000] + [0000 0001]补 = [1000 0001]移
 [-1]反 = [1000 0000] + [1111 1111]补 = [0111 1111]移
 ```
+
+## 字符编码
+
+### ASCII码
+
+一个字节一共可以用来表示256中不同的状态，每一个状态对应一个符号，就是256个符号，从`0000 0000`到`1111 1111`
+
+`ASCII码`一共规定了128个字符的编码，比如空格`SPACE`是32(二进制0010 0000)
+
+### Unicode
+
+Unicode让每一种符号都给予一个独一无二的编码，就不会出现乱码问题，这是一种所有符号的编码
+
+Unicode是分区定义的。每个区可以存放65536个(2^16)字符，称为一个平面（plane）。目前，一共有17个(1+2^4)平面。所以整个Unicode字符集的大小现在为2^21
+
+上面提到的17个平面，包括1个基本平面(BMP)，码点从0到2^16 - 1，写成16进制就是从U+0000到U+FFFF；剩下的为辅助平面(SMP)，码点从U+010000到U+10FFFF
+
+### UTF-8
+
+UTF-8是Unicode的实现方式之一
+
+它是一种变长的编码方式，可以使用1-4个字节来表示一个符号，根据不同的符号而变化字节长度
+
+UTF-8的编码规则有两个:
+
+- 对于单字节的符号，字节的第一位设为0，后面7位为符号的Unicode码。因此，英语字母，UTF-8和ASCII码是相同的
+- 对于n字节的符号(n > 1)，第一个字节的前n位都设为1，第n+1为设为0，后面字节的前两位一律设为10。剩下位数填Unicode码
+
+| Unicode符号范围(十六进制) | UTF-8编码方式(二进制)            |
+| ------------------------- | -------------------------------- |
+| 0000 0000 - 0000 007F     | 0xxx xxxx                        |
+| 0000 0080 - 0000 07FF     | 110x xxxx 10xx xxxx              |
+| 0000 0800 - 0000 FFFF     | 1110 xxxx 10xx xxxx 10xx xxxx    |
+| 0001 0000 - 0010 FFFF     | 1111 0xxx 10xx xxxx 10xx xxxx 10 |
+
+### UTF-32
+
+UTF-32编码采用的是字节意义对应码点的方式，该种方式最为简单，但是**浪费空间，比形同ASCII编码文件大四倍**比如码点0，用四个字节的0表示，码点597D就在前面加上两个字节的0
+
+```js
+// 以下为16进制
+U+0000 = 0x0000 0000
+U+597D = 0x0000 597D
+```
+
+但是也有优点，**查找效率高，时间复杂度o(1)**
+
+但因为致命的缺点，导致实际上没有人使用这种编码方式
+
+### UTF-16
+
+UTF-16编码介于UTF-8和UTF-32之间，同时结合了定长和变长两种编码方法的特点
+
+规则为：**基于基本平面的字符占用2个字节，辅助平面的字符占用4个字节**
+
+因此，**UTF-16的编码长度很好区分，U+0000到U+FFFF为2个字节，U+010000到U+10FFFF为4个字节**
+
+但是，在UTF-16中，要如何区分2个字节和4个字节的解读呢？
+
+在基本平面中，存在U+D800到U+DFFF是一个空段，即这些码点不对应任何字符。因此，就可以用这些空段来做文章
+
+**辅助平面因为字符总共需要20位来表示，可以将这20位拆分成两段，前10位映射在U+D800到U+DBFF（空间大小为2^10），称为高位(H)，后10位映射在U+DC00到U+DFFF（空间大小2^10），称为低位（L）**
+
+所以当遇到两个字节，发现码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，四个字节要放在一起解读
+
+### UCS-2
+
+JavaScript也采用Unicode字符集，但是使用的编码方式为UCS-2
+
+UCS-2实际上就是用2个字符表示码点的字符，而UTF-16取代了UCS-2，可以借助辅助平面用4个字节表示字符
+
+因为**在JavaScript语言出现的时候，还没有UTF-16编码，所以采用的是UCS-2**
 
 ## 算法
 
