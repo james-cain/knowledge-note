@@ -2904,6 +2904,83 @@ UCS-2实际上就是用2个字符表示码点的字符，而UTF-16取代了UCS-2
 
 因为**在JavaScript语言出现的时候，还没有UTF-16编码，所以采用的是UCS-2**
 
+正因如此，JavaScript对所有字节的处理都是2个字节，如果是4个字节的字符，会当做两个双字节的字符处理，导致无法返回正常的结果
+
+为了解决无法表示4字节字符的问题，必须通过对码点进行判断，然后手动调整，可以如下操作
+
+```js
+// 遍历字符串，对码点进行判断，只要码点落在0xD800到0xDBFF之间，就连同后面2个字节一起读取
+while (++index < length) {
+    if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+        output.push(character + string.charAt(++index));
+    } else {
+        output.push(character);
+    }
+}
+```
+
+JavaScript在ECMAScript6到来之前，所有的字符操作函数都存在这个问题，诸如
+
+```js
+String.prototype.replace()
+String.prototype.substring()
+String.prototype.slice()
+// ...
+```
+
+#### ES6中的Unicode
+
+ES6自动识别4个字节的码点。遍历字符串就简单多了
+
+```js
+for (let s of string) {
+    // ...
+}
+```
+
+但为了保持兼容，length属性还是原来的行为方式。为了得到字符串的正确长度，可以用`Array.from(string).length`
+
+JavaScript允许直接用码点表示Unicode字符，写法为`"反斜杆+u+码点"`，如
+
+```js
+'好' === '\u597D' // true
+```
+
+在原来的JS中，这种表示方法对4字节的码点是无效的。ES6可以把码点放在大括号中，正确表示，如
+
+```js
+'𝌆' === '\u{1D306}' // true
+'𝌆' === '\u1D306' // false
+```
+
+ES6中还新增了几个专门处理4字节码点的函数
+
+```js
+String.fromCodePoint() // 从Unicode码点返回对应字符
+String.prototype.codePointAt() // 从字符返回对应的码点
+String.prototype.at() // 返回字符串给定位置的字符
+```
+
+### Unicode复合显示
+
+![Unicode-composite](http://www.reyshieh.com/assets/Unicode-composite.png)
+
+有些字符除了主体字符外，会和附加符号组合显示成一个码点，即两个码点表示一个字符
+
+但是，个别情况下，Unicode提供了两种表示方法。一种是带附加符号的单个字符，即一个码点表示一个字符，如Ǒ的码点是U+01D1；另一种是将附加符号单独作为一个码点，与主体字符符合显示，比如Ǒ可以写成O（U+004F） + ˇ（U+030C）
+
+两种表达方式表示的字符是相同的，但是在JavaScript中无法辨别
+
+```js
+'\u01D1'==='\u004F\u030C' //false
+```
+
+ES6提供了normalize方法，允许"Unicode正规化"，即两种方法转为同样的序列
+
+```js
+'\u01D1'.normalize() === '\u004F\u030C'.normalize() // true
+```
+
 ## 算法
 
  ### 排序算法
