@@ -320,6 +320,9 @@ https://github.com/james-cain/samples
 - 《白帽子讲web安全》
 - 《web安全深度剖析》
 - <https://github.com/james-cain/Web-Security-Learning>
+- <https://t0data.gitbooks.io/burpsuite/content/>
+- <https://yw9381.gitbooks.io/burp_suite_doc_zh_cn/content/>
+- http://www.secbug.org/tools/index.html
 - https://wizardforcel.gitbooks.io/web-hacking-101/content/
 - https://tech.meituan.com/fe_security.html
 - <https://github.com/leizongmin/js-xss>
@@ -392,6 +395,8 @@ https://github.com/james-cain/samples
 
 - RTC
 
+- <https://blog.csdn.net/renfufei/article/details/83045590>
+- https://codelabs.developers.google.com/codelabs/webrtc-web/#0
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
 

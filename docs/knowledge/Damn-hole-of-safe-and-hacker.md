@@ -1,5 +1,9 @@
 # 网络安全
 
+## Burp Suite
+
+
+
 ## 同源策略（Same Origin Policy，SOP）
 
 同源策略是Web应用程序的一种安全模型，控制了网页中DOM之间的访问。SOP影响范围包括：普通的HTTP请求、XMLHttpRequest、XSLT、XBL
