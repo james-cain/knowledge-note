@@ -399,6 +399,11 @@ https://github.com/james-cain/samples
 - https://codelabs.developers.google.com/codelabs/webrtc-web/#0
 - https://github.com/webrtc/samples
 - <https://github.com/muaz-khan/WebRTC-Experiment>
+- <https://github.com/googlecodelabs/webrtc-web>
+- <https://github.com/webrtcHacks/adapter>
+- <https://github.com/webrtc/adapter>
+- <https://w3c.github.io/webrtc-pc/>
+- https://w3c.github.io/mediacapture-main/getusermedia.html#media-track-constraints
 
 17.编译原理
 
