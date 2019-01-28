@@ -2832,6 +2832,14 @@ console.log('~~(-2.999): ', ~~(-2.999));   // => -2
 [-1]反 = [1000 0000] + [1111 1111]补 = [0111 1111]移
 ```
 
+## 浏览器渲染过程
+
+https://github.com/zhansingsong/js-leakage-patterns/blob/master/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E7%AE%80%E8%BF%B0/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E7%AE%80%E8%BF%B0.md
+
+https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/
+
+[**查看修改任何指定 CSS 样式会触发 layout、paint、composite 中的哪一个**](https://csstriggers.com/)
+
 ## 字符编码
 
 ### ASCII码

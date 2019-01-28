@@ -167,7 +167,19 @@ https://github.com/james-cain/samples
 - SharedWorker、SharedWorkerGlobalScope（完成）
 - <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
-11.js要点、microfrontends、vue源码、V8、WebAssembly、nodejs/deno/puppeteer
+11.TCP/IP
+
+- 《图解TCP/IP》
+- 《图解HTTP》
+- https://daniel.haxx.se/http2/
+- <https://daniel.haxx.se/http3-explained/>
+- https://http3-explained.haxx.se/zh/
+- 《web性能权威指南》
+- <http://www.study-area.org/network/network.htm>
+- <http://www.study-area.org/compu/compu.htm>
+- <http://www.study-area.org/network/networkfr.htm>
+
+12.js要点、microfrontends、vue源码、V8、WebAssembly、nodejs/deno/puppeteer
 
 - Js要点
 
@@ -181,7 +193,8 @@ https://github.com/james-cain/samples
 - Es6 promise/set/map/proxy
 - <https://github.com/Troland/how-javascript-works>
 - <https://github.com/loverajoel/jstips>
-- https://github.com/yujiangshui/An-English-Guide-for-Programmers
+- <https://github.com/yujiangshui/An-English-Guide-for-Programmers>
+- https://github.com/programthink/books
 - <https://github.com/qiu-deqing/FE-interview>
 - <https://github.com/yangshun/front-end-interview-handbook/>
 - https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
@@ -258,18 +271,6 @@ https://github.com/james-cain/samples
 - <https://github.com/dhamaniasad/HeadlessBrowsers>
 - <https://github.com/yujiosaka/headless-chrome-crawler>
 
-12.TCP/IP
-
-- 《图解TCP/IP》
-- 《图解HTTP》
-- https://daniel.haxx.se/http2/
-- <https://daniel.haxx.se/http3-explained/>
-- https://http3-explained.haxx.se/zh/
-- 《web性能权威指南》
-- <http://www.study-area.org/network/network.htm>
-- <http://www.study-area.org/compu/compu.htm>
-- <http://www.study-area.org/network/networkfr.htm>
-
 13.算法编写
 
 - 基础算法
@@ -280,9 +281,12 @@ https://github.com/james-cain/samples
 - <https://leetcode-cn.com/>
 - 《剑指offer2》
 - <https://github.com/apachecn/awesome-algorithm>
+- <https://github.com/huaxz1986/cplusplus-_Implementation_Of_Introduction_to_Algorithms>
+- http://www.huaxiaozhuan.com/
 - <https://github.com/chihungyu1116/leetcode-javascript>
 - <https://github.com/haoel/leetcode>
 - <https://github.com/algorithm-visualizer/algorithm-visualizer>
+- https://github.com/kyleshevlin/intro-to-data-structures-and-algorithms
 - <https://github.com/MisterBooo/LeetCodeAnimation>
 - 《算法导论》
 - <https://github.com/josdejong/mathjs>
@@ -308,6 +312,7 @@ https://github.com/james-cain/samples
 - 《深度学习》
 - <https://github.com/BrainJS/brain.js>
 - <https://github.com/trekhleb/homemade-machine-learning>
+- https://github.com/exacity/deeplearningbook-chinese
 - <https://github.com/Microsoft/onnxjs>
 - https://github.com/Avik-Jain/100-Days-Of-ML-Code
 
@@ -322,7 +327,8 @@ https://github.com/james-cain/samples
 - <https://github.com/james-cain/Web-Security-Learning>
 - <https://t0data.gitbooks.io/burpsuite/content/>
 - <https://yw9381.gitbooks.io/burp_suite_doc_zh_cn/content/>
-- http://www.secbug.org/tools/index.html
+- <http://www.secbug.org/tools/index.html>
+- <https://xsspt.com/index.php> - xsser
 - https://wizardforcel.gitbooks.io/web-hacking-101/content/
 - https://tech.meituan.com/fe_security.html
 - <https://github.com/leizongmin/js-xss>
@@ -343,6 +349,7 @@ https://github.com/james-cain/samples
 15.c++
 
 - 《Essential C++》入门
+- http://blog.zhaojie.me/
 - http://www.runoob.com/cplusplus/cpp-tutorial.html入门
 - https://zhuanlan.zhihu.com/nihaoCPP入门
 - 《C++ Primer》系统化
@@ -377,7 +384,7 @@ https://github.com/james-cain/samples
 - <https://blog.csdn.net/leixiaohua1020/article/list/49>
 - <http://www.rosoo.net/a/index_av.html>
 - <http://bbs.chinaffmpeg.com/forum.php>
-- Utf-8 utf-16原理理
+- Utf-8 utf-16原理（完成）
 - 《FFmpeg从入门到精通》
 - 渲染相关
 - 《OpenGL ES 3.0编程指南》
@@ -420,6 +427,7 @@ https://github.com/james-cain/samples
 - 《鸟哥的私房菜》
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org/>
+- https://github.com/trimstray/the-practical-linux-hardening-guide
 
 19.electron
 
@@ -475,11 +483,18 @@ https://github.com/james-cain/samples
 
 24.hybrid app
 
+- ionic
+
 - <https://github.com/ionic-team/capacitor>
 - <https://github.com/ionic-team/ionic>
 - <https://github.com/ionic-team/ionic-native>
 - <https://cordova.apache.org/>
-- https://github.com/NativeScript/NativeScript
+- <https://github.com/NativeScript/NativeScript>
+
+- flutter
+
+- <https://github.com/alibaba/flutter-go>
+- https://github.com/CarGuo/GSYGithubAppFlutter
 
 25.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
 
