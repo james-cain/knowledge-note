@@ -208,6 +208,34 @@ Java等语言都提供了预编译语句，PreparedStatement表示预编译SQL�
 
    在身份标识字段使用 HttpOnly可以有效的阻挡XSS会话劫持攻击，但却不能完全阻挡XSS攻击。因为XSS攻击的手段太多，仅靠HttpOnly是不够的，防御还是要靠过滤输入与输出
 
+4. DOM型XSS攻击预防
+
+   - 使用`.innerHTML`、`.outerHTML`、`document.write()`时要特别小心，不要把不可信的数据作为HTML插到页面上，应尽量使用`.textContent`、`.setAttribute()`等
+
+   - DOM中的内联事件监听器，如location、onclick、onerror、onload、onmouseover等，< a >标签的href属性，javaScript的eval()、setTimeout()、setInterval()等，都能把字符串作为代码运行。
+
+     ```html
+     <!-- 内联事件监听器中包含恶意代码 -->
+     <img onclick="UNTRUSTED" onerror="UNTRUSTED" src="data:image/png,">
+     
+     <!-- 链接内包含恶意代码 -->
+     <a href="UNTRUSTED">1</a>
+     
+     <script>
+     // setTimeout()/setInterval() 中调用恶意代码
+     setTimeout("UNTRUSTED")
+     setInterval("UNTRUSTED")
+     
+     // location 调用恶意代码
+     location.href = 'UNTRUSTED'
+     
+     // eval() 中调用恶意代码
+     eval("UNTRUSTED")
+     </script>
+     ```
+
+5. 验证码：防止脚本冒充用户提交危险操作
+
 ## CSRF/XSRF(Cross-site request forgery)跨站请求伪造
 
 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方式。其实就是利用用户的登录态发起的恶意请求

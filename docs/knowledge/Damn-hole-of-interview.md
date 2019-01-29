@@ -10,7 +10,7 @@ String、Number、Boolean、Symbol，对象的valueOf()方法返回基本类型�
 
 ## 浮点数的坑
 
-![float-hole](http://reyshieh.com/assets/float-hole.png)
+![float-hole](http://www.reyshieh.com/assets/float-hole.png)
 
 想必以上的输出程序员在编写代码的时候都见过，这就是浮点数运算的锅。
 
@@ -2509,6 +2509,7 @@ for(var i=0; i<int32View.length; i++) {
 	int32View[i] = i*2;
 	console.log("Entry " + i +":" + int32View[i])
 }
+// Entry 0:0
 // Entry 1:2
 // Entry 2:4
 // Entry 3:6
@@ -2867,12 +2868,12 @@ UTF-8的编码规则有两个:
 - 对于单字节的符号，字节的第一位设为0，后面7位为符号的Unicode码。因此，英语字母，UTF-8和ASCII码是相同的
 - 对于n字节的符号(n > 1)，第一个字节的前n位都设为1，第n+1为设为0，后面字节的前两位一律设为10。剩下位数填Unicode码
 
-| Unicode符号范围(十六进制) | UTF-8编码方式(二进制)            |
-| ------------------------- | -------------------------------- |
-| 0000 0000 - 0000 007F     | 0xxx xxxx                        |
-| 0000 0080 - 0000 07FF     | 110x xxxx 10xx xxxx              |
-| 0000 0800 - 0000 FFFF     | 1110 xxxx 10xx xxxx 10xx xxxx    |
-| 0001 0000 - 0010 FFFF     | 1111 0xxx 10xx xxxx 10xx xxxx 10 |
+| Unicode符号范围(十六进制) | UTF-8编码方式(二进制)                   |
+| ------------------------- | --------------------------------------- |
+| 0000 0000 - 0000 007F     | 0xxx xxxx                               |
+| 0000 0080 - 0000 07FF     | 110x xxxx 10xx xxxx                     |
+| 0000 0800 - 0000 FFFF     | 1110 xxxx 10xx xxxx 10xx xxxx           |
+| 0001 0000 - 0010 FFFF     | 1111 0xxx 10xx xxxx 10xx xxxx 10xx xxxx |
 
 ### UTF-32
 
