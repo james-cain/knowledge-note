@@ -89,6 +89,13 @@ module.exports = {
           ]
         },
         {
+          title: 'Chromium',
+          collapsable: false,
+          children: [
+            '/knowledge/Damn-hole-of-chromium.md'
+          ]
+        },
+        {
           title: '其他',
           collapsable: false,
           children: [
