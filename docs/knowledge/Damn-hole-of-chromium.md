@@ -48,3 +48,18 @@
 
 ### 如何展示网页
 
+![Chromium_application_layers.png](http://reyshieh.com/assets/Chromium_application_layers.png)
+
+- WebKit：Safari、Chromium和其他所有基于WebKit的浏览器共享的渲染引擎。WebKit Port是WebKit的一个部分，用来集成平台独立的系统服务，比如资源加载与图像。
+- WebKit glue：将WebKit的类型转为Chromium的类型。也就是**WebKit嵌入层**。
+- Renderer/Render host：**多进程嵌入层**。它代理通知，并跨过进程边界执行指令。
+- WebContents：一个可重用的组件，是内容模块的主类。易于嵌入，允许多进程将HTML绘制成View。
+- Browser：代表浏览器窗口，包含多个WebContents。
+- Tab Helpers：可以被绑定到WebContents的独立对象。浏览器将它们的分类附加到所持有的WebContents上(如图标，信息栏等)
+
+#### WebKit
+
+WebKit用于布局web页面，主要从Apple中pull过来。WebKit主要由"WebCore"组成，代表了核心的布局功能，还有"JavaScriptCore"，用来运行JavaScript。但目前已被V8 JavaScript引擎代替了。
+
+##### WebKit port
+
