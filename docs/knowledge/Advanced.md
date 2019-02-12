@@ -17,6 +17,7 @@ https://github.com/james-cain/samples
 - workbox（持续学习）
 
 - BoardcastChannel workbox.broadcastUpdate  <https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel>  依赖于webworker（完成）
+- https://github.com/tastejs/hacker-news-pwas
 - Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>（完成）
 - PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push（完成）
 - https://lavas.baidu.com/ready兼容性列表
@@ -27,6 +28,7 @@ https://github.com/james-cain/samples
 - background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/（完成）
 - <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
 - <https://developers.google.com/web/progressive-web-apps/desktop>
+- Blink https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
 - https://so-pwa.firebaseapp.com/
 
 2.性能优化处理
@@ -189,7 +191,9 @@ https://github.com/james-cain/samples
 - <http://hcysun.me/vue-design/art/>
 - <https://ustbhuangyi.github.io/vue-analysis/prepare/>
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
-- https://github.com/trimstray/the-book-of-secret-knowledge
+- <https://github.com/trimstray/the-book-of-secret-knowledge>
+- <https://ahangchen.gitbooks.io/chromium_doc_zh/content/zh/>
+- https://www.chromium.org/developers/design-documents
 - Es6 promise/set/map/proxy
 - <https://github.com/Troland/how-javascript-works>
 - <https://github.com/loverajoel/jstips>
@@ -280,11 +284,15 @@ https://github.com/james-cain/samples
 - <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
 - <https://leetcode-cn.com/>
 - 《剑指offer2》
+- https://github.com/gatieme/CodingInterviews
 - <https://github.com/apachecn/awesome-algorithm>
 - <https://github.com/huaxz1986/cplusplus-_Implementation_Of_Introduction_to_Algorithms>
 - http://www.huaxiaozhuan.com/
 - <https://github.com/chihungyu1116/leetcode-javascript>
 - <https://github.com/haoel/leetcode>
+- <https://soulmachine.gitbooks.io/algorithm-essentials/java/>
+- <https://shenjie1993.gitbooks.io/leetcode-python/content/096%20Unique%20Binary%20Search%20Trees.html>
+- https://www.kancloud.cn/kancloud/data-structure-and-algorithm-notes/73048
 - <https://github.com/algorithm-visualizer/algorithm-visualizer>
 - https://github.com/kyleshevlin/intro-to-data-structures-and-algorithms
 - <https://github.com/MisterBooo/LeetCodeAnimation>
@@ -308,13 +316,15 @@ https://github.com/james-cain/samples
 - AI
 
 - <https://github.com/apachecn/AiLearning>
+- https://github.com/d2l-ai/d2l-zh
 - 《AI未来》
 - 《深度学习》
 - <https://github.com/BrainJS/brain.js>
 - <https://github.com/trekhleb/homemade-machine-learning>
 - https://github.com/exacity/deeplearningbook-chinese
 - <https://github.com/Microsoft/onnxjs>
-- https://github.com/Avik-Jain/100-Days-Of-ML-Code
+- <https://github.com/Avik-Jain/100-Days-Of-ML-Code>
+- https://github.com/zeusees/HyperDL-Tutorial
 
 - tensorflow
 
@@ -325,6 +335,7 @@ https://github.com/james-cain/samples
 - 《白帽子讲web安全》
 - 《web安全深度剖析》
 - <https://github.com/james-cain/Web-Security-Learning>
+- https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
 - <https://t0data.gitbooks.io/burpsuite/content/>
 - <https://yw9381.gitbooks.io/burp_suite_doc_zh_cn/content/>
 - <http://www.secbug.org/tools/index.html>
@@ -428,6 +439,7 @@ https://github.com/james-cain/samples
 - <http://www.linux.org.tw/>
 - <http://linux.vbird.org/>
 - https://github.com/trimstray/the-practical-linux-hardening-guide
+- https://github.com/huaxz1986/APUE_notes
 
 19.electron
 
@@ -480,6 +492,8 @@ https://github.com/james-cain/samples
 - <https://www.dartlang.org/>
 - <https://flutter.io/docs/>
 - <https://github.com/james-cain/GSYGithubAppFlutter>
+- https://github.com/flutterchina/flutter-in-action
+- https://github.com/alibaba/flutter-go
 
 24.hybrid app
 
@@ -521,6 +535,16 @@ https://github.com/james-cain/samples
 33.elm
 
 - <https://elm-lang.org/>
+
+34.MQTT
+
+- [https://github.com/mcxiaoke/mqtt](https://github.com/james-cain/mqtt)
+- <https://github.com/mcollina/mosca>
+- <https://github.com/mcollina/aedes>
+
+35.nginx
+
+- https://github.com/trimstray/nginx-quick-reference
 
 ## 知识类：
 
