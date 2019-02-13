@@ -2,208 +2,38 @@
 
 ## 重点项
 
-性能 安全 视频 linux 算法 编译原理
+性能 安全 视频/RTC/编解码/OpenGL linux 算法 编译原理 计算机原理 浏览器原理/Blink/V8 HTTP原理 JS/WebAssembly Flutter
 
 ## 前端方向
 
 界面展现用户体验和可访问性方向、偏后的js/nodejs开发方向、audio/video音视频富媒体方向、SVG/canvas/webGL动效创意表现与数据可视化方向、工具建设文档管理内部站建设的前端运维方向、会议预定团建组织对外品牌宣传的前端运营方向
 
-## 代码类：
-
-https://github.com/james-cain/samples
-
-1.PWA
-
-- workbox（持续学习）
-
-- BoardcastChannel workbox.broadcastUpdate  <https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel>  依赖于webworker（完成）
-- https://github.com/tastejs/hacker-news-pwas
-- Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>（完成）
-- PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push（完成）
-- https://lavas.baidu.com/ready兼容性列表
-- ServiceWorker  涉及到Cache、CacheStorage、ServiceWorkerContainer、ServiceWorkerRegistration、ServiceWorker、ServiceWorkerGlobalScope、Clients、NavigationPreloadManager （完成）
-- <https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker> （完成）
-- <https://w3c.github.io/ServiceWorker/> （完成）
-- <https://github.com/w3c/ServiceWorker> （完成）
-- background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/（完成）
-- <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
-- <https://developers.google.com/web/progressive-web-apps/desktop>
-- Blink https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
-- https://so-pwa.firebaseapp.com/
-
-2.性能优化处理
-
-- lighthouse（持续学习）
-- <https://webpagetest.org/easy>
-- <https://developers.google.com/speed/pagespeed/insights/>
-- <https://web.dev/>
-- <https://wpostats.com/>
-- https://github.com/davidsonfellipe/awesome-wpo
-- <https://csstriggers.com/> - css列表，性能相关
-- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
-- https://duoani.github.io/HTTP-RFCs.zh-cn/
-- 骨架屏 https://github.com/michalsnik/vue-content-placeholders（完成）
-- lazyload（完成）
-- 内存分析
-
-- https://developers.google.com/web/tools/chrome-devtools/memory-problems/
-
-- 性能分析
-
-- <https://developers.google.com/web/tools/chrome-devtools/speed/get-started>
-- <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/>
-- <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference>
-
-- 网络分析
-
-- <https://developers.google.com/web/tools/chrome-devtools/network-performance/>
-- https://developers.google.com/web/tools/chrome-devtools/network-performance/reference
-
-- CSP  https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP（完成）
-- DNS提前解析（完成）
-- purifycss（完成）
-- <https://github.com/w3c/web-performance>
-- https://github.com/jsdom/jsdom
-- https://tc39.github.io/ecma262/
-- <https://w3c.github.io/preload/>（完成）
-- <https://w3c.github.io/resource-hints/>（完成）
-- <https://www.w3.org/TR/appmanifest/>
-- <https://github.com/indutny/common-shake>
-- <https://github.com/JacksonTian/anywhere>
-- <https://github.com/developit/microbundle>
-
-- Performance
-
-- <https://w3c.github.io/hr-time/>
-- https://github.com/mrdoob/stats.js
-- https://github.com/you-dont-need/You-Dont-Need-Momentjs
-
-3.Typescript
-
-- Typescript-Vue-Starter（完成）
-- <https://ts.xcatliu.com/>（完成）
-- <https://zhongsp.gitbooks.io/typescript-handbook/content/>(完成）
-- <https://www.tslang.cn/docs/home.html>（持续学习）
-- Js标准自建对象 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects>
-- <https://github.com/DefinitelyTyped/DefinitelyTyped>
-- <https://github.com/TypeStrong/ts-loader>
-- <https://github.com/vuejs/vue-class-component>（完成）
-- <https://github.com/kaorun343/vue-property-decorator>（完成）
-- https://github.com/ktsn/vuex-class/（完成）
-- https://github.com/jkchao/typescript-book-chinese
-
-4.IntersectionObserver、IntersectionObserverEntry
-
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback>（完成）
-- [Window.cancelIdleCallback()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/cancelIdleCallback)（完成）
-- <https://github.com/Akryum/vue-observe-visibility#installation>（完成）
-- <https://github.com/russellgoldenberg/scrollama>
-- https://github.com/w3c/IntersectionObserver/tree/master/polyfill（完成）
-
-5.sticky
-
-- <https://github.com/dollarshaveclub/stickybits>（完成）
-
-6.storage、vuex持久化
-
-- <https://github.com/james-cain/irondb>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>（完成）
-- https://github.com/james-cain/vue-offline
-- <https://github.com/localForage/localForage>
-- <https://github.com/dfahlander/Dexie.js>
-- <https://github.com/erikolson186/zangodb>
-- <https://github.com/jakearchibald/idb-keyval>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB>
-- <https://www.w3.org/TR/IndexedDB/#introduction>（完成）
-- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto> 使用加密存储
-- <https://github.com/google/leveldb>
-- <https://github.com/google/lovefield>
-- <https://github.com/kripken/sql.js/> — sqlite数据库
-- <https://github.com/mapbox/node-sqlite3>
-- https://github.com/mapbox/node-sqlite3/wiki
-- <https://github.com/kriasoft/node-sqlite>
-
-- vuex持久化
-
-- <https://github.com/robinvdvleuten/vuex-persistedstate>（完成）
-- https://github.com/amark/gun
-
-7.图片处理
-
-- <https://github.com/naptha/tesseract.js>
-- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>（完成）
-- <https://www.zhangxinxu.com/wordpress/2017/07/html5-canvas-image-compress-upload/>（完成）
-- <https://github.com/antimatter15/ocrad.js>
-- <https://github.com/muwoo/Matting>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement>（完成）
-- https://github.com/nimoat/photo-edit
-
-8.Vue长列表
-
-- vue-virtual-scroller（完成）
-- Clusterize.js
-- <https://github.com/valdrinkoshi/virtual-scroller>
-
-9.vue-hooks
-
-- <https://github.com/yyx990803/vue-hooks>（完成）
-- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>（完成）
-- <https://juejin.im/post/5bfa929551882524cb6f413b>
-
-10.WebWorker
-
-- <https://github.com/mchaov/WebWorkers>（完成）
-- <https://github.com/developit/greenlet>（完成）
-- https://github.com/ampproject/worker-dom
-- https://github.com/satya164/web-worker-proxy
-- https://github.com/developit/stockroom
-- <https://github.com/GoogleChromeLabs/comlink>
-- <http://javascript.ruanyifeng.com/stdlib/arraybuffer.html>
-- <http://www.ruanyifeng.com/blog/2018/07/web-worker.html>（完成）
-- <https://github.com/webpack-contrib/worker-loader>
-- <https://whatwg-cn.github.io/html/#workers>（完成）
-- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>（完成）
-- <https://html.spec.whatwg.org/multipage/workers.html#workers>（完成）
-- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>（完成）
-- SharedWorker、SharedWorkerGlobalScope（完成）
-- <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
-
-11.TCP/IP
+1.TCP/IP
 
 - 《图解TCP/IP》
 - 《图解HTTP》
+- 《http权威指南》
+- 《http2基础教程》
 - https://daniel.haxx.se/http2/
 - <https://daniel.haxx.se/http3-explained/>
 - https://http3-explained.haxx.se/zh/
-- 《web性能权威指南》
 - <http://www.study-area.org/network/network.htm>
-- <http://www.study-area.org/compu/compu.htm>
-- <http://www.study-area.org/network/networkfr.htm>
 
-12.js要点、microfrontends、vue源码、V8、WebAssembly、nodejs/deno/puppeteer
+2.js要点、microfrontends、vue源码、WebAssembly、nodejs/deno/puppeteer
 
 - Js要点
 
 - <https://github.com/stephentian/33-js-concepts>
 - <https://30secondsofcode.org/adapter#ary>
 - 《你不知道的Javascript》
+- 《javascript函数式编程》
+- https://github.com/ramda/ramda
 - <http://hcysun.me/vue-design/art/>
 - <https://ustbhuangyi.github.io/vue-analysis/prepare/>
 - <https://github.com/llh911001/mostly-adequate-guide-chinese>
-- <https://github.com/trimstray/the-book-of-secret-knowledge>
-- <https://ahangchen.gitbooks.io/chromium_doc_zh/content/zh/>
-- https://www.chromium.org/developers/design-documents
-- Es6 promise/set/map/proxy
 - <https://github.com/Troland/how-javascript-works>
 - <https://github.com/loverajoel/jstips>
-- <https://github.com/yujiangshui/An-English-Guide-for-Programmers>
-- https://github.com/programthink/books
-- <https://github.com/qiu-deqing/FE-interview>
-- <https://github.com/yangshun/front-end-interview-handbook/>
-- https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
-- blob/master/Translations/Chinese/questions/css-questions.md
-- 《高性能Javascript》（完成）
+- 《高性能Javascript》
 - <https://github.com/leonardomso/33-js-concepts>
 - <https://github.com/30-seconds/30-seconds-of-code>
 - <http://2ality.com/>
@@ -211,8 +41,6 @@ https://github.com/james-cain/samples
 - https://github.com/MostlyAdequate/mostly-adequate-guide
 - <http://www.ruanyifeng.com/blog/2017/03/pointfree.html>
 - http://www.ruanyifeng.com/blog/2017/02/fp-tutorial.html
-- https://github.com/Tencent/vConsole
-- <https://github.com/kamranahmedse/developer-roadmap>
 - <https://github.com/ziishaned/learn-regex>
 - <https://tc39.github.io/ecma262/#sec-intro>
 - <https://tc39.github.io/process-document/>
@@ -220,10 +48,6 @@ https://github.com/james-cain/samples
 - <https://github.com/iliakan/javascript-tutorial-en>
 - http://asmjs.org/
 - <http://kripken.github.io/emscripten-site/>
-- <https://github.com/Qquanwei/trackpoint-tools> — 无痕埋点
-- <https://github.com/Autarc/optimal-select> — 生成元素标识
-- https://github.com/rowthan/whats-element — 生成元素标识
-- 跨域
 
 - microfrontends 微前端
 
@@ -235,19 +59,11 @@ https://github.com/james-cain/samples
 - https://github.com/Tencent/omi
 - <https://github.com/palmerhq/the-platform>
 
-- V8
-
-- <https://v8.dev/docs>
-- <https://v8.js.cn/>
-- https://github.com/thlorenz/v8-perf
-- <https://github.com/bluezhan/v8>
-- <https://github.com/ry/v8worker>
-- <https://github.com/ry/v8worker2>
-
 - WebAssembly
 
 - <https://webassembly.github.io/spec/core/>
-- https://webassembly.org/
+- <https://webassembly.org/>
+- https://github.com/WebAssembly/design
 
 - nodejs/deno/puppeteer
 - Nodejs
@@ -275,7 +91,7 @@ https://github.com/james-cain/samples
 - <https://github.com/dhamaniasad/HeadlessBrowsers>
 - <https://github.com/yujiosaka/headless-chrome-crawler>
 
-13.算法编写
+3.算法编写
 
 - 基础算法
 
@@ -284,6 +100,7 @@ https://github.com/james-cain/samples
 - <https://github.com/CyC2018/CS-Notes/blob/master/notes/%E7%AE%97%E6%B3%95.md>
 - <https://leetcode-cn.com/>
 - 《剑指offer2》
+- 《编程之美》
 - https://github.com/gatieme/CodingInterviews
 - <https://github.com/apachecn/awesome-algorithm>
 - <https://github.com/huaxz1986/cplusplus-_Implementation_Of_Introduction_to_Algorithms>
@@ -308,15 +125,19 @@ https://github.com/james-cain/samples
 - 数据结构
 
 - https://wizardforcel.gitbooks.io/think-dast/content/
+- 《数据结构与算法javascript描述》
 
 - 设计模式
 
 - <https://github.com/kamranahmedse/design-patterns-for-humans>
+- 《javascript设计模式与开发实践》
 
 - AI
 
 - <https://github.com/apachecn/AiLearning>
 - https://github.com/d2l-ai/d2l-zh
+- 《具体数学》
+- 《数学之美》
 - 《AI未来》
 - 《深度学习》
 - <https://github.com/BrainJS/brain.js>
@@ -328,7 +149,121 @@ https://github.com/james-cain/samples
 
 - tensorflow
 
-14.web安全/密码学
+4.浏览器原理/Blink/V8
+
+- 浏览器原理
+
+- <https://ahangchen.gitbooks.io/chromium_doc_zh/content/zh/>
+- <https://www.chromium.org/developers/design-documents>
+
+- Blink
+
+- Blink https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
+
+- V8
+
+- <https://v8.dev/docs>
+- <https://v8.js.cn/>
+- https://github.com/thlorenz/v8-perf
+- <https://github.com/bluezhan/v8>
+- <https://github.com/ry/v8worker>
+- <https://github.com/ry/v8worker2>
+
+5.c++
+
+- 《Essential C++》入门
+- http://blog.zhaojie.me/
+- http://www.runoob.com/cplusplus/cpp-tutorial.html入门
+- https://zhuanlan.zhihu.com/nihaoCPP入门
+- 《C++ Primer》系统化
+- 《C++标准库》函数库
+- 《深入理解C++对象模型》函数库
+- 《STL源码剖析》函数库
+- 《effective C++》更好性能、更优雅
+- 《More Effective C++》更好性能、更优雅
+- <https://github.com/huihut/interview> 面试总结
+
+6.video、audio、RTC、ffmpeg、OpenGL
+
+- 视频
+
+- <https://github.com/videojs/video.js>
+- <https://github.com/surmon-china/vue-video-player>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>
+- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>
+- <https://chimee.org/docs/chimee_player_preface.html>
+- https://github.com/Chimeejs/chimee-player
+- <https://github.com/video-dev/hls.js>
+
+- 音频
+
+- <https://blog.csdn.net/baidu_zhongce/article/details/50393254>
+- https://github.com/pdeschen/pcm.js/blob/master/test.js
+- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio>
+- https://github.com/abysshal/WAVHelper/
+
+- RTC
+
+- <https://blog.csdn.net/renfufei/article/details/83045590>
+- [https://codelabs.developers.google.com/codelabs/webrtc-web/#0](https://codelabs.developers.google.com/codelabs/webrtc-web/#0(%E5%AE%8C%E6%88%90))
+- <https://github.com/googlecodelabs/webrtc-web>
+- https://webrtc.org/
+- <https://github.com/webrtc/samples>
+- https://github.com/webrtc/apprtc
+- <https://github.com/muaz-khan/WebRTC-Experiment>
+- <https://github.com/node-webrtc/node-webrtc>
+- <https://github.com/diafygi/webrtc-ips>
+- https://github.com/mappum/electron-webrtc
+- <https://github.com/webrtcHacks/adapter>
+- <https://github.com/webrtc/adapter>
+- <https://w3c.github.io/webrtc-pc/>
+- <https://w3c.github.io/mediacapture-main/getusermedia.html#media-track-constraints>
+
+- ffmpeg
+
+- <https://www.cnblogs.com/xkfz007/archive/2012/08/12/2613690.html>
+- <https://cloud.tencent.com/developer/article/1013506>
+- <https://github.com/Xinrea/Learn/wiki/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81>
+- https://github.com/Kagami/ffmpeg.js
+- <http://ffmpeg.org/ffmpeg-all.html>
+- <https://github.com/xdsnet/other-doc-cn-ffmpeg>
+- <http://ffmpeg.org/documentation.html>
+- <https://trac.ffmpeg.org/>
+- <https://blog.csdn.net/leixiaohua1020/article/list/49>
+- <http://www.rosoo.net/a/index_av.html>
+- <http://bbs.chinaffmpeg.com/forum.php>
+- 《FFmpeg从入门到精通》
+- <https://github.com/mifi/lossless-cut>
+
+- OpenGL
+
+- 《OpenGL ES 3.0编程指南》
+- https://www.khronos.org/registry/OpenGL-Refpages/es3.0/
+- webGL
+- <https://webglfundamentals.org/webgl/lessons/zh_cn/>
+- http://taobaofed.org/blog/2018/12/17/webgl-texture/index.html
+
+7.编译原理
+
+- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
+- 《现代编译原理》
+
+8.计算机系统
+
+- 《深入理解计算机系统》
+- <http://www.study-area.org/compu/compu.htm>
+- <http://www.study-area.org/network/networkfr.htm>
+
+9.linux
+
+- 《鸟哥的私房菜》
+- <http://www.linux.org.tw/>
+- <http://linux.vbird.org/>
+- <https://github.com/trimstray/the-practical-linux-hardening-guide>
+- <https://github.com/huaxz1986/APUE_notes>
+
+10.web安全/密码学
 
 - web安全
 
@@ -343,6 +278,7 @@ https://github.com/james-cain/samples
 - https://wizardforcel.gitbooks.io/web-hacking-101/content/
 - https://tech.meituan.com/fe_security.html
 - <https://github.com/leizongmin/js-xss>
+- https://github.com/firesunCN/BlueLotus_XSSReceiver
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
 - <https://github.com/zhansingsong/js-leakage-patterns>
@@ -357,117 +293,55 @@ https://github.com/james-cain/samples
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - <https://www.jianshu.com/p/ad3d1dea63af?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io>
 
-15.c++
+11.other skill
 
-- 《Essential C++》入门
-- http://blog.zhaojie.me/
-- http://www.runoob.com/cplusplus/cpp-tutorial.html入门
-- https://zhuanlan.zhihu.com/nihaoCPP入门
-- 《C++ Primer》系统化
-- 《C++标准库》函数库
-- 《深入理解C++对象模型》函数库
-- 《STL源码剖析》函数库
-- 《effective C++》更好性能、更优雅
-- 《More Effective C++》更好性能、更优雅
-- <https://github.com/huihut/interview> 面试总结
+- <https://github.com/trimstray/the-book-of-secret-knowledge>
+- <https://github.com/kamranahmedse/developer-roadmap>
+- <https://github.com/qiu-deqing/FE-interview>
+- <https://github.com/yangshun/front-end-interview-handbook/>
+- https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
+- <https://github.com/yujiangshui/An-English-Guide-for-Programmers>
+- <https://github.com/programthink/books>
+- https://github.com/justjavac/free-programming-books-zh_CN
+- https://github.com/jaywcjlove/awesome-mac/blob/master/README-zh.md
+- https://github.com/kaola-fed/blog/issues
+- <https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+- https://github.com/GoogleChrome/samples
+- <https://github.com/Tencent/vConsole>
+- <https://github.com/Qquanwei/trackpoint-tools> — 无痕埋点
+- <https://github.com/Autarc/optimal-select> — 生成元素标识
+- https://github.com/rowthan/whats-element — 生成元素标识
+- <https://github.com/amwmedia/plop>
+- <https://github.com/Rob--W/cors-anywhere>
+- <https://github.com/JacksonTian/anywhere>
+- <https://github.com/Jxck/html2json>
+- <https://github.com/lukeed/sockette>
+- <https://github.com/NeXTs/Clusterize.js>
+- <https://github.com/acornjs/acorn>
+- <https://github.com/joshbuchea/HEAD>
+- <https://github.com/webpack/watchpack>
+- <https://github.com/webkul/micron>
+- <https://github.com/indutny/common-shake>
+- <https://github.com/AndrewRayCode/easing-utils>
+- <https://github.com/AlloyTeam/AlloyTouch>
+- https://github.com/AlloyTeam/AlloyFinger
 
-16.video、audio、RTC
-
-- 视频
-
-- <https://github.com/videojs/video.js>
-- <https://github.com/surmon-china/vue-video-player>
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLVideoElement>（完成）
-- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video>（完成）
-- <https://chimee.org/docs/chimee_player_preface.html>
-- https://github.com/Chimeejs/chimee-player
-- <https://github.com/video-dev/hls.js>
-- 编解码相关知识点
-- <https://www.cnblogs.com/xkfz007/archive/2012/08/12/2613690.html>
-- <https://cloud.tencent.com/developer/article/1013506>
-- <https://github.com/Xinrea/Learn/wiki/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81>
-- https://github.com/Kagami/ffmpeg.js
-- <http://ffmpeg.org/ffmpeg-all.html>
-- <https://github.com/xdsnet/other-doc-cn-ffmpeg>
-- <http://ffmpeg.org/documentation.html>
-- <https://trac.ffmpeg.org/>
-- <https://blog.csdn.net/leixiaohua1020/article/list/49>
-- <http://www.rosoo.net/a/index_av.html>
-- <http://bbs.chinaffmpeg.com/forum.php>
-- Utf-8 utf-16原理（完成）
-- 《FFmpeg从入门到精通》
-- 渲染相关
-- 《OpenGL ES 3.0编程指南》
-- https://www.khronos.org/registry/OpenGL-Refpages/es3.0/
-- webGL
-- <https://webglfundamentals.org/webgl/lessons/zh_cn/>
-- http://taobaofed.org/blog/2018/12/17/webgl-texture/index.html
-
-- 音频
-
-- <https://blog.csdn.net/baidu_zhongce/article/details/50393254>
-- https://github.com/pdeschen/pcm.js/blob/master/test.js
-- <https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio>
-- https://github.com/abysshal/WAVHelper/
-
-- RTC
-
-- <https://blog.csdn.net/renfufei/article/details/83045590>(完成)
-- [https://codelabs.developers.google.com/codelabs/webrtc-web/#0(完成)](https://codelabs.developers.google.com/codelabs/webrtc-web/#0(%E5%AE%8C%E6%88%90))
-- <https://github.com/googlecodelabs/webrtc-web>(完成)
-- https://webrtc.org/
-- <https://github.com/webrtc/samples>
-- https://github.com/webrtc/apprtc
-- <https://github.com/muaz-khan/WebRTC-Experiment>
-- <https://github.com/node-webrtc/node-webrtc>
-- <https://github.com/diafygi/webrtc-ips>
-- https://github.com/mappum/electron-webrtc
-- <https://github.com/webrtcHacks/adapter>
-- <https://github.com/webrtc/adapter>
-- <https://w3c.github.io/webrtc-pc/>
-- https://w3c.github.io/mediacapture-main/getusermedia.html#media-track-constraints
-
-17.编译原理
-
-- <https://www.youtube.com/watch?v=yPZdbL84QHg&index=1&list=PLe68gYG2zUeXCCJBewCrWYCKGQc24ialj>
-- 《现代编译原理》
-
-18.linux
-
-- 《鸟哥的私房菜》
-- <http://www.linux.org.tw/>
-- <http://linux.vbird.org/>
-- https://github.com/trimstray/the-practical-linux-hardening-guide
-- https://github.com/huaxz1986/APUE_notes
-
-19.electron
+12.electron
 
 - vue-electron
-
-- - electron-quick-start
-
+- electron-quick-start
 - https://github.com/caijinyc/Here
-
 - guppy
-
 - vue-design
-
 - nativefier
-
 - ram
-
 - react-proto
-
 - electronic-wechat
-
 - vue-form-making
-
 - <https://electronjs.org/docs>
-
 - <https://simulatedgreg.gitbooks.io/electron-vue/content/cn/>
 
-20.hybrid app
+13.hybrid app
 
 - ionic
 
@@ -485,19 +359,205 @@ https://github.com/james-cain/samples
 - <https://github.com/flutterchina/flutter-in-action>
 - https://github.com/alibaba/flutter-go
 
-21.TDD开发模式
-
-- <https://jestjs.io/zh-Hans/>
-- <https://github.com/dwyl/learn-tdd>
-
-22.serverless
+14.serverless
 
 - <https://github.com/phodal/serverless>
 - <https://github.com/serverless/serverless>
 - <https://github.com/embark-framework/embark>
 - <https://github.com/harijoe/serverless-boilerplate>
 
-23.go
+15.chrome plugin
+
+- https://github.com/sxei/chrome-plugin-demo
+- https://github.com/YuraDev/vue-chrome-extension-template
+- <https://github.com/rhardih/ekill>
+- https://github.com/google/tamperchrome
+
+15.MQTT
+
+- [https://github.com/mcxiaoke/mqtt](https://github.com/james-cain/mqtt)
+- <https://github.com/mcollina/mosca>
+- <https://github.com/mcollina/aedes>
+
+16.nginx
+
+- <https://github.com/trimstray/nginx-quick-reference>
+
+17.HTML标准
+
+- 《whatwg/html》
+- https://github.com/w3c/web-performance
+- <https://tech.meituan.com/fe_tiny_spa.html>
+- <https://www.ampproject.org/zh_cn/docs/getting_started/visual_story>
+
+18.CSSTriggers/CSS参考手册
+
+- <https://csstriggers.com/>
+- <http://css.doyoe.com/>
+- https://github.com/chokcoco/CSS-Inspiration
+- blob/master/Translations/Chinese/questions/css-questions.md
+
+19.PWA/workbox
+
+- workbox
+
+- BoardcastChannel workbox.broadcastUpdate  <https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel>  依赖于webworker
+- https://github.com/tastejs/hacker-news-pwas
+- Notification 通知 <https://developer.mozilla.org/zh-CN/docs/Web/API/notification>
+- PushManager 消息推送  <https://developer.mozilla.org/zh-CN/docs/Web/API/PushManager>  https://github.com/web-push-libs/web-push
+- https://lavas.baidu.com/ready兼容性列表
+- ServiceWorker  涉及到Cache、CacheStorage、ServiceWorkerContainer、ServiceWorkerRegistration、ServiceWorker、ServiceWorkerGlobalScope、Clients、NavigationPreloadManager 、MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
+- <https://lavas.baidu.com/pwa/offline-and-cache-loading/service-worker/how-to-use-service-worker> 
+- <https://w3c.github.io/ServiceWorker/> 
+- <https://github.com/w3c/ServiceWorker> 
+- https://github.com/qiaozi-tech/SecurityWorker
+- background sync（还不在W3C中） workbox.backgroundSync  https://wicg.github.io/BackgroundSync/spec/
+- <https://developers.google.com/web/tools/chrome-devtools/progressive-web-apps>
+- <https://developers.google.com/web/progressive-web-apps/desktop>
+- https://so-pwa.firebaseapp.com/
+
+20.性能优化处理
+
+- lighthouse
+- 《web性能权威指南》
+- 《高性能网站建设进阶指南》
+- 《高性能网站建设指南》
+- <https://webpagetest.org/easy>
+- <https://developers.google.com/speed/pagespeed/insights/>
+- <https://web.dev/>
+- <https://wpostats.com/>
+- https://github.com/davidsonfellipe/awesome-wpo
+- <https://csstriggers.com/> - css列表，性能相关
+- <https://daniel.haxx.se/blog/2018/11/11/http-3/>
+- https://duoani.github.io/HTTP-RFCs.zh-cn/
+- 骨架屏 https://github.com/michalsnik/vue-content-placeholders
+- lazyload
+- 内存分析
+
+- https://developers.google.com/web/tools/chrome-devtools/memory-problems/
+
+- 性能分析
+
+- <https://developers.google.com/web/tools/chrome-devtools/speed/get-started>
+- <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/>
+- <https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference>
+
+- 网络分析
+
+- <https://developers.google.com/web/tools/chrome-devtools/network-performance/>
+- https://developers.google.com/web/tools/chrome-devtools/network-performance/reference
+
+- CSP  https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
+- DNS提前解析
+- purifycss
+- <https://github.com/w3c/web-performance>
+- https://github.com/jsdom/jsdom
+- https://tc39.github.io/ecma262/
+- <https://w3c.github.io/preload/>
+- <https://w3c.github.io/resource-hints/>
+- <https://www.w3.org/TR/appmanifest/>
+- <https://github.com/indutny/common-shake>
+- <https://github.com/JacksonTian/anywhere>
+- <https://github.com/developit/microbundle>
+
+- Performance
+
+- <https://w3c.github.io/hr-time/>
+- https://github.com/mrdoob/stats.js
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+21.Typescript
+
+- Typescript-Vue-Starter
+- <https://ts.xcatliu.com/>
+- <https://zhongsp.gitbooks.io/typescript-handbook/content/>
+- <https://www.tslang.cn/docs/home.html>
+- Js标准自建对象 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects>
+- <https://github.com/DefinitelyTyped/DefinitelyTyped>
+- <https://github.com/TypeStrong/ts-loader>
+- <https://github.com/vuejs/vue-class-component>
+- <https://github.com/kaorun343/vue-property-decorator>
+- https://github.com/ktsn/vuex-class/
+- https://github.com/jkchao/typescript-book-chinese
+
+22.IntersectionObserver、IntersectionObserverEntry
+
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback>
+- [Window.cancelIdleCallback()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/cancelIdleCallback)
+- <https://github.com/Akryum/vue-observe-visibility#installation>
+- <https://github.com/russellgoldenberg/scrollama>
+- https://github.com/w3c/IntersectionObserver/tree/master/polyfill
+
+23.sticky
+
+- <https://github.com/dollarshaveclub/stickybits>
+
+24.storage、vuex持久化
+
+- <https://github.com/james-cain/irondb>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
+- https://github.com/james-cain/vue-offline
+- <https://github.com/localForage/localForage>
+- <https://github.com/dfahlander/Dexie.js>
+- <https://github.com/erikolson186/zangodb>
+- <https://github.com/jakearchibald/idb-keyval>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Using_IndexedDB>
+- <https://www.w3.org/TR/IndexedDB/#introduction>
+- <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto> 使用加密存储
+- <https://github.com/google/leveldb>
+- <https://github.com/google/lovefield>
+- <https://github.com/kripken/sql.js/> — sqlite数据库
+- <https://github.com/mapbox/node-sqlite3>
+- https://github.com/mapbox/node-sqlite3/wiki
+- <https://github.com/kriasoft/node-sqlite>
+
+- vuex持久化
+
+- <https://github.com/robinvdvleuten/vuex-persistedstate>
+- https://github.com/amark/gun
+
+25.图片处理
+
+- <https://github.com/naptha/tesseract.js>
+- <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>
+- <https://www.zhangxinxu.com/wordpress/2017/07/html5-canvas-image-compress-upload/>
+- <https://github.com/antimatter15/ocrad.js>
+- <https://github.com/muwoo/Matting>
+- <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement>
+- https://github.com/nimoat/photo-edit
+
+26.Vue长列表
+
+- vue-virtual-scroller
+- Clusterize.js
+- <https://github.com/valdrinkoshi/virtual-scroller>
+
+27.vue-hooks
+
+- <https://github.com/yyx990803/vue-hooks>
+- <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
+- <https://juejin.im/post/5bfa929551882524cb6f413b>
+
+28.WebWorker
+
+- <https://github.com/mchaov/WebWorkers>
+- <https://github.com/developit/greenlet>
+- https://github.com/ampproject/worker-dom
+- https://github.com/satya164/web-worker-proxy
+- https://github.com/developit/stockroom
+- <https://github.com/GoogleChromeLabs/comlink>
+- <http://javascript.ruanyifeng.com/stdlib/arraybuffer.html>
+- <http://www.ruanyifeng.com/blog/2018/07/web-worker.html>
+- <https://github.com/webpack-contrib/worker-loader>
+- <https://whatwg-cn.github.io/html/#workers>
+- <https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API>
+- <https://html.spec.whatwg.org/multipage/workers.html#workers>
+- <https://github.com/dt-fe/weekly/blob/master/76.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%B0%88%E8%B0%88%20Web%20Workers%E3%80%8B.md>
+- SharedWorker、SharedWorkerGlobalScope
+- <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
+
+29.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -505,96 +565,16 @@ https://github.com/james-cain/samples
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-24.<https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
+30.MutationObserver.js
 
-25.MutationObserver.js（完成）
-
-26.通信（完成）
-
-- MessageChannel、MessagePort（ChannelPlate.js）<https://whatwg-cn.github.io/html/#comms>
-
-27.router（navaid）
+31.router（navaid）
 
 - https://github.com/kevindurb/router
 
-28.state（reworm）
+32.state（reworm）
 
-29.搜索引擎
+33.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-30.polymer
-
-31.GraphQL
-
-32.elm
-
-- <https://elm-lang.org/>
-
-33.MQTT
-
-- [https://github.com/mcxiaoke/mqtt](https://github.com/james-cain/mqtt)
-- <https://github.com/mcollina/mosca>
-- <https://github.com/mcollina/aedes>
-
-34.nginx
-
-- https://github.com/trimstray/nginx-quick-reference
-
-## 知识类：
-
-1.HTML标准
-
-- 《whatwg/html》（优先级四）
-- https://github.com/w3c/web-performance（优先级四）
-- <https://tech.meituan.com/fe_tiny_spa.html>
-- https://www.ampproject.org/zh_cn/docs/getting_started/visual_story
-
-2.JS
-
-- 《高性能Javascript》
-- 《你不知道的Javascript》
-- 《Mostly-adequate-guide》
-- <https://github.com/kamranahmedse/developer-roadmap>
-- <https://github.com/ziishaned/learn-regex>
-- <https://tc39.github.io/ecma262/#sec-intro>
-- https://tc39.github.io/process-document/
-
-3.CSSTriggers/CSS参考手册  11月第一个星期
-
-- <https://csstriggers.com/>
-- <http://css.doyoe.com/>
-
-4.类vue
-
-- learn-vue
-- vue-analysis
-- vue-design
-- vuera
-- chao
-
-5.类小程序
-
-- tua-mp
-- tina
-- minapp
-- taro
-- acorn
-- san
-- weweb
-
-6.类react
-
-- preact
-- react
-- gooact
-- learn-react-source-code
-- anu
-- nerv
-
-7.类mvvm
-
-- aoy
-- virtual-dom
-- v-dom
-- snabbdom
+34.GraphQL
