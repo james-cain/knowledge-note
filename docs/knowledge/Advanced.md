@@ -2,11 +2,35 @@
 
 ## 重点项
 
-性能 安全 视频/RTC/编解码/OpenGL linux 算法 编译原理 计算机原理 浏览器原理/Blink/V8 HTTP原理 JS/WebAssembly Flutter
+**算法**
+
+**浏览器原理/Blink/V8**
+
+**HTTP原理**
+
+**JS/WebAssembly**
+
+**视频/RTC/编解码/OpenGL**
+
+**C++**
+
+性能
+
+安全
+
+编译原理
+
+计算机原理
+
+linux
+
+Flutter
 
 ## 前端方向
 
 界面展现用户体验和可访问性方向、偏后的js/nodejs开发方向、audio/video音视频富媒体方向、SVG/canvas/webGL动效创意表现与数据可视化方向、工具建设文档管理内部站建设的前端运维方向、会议预定团建组织对外品牌宣传的前端运营方向
+
+## 知识源
 
 1.TCP/IP
 
@@ -18,6 +42,8 @@
 - <https://daniel.haxx.se/http3-explained/>
 - https://http3-explained.haxx.se/zh/
 - <http://www.study-area.org/network/network.htm>
+- https://github.com/ericandrewlewis/https-http2-and-wordpress
+- https://github.com/woai30231/http
 
 2.js要点、microfrontends、vue源码、WebAssembly、nodejs/deno/puppeteer
 
@@ -71,7 +97,6 @@
 - <https://nodejs.org/dist/latest-v10.x/docs/api/>
 - <https://github.com/GoogleChromeLabs/carlo>
 - <https://github.com/JacksonTian/anywhere>
-- Child Processes/fs/event/net/path
 - <https://archiverjs.com/docs/>
 - <https://github.com/chyingp/nodejs-learning-guide>
 - https://github.com/i0natan/nodebestpractices
@@ -147,18 +172,17 @@
 - <https://github.com/Avik-Jain/100-Days-Of-ML-Code>
 - https://github.com/zeusees/HyperDL-Tutorial
 
-- tensorflow
-
 4.浏览器原理/Blink/V8
 
 - 浏览器原理
 
 - <https://ahangchen.gitbooks.io/chromium_doc_zh/content/zh/>
 - <https://www.chromium.org/developers/design-documents>
+- https://github.com/chromium/chromium
 
 - Blink
 
-- Blink https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
+- https://docs.google.com/document/d/1aitSOucL0VHZa9Z2vbRJSyAIsAz24kX8LFByQ5xQnUg/edit
 
 - V8
 
@@ -182,6 +206,7 @@
 - 《effective C++》更好性能、更优雅
 - 《More Effective C++》更好性能、更优雅
 - <https://github.com/huihut/interview> 面试总结
+- https://github.com/jobbole/awesome-cpp-cn
 
 6.video、audio、RTC、ffmpeg、OpenGL
 
@@ -262,6 +287,7 @@
 - <http://linux.vbird.org/>
 - <https://github.com/trimstray/the-practical-linux-hardening-guide>
 - <https://github.com/huaxz1986/APUE_notes>
+- https://github.com/imthenachoman/How-To-Secure-A-Linux-Server
 
 10.web安全/密码学
 
@@ -296,35 +322,36 @@
 11.other skill
 
 - <https://github.com/trimstray/the-book-of-secret-knowledge>
-- <https://github.com/kamranahmedse/developer-roadmap>
+- [https://github.com/kamranahmedse/developer-roadmap ](https://github.com/kamranahmedse/developer-roadmap)职业规划路线
 - <https://github.com/qiu-deqing/FE-interview>
 - <https://github.com/yangshun/front-end-interview-handbook/>
 - https://github.com/ganqqwerty/123-Essential-JavaScript-Interview-Questions
-- <https://github.com/yujiangshui/An-English-Guide-for-Programmers>
+- https://github.com/30-seconds/30-seconds-of-interviews
+- [https://github.com/yujiangshui/An-English-Guide-for-Programmers ](https://github.com/yujiangshui/An-English-Guide-for-Programmers)英语学习
 - <https://github.com/programthink/books>
 - https://github.com/justjavac/free-programming-books-zh_CN
 - https://github.com/jaywcjlove/awesome-mac/blob/master/README-zh.md
-- https://github.com/kaola-fed/blog/issues
+- https://github.com/kaola-fed/blog/issues 比较有意思的知识解答
 - <https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way> 如何正确的提出技术问题
-- https://github.com/GoogleChrome/samples
-- <https://github.com/Tencent/vConsole>
+- https://github.com/GoogleChrome/samples 谷歌api demo
+- [https://github.com/Tencent/vConsole ](https://github.com/Tencent/vConsole)移动端控制台显示
 - <https://github.com/Qquanwei/trackpoint-tools> — 无痕埋点
 - <https://github.com/Autarc/optimal-select> — 生成元素标识
 - https://github.com/rowthan/whats-element — 生成元素标识
-- <https://github.com/amwmedia/plop>
-- <https://github.com/Rob--W/cors-anywhere>
-- <https://github.com/JacksonTian/anywhere>
-- <https://github.com/Jxck/html2json>
-- <https://github.com/lukeed/sockette>
-- <https://github.com/NeXTs/Clusterize.js>
-- <https://github.com/acornjs/acorn>
-- <https://github.com/joshbuchea/HEAD>
-- <https://github.com/webpack/watchpack>
-- <https://github.com/webkul/micron>
-- <https://github.com/indutny/common-shake>
-- <https://github.com/AndrewRayCode/easing-utils>
-- <https://github.com/AlloyTeam/AlloyTouch>
-- https://github.com/AlloyTeam/AlloyFinger
+- [https://github.com/amwmedia/plop ](https://github.com/amwmedia/plop)创建模版
+- [https://github.com/Rob--W/cors-anywhere ](https://github.com/Rob--W/cors-anywhere)http代理
+- [https://github.com/JacksonTian/anywhere ](https://github.com/JacksonTian/anywhere)http代理
+- [https://github.com/Jxck/html2json ](https://github.com/Jxck/html2json)html转json
+- [https://github.com/lukeed/sockette ](https://github.com/lukeed/sockette)websocket
+- [https://github.com/NeXTs/Clusterize.js ](https://github.com/NeXTs/Clusterize.js) 无限滚动
+- [https://github.com/acornjs/acorn ](https://github.com/acornjs/acorn)ast
+- <https://github.com/joshbuchea/HEAD> html head
+- [https://github.com/webpack/watchpack ](https://github.com/webpack/watchpack)监听文件变化
+- <https://github.com/webkul/micron> 动画库
+- <https://github.com/indutny/common-shake> 无用代码删减
+- [https://github.com/AndrewRayCode/easing-utils ](https://github.com/AndrewRayCode/easing-utils)常用js动画函数
+- [https://github.com/AlloyTeam/AlloyTouch ](https://github.com/AlloyTeam/AlloyTouch)移动端触屏库
+- https://github.com/AlloyTeam/AlloyFinger 移动端触屏库
 
 12.electron
 
@@ -373,31 +400,30 @@
 - <https://github.com/rhardih/ekill>
 - https://github.com/google/tamperchrome
 
-15.MQTT
+16.MQTT iOT协议
 
 - [https://github.com/mcxiaoke/mqtt](https://github.com/james-cain/mqtt)
 - <https://github.com/mcollina/mosca>
 - <https://github.com/mcollina/aedes>
 
-16.nginx
+17.nginx
 
 - <https://github.com/trimstray/nginx-quick-reference>
 
-17.HTML标准
+18.HTML标准
 
 - 《whatwg/html》
 - https://github.com/w3c/web-performance
 - <https://tech.meituan.com/fe_tiny_spa.html>
 - <https://www.ampproject.org/zh_cn/docs/getting_started/visual_story>
 
-18.CSSTriggers/CSS参考手册
+19.CSSTriggers/CSS参考手册
 
 - <https://csstriggers.com/>
 - <http://css.doyoe.com/>
 - https://github.com/chokcoco/CSS-Inspiration
-- blob/master/Translations/Chinese/questions/css-questions.md
 
-19.PWA/workbox
+20.PWA/workbox
 
 - workbox
 
@@ -416,7 +442,7 @@
 - <https://developers.google.com/web/progressive-web-apps/desktop>
 - https://so-pwa.firebaseapp.com/
 
-20.性能优化处理
+21.性能优化处理
 
 - lighthouse
 - 《web性能权威指南》
@@ -466,7 +492,7 @@
 - https://github.com/mrdoob/stats.js
 - https://github.com/you-dont-need/You-Dont-Need-Momentjs
 
-21.Typescript
+22.Typescript
 
 - Typescript-Vue-Starter
 - <https://ts.xcatliu.com/>
@@ -480,7 +506,7 @@
 - https://github.com/ktsn/vuex-class/
 - https://github.com/jkchao/typescript-book-chinese
 
-22.IntersectionObserver、IntersectionObserverEntry
+23.IntersectionObserver、IntersectionObserverEntry
 
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver>
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback>
@@ -489,11 +515,11 @@
 - <https://github.com/russellgoldenberg/scrollama>
 - https://github.com/w3c/IntersectionObserver/tree/master/polyfill
 
-23.sticky
+24.sticky
 
 - <https://github.com/dollarshaveclub/stickybits>
 
-24.storage、vuex持久化
+25.storage、vuex持久化
 
 - <https://github.com/james-cain/irondb>
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API>
@@ -517,7 +543,7 @@
 - <https://github.com/robinvdvleuten/vuex-persistedstate>
 - https://github.com/amark/gun
 
-25.图片处理
+26.图片处理
 
 - <https://github.com/naptha/tesseract.js>
 - <https://www.zhangxinxu.com/wordpress/2018/05/canvas-png-transparent-background-detect/>
@@ -527,19 +553,19 @@
 - <https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement>
 - https://github.com/nimoat/photo-edit
 
-26.Vue长列表
+27.Vue长列表
 
 - vue-virtual-scroller
 - Clusterize.js
 - <https://github.com/valdrinkoshi/virtual-scroller>
 
-27.vue-hooks
+28.vue-hooks
 
 - <https://github.com/yyx990803/vue-hooks>
 - <https://mp.weixin.qq.com/s/CcV1BV0UWdv-Lw7csFpcEw>
 - <https://juejin.im/post/5bfa929551882524cb6f413b>
 
-28.WebWorker
+29.WebWorker
 
 - <https://github.com/mchaov/WebWorkers>
 - <https://github.com/developit/greenlet>
@@ -557,7 +583,7 @@
 - SharedWorker、SharedWorkerGlobalScope
 - <https://nodejs.org/dist/latest-v10.x/docs/api/worker_threads.html> — nodejs worker实现
 
-29.go
+30.go
 
 - <https://github.com/astaxie/beego>
 - <https://golang.org/>
@@ -565,16 +591,16 @@
 - <https://github.com/chai2010/advanced-go-programming-book>
 - <https://github.com/golang-china/gopl-zh>
 
-30.MutationObserver.js
+31.MutationObserver.js
 
-31.router（navaid）
+32.router（navaid）
 
 - https://github.com/kevindurb/router
 
-32.state（reworm）
+33.state（reworm）
 
-33.搜索引擎
+34.搜索引擎
 
 - https://github.com/olivernn/lunr.js
 
-34.GraphQL
+35.GraphQL

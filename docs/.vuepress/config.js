@@ -89,10 +89,12 @@ module.exports = {
           ]
         },
         {
-          title: 'Chromium',
+          title: '浏览器详解',
           collapsable: false,
           children: [
-            '/knowledge/Damn-hole-of-chromium.md'
+            '/knowledge/Damn-hole-of-chromium.md',
+            '/knowledge/Damn-hole-of-V8.md',
+            '/knowledge/Damn-hole-of-blink.md'
           ]
         },
         {
