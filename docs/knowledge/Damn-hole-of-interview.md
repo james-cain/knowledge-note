@@ -785,7 +785,7 @@ function new_instance_of(leftValue, rightValue) {
 
 引用一张关系图（经典图，引自网络）
 
-![prototype-and-proto](http://reyshieh.com/assets/prototype-and-proto.png)
+![prototype-and-proto](http://www.reyshieh.com/assets/prototype-and-proto.png)
 
 解释：
 
@@ -1147,7 +1147,7 @@ if (condition)
 	statement2]
 ```
 
-当JavaScript需要编写一条语句时，均可以写入一个表达式，这样的语句称为**表达式语句**，例如在`statement1`的地方写入一个`function`，这个function就称为`expression statement`，属于特殊的statement，这个function自然可以return一个值，同事也可以在内部产生一些`side effect`，不过如果我们重点放在`side effect`部分时，通常会返回`undefined`。
+当JavaScript需要编写一条语句时，均可以写入一个表达式，这样的语句称为**表达式语句**，例如在`statement1`的地方写入一个`function`，这个function就称为`expression statement`，属于特殊的statement，这个function自然可以return一个值，同时也可以在内部产生一些`side effect`，不过如果我们重点放在`side effect`部分时，通常会返回`undefined`。
 
 ```js
 function say() {
@@ -2032,13 +2032,24 @@ Person是构造函数，使用new创建一个实例对象person
 代码阐述
 
 ```js
-// let p = new Person()；
+// let p = new Person('reyshieh')；
 let p = (function() {
     let obj = {};
     obj.__proto__ = Person.prototype;
     //其他赋值语句 ...
     return obj;
 }());
+
+// new的运行过程
+var objectFactory = function() {
+    var obj = new Object(), // 从Object.Prototype上克隆一个空的对象
+    	Constructor = [].shift.call(arguments); // 取出外部传入的构造器，为Person
+    obj.__proto__ = Constructor.prototype; // 指向正确的原型
+    var ret = Constructor.apply(obj, arguments); // 借用外部传入的构造器给obj设置属性
+    return typeof ret === 'object' ? ret : obj; // 确保构造器总是会返回一个对象
+}
+
+var p = obejctFactory(Person, 'reyshieh'); // 该方法会和 new Person('reyshieh')返回一样的对象
 ```
 
 ### 继承多种方式
@@ -2116,6 +2127,35 @@ console.log(child2.colors); // ["red", "blue", "green"]
 
 ### 原型继承
 
+> JavaScript给对象提供了一个名为__ proto __ 的隐藏属性，某个对象的 __ proto __属性默认会指向它的构造器的原型对象，即{Constructor}.prototype
+>
+> var a = new Object();
+>
+> console.log(a.__ proto __ === Object.prototype); // true
+>
+> 实际上，__ proto __就是对象跟“对象构造器的原型”联系起来的纽带
+>
+> 继承总是发生在对象和对象之间，如
+>
+> ```js
+> var A = function() {};
+> A.prototype = { name: 'reyshieh' };
+> var B = function() {};
+> B.prototype = new A(); // 继承发生在对象和对象之间
+> // 上一句等价于B.prototype.__proto__ = A.prototype;
+> var b = new B();
+> console.log(b.name); // reyshieh
+> 
+> // 但如果A中有name，就不能等价于B.prototype.__proto__ = A.prototype，因为new A()不仅仅只是做构造器的原型绑定，还有做一些初始设置的操作
+> var A = function() { this.name = 'jamescain' };
+> A.prototype = { name: 'reyshieh' };
+> var B = function() {};
+> B.prototype = new A(); // 继承发生在对象和对象之间
+> // B.prototype.__proto__ = A.prototype; // 以下会输出reyshieh
+> var b = new B();
+> console.log(b.name); // jamescain
+> ```
+
 ####原型链继承
 
 ```js
@@ -2158,7 +2198,7 @@ Javascript是单线程语言，受限于需要和用户互动，以及操作DOM�
 
 除了主线程，还存在其他的线程，如：处理Ajax请求的线程、处理DOM事件的线程、定时器线程、读写文件的线程等
 
-![event-loop](http://www.reyshieh.com/assets/event-loop.png)
+![event-loop](http://reyshieh.com/assets/event-loop.png)
 
 异步执行的运行机制如下：
 
@@ -2972,7 +3012,7 @@ String.prototype.at() // 返回字符串给定位置的字符
 
 ### Unicode复合显示
 
-![Unicode-composite](http://www.reyshieh.com/assets/Unicode-composite.png)
+![Unicode-composite](http://reyshieh.com/assets/Unicode-composite.png)
 
 有些字符除了主体字符外，会和附加符号组合显示成一个码点，即两个码点表示一个字符
 
@@ -3001,7 +3041,7 @@ ES6提供了normalize方法，允许"Unicode正规化"，即两种方法转为�
 - 时间复杂度 - 算法执行所耗费的时间
 - 空间复杂度 - 运行完一个程序所需内存的大小
 
-![sort-algorithms](http://reyshieh.com/assets/sort-algorithms.png)
+![sort-algorithms](http://www.reyshieh.com/assets/sort-algorithms.png)
 
 ##### 冒泡排序(Bubble sort)
 

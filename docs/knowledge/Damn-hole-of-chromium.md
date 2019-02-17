@@ -51,7 +51,7 @@
 ![Chromium_application_layers.png](http://reyshieh.com/assets/Chromium_application_layers.png)
 
 - WebKit：Safari、Chromium和其他所有基于WebKit的浏览器共享的渲染引擎。WebKit Port是WebKit的一个部分，用来集成平台独立的系统服务，比如资源加载与图像。
-- WebKit glue：将WebKit的类型转为Chromium的类型。也就是**WebKit嵌入层**。
+- WebKit glue：将WebKit的类型转为Chromium的类型。也就是**WebKit嵌入层**。这里有两个browser: Chromium和test_shell(允许测试WebKit)
 - Renderer/Render host：**多进程嵌入层**。它代理通知，并跨过进程边界执行指令。
 - WebContents：一个可重用的组件，是内容模块的主类。易于嵌入，允许多进程将HTML绘制成View。
 - Browser：代表浏览器窗口，包含多个WebContents。
@@ -62,4 +62,14 @@
 WebKit用于布局web页面，主要从Apple中pull过来。WebKit主要由"WebCore"组成，代表了核心的布局功能，还有"JavaScriptCore"，用来运行JavaScript。但目前已被V8 JavaScript引擎代替了。
 
 ##### WebKit port
+
+WebKit port是我们所需的特定于平台的功能的实现，这些功能与独立于平台的WebCore代码交互。
+
+#### WebKit glue
+
+Chromium应用工程使用不同的类型，编码风格，以及代码布局和第三方的WebKit代码，glue使Google编码与类型为WebKit提供了更加方便的嵌入式API。glue对象通常与WebKit对象命名相似，但在开头会加上Web前缀。如WebCore::Frame变成了WebFrame。
+
+test_shell应用程序是用来测试WebKit port和glue的web浏览器。
+
+## 整体架构
 

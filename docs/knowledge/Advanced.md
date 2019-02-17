@@ -2,21 +2,17 @@
 
 ## 重点项
 
-**算法**
+**算法/数据结构/设计模式/高等数学**
 
 **浏览器原理/Blink/V8**
 
 **HTTP原理**
 
-**JS/WebAssembly**
+**JS/WebAssembly/nodejs/puppeteer/函数式编程**
 
 **视频/RTC/编解码/OpenGL**
 
 **C++**
-
-性能
-
-安全
 
 编译原理
 
@@ -24,7 +20,11 @@
 
 linux
 
-Flutter
+Flutter/Cordova
+
+性能
+
+安全
 
 ## 前端方向
 
@@ -179,6 +179,7 @@ Flutter
 - <https://ahangchen.gitbooks.io/chromium_doc_zh/content/zh/>
 - <https://www.chromium.org/developers/design-documents>
 - https://github.com/chromium/chromium
+- <https://juejin.im/post/5c09a80151882521c81168a2> Chrome浏览器调试工具学习
 
 - Blink
 
@@ -307,7 +308,6 @@ Flutter
 - https://github.com/firesunCN/BlueLotus_XSSReceiver
 - <https://github.com/Hacker0x01/hacker101>
 - <https://github.com/evilcos/xssor>
-- <https://github.com/zhansingsong/js-leakage-patterns>
 - <https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto>
 - <https://github.com/chriso/validator.js>
 - <https://github.com/infoslack/awesome-web-hacking>
@@ -352,6 +352,7 @@ Flutter
 - [https://github.com/AndrewRayCode/easing-utils ](https://github.com/AndrewRayCode/easing-utils)常用js动画函数
 - [https://github.com/AlloyTeam/AlloyTouch ](https://github.com/AlloyTeam/AlloyTouch)移动端触屏库
 - https://github.com/AlloyTeam/AlloyFinger 移动端触屏库
+- <https://github.com/zhansingsong/js-leakage-patterns> 内存泄漏分析
 
 12.electron
 
