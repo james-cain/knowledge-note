@@ -71,5 +71,37 @@ Chromium应用工程使用不同的类型，编码风格，以及代码布局和
 
 test_shell应用程序是用来测试WebKit port和glue的web浏览器。
 
+#### 渲染器进程
+
+![Renderingintherenderer.png](http://reyshieh.com/assets/Renderingintherenderer.png)
+
+Chromium的渲染器进程使用glue接口嵌入在WebKit port上。它不包含太多的代码：它的主要工作是作为渲染器端到浏览器的IPC通道。
+
+渲染器最重要的类为RenderView，代表一个网页。它处理与浏览器之间所有导航相关的命令。它驱动RenderWidget提供绘图和输入事件处理。RenderView与浏览器进程的通信通过全局的RenderProcess对象。
+
+##### 渲染器中的线程
+
+每个渲染器有两个线程。渲染器线程是主要对象(如RenderView和所有WebKit代码)运行的地方。当和浏览器通信时，消息首先被发送到主线程，然后主线程将消息分派给浏览器进程。除此之外，允许我们将消息从渲染器同步发送到浏览器，这只会发生在一小部分操作中，在这操作中，需要继续执行来自浏览器的结果。一个例子是在JavaScript请求时获取页面的cookie。渲染器线程将阻塞，主线程将对接收到的所有消息排队，直到找到正确的响应。在此期间接收到的任何消息随后都将发布到渲染器线程以进行正常处理。
+
+#### 浏览器进程
+
+![renderingbrowser.png ](http://reyshieh.com/assets/renderingbrowser.png)
+
+##### 底层浏览器进程对象
+
+所有与渲染器进程通信的IPC都是在浏览器的I/O线程中完成的。线程也处理所有的网络通信，以防止它干扰用户界面。
+
+当RenderProcessHost在主线程中被初始化，它将创建新的渲染器进程和一个ChannelProxy IPC对象，其中包含一个指向渲染器的命名管道。该对象运行在浏览器的I/O线程中，监听到渲染器的命名管道，并自动将所有消息转发回UI线程上的RenderProcessHost。在这个管道中安装一个ResourceMessageFilter，它将过滤掉某些可以直接在I/O线程中处理的消息，如网络请求。
+
+UI线程上的RenderProcessHost负责将所有特定于视图的消息发送到适当的RenderViewHost(它本身处理有限数量的非特定于视图的消息)。
+
+##### 上层浏览器进程对象
+
+特定于视图的消息来源于RenderViewHost，大部分的消息都在这被处理，剩下的会被转发到RenderWidgetHost基类。这两个对象与渲染器中的RenderView和RenderWidget一一映射。
+
+在RenderView/Widget上面的是WebContents对象，大部分的消息事实上都是作为对象的函数调用而结束。一个WebContents代表网页的内容。它是内容模块的顶级对象，负责在视图中显示web页面。
+
+WebContents对象包含在TabContentsWrapper中。负责标签页。
+
 ## 整体架构
 
