@@ -482,5 +482,42 @@ Windows沙箱是一种仅用户模式可用的沙箱。没有特殊的内核模�
 
 [Chromium浏览器安全架构](http://seclab.stanford.edu/websec/chromium/chromium-security-architecture.pdf)
 
-### 启动
+### 线程
 
+Chromium是多线程的。尽量的让UI能够快速响应，这意味着任何阻塞I/O或者其他昂贵的操作都不能阻塞UI线程。解决这个问题的做法是**在线程间传递消息作为通信的方式**。不鼓励使用功能锁和线程安全对象。相反的，对象只存在于单个线程中，通过消息的方式在线程之间传递消息，会在大多数跨进程请求间使用回调接口(由消息传递实现)。
+
+#### 术语
+
+- **线程不安全**（Thread-unsafe）：Chromium中的绝大多数类型在设计上都是线程不安全的。对这类类型/方法的访问必须同步，通常通过base::SequencedTaskRunner的访问进行排序(应该由SEQUENCE_CHECKER强制执行)或者通过低级同步处理(如锁，但更好的是序列)。
+- **线程仿射**（Thread-affine）: 此类类型/方法需要始终从相同的物理线程(即从相同的base::SingleThreadTaskRunner)访问，并且应该使用THREAD_CHECKER来验证它们。除了使用第三方API或具有线程仿射的叶子依赖项之外:在Chromium中，几乎没有理由使用线程仿射类型。注意，base::SingleThreadTaskRunner是- base::SequencedTaskRunner，因此线程仿射是线程不安全的子集。线程仿射有时也被称为线程敌对（Thread-hostile）。
+- **线程安全**（Thread-safe）：此类类型/方法可以被安全并行访问。
+- **线程兼容**（Thread-compatible）: 此类类型提供了对const方法的安全并发访问，但需要对非const(或混合const/非const访问)进行同步。Chromium不暴露读写锁;因此，这种方法的唯一用例是对象(通常是全局对象)，它们以线程安全的方式初始化一次(在单线程启动阶段或通过线程安全的静态局部初始化范式(如base::NoDestructor)进行延迟)，并在不可变之后永久初始化。
+- **不可变的**（Immutable）: 线程兼容类型的子集，在构造之后不能修改。
+- **序列友好型**（Sequence-friendly）: 此类类型/方法是线程不安全类型，支持从base::SequencedTaskRunner调用。理想情况下，这是所有线程不安全类型的情况，但是遗留代码有时会进行过分热心的检查，在仅仅是线程不安全的场景中强制执行线程相关性。
+
+#### 线程
+
+每个Chrome进程都有：
+
+- 一个主线程
+  - 浏览器进程中：用于更新UI
+  - 渲染进程中：运行大部分的Blink
+- 一个IO线程
+  - 浏览器进程中：处理IPC和网络请求
+  - 渲染进程中：处理IPC
+- 一些特殊目的的线程
+  - file_thread: 一个用于文件操作的普通线程。当想要阻塞文件系统的操作(例如，为某种文件类型请求icon，或者向磁盘写下载文件)，分配给这个线程
+  - db_thread: 用于数据库操作的线程。例如，cookie服务在这个线程上执行sqlite操作
+- 通用线程池
+
+大多数线程都有一个循环，从队列获取任务并运行它们(队列可以在多个线程之间共享)。
+
+若干个组件有它们自己的线程：
+
+- History：历史记录服务有它自己的线程。之后可能会和db_thread合并。需要保证按照正确的顺序发生。例如，cookie在历史记录前会先被加载，因为首次加载需要cookie，历史记录初始化需要很长时间，会阻塞cookie的加载
+- Proxy services
+- Automation proxy: 这个线程用于和驱动应用的UI测试程序通信
+
+## UI Framework
+
+### UI开发实践
