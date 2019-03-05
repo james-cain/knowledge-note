@@ -560,4 +560,144 @@ Windows为构建用户界面提供了非常原始的工具。该系统提供了�
 
 ### 本地控件
 
-尽管视图为自定义布局、渲染和事件处理提供了便利，但在许多情况下，我们还是希望使用宿主操作系统(Windows)提供的控件。
+尽管视图为自定义布局、渲染和事件处理提供了便利，但在许多情况下，我们还是希望使用宿主操作系统(Windows)提供的控件。这是因为这些小部件已经具有许多理想的属性:反映最新和最好的主机操作系统的系统本机外观(例如，在Windows Vista上使用与Windows XP相同的Win32 API，本机按钮在高亮显示时接收辉光动画)、对可访问性的处理、焦点等。使用视图和Skia实现新控件是可能的，但是复制所有这些功能需要很长时间，而且我们还必须为每个新的操作系统版本更新它。因此，对于UI中不需要特别定制外观的部分，我们回到了原生控件。
+
+#### 历史抽象
+
+以前，原生控件(NativeControls)的使用如下：
+
+![NativeControlHistoric2.png](http://reyshieh.com/assets/NativeControlHistoric2.png)
+
+基类NativeControl是所有NativeControl(如按钮、复选框、树视图等)的根。这个视图子类是特定于windows的，它有一个子视图HWNDView。这个HWNDView承载一个HWND (NativeControlContainer)，它是实际的本地控件HWND的父控件。父节点负责接收从子节点HWND(例如WM_COMMAND, WM_NOTIFY等)发送的消息，并将这些消息转发回NativeControl。这种带有附加HWND的结构被认为是必要的，因为分类的Windows公共控件通过向父窗口发送消息向客户机应用程序发送消息通知。当Chrome有几种不同的ViewContainer/根小部件类型时，在NativeControl级别封装这种处理是有意义的。如今，只需要关心一种根HWND类型——WidgetWin，因此让它接收控制通知并将其转发回NativeControl比携带所有这些额外的HWND更有意义。
+
+这种抽象的另一个问题是，Chrome有很多不同类型的按钮。因为NativeButton没有与其他按钮基类(BaseButton)共享基类，所以大多数API最终都略有不同。最好共享一个基类，然后在派生类中实现任何特定于本机按钮的方法。然而，由于这种结构，这是不可能的。
+
+最后要注意的一点是:一些NativeControl子类(如复选框)是系统本机控件和视图组件的组合。要在复选框的文本标签后面获得适当的透明呈现，复选框有两个子视图——一个是仅呈现复选标记部分的本机windows控件的子视图，另一个是呈现文本的视图::label子视图。这种结构必须适应本设计的任何拟议修改。
+
+#### 提议设计
+
+![NativeControl.png](http://reyshieh.com/assets/NativeControl.png)
+
+NativeButton是从按钮基类派生出来的类，就像其他按钮类一样(例如TextButton等)。它覆盖了需要与本机控件交互的各种方法，例如使按钮在对话框中显示为默认按钮等。有趣的是NativeButton本身就是跨平台代码。实现本机控件的特定于平台的详细信息封装在与平台无关的NativeControl接口后面，在本例中，该接口由一个新类NativeControlWin实现，它是HWNDView的子类，托管实际的Windows本机控件。我们通过在附加的HWND上存储一个指向NativeControlWin的指针来避免这里有一个额外的HWND，并且让WidgetWin中的消息处理程序尝试将消息直接转发给NativeControlWin，如果它找到这样的关联的话。NativeButton实现一个侦听器接口，该接口接收来自NativeControl实现的关于从操作系统接收的消息的高级通知。
+
+由于NativeControl是接口而不是类，因此它必须为要作为NativeButton、复选框或其他视图的子视图提供GetView访问器。
+
+通过这种方式，NativeButton可以与其他按钮类型共享基类。对于其他本机控件，也可以存在类似的关系，例如滚动条、树视图等。
+
+### Chromium Graphics // Chrome GPU
+
+#### 概述
+
+##### 技术内容
+
+开始于[GPU accelerated compositing in Chrome(Chrome的GPU加速合成)](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome)概述，包括了原始的非加速路径概述
+
+查看功能开发的当前状态，可以看[GPU architecture roadmap](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/gpu-architecture-roadmap)
+
+##### 演示文稿
+
+- List of [Googler-only presentation slides and videos](http://go/gpu-tech-talk-schedule)
+
+- [Life of a Pixel](http://bit.ly/chromium-loap)
+- [Surface Aggregation](https://docs.google.com/presentation/d/14FlKgkh0-4VvM5vLeCV8OTA7YoBasWlwKIJyNnUJltM) [[googler-only video](https://drive.google.com/file/d/0BwPS_JpKyELWTURjMS13dUJxR1k/view)]
+- [History of the World of Chrome Graphics part 1](https://docs.google.com/presentation/d/1dCfAxJYIgYlnC49SH3hIeyQVIlkbPPb9QRsKfp-6P0g/edit) [[googler-only video](https://drive.google.com/file/d/0BwPS_JpKyELWUUhvUHctT1QzNDA/view)]
+- [Blink Property Trees](https://docs.google.com/presentation/d/1ak7YVrJITGXxqQ7tyRbwOuXB1dsLJlfpgC4wP7lykeo) [[googler-only video](https://drive.google.com/file/d/0BwPS_JpKyELWUE1lRWxPXzQtdE0/view)]
+- [Compositor Property Trees](https://docs.google.com/presentation/d/1V7gCqKR-edNdRDv0bDnJa_uEs6iARAU2h5WhgxHyejQ) [[googler-only video](https://drive.google.com/file/d/0BwPS_JpKyELWTTJ5aWNfenhPQ0k/view)]
+- [The compositing stack after Surfaces/Display compositor](https://docs.google.com/presentation/d/1ou3qdnFhKdjR6gKZgDwx3YHDwVUF7y8eoqM3rhErMMQ/edit#slide=id.p)
+- [Tile Management](https://docs.google.com/presentation/d/1gBYqSX92dMHa_UFek3F0D0g4-dt8xvRq0hIifC2IS7Y/edit#slide=id.p) [[googler-only video](https://drive.google.com/a/google.com/file/d/0B5eS4VhPbSBzUmZ2UVNZTm1wZmM/view?usp=sharing) and [notes](https://docs.google.com/document/d/16vWNxkI54E3swcq1IQvDR-LsPLXfhtlNh6Rbkbro2fI/edit#heading=h.57tap1txoipr)]
+- [Impl-side painting](https://docs.google.com/a/chromium.org/presentation/d/1nPEC4YRz-V1m_TsGB0pK3mZMRMVvHD1JXsHGr8I3Hvc) [[googler-only video](http://go/implside-painting-talk-video)]
+- [TaskGraphRunner and raster task scheduling](https://docs.google.com/presentation/d/1dsPwTzJKaLPfd1wMwRkXz--5PqCa43n5L2_EhJ-Qb-g/edit#slide=id.g4dfba32bf_097) [[googler-only video](https://drive.google.com/a/google.com/file/d/0BwPS_JpKyELWYXBVUDNfa2VLa3c/view) and [notes](https://docs.google.com/document/d/16vWNxkI54E3swcq1IQvDR-LsPLXfhtlNh6Rbkbro2fI/edit#heading=h.e1xk0xwayrkn)]
+- [Checkerboards: Scheduling Compositor Input and Output](https://docs.google.com/presentation/u/2/d/1IaMfmCDspmpQwA1IGF6MP6XjuXwb2daxopAUwvgDOxM/edit#slide=id.p) [[googler-only video](https://drive.google.com/a/google.com/file/d/0BwPS_JpKyELWQzlIckRsTFRHRDg/view) and [notes](https://docs.google.com/document/d/16vWNxkI54E3swcq1IQvDR-LsPLXfhtlNh6Rbkbro2fI/edit#heading=h.wjy9kg2zq8rl)]
+- [Compositor and Display Scheduling](https://docs.google.com/presentation/d/1FpTy5DpIGKt8r2t785y6yrHETkg8v7JfJ26zUxaNDUg/edit?usp=sharing) [[googler-only video](https://drive.google.com/a/google.com/file/d/0B_got0batQ0TUDJsUFRPeWVOcEk/view?usp=sharing) and [notes](https://docs.google.com/document/d/16vWNxkI54E3swcq1IQvDR-LsPLXfhtlNh6Rbkbro2fI/edit#heading=h.klitp6r86anv)]
+- [Gpu Scheduler](https://docs.google.com/a/chromium.org/presentation/d/1QPUu0Nb2_nANLE8VApdMzzrifA6iG_BDG9Cd2L4BFV8/edit?usp=sharing) [[googler-only video](https://drive.google.com/a/google.com/file/d/0BwPS_JpKyELWb0k0NmNURU1uclk/view) and [notes](https://docs.google.com/document/d/16vWNxkI54E3swcq1IQvDR-LsPLXfhtlNh6Rbkbro2fI/edit#heading=h.lnpsv7tfpoew)]
+- [Image Decoding](https://docs.google.com/document/d/13UsG1IVEIqRg5yaQ9ZmF7dXQprI6KCrSy82CK7Xwfkw/edit) [[googler-only video](https://drive.google.com/a/google.com/file/d/0BwPS_JpKyELWMEdQdlE2M29JUm8/view) and [slides](https://docs.google.com/presentation/d/1qLgH323yzj5yb9S7mJVmTxXtzsLyYjwgyeuJrgfLDgw/edit#slide=id.p)]
+- [Native one-copy texture uploads for ChromeOS](https://01.org/blogs/2016/native-one-copy-texture-uploads-for-chrome-OS)
+- [Tessellated GPU Path Rendering](https://docs.google.com/presentation/d/1tyroXtcGwOvU1LPFxVU-vtBiDkLTcxZ62v2S9wqZ77w/edit#slide=id.p)
+- [Tessellating Edge-AA GPU Path Rendering](https://docs.google.com/presentation/d/1DpM5QS6kCkIqQN034Zz6oFm201Gd2wvq6Z30QfWNhcA/edit?usp=sharing)
+- [WebGL 2.0 Updates](https://www.khronos.org/webgl/wiki/Presentations#September_2016_WebGL_Meetups) [[googler-only presentation](https://docs.google.com/a/google.com/presentation/d/1_V_vDLTTpx7XX7_P2J-Nehy-adhdRJItiN-4Pm9QGHQ/edit?usp=sharing)]
+- [Background on color spaces](https://docs.google.com/presentation/d/1c4zjeWDEpHG36gCPZmXjCH7Rlp5_N9p1qyHRIe0AALY/edit?usp=sharing) [[googler-only video](https://drive.google.com/file/d/0B6kh5pYRi1dKWGMtaFU2MkZIVjQ/view?usp=sharing)]
+- [Global Memory Coordination](https://docs.google.com/presentation/d/1H2TN3DMRBlOWrpMqqkWlYeKuc7ecGH4-3tr4zqH5LdQ/edit?usp=sharing)
+- [The RenderSurfaceLayerList data structure](https://docs.google.com/a/chromium.org/presentation/d/11f3A8cdfSSKmYazetxy9ochHuHqsmSEk3RW3DTYBDIc)
+- [OOP-D: Out-of-Process Display Compositor Talk](https://docs.google.com/presentation/d/1PfaIDZ5oJTEuAEJR8aj-B9QC-r1Pht_jQXwjifM1jQI/edit?usp=sharing)
+- [OOP-D: Out-of-Process Display Compositor Design Doc](https://docs.google.com/document/d/1tFdX9StXn9do31hddfLuZd0KJ_dBFgtYmxgvGKxd0rY/edit?usp=sharing)
+
+##### 主要设计文档
+
+- [Graphics and Skia](https://www.chromium.org/developers/design-documents/graphics-and-skia)
+- [Aura](https://www.chromium.org/developers/design-documents/aura-desktop-window-manager)
+- [Threaded compositing](http://dev.chromium.org/developers/design-documents/compositor-thread-architecture)
+- [Impl-side painting](http://www.chromium.org/developers/design-documents/impl-side-painting)
+- [Zero-input latency scheduler](https://docs.google.com/a/chromium.org/document/d/1LUFA8MDpJcDHE0_L2EHvrcwqOMJhzl5dqb0AlBSqHOY/edit)
+- [GPU Accelerated Rasterization](https://docs.google.com/a/chromium.org/document/d/1Vi1WNJmAneu1IrVygX7Zd1fV7S_2wzWuGTcgGmZVRyE/edit#heading=h.7g13ueq2lwwd)
+- [Property trees](https://docs.google.com/document/d/1VWjdq8hCJlNbak5ZyAsnLh-0--Hl_wht0xyuagODl8A/edit#heading=h.tf9gh6ldf3qj)
+- Motivation for property trees: [Compositing Corner Cases](https://docs.google.com/document/d/1hajeBrjGuVG8EtDwyiQnV36oP_1mC8DO8N_7e61MiiE/edit#)
+- [Unified BeginFrame scheduling](https://docs.google.com/document/d/13xtO-_NSSnNZRRS1Xq3xGNKZawKc8HQxOid5boBUyX8/edit#)
+
+##### 更多设计文档
+
+- [Video playback and the compositor](https://www.chromium.org/developers/design-documents/video-playback-and-compositor)
+
+- [RenderText and Chrome UI text drawing](https://www.chromium.org/developers/design-documents/rendertext)
+
+- [GPU Command Buffer](https://www.chromium.org/developers/design-documents/gpu-command-buffer)
+
+- [GPU Program Caching](https://docs.google.com/a/chromium.org/document/d/1Vceem-nF4TCICoeGSh7OMXxfGuJEJYblGXRgN9V9hcE/edit)
+
+- [Surfaces](https://www.chromium.org/developers/design-documents/chromium-graphics/surfaces) (New delegated rendering)
+
+- [Ubercompositor](https://docs.google.com/a/chromium.org/document/d/1ziMZtS5Hf8azogi2VjSE6XPaMwivZSyXAIIp0GgInNA/edit) (Old delegated rendering)
+
+- [16 bpp texture support](https://docs.google.com/a/chromium.org/document/d/1TebAdNKbTUIe3-46RaEggT2dwGIdphOjyjm5AIGdhNw/edit)
+
+- [Image Filters](https://www.chromium.org/developers/design-documents/image-filters)
+
+- [Synchronous compositing for Android WebView](https://docs.google.com/a/chromium.org/document/d/1jw9Xyuovw32NR73u6uQEVk7-fxNtpS7QWAoDMJhF5W8/edit)
+
+- [Partial Texture Updates](https://docs.google.com/a/chromium.org/document/d/1yvSVVgJ8bFyWjXGHpb8wDNtGdx8W5co7W0gbzjdFRj0)
+
+- [ANGLE WebGL 2 Planning](https://docs.google.com/document/d/1MkJxb1bB9_WNeCViVZ4bf4opCH_NhqFn049xGq6lf4Q/edit?usp=sharing)
+
+- [Asynchronous GPU Rasterization](https://docs.google.com/a/chromium.org/document/d/1MAUJrOGMuD56hV4JhKp5bTgDv3d9rXRbAftviF8ZmWE/edit?usp=sharing) (Client side of GPU scheduling)
+
+- [Color correct rendering support](https://docs.google.com/document/d/1BMyXXTmiAragmt5ukVBIIOLDthd7JcJBgGMt-PwuTHY/edit#)
+
+- [PictureImageLayer and Directly Composited Images](https://docs.google.com/document/d/1sMGAkWhhZT8AfXCAfv4RjT1QxQnkpYKNFW6VXHB7kKk/edit#)
+
+- [Discardable GPU Memory](https://docs.google.com/document/d/1LoNv02sntMa7PPK-TZTuMgc3UuWFqKpOdEqtFvcm_QE/edit?usp=sharing)
+
+- [GL Command Buffer Extensions](https://chromium.googlesource.com/chromium/src/gpu/+/master/GLES2/extensions/CHROMIUM)
+
+- - [Mailbox Extension](https://chromium.googlesource.com/chromium/src/gpu/+/master/GLES2/extensions/CHROMIUM/CHROMIUM_texture_mailbox.txt)
+
+- [cc::Surfaces for Videos](https://docs.google.com/document/d/1tIWUfys0fH2L7h1uH8r53uIrjQg1Ee15ttTMlE0X2Ow/edit#)
+
+- [Command Buffer Multi Flush](https://docs.google.com/document/d/1mvX3VGIrlWtIP8ZBJdzPp9Nf-7TfnrN-cyPy6angVU4/edit)
+
+- [Lightweight GPU Sync Points (SyncTokens)](https://docs.google.com/document/d/1XwBYFuTcINI84ShNvqifkPREs3sw5NdaKzKqDDxyeHk/edit)
+
+- [Gpu Service Scheduler](https://docs.google.com/document/d/1AdgzXmJuTNM2g4dWfHwhlFhs5KVe733_6aRXqIhX43w/edit#heading=h.o5mpe5uzxfv0)
+
+- [Expected Power Savings from Partial Tree Updates](https://drive.google.com/file/d/1KyGuiUm5jm50zsAKmaxAHcFclfbOhHVd/view)
+
+##### 其他一些有趣的链接
+
+- [How to get Ganesh / GPU Rasterization](https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization)
+
+- [Rendering Architecture Diagrams](https://www.chromium.org/developers/design-documents/rendering-architecture-diagrams)
+
+- Blink:
+
+- - [Presentation about Blink / Compositor interaction](https://docs.google.com/a/chromium.org/presentation/d/1dDE5u76ZBIKmsqkWi2apx3BqV8HOcNf4xxBdyNywZR8/edit#slide=id.p)
+  - [Blink phases of rendering](https://docs.google.com/a/chromium.org/document/d/1jxbw-g65ox8BVtPUZajcTvzqNcm5fFnxdi4wbKq-QlY/edit#heading=h.rxj0p5cgef9y)
+  - [How repaint works](https://docs.google.com/a/chromium.org/document/d/1jxbw-g65ox8BVtPUZajcTvzqNcm5fFnxdi4wbKq-QlY/edit#heading=h.rxj0p5cgef9y)
+
+- [Presentation on ANGLE architecture and plans](https://docs.google.com/presentation/d/1CucIsdGVDmdTWRUbg68IxLE5jXwCb2y1E9YVhQo0thg/pub?start=false&loop=false)
+
+- [Debugging Chromium with NVIDIA's Nsight](https://www.chromium.org/developers/design-documents/chromium-graphics/debugging-with-nsight)
+
+- [Chromium WebView graphics slides](https://docs.google.com/a/chromium.org/presentation/d/1pYAGn2AYJ7neFDlDZ9DmLHpwMIskzMUXjFXYR7yfUko/edit)
+
+- [GPU Triage Guide](https://docs.google.com/document/d/1Sr1rUl2a5_RBCkLtxfx4qE-xUIJfYraISdSz_I6Ft38/edit#heading=h.vo10gbuchnj4)
+
+#### Chrome的GPU加速合成
+
