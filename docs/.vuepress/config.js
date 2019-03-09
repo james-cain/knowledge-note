@@ -80,15 +80,6 @@ module.exports = {
           ]
         },
         {
-          title: '源码分析',
-          collapsable: false,
-          children: [
-            '/knowledge/Damn-hole-of-mvvm.md',
-            '/knowledge/Damn-hole-of-React.md',
-            '/knowledge/Damn-hole-of-Vue.md'
-          ]
-        },
-        {
           title: '浏览器详解',
           collapsable: false,
           children: [
