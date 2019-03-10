@@ -3043,5 +3043,5 @@ ES6提供了normalize方法，允许"Unicode正规化"，即两种方法转为�
 
 ![sort-algorithms](http://www.reyshieh.com/assets/sort-algorithms.png)
 
-##### 冒泡排序(Bubble sort)
+
 
