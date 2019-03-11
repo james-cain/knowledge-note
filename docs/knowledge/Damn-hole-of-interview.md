@@ -2341,7 +2341,7 @@ click promise mutate click promise mutate timeout timeout
 - GUI渲染线程
   - 负责渲染浏览器界面，解析HTML、CSS，构建DOM树和RenderObject树，布局和绘制等
   - 当界面需要重绘(Repaint)或由某种操作引发回流(reflow)时，线程就会执行
-  - **GUI渲染线程与JS引擎线程是互斥的。**当JS引起执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行
+  - **GUI渲染线程与JS引擎线程是互斥的。**当JS引擎执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行
 - JS引擎线程
   - JS内核，负责处理JavaScript脚本程序（如V8引擎）
   - JS引擎线程负责解析JavaScript脚本，运行代码
