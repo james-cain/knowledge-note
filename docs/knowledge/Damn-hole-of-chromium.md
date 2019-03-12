@@ -701,3 +701,43 @@ NativeButton是从按钮基类派生出来的类，就像其他按钮类一样(�
 
 #### Chrome的GPU加速合成
 
+##### 为什么用硬件合成？
+
+传统来说，web浏览器完全依赖于CPU渲染web页面内容。即使是最小的设备，功能强大的gpu也是不可或缺的一部分，人们的注意力被转移到寻找一种方式，能更有效地利用这种底层硬件来取得更好的展示和节省电。使用GPU合成web页面的内容产生了显著的提速。
+
+硬件合成的好处有三个:
+
+- 在绘图和涉及大量像素的合成操作中，GPU上的页面层合成可以比CPU(在速度和功耗方面)获得更高的效率。硬件是专门为这些类型的工作负载设计的。
+
+- 对于GPU上已经存在的内容(如加速视频、Canvas2D或WebGL)，不需要昂贵的回读。
+
+- CPU和GPU之间的并行性，可以同时运行，创建一个高效的图形流水线。
+
+##### 第一部分 Blink渲染基础
+
+为了理解GPU加速在Chrome中的工作原理，首先理解Blink渲染页面的基本构造块是很重要的。
+
+###### 节点和DOM树(Nodes and the DOM tree)
+
+在Blink中，web页面的内容被当做节点对象树(称为DOM树)存储。页面中的每个HTML元素以及元素之间的文本是以节点的形式关联的。DOM树的顶级节点总是Document节点。
+
+###### 从节点到RenderObjects(From Nodes to RenderObjects)
+
+生成可视化输出的DOM树中的每个节点都有一个对应的RenderObject。RenderObjects被存储在一个平行的树结构，称为Render树。RenderObject知道如何在显示面上绘制节点的内容。它通过向GraphicsContext发出必要的draw调用来实现这一点。GraphicsContext负责将像素写入位图，最终显示在屏幕上。在Chrome中，GraphicsContext封装了我们的2D绘图库Skia。
+
+传统上，大多数GraphicsContext调用都变成对SkCanvas或SkPlatformCanvas的调用，即立即绘制成软件位图。但是为了将绘画移出主线程，现在将这些命令记录到SkPicture中。SkPicture是一个可序列化的数据结构，它可以捕获并稍后重播命令，类似于显示列表。
+
+###### 从RenderObejcts到RenderLayers
+
+每个RenderObject都直接或间接地通过一个祖先RenderObject与一个RenderLayer相关联。
+
+共享相同坐标空间的RenderObjects(例如，受到相同CSS转换的影响)通常属于相同的RenderLayer。渲染层的存在使页面的元素以正确的顺序组合，以正确的方式显示重叠的内容、半透明的元素等。有许多条件将触发为特定RenderObejct创建新的RenderLayer，如RenderBoxModelObject::requiresLayer()中定义的那样，并覆盖一些派生类。RenderObject的常见情况，保证创建RenderLayer:
+
+- 它是页面的根对象
+- 它具有显式的CSS位置属性(相对、绝对或转换)
+- 它是透明的
+- 是否有溢出、alpha掩码或反射
+- 有一个CSS过滤器
+- 对应于具有3D (WebGL)上下文或加速2D上下文的<canvas>元素
+- 对应于一个<video>元素
+
