@@ -723,15 +723,15 @@ NativeButton是从按钮基类派生出来的类，就像其他按钮类一样(�
 
 ###### 从节点到RenderObjects(From Nodes to RenderObjects)
 
-生成可视化输出的DOM树中的每个节点都有一个对应的RenderObject。RenderObjects被存储在一个平行的树结构，称为Render树。RenderObject知道如何在显示面上绘制节点的内容。它通过向GraphicsContext发出必要的draw调用来实现这一点。GraphicsContext负责将像素写入位图，最终显示在屏幕上。在Chrome中，GraphicsContext封装了我们的2D绘图库Skia。
+生成可视化输出的DOM树中的每个节点都有一个对应的RenderObject。RenderObjects被存储在一个平行的树结构，称为Render树。RenderObject知道如何在显示面上绘制节点的内容。它通过向GraphicsContext发出必要的draw调用来实现这一点。**GraphicsContext负责将像素写入位图，最终显示在屏幕上**。在Chrome中，GraphicsContext封装了我们的2D绘图库Skia。
 
-传统上，大多数GraphicsContext调用都变成对SkCanvas或SkPlatformCanvas的调用，即立即绘制成软件位图。但是为了将绘画移出主线程，现在将这些命令记录到SkPicture中。SkPicture是一个可序列化的数据结构，它可以捕获并稍后重播命令，类似于显示列表。
+传统上，大多数GraphicsContext调用都变成对SkCanvas或SkPlatformCanvas的调用，即立即绘制成软件位图。但是为了将绘画移出主线程，现在将这些命令记录到SkPicture中。**SkPicture是一个可序列化的数据结构，它可以捕获并稍后重播命令，类似于显示列表。**
 
 ###### 从RenderObejcts到RenderLayers
 
 每个RenderObject都直接或间接地通过一个祖先RenderObject与一个RenderLayer相关联。
 
-共享相同坐标空间的RenderObjects(例如，受到相同CSS转换的影响)通常属于相同的RenderLayer。渲染层的存在使页面的元素以正确的顺序组合，以正确的方式显示重叠的内容、半透明的元素等。有许多条件将触发为特定RenderObejct创建新的RenderLayer，如RenderBoxModelObject::requiresLayer()中定义的那样，并覆盖一些派生类。RenderObject的常见情况，保证创建RenderLayer:
+共享相同坐标空间的RenderObjects(例如，受到相同CSS转换的影响)通常属于相同的RenderLayer。RenderLayers的存在使页面的元素以正确的顺序组合，以正确的方式显示重叠的内容、半透明的元素等。有许多条件将触发为特定RenderObejct创建新的RenderLayer，如RenderBoxModelObject::requiresLayer()中定义的那样，并覆盖一些派生类。以下的RenderObject，会创建RenderLayer:
 
 - 它是页面的根对象
 - 它具有显式的CSS位置属性(相对、绝对或转换)
@@ -740,4 +740,143 @@ NativeButton是从按钮基类派生出来的类，就像其他按钮类一样(�
 - 有一个CSS过滤器
 - 对应于具有3D (WebGL)上下文或加速2D上下文的<canvas>元素
 - 对应于一个<video>元素
+
+RenderLayers也是一个树层次结构。根节点与页面的根元素对应的渲染层，每个节点的后代都是包含在父层中的可视层。每个RenderLayer的子层都保持为两个排序的列表，都是按升序排序的。
+
+每个 RenderLayer 对象可以想象成图像中一个图层，各个图层叠加构成了一个图像。浏览器会遍历 **RenderLayer tree**，再遍历从属这个 RenderLayer 的 RenderObject，RenderObject 对象存储有绘制信息，并进行绘制。RenderLayer 和 RenderObject 共同决定了最终呈现的网页内容，**RenderLayer tree** 决定了网页的绘制的层次顺序，而从属于 RenderLayer 的 RenderObject 决定了该 RenderLayer 的内容。
+
+###### Rendering(渲染方式)
+
+浏览器在完成构建RenderLayer tree之后，会使用图形库将其构建的渲染模型绘制出来，分为两个阶段：
+
+- 绘制：将从属每个 RenderLayer 图层上的 RenderObject 绘制在其 RenderLayer 上。即绘制（Paint）或者光栅化（Rasterization），将一些绘图指令转换成真正的像素颜色值。
+- 合成(compositing)(**GPU**)：将各个 RenderLayer 图层合并成到一个位图(Bitmap)中。同时还可能包括位移（Translation），缩放（Scale），旋转（Rotation），Alpha 合成等操作。
+
+###### 渲染方式
+
+- **软件渲染方式**：使用 **CPU** 来绘制每个 RenderLayer 图层的内容(RenderObject)到一个位图，即一块 **CPU 使用的内存空间**。绘制每一层的时候都会使用该位图，区别在于绘制的位置可能不一样，绘制顺序按照从后到前。**因此软件渲染机制是没有合成阶段的**。
+- 硬件加速渲染的合成化渲染方式：使用 GPU 来绘制所有合成层，并使用 GPU 硬件来加速合成。
+- 软件绘图的合成化渲染方式： 某些合成层使用 CPU 来绘图，另外一些使用 GPU 来绘制。对于使用 CPU 来绘制的图层，该层的绘制结果会先保存在 CPU 内存中，之后会被传输到 GPU 内存中，然后再使用 GPU 来完成合成工作。
+
+第二种和第三种渲染方式，都是使用了合成化渲染技术，合成工作也都是由 GPU 来做。对于常见的 2D 绘图操作，使用 GPU 来绘图不一定比使用 CPU 绘图在性能上有优势，例如绘制文字、点、线等。原因是 CPU 的使用缓冲机制有效减少了重复绘制的开销而且不需要考虑与 GPU 并行。另外，GPU 的内存资源相对 CPU 的内存资源来说比较紧张，而且网页的分层使得 GPU 的内存使用相对比较多。
+
+###### 从RenderLayers到GraphicsLayers
+
+软件渲染而言，到 **RenderLayer tree** 就结束了。但是，对于硬件渲染来说，在 **RenderLayer tree** 之后，浏览器渲染引擎为硬件渲染提供了更多的内部结构来支持这个机制。
+
+为了使用合成器，一些RenderLayers有它们自己的GraphicsLayer(如果他是一个合成层)。
+
+每个GraphicsLayer都有一个GraphicsContext，用于将相关的渲染层绘制到其中。在随后的合成过程中，合成程序最终负责将GraphicsContexts的位图输出组合到一个最终的屏幕图像中。
+
+在当前的Blink实现中，以下的情况会使RenderLayer带有自己的合成层：
+
+- 图层带有3D或透视 tranform CSS属性
+- 图层使用加速video解码的video元素
+- 图层使用带有3D上下文或加速2D上下文的canvas元素
+- 图层使用合成插件
+- 图层使用css 动画进行不透明度，或者使用webkit动画 tranform
+- 图层使用加速CSS过滤器
+
+![GraphicsLayer-composition.png](http://reyshieh.com/assets/GraphicsLayer-composition.png)
+
+不过并不是拥有独立缓存的 RenderLayer 越多越好，太多拥有独立缓存的 RenderLayer 会带来一些严重的副作用:
+
+- 它大大增加了内存的开销，这点在移动设备上的影响更大，甚至导致浏览器在一些内存较少的移动设备上无法很好地支持图层合成加速；
+- 它加大了合成的时间开销，导致合成性能的下降，而合成性能跟网页滚动/缩放操作的流畅度又息息相关，最终导致网页滚动/缩放的流畅度下降，让用户觉得操作不够流畅。
+
+###### 从GraphicsLayers到WebLayers再到CC layers
+
+###### 图层压缩
+
+为了防止“层爆炸”，当许多元素位于具有直接合成原因的层的顶部时，Blink将多个渲染层重叠在一个直接合成原因的渲染层上，并将它们“挤压”到一个单独的后备存储中。这可以防止重叠引起的层爆炸。
+
+###### 总结
+
+- DOM树，基本的保留模型
+- RenderObject树，与DOM是的可见节点有1: 1的映射RenderObjects知道如何绘制响应的DOM节点
+- RenderLayer树，由RenderObject树上的renderObject组成。映射为多对一，因为每个renderObject要么与它的renderLayer关联，要么与它的第一个祖先的renderLayer关联
+- GraphicsLayers树，映射GraphicsLayers一堆多renderLayers
+
+![the_compositing_forest.png](http://reyshieh.com/assets/the_compositing_forest.png)
+
+##### 第二部分 合成器
+
+Chrome的合成器是管理GraphicsLayer树和协调帧生命周期的软件库
+
+###### 介绍合成器
+
+渲染分为两个阶段:首先是**绘制**，然后是**合成**。这允许合成器在每个合成层的基础上执行额外的工作。例如，在合成层的位图之前，合成器负责对每个合成层的位图应用必要的转换(由层的CSS转换属性指定)。此外，由于图层的绘制与合成是解耦的，因此禁用其中一个图层只会重新绘制该图层的内容并重新合成。
+
+###### GPU到哪里？
+
+那么GPU是如何发挥作用的呢?合成程序可以使用GPU来执行它的绘图步骤。这与旧的软件渲染模型有很大的不同，在旧的软件渲染模型中，渲染器进程(通过IPC和共享内存)将带有页面内容的位图传递给浏览器进程进行显示。
+
+在硬件加速架构中，通过调用特定平台的3D api (Windows上的D3D;GL其他地方)。**渲染器的合成器本质上是使用GPU将页面的矩形区域(即所有的合成层，根据层树的转换层次结构相对于视图的位置)绘制成一个位图**，这就是最终的页面图像。
+
+###### GPU进程
+
+受其沙箱的限制，Renderer进程(包含Blink和cc的实例)不能直接调用OS (GL / D3D)提供的3D api。因此，我们使用一个单独的进程来访问设备。我们称这个进程为GPU进程。**GPU进程是专门设计用来从渲染器沙箱或更严格的本地客户端“监狱”中访问系统的3D api**。它通过一个客户端-服务器模型工作如下:
+
+- 客户机(在渲染程序中或在NaCl模块中运行的代码)不直接发出对系统api的调用，而是将它们序列化，并将它们放在驻留在它自己和服务器进程之间共享的内存中的环形缓冲区(ring buffer)(**命令缓冲区, command buffer**)中。
+
+- 服务器(GPU进程运行在一个限制较少的沙箱中，允许访问平台的3D api)从共享内存中获取序列化命令，解析它们并执行适当的图形调用。
+
+![the_gpu_process.png](http://reyshieh.com/assets/the_gpu_process.png)
+
+- 命令缓冲区(The Command Buffer)
+
+  GPU进程接受的命令与GL ES 2.0 API的模式非常接近(例如，有一个与glClear对应的命令，一个与glDrawArrays对应的命令，等等)。由于大多数GL调用没有返回值，客户机和服务器可以异步工作，这使得性能开销相当低。客户机和服务器之间的任何必要同步，例如客户机通知服务器有额外的工作要做，都是通过IPC机制处理的。
+
+  从客户机的角度看，应用程序可以选择直接将命令写入命令缓冲区，或者通过我们提供的客户机端库使用GL ES 2.0 API，该库在幕后处理序列化。为了方便起见，合成程序和WebGL目前都使用GL ES客户端库。在服务器端，通过命令缓冲区接收的命令被转换为通过ANGLE调用桌面OpenGL或Direct3D。
+
+- 资源共享&同步
+
+  除了为命令缓冲区提供存储，Chrome还使用共享内存在客户机和服务器之间传递更大的资源，比如纹理的位图、顶点数组等。
+
+  另一个结构称为邮箱(mailbox)，它提供了在命令缓冲区之间共享纹理并管理它们的生存期的方法。邮箱是一个简单的字符串标识符，它可以附加(使用)到任何命令缓冲区的本地纹理id，然后通过该纹理id别名访问。以这种方式附加的每个纹理id都持有底层真实纹理上的一个引用，一旦通过删除本地纹理id释放了所有引用，真实纹理也将被销毁。
+
+  同步点(sync point)用于在希望通过邮箱共享纹理的命令缓冲区之间提供非阻塞同步。在命令缓冲区a上插入一个同步点，然后在命令缓冲区B上的同步点上“等待”，可以确保在B上插入的命令不会在a插入的命令同步点之前运行。
+
+- 命令缓冲区多路复用
+
+  目前Chrome为每个浏览器实例使用一个GPU进程，服务于所有渲染器进程和插件进程的请求。GPU进程可以在多个命令缓冲区之间进行多路复用，每个命令缓冲区都与自己的渲染上下文相关联。
+
+  每个渲染器可以有多个GL源，例如WebGL Canvas元素可以直接创建GL命令流。直接在GPU上创建内容的层的合成是这样工作的:它们不是直接渲染回缓冲，而是渲染到一个纹理(使用帧缓冲对象)，当渲染GraphicsLayer时，合成上下文会捕获并使用这个纹理。需要注意的是，为了让合成程序的GL上下文能够访问屏幕外的GL上下文生成的纹理(即用于其他GraphicsLayers的FBOs的GL上下文)，GPU进程使用的所有GL上下文都被创建为共享资源。
+
+  ![HandlingMultipleContexts.png](http://reyshieh.com/assets/HandlingMultipleContexts.png)
+
+- 总结
+
+  GPU进程架构提供几个好处包括：
+
+  - 安全性:大部分渲染逻辑仍然在沙箱渲染器进程中，对平台3D api的访问仅限于GPU进程
+  - 健壮性:GPU进程崩溃(例如，由于错误的驱动程序)不会导致浏览器宕机
+  - 一致性:将OpenGL ES 2.0作为浏览器的呈现API进行标准化，无论使用什么平台，都允许在Chrome的所有OS端口上使用一个更容易维护的代码库
+  - 并行性:渲染器可以快速向命令缓冲区发出命令，然后返回cpu密集型的渲染活动，让GPU进程来处理它们。我们可以很好地利用这两个进程在多核机器上，以及同时GPU和CPU多亏了这个管道
+
+在解释完这些之后，我们可以回到解释GL命令和资源是如何由渲染程序的合成程序生成的
+
+##### 第三部分 线程合成器(The Threaded Compositor)
+
+合成程序是在GL ES 2.0客户端库之上实现的，该客户端库代理对GPU进程的图形调用。当一个页面通过合成程序渲染时，它的所有像素都通过GPU进程直接绘制到窗口的回缓冲(window's backbuffer)中(记住，drawing != painting)。
+
+合成程序的体系结构随着时间的推移而发展:最初它位于渲染程序的主线程中，然后被移动到它自己的线程中(所谓的合成程序线程(compositor thread))，然后在绘制发生时承担额外的协调职责(所谓的隐含绘画)。
+
+从理论上讲，**线程合成器的基本任务是从主线程中获取足够的信息，以独立地生成帧**，以响应未来的用户输入，即使主线程很忙，不能请求额外的数据。在实践中，这目前意味着它为视图当前位置周围区域内的层区域复制cc层树(cc layer tree)和SkPicture录制(SkPicture recordings)。
+
+###### 记录：从Blink角度绘图
+
+感兴趣的区域是视图周围的区域，为其记录SkPictures。当DOM发生变化时，例如，由于某些元素的样式与以前的主线程框架不同，并且已经失效，Blink将感兴趣区域中失效层的区域绘制到skpicture支持的GraphicsContext中。这实际上并不生成新的像素，而是**生成这些新像素所需的Skia命令的显示列表**。这个显示列表稍后将用于根据合成器的判断生成新的像素。
+
+###### 提交: 切换到合成线程
+
+**线程合成程序的关键属性是对主线程状态副本的操作，因此它可以生成帧，而不需要向主线程请求任何东西**。因此，线程合成程序有两个方面:主线程方面和“impl”方面，后者是合成程序线程的一半。主线程有一个LayerTreeHost，它是层树的副本，而impl线程有一个LayerTreeHostImpl，它是层树的副本。自始至终都遵循类似的命名约定。
+
+**从概念上讲，这两层树是完全独立的，并且可以使用compositor (impl)线程的副本来生成帧，而不需要与主线程进行任何交互**。这意味着主线程可能忙于运行JavaScript，而合成程序仍然可以在GPU上重新绘制之前提交的内容，而不会中断。
+
+为了产生感兴趣的新帧，合成线程需要知道它应该如何修改它的状态(例如，更新层转换以响应滚动之类的事件)。因此，一些输入事件(如滚动)首先从浏览器进程转发到合成程序，然后从合成程序转发到渲染程序主线程。通过控制输入和输出，线程合成程序可以保证对用户输入的视觉响应。除了滚动之外，合成程序还可以执行任何其他页面更新，而不需要Blink来重新绘制任何内容。到目前为止，CSS动画和CSS过滤器是其他主要的合成驱动的页面更新。
+
+这两层树由一系列称为commit的消息保持同步，这些消息由合成程序的调度程序(在cc/trees/thread_proxy.cc中)进行中介。提交将主线程的状态传输给合成线程(包括更新的层树、任何新的SkPicture录制，等等)，阻塞主线程，这样就可以进行同步。这是主线程参与特定帧生产的最后一步。
+
+在它自己的线程中运行合成程序允许合成程序的层树副本更新层转换层次结构而不涉及主线程，但是主线程最终也需要例如滚动偏移量信息(例如JavaScript可以知道viewport滚动到哪里)。因此，提交还负责将任何复合线程层树更新应用于主线程的树和其他一些任务。
 
