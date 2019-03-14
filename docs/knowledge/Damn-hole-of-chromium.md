@@ -926,5 +926,13 @@ Impl-side painting的一个显著优点是，合成程序可以在任意比例�
 
 #### GPU架构路线图
 
+最终目标架构包括：
 
-
+- 在渲染器中强制合成模式(在所有页面上加速合成，[硬件加速概述文档](http://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome))
+- 一个浏览器合成程序(通常是Aura，不过我们可能在Mac和Android WebView上做一些稍微不同的事情(下面称为“Purlieus”作为占位符)([Aura的设计文档](https://www.chromium.org/developers/design-documents/aura-desktop-window-manager))
+- Ubercompositor([设计文档](https://docs.google.com/a/chromium.org/document/d/1ziMZtS5Hf8azogi2VjSE6XPaMwivZSyXAIIp0GgInNA/edit))
+- 在浏览器和渲染器中进行线程合成([设计文档](http://dev.chromium.org/developers/design-documents/compositor-thread-architecture))
+- 渲染器和浏览器中的隐含绘画([设计文档](http://www.chromium.org/developers/design-documents/impl-side-painting))
+- BrowserInputController和我们的零输入延迟调度程序([设计文档](https://docs.google.com/document/d/1LUFA8MDpJcDHE0_L2EHvrcwqOMJhzl5dqb0AlBSqHOY/edit))
+- 一个用于合成程序的软件后端，当我们没有一个可行的GPU时使用(黑名单或GPU进程反复崩溃)。这是我们打算无限期支持的惟一配置变量。(包含在[ubercomp设计文档中](https://docs.google.com/document/d/1ziMZtS5Hf8azogi2VjSE6XPaMwivZSyXAIIp0GgInNA/edit))
+- 混合加速栅格化，在可能的情况下，使用GPU([设计文档](https://docs.google.com/document/d/1Vi1WNJmAneu1IrVygX7Zd1fV7S_2wzWuGTcgGmZVRyE/edit#heading=h.7g13ueq2lwwd))对层内容进行栅格化
