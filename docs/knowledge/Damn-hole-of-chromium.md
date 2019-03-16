@@ -723,9 +723,9 @@ NativeButton是从按钮基类派生出来的类，就像其他按钮类一样(�
 
 ###### 从节点到RenderObjects(From Nodes to RenderObjects)
 
-生成可视化输出的DOM树中的每个节点都有一个对应的RenderObject。RenderObjects被存储在一个平行的树结构，称为Render树。RenderObject知道如何在显示面上绘制节点的内容。它通过向GraphicsContext发出必要的draw调用来实现这一点。**GraphicsContext负责将像素写入位图，最终显示在屏幕上**。在Chrome中，GraphicsContext封装了我们的2D绘图库Skia。
+生成可视化输出的DOM树中的每个节点都有一个对应的RenderObject。RenderObjects被存储在一个平行的树结构，称为Render树。RenderObject知道如何在显示面上绘制节点的内容。它通过向GraphicsContext发出必要的draw调用来实现这一点。**GraphicsContext负责将像素写入位图，最终显示在屏幕上**。**在Chrome中，GraphicsContext封装了我们的2D绘图库Skia。**
 
-传统上，大多数GraphicsContext调用都变成对SkCanvas或SkPlatformCanvas的调用，即立即绘制成软件位图。但是为了将绘画移出主线程，现在将这些命令记录到SkPicture中。**SkPicture是一个可序列化的数据结构，它可以捕获并稍后重播命令，类似于显示列表。**
+**传统上，大多数GraphicsContext调用都变成对SkCanvas或SkPlatformCanvas的调用，即立即绘制成软件位图**。但是**为了将绘画移出主线程，现在将这些命令记录到SkPicture中。SkPicture是一个可序列化的数据结构，它可以捕获并稍后重播命令，类似于显示列表。**
 
 ###### 从RenderObejcts到RenderLayers
 
@@ -929,10 +929,27 @@ Impl-side painting的一个显著优点是，合成程序可以在任意比例�
 最终目标架构包括：
 
 - 在渲染器中强制合成模式(在所有页面上加速合成，[硬件加速概述文档](http://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome))
-- 一个浏览器合成程序(通常是Aura，不过我们可能在Mac和Android WebView上做一些稍微不同的事情(下面称为“Purlieus”作为占位符)([Aura的设计文档](https://www.chromium.org/developers/design-documents/aura-desktop-window-manager))
+- 一个浏览器合成程序(通常是**Aura**，不过我们可能在Mac和Android WebView上做一些稍微不同的事情(下面称为“Purlieus”作为占位符)([Aura的设计文档](https://www.chromium.org/developers/design-documents/aura-desktop-window-manager))
 - Ubercompositor([设计文档](https://docs.google.com/a/chromium.org/document/d/1ziMZtS5Hf8azogi2VjSE6XPaMwivZSyXAIIp0GgInNA/edit))
 - 在浏览器和渲染器中进行线程合成([设计文档](http://dev.chromium.org/developers/design-documents/compositor-thread-architecture))
 - 渲染器和浏览器中的隐含绘画([设计文档](http://www.chromium.org/developers/design-documents/impl-side-painting))
 - BrowserInputController和我们的零输入延迟调度程序([设计文档](https://docs.google.com/document/d/1LUFA8MDpJcDHE0_L2EHvrcwqOMJhzl5dqb0AlBSqHOY/edit))
 - 一个用于合成程序的软件后端，当我们没有一个可行的GPU时使用(黑名单或GPU进程反复崩溃)。这是我们打算无限期支持的惟一配置变量。(包含在[ubercomp设计文档中](https://docs.google.com/document/d/1ziMZtS5Hf8azogi2VjSE6XPaMwivZSyXAIIp0GgInNA/edit))
 - 混合加速栅格化，在可能的情况下，使用GPU([设计文档](https://docs.google.com/document/d/1Vi1WNJmAneu1IrVygX7Zd1fV7S_2wzWuGTcgGmZVRyE/edit#heading=h.7g13ueq2lwwd))对层内容进行栅格化
+
+#### Graphics和Skia
+
+Chrome使用Skia对几乎所有的制图操作(graphics operations)，包括文本渲染(text rendering)。在大多数情况下，GDI仅用于原生主题渲染；新的应该使用Skia。
+
+##### 为什么用Skia？
+
+- GDI对于SVG、Canvas和我们考虑的一些复杂UI来说功能还不够全面。
+- Skia是内部的，可以根据我们的需要进行修改。
+- Skia已经有了一个高质量的Webkit/Canvas端口。
+- GDI+不再由微软开发，在大多数操作上，至少在XP上，它比Skia慢。在Vista上，似乎至少有一些GDI+操作是硬件加速的，但是软件Skia通常足够快来满足我们的需求。
+- GDI+文本渲染与GDI文本渲染有不可接受的不同，并且启动速度较慢。
+
+#### GPU命令缓冲区
+
+GPU命令缓冲系统是Chrome与GPU或OpenGL ES(或通过角度模拟的OpenGL ES)对话的方式。它被设计成具有一个API，该API模拟OpenGL ES 2.0 API，执行该API的限制，并处理驱动程序和平台中的不兼容性。
+
