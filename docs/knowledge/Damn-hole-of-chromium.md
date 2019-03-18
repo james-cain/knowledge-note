@@ -764,7 +764,7 @@ RenderLayers也是一个树层次结构。根节点与页面的根元素对应�
 
 软件渲染而言，到 **RenderLayer tree** 就结束了。但是，对于硬件渲染来说，在 **RenderLayer tree** 之后，浏览器渲染引擎为硬件渲染提供了更多的内部结构来支持这个机制。
 
-**为了使用合成器，一些RenderLayers有它们自己的GraphicsLayer**(如果他是一个合成层)。
+**为了使用合成器，一些RenderLayers有它们自己的GraphicsLayer**(如果他是一个合成层(compositing layer))。
 
 每个GraphicsLayer都有一个GraphicsContext，用于将相关的渲染层绘制到其中。在随后的合成过程中，合成程序最终负责将GraphicsContexts的位图输出组合到一个最终的屏幕图像中。
 
@@ -793,13 +793,13 @@ RenderLayers也是一个树层次结构。根节点与页面的根元素对应�
 ###### 总结
 
 - DOM树，基本的保留模型
-- RenderObject树，与DOM是的可见节点有1: 1的映射RenderObjects知道如何绘制响应的DOM节点
+- RenderObject树，与DOM树的可见节点有1: 1的映射RenderObjects知道如何绘制响应的DOM节点
 - RenderLayer树，由RenderObject树上的renderObject组成。映射为多对一，因为每个renderObject要么与它的renderLayer关联，要么与它的第一个祖先的renderLayer关联
 - GraphicsLayers树，映射GraphicsLayers一对多renderLayers
 
 ![the_compositing_forest.png](http://reyshieh.com/assets/the_compositing_forest.png)
 
-##### 第二部分 合成器
+##### 第二部分 合成器(compositor)
 
 Chrome的合成器是管理GraphicsLayer树和协调帧生命周期的软件库
 
@@ -811,7 +811,7 @@ Chrome的合成器是管理GraphicsLayer树和协调帧生命周期的软件库
 
 那么GPU是如何发挥作用的呢?合成程序可以使用GPU来执行它的绘图步骤。这与旧的软件渲染模型有很大的不同，在旧的软件渲染模型中，渲染器进程(通过IPC和共享内存)将带有页面内容的位图传递给浏览器进程进行显示。
 
-在硬件加速架构中，通过调用特定平台的3D api (Windows上的D3D;GL其他地方)。**渲染器的合成器本质上是使用GPU将页面的矩形区域(即所有的合成层，根据层树的转换层次结构相对于视图的位置)绘制成一个位图**，这就是最终的页面图像。
+在硬件加速架构中，通过调用特定平台的3D api (Windows上的D3D;GL其他地方)。**渲染器的合成器本质上是使用GPU将页面的矩形区域(即所有的合成层(compositor layer)，根据层树的转换层次结构相对于视图的位置)绘制成一个位图**，这就是最终的页面图像。
 
 ###### GPU进程
 
@@ -860,13 +860,17 @@ Chrome的合成器是管理GraphicsLayer树和协调帧生命周期的软件库
 
 合成程序是在GL ES 2.0客户端库之上实现的，该客户端库代理对GPU进程的图形调用。当一个页面通过合成程序渲染时，它的所有像素都通过GPU进程直接绘制到窗口的回缓冲(window's backbuffer)中(记住，drawing != painting)。
 
-合成程序的体系结构随着时间的推移而发展:最初它位于渲染程序的主线程中，然后被移动到它自己的线程中(所谓的合成程序线程(compositor thread))，然后在绘制发生时承担额外的协调职责(所谓的隐含绘画)。
+合成程序的体系结构随着时间的推移而发展:最初它位于渲染程序的主线程中，然后被移动到它自己的线程中(所谓的合成程序线程(compositor thread))，然后在绘制发生时承担额外的协调职责(所谓的隐含绘画(impl-side))。
 
-从理论上讲，**线程合成器的基本任务是从主线程中获取足够的信息，以独立地生成帧**，以响应未来的用户输入，即使主线程很忙，不能请求额外的数据。在实践中，这目前意味着它为视图当前位置周围区域内的层区域复制cc层树(cc layer tree)和SkPicture录制(SkPicture recordings)。
+从理论上讲，**线程合成器的基本任务是从主线程中获取足够的信息，以独立地生成帧**，以响应未来的用户输入，即使主线程很忙，不能请求额外的数据。**在实践中，这目前意味着它为视图当前位置周围区域内的层区域复制cc层树(cc layer tree)和SkPicture录制(SkPicture recordings)。**
 
 ###### 记录：从Blink角度绘图
 
-感兴趣的区域是视图周围的区域，为其记录SkPictures。当DOM发生变化时，例如，由于某些元素的样式与以前的主线程框架不同，并且已经失效，Blink将感兴趣区域中失效层的区域绘制到skpicture支持的GraphicsContext中。这实际上并不生成新的像素，而是**生成这些新像素所需的Skia命令的显示列表**。这个显示列表稍后将用于根据合成器的判断生成新的像素。
+感兴趣的区域是视图周围的区域，为其记录SkPictures。当DOM发生变化时，例如，由于某些元素的样式与以前的主线程框架不同，并且已经失效，**Blink将感兴趣区域中失效层的区域绘制到skpicture支持的GraphicsContext中**。这实际上并不生成新的像素，而是**生成这些新像素所需的Skia命令的显示列表**。这个显示列表稍后将用于根据合成器的判断生成新的像素。
+
+![GraphicsContext_skpicture2.png](http://reyshieh.com/assets/GraphicsContext_skpicture.png)
+
+
 
 ###### 提交: 切换到合成线程
 
@@ -951,13 +955,13 @@ Chrome使用Skia对几乎所有的制图操作(graphics operations)，包括文�
 
 #### GPU命令缓冲区
 
-GPU命令缓冲系统是Chrome与GPU或OpenGL ES(或通过角度模拟的OpenGL ES)对话的方式。它被设计成具有一个API，该API模拟OpenGL ES 2.0 API，执行该API的限制，并处理驱动程序和平台中的不兼容性。
+**GPU命令缓冲系统是Chrome与GPU或OpenGL ES(或通过角度模拟的OpenGL ES)对话的方式**。它被设计成具有一个API，该API模拟OpenGL ES 2.0 API，执行该API的限制，并处理驱动程序和平台中的不兼容性。
 
 ##### 目标
 
 - 命令缓冲系统具有安全性。操作系统中的图形系统存在巨大的安全漏洞
 - 跨系统兼容性
-- 加速。速度是选择命令缓冲区实现的原因。客户端可以非常快速地编写命令，而不需要与服务进行多少通信或根本不需要通信，并且只需偶尔告诉服务它已经编写了更多的命令。例如，另一个实现可以为每个OpenGL ES 2.0函数使用单独的IPC，但这可能太慢了。命令缓冲区获得了另一个速度提升，因为它有效地并行化了对OS图形API的调用。像glUniform或glDrawArrays这样的调用可能是一个非常昂贵的调用，但是由于命令缓冲区的存在，客户机只需要向命令缓冲区写入几个字节就可以了。GPU进程在另一个进程上调用真正的OpenGL函数，有效地使程序多核
+- 加速。**速度是选择命令缓冲区实现的原因。客户端可以非常快速地编写命令，而不需要与服务进行多少通信或根本不需要通信，并且只需偶尔告诉服务它已经编写了更多的命令**。例如，另一个实现可以为每个OpenGL ES 2.0函数使用单独的IPC，但这可能太慢了。命令缓冲区获得了另一个速度提升，因为它有效地并行化了对OS图形API的调用。像glUniform或glDrawArrays这样的调用可能是一个非常昂贵的调用，但是由于命令缓冲区的存在，客户机只需要向命令缓冲区写入几个字节就可以了。GPU进程在另一个进程上调用真正的OpenGL函数，有效地使程序多核
 
 ##### 实现
 
@@ -1026,4 +1030,6 @@ LayerChromium树的用户可以向树中添加动画。我们可以在impl树上
 #### 视频回放和合成器
 
 Chromium合成程序支持视频回放，支持将工作转移到GPU，并在主线程被阻塞时显示视频帧。Chromium中有一些不同的媒体引擎实现，但它们与组合器的交互方式类似。
+
+## 网络栈
 
