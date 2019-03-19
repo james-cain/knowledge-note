@@ -1612,7 +1612,176 @@ HTTP/1.0 200 Connection established
 Proxy-agent: Netscape-Proxy/1.1
 ```
 
+### 实体和编码
 
+为了更好的描述http所传输数据的类型、大小、有效性等，http协议应该为主体提供以下描述信息：
+
+1. 可以被正确的识别（通过Content-Type首部说明媒体格式），以便接收端能够识别并正确处理内容
+2. 是最新的（通过实体验证码和缓存过期控制）
+3. 符合用户的需要（基于Accept系列的内容协商首部）
+4. 在网络上可以快速有效地传输（通过范围请求、差异编码以及其他数据压缩方法）
+5. 完整到达、未被篡改（通过传输编码首部和Content-MD5校验和首部）
+
+HTTP1.1定义了基本实体首部字段有12个：
+
+1. Content-Type:实体中所承载对象的类型
+2. Content-Length:所传送实体主体的长度或大小，（注意：**如果主体采取了内容编码进行压缩，那么它所指的是压缩后的长度或大小**，此首部是描述报文主体结束的关键，尤其在持久连接时对多个报文进行正确分段）
+3. Content-Language:与所传送对象最相配的人类语言
+4. Content-Encoding:对象数据所做的任意变换（比如，压缩）
+5. Content-Location:一个备用位置，请求时可通过它来获得对象
+6. Content-Range:如果这是部分实体，这个首部说明它是整体的那个部分
+7. Content-MD5:实体主体内容的校验和
+8. Last-Modified:所传输内容在服务器上创建或最后修改的日期时间
+9. Expires:实体主句将要失效的日期时间
+10. Allow:改资源所允许的各种请求方法，例如，GET和HEAD
+11. ETag:这份文档特定实例的唯一验证码，ETag首部没有正式定义为实体首部，但它对许多涉及实体的操作来说，都是一个重要的首部
+12. Cache-Control:指出应该如何缓存该文档。和ETag首部类似，Cache-Control首部没有正式定义为实体首部
+
+#### Content-Length: 实体的大小
+
+Content-Length首部指示出报文中实体主体的字节大小。这个大小是包含了所有内容编码的。**对文本文件进行gzip压缩的话，Content-Length首部就是压缩后的大小，而不是 原始大小。**
+
+除非使用了分块编码，否则Content-Length首部就是带有实体主体的报文必须使用的。使用Content-Length首部是为了能够检测出服务器奔溃而导致的报文截尾，并对共享持久连接的多个报文进行正确分段。
+
+##### 检测截尾
+
+没有Content-Length，客户端无法区分到底是报文结束时正常的连接关闭还是报文传输中由于服务器崩溃而导致的连接关闭。通过Content-Length可以检测报文截尾。
+
+如果缓存服务器收到被截尾的报文却没有识别出截尾的话，它可能会存储不完整的内容并多次使用它来提供服务。缓存代理服务器通常不会为没有显式Content-Length首部的HTTP主体做缓存，以此来减小缓存已截尾报文的风险。
+
+##### Content-Length与持久连接
+
+Content-Length首部对于持久连接是必不可少的。客户端通过Content-Length首部就可以知道报文在何处结束，下一条报文从何处开始。
+
+但采用分块编码(chunked encoding)，使用持久连接可以没有Content-Length首部。
+
+##### 确定实体主体长度的规则
+
+- 如果特定的HTTP报文类型中不允许带有主体，那么就忽略Content-Length首部。常见情况有：1XX、204以及304响应，还有HEAD方法的响应
+- 如果报文中含有描述传输编码的Transfer-Encoding首部，那么实体就应由一个称为“零字节块”的特殊模式结束
+- 如果报文中，有Content-Length首部而无Transfer-Encoding首部，那么Content-Length就是描述首部的长度。如果有Content-Length首部，同时也有Transfer-Encoding首部，那么就必须忽略Content-Length,因为传输编码会改变实体主体的表示和传输方式（因此可能就会改变传输的字节数）
+- 如果报文使用了multipart/byteranges(多部分/字节范围)媒体类型，且无Content-Length首部，那么报文长度有报文去自定界
+- 如果以上规则都不匹配，实体的长度就是关闭连接时所得到的的主体的长度。这个值实际上由服务器关闭连接得到。客户端关闭连接将使服务器无法响应
+
+#### 实体摘要
+
+为检测实体主体的数据是否被不经意地修改，发送方可以在生成初始的主体时，生成一个数据的校验和，这样接收方就可以通过检查这个校验和来捕获所有以外的实体修改。
+
+服务器使用Content-MD5首部发送对实体主体运行MD5算法的结果。中间代理和缓存不应当修改或添加这个首部。
+
+#### 媒体类型和字符集
+
+Content-Type首部字段说明了实体主体的MIME类型。
+
+MIME类型由一个主媒体类型(比如，text、image或audio等)后面跟一条斜线以及一个子类型组成，子类型用于进一步描述媒体类型。
+
+Content-Type首部说明的是原始实体主体的媒体类型。如果实体经过内容编码的话，Content-Type首部说明的仍是编码之前的实体主体的类型。
+
+##### 文本的字符编码
+
+Content-Type首部还可以使用可选参数来进一步说明内容的类型。charset参数就是例子。说明把实体中的比特转换为文本文件中的字符的方法：
+
+```
+Content-Type: text/html; charset=iso-8859-4
+```
+
+##### 多部分媒体类型
+
+MIME中的multipart包含多个报文，它们何在一起作为单一的复杂报文发送。
+
+- 多部分表格提交
+
+  使用Content-Type: multipart/form-data或Content-Type: multipart/mixed首部以及多部分主体来发送这种请求
+
+  ```
+  Content-Type: multipart/form-data; boundary=AaB03x
+  ```
+
+  boundary说明分隔主体中不同部分所用的字符串
+
+- 多部分范围响应
+
+  使用Content-Type: multipart/byteranges首部和带有不同范围的多部分主体
+
+  响应中用Content-Range做区分多部分
+
+  ```
+  Content-Range: bytes 0-174/1441
+  ```
+
+#### 内容编码
+
+过程：
+
+1. 生成原始响应报文，有Content-Type和Content-Length首部。
+2. 编码服务器对报文进行编码，编码之后同样拥有Content-Type和Content-Length首部,但是Content-Length可能不同（比如主体被压缩了），同时增加了Content-Encoding首部，这样接收端就知道怎样去解码了。
+3. 接收端解码，得到原始报文
+
+ Content-Type首部可以且还应出现在报文中。说明了实体的原始格式，一旦实体被解码，要显示的时候，可能还是需要该信息才行。
+
+编码类型有
+
+- gzip - 实体采用GNU zip编码
+- compress - 实体采用Unix的文件压缩程序
+- deflate - 实体是用zlib的格式压缩的
+- identify - 表明没有对实体进行编码
+
+##### Accept-Encoding首部
+
+为了避免服务器使用客户端不支持的编码方式，客户端可以把自己支持的内容编码方式列表放在请求的Accept-Encoding首部里发出去。
+
+#### 传输编码和分块编码
+
+经过内容编码的报文，只是对报文的实体部分进行了编码。而**对于经过传输编码的报文来说，编码作用在整个报文上，报文自身的结构发生了改变。**
+
+HTTP协议定义了Transfer-Encoding(响应)和TE(请求)两个首部俩描述和控制传输编码
+
+- Transfer-Encoding - 告知接收方为了可靠地传输报文，已经对其进行了何种编码
+- TE - 告知服务器可以使用哪些传输编码扩展
+
+```
+// 请求
+GET /new_product.html HTTP/1.1
+Host: www.joes-hardware.com
+User-Agent: Mozilla/4.61
+TE: trailers, chunked
+
+// 响应
+HTTP/1.1 200 OK
+Transfer-Encoding: chunked
+Server: Apache/3.0
+```
+
+最新的HTTP规范只定义了一种传输编码，就是分块编码。
+
+##### 分块编码
+
+分块编码把报文分隔为若干个大小已知的块。块之间是紧挨着发送的，这样就不需要再发送之前知道整个报文的大小了。
+
+分块编码主体是动态创建的，服务器可以缓冲它的一部分，发送其大小和相应的块，然后再主体发送完之前重复这个过程。**服务器可以用大小为0的块作为主体结束的信号**，这样就可以继续保持连接，为下一个相应做准备。
+
+每个分块包含一个长度值和该分块的数据。**长度值是十六进制形式并将CRLF与数据分隔开**。
+
+客户端可以发送分块的数据给服务器。若服务器不支持分块编码，可以用411 Length Required响应来拒绝分块请求的准备。
+
+**拖挂(trailer)**
+
+客户端的TE首部中说明可以接受拖挂的话，就可以在分块的报文最后加上拖挂。
+
+```
+// 响应参数中包括Trailer
+Trailer: Content-MD5<CR><LF>
+
+// 在实体的最后一块后加上拖挂
+0<CR><LF>
+Content-MD5: xxxxxxxxx<CR><LF>
+```
+
+除了Transfer-Encoding、Trailer以及Content-Length首部之外，其他首部都可以作为拖挂发送
+
+内容编码和传输编码是可以同时使用的。
+
+如果服务器收到无法理解的经过传输编码的报文，它应当用501 Unimplemented状态码来回复。
 
 ## SPDY/HTTP2.0
 
