@@ -1033,3 +1033,66 @@ Chromium合成程序支持视频回放，支持将工作转移到GPU，并在主
 
 ## 网络栈
 
+网络堆栈是一个主要用于获取资源的单线程跨平台库。它的主要接口是URLRequest和URLRequestContext。**URLRequest，顾名思义，表示对URL的请求**。**URLRequestContext包含实现URL请求所需的所有关联上下文，如cookie、主机解析器、代理解析器、缓存等**。**许多URLRequest对象可能共享相同的URLRequestContext**。大多数net对象都不是线程安全的，尽管磁盘缓存可以使用专用线程，而且一些组件(主机解析、证书验证等)可以使用未连接的工作线程。由于它主要在单个网络线程上运行，所以不允许阻塞网络线程上的任何操作。因此，我们使用异步回调的非阻塞操作(通常是CompletionCallback)。网络堆栈代码还将大多数操作记录到NetLog中，这允许使用者将这些操作记录在内存中，并以用户友好的格式呈现，以便进行调试。
+
+Chromium开发者写这个网络栈是为了：
+
+- 允许对跨平台抽象进行编码
+- 提供比高级系统网络库(如WinHTTP或WinINET)更大的控制能力
+  - 避免系统库中可能存在的bug
+  - 为性能优化提供更大的机会
+
+#### 代码布局
+
+- net/base - 抓取网络工具包，如主机解析，cookie，网络变化检测，SSL
+- net/disk_cache -  [Web资源缓存](https://www.chromium.org/developers/design-documents/network-stack/disk-cache)
+
+- net/ftp - [FTP](http://en.wikipedia.org/wiki/File_Transfer_Protocol) 实现。 编码主要基于旧的HTTP实现。
+- net/http - [HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) 实现。
+- net/ocsp - 在不使用系统库或系统不提供OCSP实现的情况下实现[OCSP](http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol)。目前只包含一个基于NSS的实现。
+- net/proxy_resolution - 代理 ([SOCKS](http://en.wikipedia.org/wiki/SOCKS) and HTTP)配置, 解决, 脚本获取, etc.
+- net/quic - [QUIC](https://www.chromium.org/quic) 实现
+- net/socket - [TCP](http://en.wikipedia.org/wiki/Transmission_Control_Protocol), "SSL sockets", 和 socket pools套接字跨平台实现 
+- net/socket_stream - socket streams for WebSockets.
+- net/spdy - HTTP2 (and its predecessor) [SPDY](https://www.chromium.org/spdy) 实现.
+- net/url_request - `URLRequest`, `URLRequestContext`, and `URLRequestJob` implementations.
+- net/websockets - [WebSockets](http://en.wikipedia.org/wiki/WebSockets) 实现.
+
+#### 网络请求的剖析(主要关注HTTP)
+
+![Chromium_HTTP_Network_Request_Diagram.svg](http://reyshieh.com/assets/Chromium_HTTP_Network_Request_Diagram.svg)
+
+###### URLRequest
+
+当启动URLRequest时，它要做的第一件事是决定创建什么类型的URLRequestJob。主要的作业类型是URLRequestHttpJob，用于实现http://请求。还有很多其他的作业，比如URLRequestFileJob (file://)、URLRequestFtpJob (ftp://)、URLRequestDataJob (data://)等等。网络堆栈将确定满足请求的适当作业，但是它为客户端提供了两种定制作业创建的方法:URLRequest::Interceptor和URLRequest::ProtocolFactory。除了URLRequest::Interceptor的接口更广泛之外，这些都是相当冗余的。随着作业的进展，它将通知URLRequest, URLRequest将根据需要通知URLRequest::Delegate。
+
+###### URLRequestHttpJob
+
+URLRequestHttpJob将首先标识为HTTP请求设置的cookie，这需要在请求上下文中查询CookieMonster。这可以是异步的，因为CookieMonster可能由sqlite数据库支持。这样做之后，它将请求上下文的HttpTransactionFactory创建一个HttpTransaction。通常，HttpCache将被指定为HttpTransactionFactory。HttpCache将创建一个HttpCache::Transaction来处理HTTP请求。HttpCache::Transaction将首先检查HttpCache(它检查磁盘缓存)，以查看缓存条目是否已经存在。如果是，则意味着响应已经缓存，或者这个缓存条目已经存在一个网络事务，因此只需从该条目中读取。如果缓存条目不存在，那么我们创建它并请求HttpCache的HttpNetworkLayer创建一个HttpNetworkTransaction来服务请求。HttpNetworkTransaction被赋予一个HttpNetworkSession，其中包含执行HTTP请求的上下文状态。其中一些状态来自URLRequestContext。
+
+###### HttpNetworkTransaction
+
+HttpNetworkTransaction询问HttpStreamFactory创建HttpStream。HttpStreamFactory返回HttpStreamRequest，该请求应该处理如何建立连接的所有逻辑，一旦建立了连接，就用一个HttpStream子类将其封装起来，该子类负责与网络直接通信。
+
+目前，只有两个主要的HttpStream子类:HttpBasicStream和SpdyHttpStream，尽管我们计划为HTTP管道创建子类。HttpBasicStream承担直接读写套接字。SpdyHttpStream读写SpdyStream。网络事务将调用流的方法，在完成时，将调用回HttpCache::Transaction的回调，该回调将根据需要通知URLRequestHttpJob和URLRequest。对于HTTP路径，HTTP请求和响应的生成和解析将由HttpStreamParser处理。对于SPDY路径，请求和响应解析由SpdyStream和SpdySession处理。基于HTTP响应，HttpNetworkTransaction可能需要执行HTTP身份验证。这可能涉及重新启动网络事务。
+
+###### HttpStreamFactory
+
+HttpStreamFactory首先执行代理解析，以确定是否需要代理。端点被设置为URL主机或代理服务器。然后HttpStreamFactory检查SpdySessionPool，看看是否有此端点的可用SpdySession。如果没有，则stream factory从适当的池请求一个“套接字”(TCP/proxy/SSL/etc)。如果套接字是SSL套接字，则检查NPN是否表示协议(可能是SPDY)，如果是，则使用指定的协议。对于SPDY，我们将检查SpdySession是否已经存在并使用它，否则我们将从这个SSL套接字创建一个新的SpdySession，并从SpdySession创建一个SpdyStream，我们将SpdyHttpStream包装起来。对于HTTP，我们只需将套接字封装在HttpBasicStream中。
+
+###### Proxy Resolution
+
+HttpStreamFactory查询ProxyService来返回GURL的ProxyInfo。代理服务首先需要检查它是否具有最新的代理配置。如果没有，则使用ProxyConfigService查询系统的当前代理设置。如果代理设置设置为无代理或特定代理，则代理解析很简单(我们不返回代理或特定代理)。否则，我们需要运行一个PAC脚本来确定适当的代理(或缺少代理)。如果我们还没有PAC脚本，那么代理设置将指示我们应该使用WPAD自动检测，或者指定一个定制的PAC url，我们将使用ProxyScriptFetcher获取PAC脚本。一旦我们有了PAC脚本，我们将通过ProxyResolver执行它。注意，我们使用一个shim MultiThreadedProxyResolver对象将PAC脚本执行分派给线程，线程运行一个ProxyResolverV8实例。这是因为PAC脚本执行可能会阻塞主机解析。因此,为了防止一个停滞PAC脚本执行阻塞其他代理决议,我们允许同时执行多个PAC脚本。
+
+###### Connection Management
+
+HttpStreamRequest确定了适当的端点(URL端点或代理端点)之后，需要建立连接。它通过标识适当的“套接字”池并从中请求套接字来实现这一点。注意，这里的“套接字”基本上是指我们可以读写的东西，用来通过网络发送数据。SSL套接字构建在传输(TCP)套接字之上，并为用户加密/解密原始TCP数据。不同的套接字类型还处理不同的连接设置，比如HTTP/SOCKS代理、SSL握手等等。套接字池的设计是分层的，因此各种连接设置可以分层在其他套接字之上。HttpStream可以与实际的底层套接字类型无关，因为它只需要对套接字进行读写。套接字池执行各种功能——它们实现每个代理、每个主机和每个进程限制的连接。目前，这些设置为每个代理32个套接字，每个目标主机6个套接字，每个进程256个套接字(没有完全正确地实现，但已经足够好了)。套接字池还从执行中抽象套接字请求，从而为我们提供套接字的“后期绑定”。套接字请求可以通过新连接的套接字或空闲套接字(从以前的http事务重用)来实现。
+
+###### Host Resolution
+
+注意，传输套接字的连接设置不仅需要传输(TCP)握手，而且已经需要主机解析。HostResolverImpl使用getaddrinfo()执行主机解析，这是一个阻塞调用，因此解析器在未连接的工作线程上调用这些调用。通常，主机解析涉及DNS解析，但也可能涉及非DNS名称空间，如NetBIOS/WINS。HostResolverImpl还包含一个主机缓存，它可以缓存最多1000个主机名。
+
+###### SSL/TLS
+
+SSL套接字需要执行SSL连接设置和证书验证。目前，在所有平台上，我们都使用NSS的libssl来处理SSL连接逻辑。但是，我们使用特定于平台的api进行证书验证。我们还将使用证书验证缓存，这将把对同一证书的多个证书验证请求合并到一个证书验证作业中，并将结果缓存一段时间。
+
