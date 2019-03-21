@@ -1157,3 +1157,22 @@ HTTP缓存的大部分逻辑实际上是由缓存事务实现的。
 
 HTTP支持使用WWW-Authenticate请求头和Authorization响应头授权(代理授权则使用Proxy-Authenticate和proxy-Authorization)
 
+#### Cookie存储和获取
+
+CookieMonster是Chromium中的类，它处理浏览器中cookie的存储、管理、检索、过期和删除。它不处理与用户或cookie策略的交互(即哪些cookie被接受，哪些不被接受)。
+
+CookieMonster有以下职责：
+
+- 当接收到指定cookie的服务器响应时，它确认cookie是有效的，如果是有效的，则存储它。有效性测试包括:
+  - cookie的域必须是.local或公共后缀的子域
+  - cookie的域必须是接收响应的域的后缀
+- 当产生客户端请求时，如果满足以下则在请求中包含存储中的cookie：
+  - cookie域是服务器主机名的后缀
+  - cookie的路径是请求路径的前缀
+  - cookie必须是未过期的
+- 它强制限制(每个源和全局)存储多少cookie
+
+### 安全
+
+#### 总览
+
