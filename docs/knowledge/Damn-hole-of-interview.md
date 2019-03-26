@@ -3030,18 +3030,7 @@ ES6提供了normalize方法，允许"Unicode正规化"，即两种方法转为�
 '\u01D1'.normalize() === '\u004F\u030C'.normalize() // true
 ```
 
-## 算法
 
- ### 排序算法
-
-- 稳定 - a在b前，且a=b，排序后仍然a在b前
-- 不稳定 - a在b前，且a=b，排序后a可能出现在b后
-- 内排序 - 所有排序操作在内存中完成
-- 外排序 - 数据太大，会把数据放在磁盘中，排序要通过磁盘和内存的数据传输才能进行
-- 时间复杂度 - 算法执行所耗费的时间
-- 空间复杂度 - 运行完一个程序所需内存的大小
-
-![sort-algorithms](http://www.reyshieh.com/assets/sort-algorithms.png)
 
 
 
