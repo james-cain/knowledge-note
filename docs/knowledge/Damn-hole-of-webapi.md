@@ -633,7 +633,7 @@ function notifyMe() {
 	// 否则需要向用户获取权限
 	else if (Notification.permission === "denied") {
         Notification.requestPermission(function (permission) {
-            // 如果用户统一，就可以向他们发送通知
+            // 如果用户同意，就可以向他们发送通知
             if (permission === "granted") {
                 var notification = new Notification("Hi there!");
             }

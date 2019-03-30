@@ -25,7 +25,7 @@ PWA能做到原生应用的体验不是靠特指某一项技术，而是经过�
 
 要安装Service Worker，需要通过在js主线程（常规的页面里的js）注册Service Worker来启动安装，这个过程会通知浏览器Service Worker线程的javaScript文件在什么地方呆着
 
-```
+```js
 if ('serviceWorker' in navigation) {
     window.addEventListener('load', function() {
         navigation.serviceWorker.register('/sw.js', {scope: '/'}).then(function(registration) {
@@ -74,7 +74,7 @@ local storage是同步的用法在Service Worker中不允许使用
 
 IndexedDB可以在Service Worker内做数据存储
 
-```
+```js
 // 监听service worker的install事件
 this.addEventListener('install', function(event) {
 	// 如果监听到了service worker已经安装成功的话，就会调用event.waitUntil回调函数
@@ -100,7 +100,7 @@ ExtendableEvent.waitUtil()方法—确保Service Worker不会再waitUtil()里面
 
 每次任何被Service Worker控制的资源被请求时，都会触发fetch事件，这些资源包括了指定的scope内的html文档，和这些html文档内引用的其他任何资源。
 
-```
+```js
 this.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function (response) {
@@ -150,7 +150,7 @@ this.addEventListener('fetch', function (event) {
 
 可以在install事件中执行**self.skipWaiting()**方法跳过waiting状态，然后会直接进入activate阶段。接着在activate事件发生时，通过执行**self.clients.claim()**方法，更新所有客户端上的Service Worker。
 
-```
+```js
 // 安装阶段跳过等待，直接进入 active
 self.addEventListener('install', function (event) {
     event.waitUntil(self.skipWaiting());
@@ -184,7 +184,7 @@ self.addEventListener('activate', function (event) {
 
 在**页面**中，可以借助**Registration.update()更新**。
 
-```
+```js
 var version='1.0.1';
 navigator.serviceWorker.register('/sw.js').then(function(reg) {
     if (localStorage.getItem('sw_version') !== version) {
@@ -1044,7 +1044,7 @@ if ('serviceWorker' in navigator) {
 
 插入HTML文件的代码如下：
 
-```
+```html
 <script>
 window.onload = function() {
     var script = document.createElement('script');
@@ -2009,7 +2009,7 @@ CSS 和 JS，情况比较复杂，因为一般站点的 CSS，JS 都在 CDN 上�
 
 如果你的 CSS，JS 与站点在同一个域下，并且文件名中带了 Hash 版本号，那可以直接使用 Cache First 策略。
 
-图片建议使用 Cache First，并设置一定的失效事件，请求一次就不会再变动了。
+图片建议使用 Cache First，并设置一定的失效时间，请求一次就不会再变动了。
 
 上面这些只是普适性的策略，见仁见智。
 
