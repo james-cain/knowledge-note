@@ -351,7 +351,7 @@ null == 0 // false
 null >= 0 // true
 
 // 加法
-true + 1 // 1
+true + 1 // 2
 undefined + 1 // NaN
 
 let obj = {};
@@ -391,7 +391,7 @@ JSON.stringify(undefined) // undefined，忽略非法值
 JSON.stringify(function() {}) // undefined，忽略非法值
 JSON.stringify(Symbol()) // undefined，忽略非法值
 JSON.stringify([1, 2, 3, undefined]) // "[1,2,3,null]"，非法值以 null 取代
-JSON.stringify({ a: 2, b: function() {}}) // "{"a":2}"，忽略非法屬性
+JSON.stringify({ a: 2, b: function() {}}) // "{"a":2}"，忽略非法属性
 ```
 
 ```js
@@ -442,7 +442,7 @@ const b = {
 
 a.b = b;
 
-// 序列化成功！不會被報錯了！
+// 序列化成功！不会报错了！
 JSON.stringify(a) // "{"prompt":"Hello World"}"
 JSON.stringify(b) // "{"prompt":"Hello World"}"
 ```
@@ -2584,7 +2584,7 @@ var blob = new Blob([new ArrayBuffer(10)]);
 
 > blob和ArrayBuffer使用？
 
-在HTML5中，file对象的内部就是使用Blob，从< input >标签中获取的File对象即使一个Blob实例
+在HTML5中，file对象的内部就是使用Blob，从< input >标签中获取的File对象即是一个Blob实例
 
 blob文件的转换，可以使用FileReader对象：
 
