@@ -92,8 +92,8 @@ module.exports = {
           title: '其他',
           collapsable: false,
           children: [
-            '/knowledge/server-record.md',
-            '/knowledge/roadmap.md'
+            '/knowledge/server-record.md'
+            // '/knowledge/roadmap.md'
           ]
         }
       ]
