@@ -64,7 +64,7 @@ create的返回值为函数方法，this.call(params)的执行方法
 
 ### module.rules加载
 
-```
+```js
 // webpack.js compiler创建后都做了以下的事情 
 // 创建compiler实例
 compiler = new Compiler()

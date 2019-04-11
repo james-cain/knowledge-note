@@ -16,7 +16,7 @@ blog的webpack版本为：`4.11.1`
 
 配置`webpack.base.config.js`
 
-```
+```js
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 const createHappyPlugin = (id, loaders) => {
     return new Happypack({
@@ -125,7 +125,7 @@ resolve: {
 
 配置`webpack.dev.config.js`
 
-```
+```js
 mode: 'development',
 entry: {
 	app: './src/main.js'
@@ -161,7 +161,7 @@ plugins: [
 
 配置`webpack.build.config.js`
 
-```
+```js
 mode: 'production',
 // v1.0 vendor include vue/vue-router/vuex
 entry: {
@@ -245,7 +245,7 @@ plugins: [
 
   标配using preloaded or inlined CSS, Extracting all CSS in a single file, 还可以 extracting CSS based on entry, prevent the CSS duplication issue one  had with the ExtractTextPlugin(以后会试试)
 
-  ```
+  ```js
   function recursiveIssuer(m) {
       if (m.issuer) {
           return recursiveIssuer(m.issuer)
@@ -326,7 +326,7 @@ WTF，vue居然两边都打包了！先处理这个问题
 
 Webpack.dll.config.js
 
-```
+```js
 mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 entry: {
     vendor: [
@@ -373,7 +373,7 @@ plugins: [
 
 Webpack.build.config.js
 
-```
+```js
 new webpack.DllReferencePlugin({
     context: resolve(''),
     manifest: require('./vendor-manifest.json')
